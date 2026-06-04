@@ -21,24 +21,26 @@
    ════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ── Martian theme palette ─────────────────────────────── */
-  --bg: #fdfaf8;
-  --bg-warm: #f9f2ef;
-  --surface: #ffffff;
-  --text: #0a0a0a;
-  --text-soft: #1c1c1c;
-  --muted: #5a5651;
-  --accent: #f05a45;
-  --accent-hover: #d24127;
-  --accent-soft: #f3b9b0;
-  --accent-soft-bg: #fdeceb;
-  --accent-soft-bg-hover: #fbdcd8;
-  --border: #ece5e0;
-  --border-strong: #d9cec7;
-  --sidenote-muted: #8a8580;
-  --shadow-sm: 0 1px 2px rgba(10, 10, 10, 0.04);
-  --shadow-md: 0 4px 16px rgba(240, 90, 69, 0.08);
-  --shadow-lg: 0 10px 40px rgba(10, 10, 10, 0.06);
+  /* ── Mars (the planet) theme — iron-oxide / night-sky ──────
+     Dark dusty-rust surface, butterscotch sky accents, warm
+     off-white text. Swap these to retheme the whole page. */
+  --bg: #160d0a;            /* Martian night */
+  --bg-warm: #211410;       /* warm panel base */
+  --surface: #2a1812;       /* cards, header */
+  --text: #f6e8df;          /* regolith white */
+  --text-soft: #e7d2c5;
+  --muted: #b39482;         /* dusty secondary */
+  --accent: #e2683c;        /* iron-oxide rust */
+  --accent-hover: #ff8755;  /* sunlit rust */
+  --accent-soft: #8a4427;   /* deep rust */
+  --accent-soft-bg: #3a2016;
+  --accent-soft-bg-hover: #4a2a1c;
+  --border: #3c2820;
+  --border-strong: #56392c;
+  --sidenote-muted: #a8897b;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 18px rgba(226, 104, 60, 0.18);
+  --shadow-lg: 0 10px 44px rgba(0, 0, 0, 0.5);
   --font-serif: "Merriweather", Georgia, "Times New Roman", serif;
   --font-sans: "Source Sans 3", system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -55,7 +57,10 @@ body {
   font-size: 1.02rem;
   line-height: 1.7;
   color: var(--text);
-  background: var(--bg);
+  background:
+    radial-gradient(120% 60% at 50% -10%, rgba(226, 104, 60, 0.18) 0%, rgba(226, 104, 60, 0.04) 35%, transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -134,9 +139,12 @@ code {
   gap: 2rem;
   align-items: start;
   padding: 1.75rem 1.5rem 1.5rem;
-  border: 2px solid #000;
+  border: 1.5px solid var(--accent-soft);
   border-radius: 12px;
-  background: #fff;
+  background:
+    radial-gradient(140% 120% at 100% 0%, rgba(226, 104, 60, 0.10) 0%, transparent 55%),
+    var(--surface);
+  box-shadow: var(--shadow-lg);
 }
 .frontmatter-accent { width: 3rem; height: 3px; background: var(--accent); border-radius: 2px; margin: 0 0 1.25rem; }
 .frontmatter-title {
@@ -324,7 +332,7 @@ code {
 }
 .matrix-cell:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--accent-soft); }
 .matrix-cell.is-active { border-color: var(--accent); background: var(--accent-soft-bg); }
-.matrix-cell.vbu { background: #fff; border-color: var(--accent); border-width: 2px; }
+.matrix-cell.vbu { background: var(--surface); border-color: var(--accent); border-width: 2px; }
 .matrix-cell.vbu.is-active { background: var(--accent-soft-bg); }
 .matrix-cell-tag {
   font-family: var(--font-sans);
@@ -723,10 +731,10 @@ code {
 
   // Nodes: [id, label, x, y, w, h, fill, stroke, tooltip]
   const C = {
-    coral:  ["#fdeceb", "#f05a45"],
-    teal:   ["#e6f4f1", "#3a9d8e"],
-    purple: ["#efeaf7", "#8a6cc4"],
-    gray:   ["#f2efed", "#9a948e"],
+    coral:  ["#4a2418", "#e2683c"],
+    teal:   ["#1f3a36", "#4fb3a1"],
+    purple: ["#33264a", "#a98ad6"],
+    gray:   ["#2e211b", "#9a7a68"],
   };
   const W = 310, H = 320;
   const nodes = [
@@ -760,7 +768,7 @@ code {
     const line = document.createElementNS(ns, "line");
     line.setAttribute("x1", pos[a].cx); line.setAttribute("y1", pos[a].bottom);
     line.setAttribute("x2", pos[b].cx); line.setAttribute("y2", pos[b].top);
-    line.setAttribute("stroke", "#d9cec7"); line.setAttribute("stroke-width", "1.5");
+    line.setAttribute("stroke", "#56392c"); line.setAttribute("stroke-width", "1.5");
     svg.appendChild(line);
   });
 
@@ -778,7 +786,7 @@ code {
     const t = document.createElementNS(ns, "text");
     t.setAttribute("x", x + w/2); t.setAttribute("y", y + h/2 + 4);
     t.setAttribute("text-anchor", "middle");
-    t.setAttribute("font-size", "11.5"); t.setAttribute("font-weight", "700"); t.setAttribute("fill", "#1c1c1c");
+    t.setAttribute("font-size", "11.5"); t.setAttribute("font-weight", "700"); t.setAttribute("fill", "#f6e8df");
     t.textContent = label;
     g.appendChild(t);
 
