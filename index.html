@@ -21,26 +21,26 @@
    ════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ── Mars (the planet) theme — iron-oxide / night-sky ──────
-     Dark dusty-rust surface, butterscotch sky accents, warm
-     off-white text. Swap these to retheme the whole page. */
-  --bg: #160d0a;            /* Martian night */
-  --bg-warm: #211410;       /* warm panel base */
-  --surface: #2a1812;       /* cards, header */
-  --text: #f6e8df;          /* regolith white */
-  --text-soft: #e7d2c5;
-  --muted: #b39482;         /* dusty secondary */
-  --accent: #e2683c;        /* iron-oxide rust */
-  --accent-hover: #ff8755;  /* sunlit rust */
-  --accent-soft: #8a4427;   /* deep rust */
-  --accent-soft-bg: #3a2016;
-  --accent-soft-bg-hover: #4a2a1c;
-  --border: #3c2820;
-  --border-strong: #56392c;
-  --sidenote-muted: #a8897b;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
-  --shadow-md: 0 4px 18px rgba(226, 104, 60, 0.18);
-  --shadow-lg: 0 10px 44px rgba(0, 0, 0, 0.5);
+  /* ── Mars theme — light, iron-oxide accent ─────────────────
+     Sandy off-white background, dusty-rust accent, warm dark
+     text. Swap these to retheme the whole page. */
+  --bg: #fbf4ee;            /* Martian sand */
+  --bg-warm: #f6e9e0;       /* warm panel base */
+  --surface: #ffffff;       /* cards, header */
+  --text: #1a120d;          /* near-black, warm */
+  --text-soft: #2e221b;
+  --muted: #6e5d52;         /* dusty secondary */
+  --accent: #d2542b;        /* iron-oxide rust */
+  --accent-hover: #b1401d;  /* deep rust */
+  --accent-soft: #f0bca6;   /* dusty highlight */
+  --accent-soft-bg: #fcebe1;
+  --accent-soft-bg-hover: #f8dccd;
+  --border: #ecdfd6;
+  --border-strong: #d9c5b8;
+  --sidenote-muted: #8a7a6f;
+  --shadow-sm: 0 1px 2px rgba(60, 30, 15, 0.05);
+  --shadow-md: 0 4px 16px rgba(210, 84, 43, 0.12);
+  --shadow-lg: 0 10px 40px rgba(60, 30, 15, 0.08);
   --font-serif: "Merriweather", Georgia, "Times New Roman", serif;
   --font-sans: "Source Sans 3", system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -58,7 +58,7 @@ body {
   line-height: 1.7;
   color: var(--text);
   background:
-    radial-gradient(120% 60% at 50% -10%, rgba(226, 104, 60, 0.18) 0%, rgba(226, 104, 60, 0.04) 35%, transparent 60%),
+    radial-gradient(120% 55% at 50% -10%, rgba(210, 84, 43, 0.10) 0%, rgba(210, 84, 43, 0.03) 35%, transparent 60%),
     var(--bg);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
@@ -302,12 +302,18 @@ code {
 .matrix-sub { font-family: var(--font-sans); font-size: 0.82rem; color: var(--muted); margin: 0 0 1rem; }
 .matrix-grid {
   display: grid;
-  grid-template-columns: 2.2rem 1fr 1fr;
-  grid-template-rows: 2.2rem 1fr 1fr;
-  gap: 0.5rem;
+  grid-template-columns: 1.9rem 1fr 1fr;
+  grid-template-rows: 1.9rem 1fr 1fr;
+  gap: 0.6rem;
 }
+/* explicit placement so nothing falls into the empty corner */
+.matrix-corner { grid-column: 1; grid-row: 1; }
 .matrix-axis-x { grid-column: 2 / 4; grid-row: 1; }
 .matrix-axis-y { grid-column: 1; grid-row: 2 / 4; }
+.cell-fi { grid-column: 2; grid-row: 2; }
+.cell-fv { grid-column: 3; grid-row: 2; }
+.cell-ui { grid-column: 2; grid-row: 3; }
+.cell-uv { grid-column: 3; grid-row: 3; }
 .matrix-axis-label {
   font-family: var(--font-sans);
   font-size: 0.7rem;
@@ -321,6 +327,10 @@ code {
   text-align: center;
 }
 .matrix-axis-y .matrix-axis-label { writing-mode: vertical-rl; transform: rotate(180deg); height: 100%; }
+@media (max-width: 540px) {
+  .matrix-cell-desc { display: none; }
+  .matrix-grid { gap: 0.45rem; }
+}
 .matrix-cell {
   border: 1.5px solid var(--border);
   border-radius: 10px;
@@ -363,6 +373,114 @@ code {
   color: var(--text-soft);
 }
 .matrix-detail strong { color: var(--accent-hover); }
+
+/* ── Chat illustration ───────────────────────────────────── */
+.chat-tabs { display: flex; gap: 0.4rem; margin: 1.25rem 0 1rem; flex-wrap: wrap; }
+.chat-tab {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.chat-tab:hover { color: var(--text); border-color: var(--accent-soft); background: var(--accent-soft-bg); }
+.chat-tab.is-active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: var(--shadow-sm); }
+.chat-tab svg { width: 16px; height: 16px; }
+
+.chat-window {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-warm);
+  padding: 1.1rem 1.1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+.chat-scene { display: none; }
+.chat-scene.is-active { display: block; }
+.chat-scene-intent {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0 0 1rem;
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft-bg);
+  border-radius: 0 8px 8px 0;
+}
+.chat-scene-intent strong { color: var(--accent-hover); }
+
+.chat-msg { display: flex; gap: 0.7rem; margin-bottom: 0.9rem; align-items: flex-start; }
+.chat-msg:last-child { margin-bottom: 0; }
+.chat-avatar {
+  flex-shrink: 0;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--border-strong);
+}
+.chat-avatar svg { width: 22px; height: 22px; }
+.chat-avatar.human   { background: var(--accent-soft-bg); color: var(--accent); border-color: var(--accent-soft); }
+.chat-avatar.ai      { background: #241712; color: #ff9b6e; border-color: var(--accent-soft); }
+.chat-avatar.monitor { background: #16302c; color: #5fc6b2; border-color: #2f6157; }
+
+.chat-bubble {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.85rem 0.7rem;
+}
+.chat-role {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin: 0 0 0.35rem;
+}
+.chat-bubble p { font-family: var(--font-sans); font-size: 0.88rem; line-height: 1.55; margin: 0; color: var(--text-soft); }
+.chat-bubble p + p { margin-top: 0.5rem; }
+.chat-lean {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 0.55rem 0 0;
+  padding: 0.55rem 0.7rem;
+  background: #1a120e;
+  color: #f0d9cb;
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.chat-lean .kw { color: #ff9b6e; font-weight: 700; }
+.chat-lean .cm { color: #8a9b7a; }
+.chat-verdict {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.6rem;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+}
+.chat-verdict.vbu  { background: var(--accent-soft-bg); color: var(--accent-hover); border: 1px solid var(--accent-soft); }
+.chat-verdict.pass { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.chat-verdict.flag { background: #16302c; color: #6ad6c0; border: 1px solid #2f6157; }
 
 /* ── Pipeline diagram (frontmatter) ──────────────────────── */
 .pipeline-fig { margin: 0; width: 100%; }
@@ -492,6 +610,7 @@ code {
     <ul class="toc-list">
       <li><a class="toc-link" href="#overview">Overview</a></li>
       <li><a class="toc-link" href="#failure-mode">The Failure Mode</a></li>
+      <li><a class="toc-link" href="#example">Worked Example</a></li>
       <li><a class="toc-link" href="#questions">Research Questions</a></li>
       <li><a class="toc-link" href="#approach">Approach</a></li>
       <li><a class="toc-link" href="#timeline">Timeline</a></li>
@@ -543,28 +662,28 @@ code {
           <figcaption class="matrix-caption">The faithfulness × validity matrix</figcaption>
           <p class="matrix-sub">VBU is the target class — the one standard pipelines silently pass.</p>
           <div class="matrix-grid">
+            <div class="matrix-corner"></div>
             <div class="matrix-axis-x matrix-axis-label">Formally valid →</div>
             <div class="matrix-axis-y matrix-axis-label">Faithful to intent →</div>
 
-            <!-- row 1: faithful -->
-            <div class="matrix-cell" data-detail="The ideal outcome: the formal statement both captures the human's intent and passes the proof checker. This is what we want every translation to be.">
+            <!-- bottom-left of axes = faithful + invalid -->
+            <div class="matrix-cell cell-fi" data-detail="Means the right thing, but the proof checker rejects it. The least costly error: verification catches it and the human gets a clear signal to retry.">
               <span class="matrix-cell-tag tag-bad">Faithful · Invalid</span>
               <p class="matrix-cell-title">Honest failure</p>
-              <p class="matrix-cell-desc">Means the right thing but doesn't check out. Caught by verification.</p>
+              <p class="matrix-cell-desc">Right meaning, fails the check. Caught by verification.</p>
             </div>
-            <div class="matrix-cell is-active" data-detail="The ideal outcome — captures intent AND passes the checker. The goal of faithful translation.">
+            <div class="matrix-cell cell-fv is-active" data-detail="The ideal outcome — the formal statement captures the human's intent AND passes the proof checker. The goal of faithful translation.">
               <span class="matrix-cell-tag tag-good">Faithful · Valid</span>
               <p class="matrix-cell-title">Correct ✓</p>
               <p class="matrix-cell-desc">Captures intent and passes the checker. The goal.</p>
             </div>
 
-            <!-- row 2: not faithful -->
-            <div class="matrix-cell" data-detail="Wrong meaning and fails the checker — the least dangerous error, because verification rejects it outright.">
+            <div class="matrix-cell cell-ui" data-detail="Wrong meaning and fails the checker — also low-risk, because verification rejects it outright before it reaches anyone.">
               <span class="matrix-cell-tag tag-bad">Unfaithful · Invalid</span>
               <p class="matrix-cell-title">Obvious failure</p>
-              <p class="matrix-cell-desc">Wrong and rejected. Verification catches it.</p>
+              <p class="matrix-cell-desc">Wrong, and rejected. Verification catches it.</p>
             </div>
-            <div class="matrix-cell vbu" data-detail="VALID-BUT-UNFAITHFUL (VBU): the formal statement passes every check yet does not mean what the human intended. Verification gives a green light; the artifact is wrong. This is the class we build a benchmark around and try to detect cheaply.">
+            <div class="matrix-cell cell-uv vbu" data-detail="VALID-BUT-UNFAITHFUL (VBU): the statement passes every formal check yet does not mean what the human intended. Verification gives a green light on a wrong artifact. This is the class we build a benchmark around and try to detect cheaply.">
               <span class="matrix-cell-tag tag-target">Unfaithful · Valid — VBU</span>
               <p class="matrix-cell-title">Silent failure ⚠</p>
               <p class="matrix-cell-desc">Passes verification but means the wrong thing. The target.</p>
@@ -574,6 +693,112 @@ code {
             <strong>Correct ✓</strong> — Captures intent and passes the checker. The goal of faithful translation.
           </div>
         </figure>
+      </article>
+
+      <!-- ── Worked Example (chat illustration) ──────────────── -->
+      <article class="section-block" id="example">
+        <h2>Worked Example</h2>
+        <p>
+          A concrete VBU case from group-theory equational reasoning. The human asks for a
+          <strong>left inverse</strong> property; the model returns a statement that
+          type-checks in Lean but quietly means something else. Switch tabs to see a second
+          AI act as an oversight monitor and catch the drift.
+        </p>
+
+        <div class="chat-tabs" role="tablist">
+          <button class="chat-tab is-active" data-scene="scene-human" role="tab">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7.5" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7 8.5-7s8.5 2.6 8.5 7z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><path d="M12 3v3M12 3h0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="3" r="1.5"/></svg>
+            Human → AI
+          </button>
+          <button class="chat-tab" data-scene="scene-oversight" role="tab">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><circle cx="12" cy="3" r="1.5"/></svg>
+            <span style="opacity:.6">↔</span>
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><circle cx="12" cy="3" r="1.5"/></svg>
+            AI → AI (oversight)
+          </button>
+        </div>
+
+        <div class="chat-window">
+          <!-- Scene 1: Human ↔ AI -->
+          <div class="chat-scene is-active" id="scene-human">
+            <p class="chat-scene-intent"><strong>Human intent:</strong> "Every element has a left inverse" — for all a, there exists b with b · a = e.</p>
+
+            <div class="chat-msg">
+              <div class="chat-avatar human" title="Human">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7.5" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7 8.5-7s8.5 2.6 8.5 7z"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">Human</p>
+                <p>Formalize this in Lean for a group <code>(G, ·, e)</code>: every element <code>a</code> has a left inverse — some <code>b</code> with <code>b · a = e</code>.</p>
+              </div>
+            </div>
+
+            <div class="chat-msg">
+              <div class="chat-avatar ai" title="AI translator">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><path d="M12 4.5v3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="3.5" r="1.6"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">AI · Translator</p>
+                <p>Here is the formal statement — it type-checks in Lean:</p>
+                <pre class="chat-lean"><span class="kw">theorem</span> left_inverse (G) [Group G] (a : G) :
+  ∃ b : G, a * b = b * a := ⟨a, rfl⟩  <span class="cm">-- ✓ compiles</span></pre>
+                <span class="chat-verdict vbu">⚠ Valid but unfaithful</span>
+              </div>
+            </div>
+
+            <div class="chat-msg">
+              <div class="chat-avatar human" title="Human">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="7.5" r="4.2"/><path d="M3.5 21c0-4.4 3.8-7 8.5-7s8.5 2.6 8.5 7z"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">Why it's VBU</p>
+                <p>The checker is happy — but the model wrote <code>a · b = b · a</code> (a <em>commutes</em> with some <code>b</code>), not <code>b · a = e</code> (a left <em>inverse</em>). It's trivially true by taking <code>b = a</code>. Both the operation and the right-hand side drifted. The proof passes; the meaning is wrong.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Scene 2: AI ↔ AI oversight -->
+          <div class="chat-scene" id="scene-oversight">
+            <p class="chat-scene-intent"><strong>Oversight setup:</strong> a second model re-derives meaning from the formula and compares it to the stated intent — catching what the proof checker can't.</p>
+
+            <div class="chat-msg">
+              <div class="chat-avatar ai" title="AI translator">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#241712"/><circle cx="15" cy="13.5" r="1.6" fill="#241712"/><circle cx="12" cy="3.5" r="1.6"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">AI · Translator</p>
+                <p>Proposed translation of "every element has a left inverse":</p>
+                <pre class="chat-lean"><span class="kw">theorem</span> left_inverse (a : G) :
+  ∃ b : G, a * b = b * a := ⟨a, rfl⟩  <span class="cm">-- ✓ Lean accepts</span></pre>
+                <span class="chat-verdict pass">✓ Proof checker: PASS</span>
+              </div>
+            </div>
+
+            <div class="chat-msg">
+              <div class="chat-avatar monitor" title="AI oversight monitor">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#16302c"/><circle cx="15" cy="13.5" r="1.6" fill="#16302c"/><circle cx="12" cy="3.5" r="1.6"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">AI · Oversight monitor</p>
+                <p>Reading the formula back into English: <em>"for all a, there exists b such that a·b = b·a"</em> — i.e. every element commutes with some element. That's trivially satisfied by <code>b = a</code>.</p>
+                <p>The intent required <code>b · a = e</code> (an inverse yielding identity). The formula has the wrong operand order <em>and</em> no <code>e</code> on the right. Conclusion: the statement is well-formed but does not encode the intent.</p>
+                <span class="chat-verdict flag">✗ Flagged: VBU — semantic mismatch</span>
+              </div>
+            </div>
+
+            <div class="chat-msg">
+              <div class="chat-avatar monitor" title="AI oversight monitor">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="4" y="8" width="16" height="11" rx="3"/><circle cx="9" cy="13.5" r="1.6" fill="#16302c"/><circle cx="15" cy="13.5" r="1.6" fill="#16302c"/><circle cx="12" cy="3.5" r="1.6"/></svg>
+              </div>
+              <div class="chat-bubble">
+                <p class="chat-role">Suggested faithful form</p>
+                <pre class="chat-lean"><span class="kw">theorem</span> left_inverse (a : G) :
+  ∃ b : G, b * a = e := ...  <span class="cm">-- matches intent</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
       </article>
 
       <!-- ── Research Questions ──────────────────────────────── -->
@@ -724,6 +949,20 @@ code {
   });
 })();
 
+/* ── 2b. Chat scene tabs ─────────────────────────────────── */
+(function () {
+  const tabs = Array.from(document.querySelectorAll(".chat-tab"));
+  const scenes = Array.from(document.querySelectorAll(".chat-scene"));
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("is-active"));
+      scenes.forEach(s => s.classList.remove("is-active"));
+      tab.classList.add("is-active");
+      document.getElementById(tab.dataset.scene)?.classList.add("is-active");
+    });
+  });
+})();
+
 /* ── 3. Pipeline diagram ─────────────────────────────────── */
 (function () {
   const wrap = document.getElementById("pipeline-wrap");
@@ -731,10 +970,10 @@ code {
 
   // Nodes: [id, label, x, y, w, h, fill, stroke, tooltip]
   const C = {
-    coral:  ["#4a2418", "#e2683c"],
-    teal:   ["#1f3a36", "#4fb3a1"],
-    purple: ["#33264a", "#a98ad6"],
-    gray:   ["#2e211b", "#9a7a68"],
+    coral:  ["#fceadf", "#d2542b"],
+    teal:   ["#e3f2ee", "#2f9d8a"],
+    purple: ["#eee7f6", "#8a6cc4"],
+    gray:   ["#f1ebe5", "#9a857a"],
   };
   const W = 310, H = 320;
   const nodes = [
@@ -768,7 +1007,7 @@ code {
     const line = document.createElementNS(ns, "line");
     line.setAttribute("x1", pos[a].cx); line.setAttribute("y1", pos[a].bottom);
     line.setAttribute("x2", pos[b].cx); line.setAttribute("y2", pos[b].top);
-    line.setAttribute("stroke", "#56392c"); line.setAttribute("stroke-width", "1.5");
+    line.setAttribute("stroke", "#d9c5b8"); line.setAttribute("stroke-width", "1.5");
     svg.appendChild(line);
   });
 
@@ -786,7 +1025,7 @@ code {
     const t = document.createElementNS(ns, "text");
     t.setAttribute("x", x + w/2); t.setAttribute("y", y + h/2 + 4);
     t.setAttribute("text-anchor", "middle");
-    t.setAttribute("font-size", "11.5"); t.setAttribute("font-weight", "700"); t.setAttribute("fill", "#f6e8df");
+    t.setAttribute("font-size", "11.5"); t.setAttribute("font-weight", "700"); t.setAttribute("fill", "#1a120d");
     t.textContent = label;
     g.appendChild(t);
 
