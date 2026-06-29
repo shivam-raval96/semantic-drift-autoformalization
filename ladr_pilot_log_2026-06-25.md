@@ -8,7 +8,7 @@ ________________________________________________________________________________
 # LADR Pilot Log: Statement Autoformalization (Week June 21 - June 28)
 Initial piloti on the LADR theorems.
 
-## Setup
+## Setup 
 
 Dataset: Extracted textbook 256 theorems and the inforaml proof, piloted on `LADR_pilot_27`.
 
