@@ -36,24 +36,32 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
 DEFAULT_INPUT = REPO_ROOT / "LADR_all_material" / "LADR_pilot_27.jsonl"
 DEFAULT_OUTPUT = (
-    REPO_ROOT / "LADR_all_material" / "generated" / "lean_statement_pilot_ab.jsonl"
+    REPO_ROOT
+    / "LADR_all_material"
+    / "generated"
+    / "pilot_27_thms"
+    / "one_shot_ab"
+    / "lean_statement_pilot_ab.jsonl"
 )
 
 CONDITIONS = ("statement_only", "statement_plus_proof")
-PROMPT_VERSION = "ladr_statement_pilot_ab_v3"
+PROMPT_VERSION = "ladr_statement_pilot_ab_v4"
 SYSTEM_PROMPT = (
-    "Return only one Lean 4 theorem declaration. Do not use Markdown, comments, "
-    "explanations, or proof attempts."
+    "Return only one complete Lean 4 file. The first non-empty line must be "
+    "`import Mathlib`. Do not use Markdown or explanations outside Lean code."
 )
 
 PROMPT_TEMPLATE = """\
 Formalize the LADR theorem below as one Lean 4 theorem statement.
 
 Requirements:
+- Start the file with `import Mathlib`.
+- Then include `set_option linter.style.header false`.
+- Put any Lean comments only after the import line.
 - Name the theorem `{name}`.
-- It should typecheck with `import Mathlib`.
-- End with `:= by sorry`.
-- Return only the theorem declaration.
+- Include exactly one Lean `theorem` declaration.
+- The theorem declaration should end with `:= by sorry`.
+- Return only the complete Lean file.
 {proof_rule}
 
 Dataset: {dataset}
@@ -194,10 +202,13 @@ def call_openai(
 
 def validate_output(text: str, expected_name: str | None) -> dict[str, Any]:
     declaration_names = re.findall(r"(?m)^\s*(?:theorem|lemma)\s+([^\s:]+)", text)
+    starts_with_import = text.lstrip().startswith("import Mathlib")
     has_sorry_stub = ":= by sorry" in text
     actual_name = declaration_names[0] if len(declaration_names) == 1 else None
     name_matches = bool(expected_name) and actual_name == expected_name
     notes: list[str] = []
+    if not starts_with_import:
+        notes.append("file must start with 'import Mathlib'")
     if not has_sorry_stub:
         notes.append("missing ':= by sorry'")
     if len(declaration_names) != 1:
@@ -209,11 +220,13 @@ def validate_output(text: str, expected_name: str | None) -> dict[str, Any]:
 
     return {
         "has_sorry_stub": has_sorry_stub,
+        "starts_with_import_mathlib": starts_with_import,
         "theorem_or_lemma_declaration_count": len(declaration_names),
         "expected_declaration_name": expected_name,
         "actual_declaration_name": actual_name,
         "declaration_name_matches_input": name_matches,
-        "passed_basic_checks": has_sorry_stub
+        "passed_basic_checks": starts_with_import
+        and has_sorry_stub
         and len(declaration_names) == 1
         and name_matches,
         "notes": notes,

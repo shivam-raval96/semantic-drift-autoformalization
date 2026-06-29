@@ -15,7 +15,14 @@ from typing import Any
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-DEFAULT_INPUT = REPO_ROOT / "LADR_all_material" / "generated" / "lean_statement_pilot_ab_checked.jsonl"
+DEFAULT_INPUT = (
+    REPO_ROOT
+    / "LADR_all_material"
+    / "generated"
+    / "pilot_27_thms"
+    / "one_shot_ab"
+    / "lean_statement_pilot_ab_checked.jsonl"
+)
 
 
 def die(message: str) -> None:

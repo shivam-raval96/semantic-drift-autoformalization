@@ -1,10 +1,18 @@
-# LADR Pilot Log: Statement Autoformalization
+# LADR Pilot Log: Statement Autoformalization (Week June 28 - June 5)
+I asked the model to back translate the Lean4 code to a card, which i can read, I have to go over this to see the informal proof really helps the translation to be more faithful, even though its not compiling. In order to this, I asked AI to come up a script for back translatio and a HTML format script so i can compare easily.
 
-Date: 2026-06-25
+
+________________________________________________________________________________________________
+
+
+# LADR Pilot Log: Statement Autoformalization (Week June 21 - June 28)
+Initial piloti on the LADR theorems.
 
 ## Setup
 
-Dataset: `LADR_pilot_27`
+Dataset: Extracted textbook 256 theorems and the inforaml proof, piloted on `LADR_pilot_27`.
+
+Model: GPT-5.4, with "lake env lean --stdin --json", only compile or not (succinct info, not like REPL)
 
 Task: generate a Lean 4 theorem statement from each LADR theorem, with proof replaced by `:= by sorry`.
 
@@ -19,8 +27,6 @@ Conditions:
 |---|---:|---:|---:|
 | `statement_only` | 10 / 27 | 17 / 27 | 37.0% |
 | `statement_plus_proof` | 9 / 27 | 18 / 27 | 33.3% |
-| **Total** | **19 / 54** | **35 / 54** | **35.2%** |
-
 Pair outcomes:
 
 - both compile: 8
@@ -36,19 +42,7 @@ The repair agent used Lean compiler feedback as conversation history. For each f
 |---|---:|---:|---:|
 | `statement_only` | 23 / 27 | 4 / 27 | 85.2% |
 | `statement_plus_proof` | 20 / 27 | 7 / 27 | 74.1% |
-| **Total** | **43 / 54** | **11 / 54** | **79.6%** |
 
-One-shot to repair-agent transitions:
-
-- one-shot ok -> agent ok: 19
-- one-shot failed -> agent ok: 24
-- one-shot failed -> agent failed: 11
-
-Attempt counts:
-
-- 1 attempt: 16
-- 2 attempts: 15
-- 3 attempts: 23
 
 ## Multistage Skeleton Result
 
@@ -82,21 +76,6 @@ Compared with direct `statement_plus_proof` repair:
 - direct ok -> multistage failed: 7
 - direct failed -> multistage ok: 2
 - direct failed -> multistage failed: 5
-
-Multistage-only successes:
-
-- `LADR_thm_chap_2_43`
-- `LADR_thm_chap_7_99`
-
-Direct `statement_plus_proof`-only successes:
-
-- `LADR_thm_chap_1_26`
-- `LADR_thm_chap_2_25`
-- `LADR_thm_chap_3_22`
-- `LADR_thm_chap_5_11`
-- `LADR_thm_chap_5_7`
-- `LADR_thm_chap_7_5`
-- `LADR_thm_chap_8_49`
 
 ## Observation
 

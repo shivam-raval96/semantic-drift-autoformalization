@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from collections import Counter, defaultdict
@@ -16,9 +17,21 @@ from typing import Any
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
-DEFAULT_INPUT = REPO_ROOT / "LADR_all_material" / "generated" / "lean_statement_pilot_ab.jsonl"
+DEFAULT_INPUT = (
+    REPO_ROOT
+    / "LADR_all_material"
+    / "generated"
+    / "pilot_27_thms"
+    / "one_shot_ab"
+    / "lean_statement_pilot_ab.jsonl"
+)
 DEFAULT_OUTPUT = (
-    REPO_ROOT / "LADR_all_material" / "generated" / "lean_statement_pilot_ab_checked.jsonl"
+    REPO_ROOT
+    / "LADR_all_material"
+    / "generated"
+    / "pilot_27_thms"
+    / "one_shot_ab"
+    / "lean_statement_pilot_ab_checked.jsonl"
 )
 DEFAULT_LEAN_PROJECT = REPO_ROOT / "lean_checker"
 LEAN_PREAMBLE = """\
@@ -79,7 +92,15 @@ def completed_checks(path: Path) -> set[tuple[str | None, str | None, str | None
 
 
 def lean_input(output_text: str) -> str:
-    return LEAN_PREAMBLE + output_text.strip() + "\n"
+    text = output_text.strip()
+    lines = [
+        line
+        for line in text.splitlines()
+        if not re.match(r"\s*import\s+\S+\s*$", line)
+        and not re.match(r"\s*set_option\s+linter\.style\.header\s+false\s*$", line)
+    ]
+    body = "\n".join(lines).strip()
+    return LEAN_PREAMBLE + body + "\n"
 
 
 def parse_lean_json(stdout: str) -> tuple[list[dict[str, Any]], list[str]]:

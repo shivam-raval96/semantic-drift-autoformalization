@@ -31,24 +31,29 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
 DEFAULT_INPUT = REPO_ROOT / "LADR_all_material" / "LADR_pilot_27.jsonl"
 DEFAULT_OUTPUT = (
-    REPO_ROOT / "LADR_all_material" / "generated" / "lean_statement_multistage_skeleton.jsonl"
+    REPO_ROOT
+    / "LADR_all_material"
+    / "generated"
+    / "pilot_27_thms"
+    / "multistage_skeleton"
+    / "lean_statement_multistage_skeleton.jsonl"
 )
 DEFAULT_LEAN_PROJECT = REPO_ROOT / "lean_checker"
 
 CONDITION = "multistage_skeleton"
 STAGE1 = "stage1_skeleton"
 STAGE2 = "stage2_final"
-PROMPT_VERSION = "ladr_multistage_skeleton_agent_v1"
+PROMPT_VERSION = "ladr_multistage_skeleton_agent_v2"
 
 SYSTEM_PROMPTS = {
     STAGE1: (
-        "Return only one Lean 4 theorem declaration. Do not use Markdown or "
-        "explanations outside the Lean code. Lean comments inside the theorem "
-        "proof are allowed."
+        "Return only one complete Lean 4 file starting with `import Mathlib`. "
+        "Do not use Markdown or explanations outside the Lean code. Lean "
+        "comments inside the theorem proof are allowed."
     ),
     STAGE2: (
-        "Return only one Lean 4 theorem declaration. Do not use Markdown, "
-        "comments, explanations, or proof skeletons."
+        "Return only one complete Lean 4 file starting with `import Mathlib`. "
+        "Do not use Markdown, comments, explanations, or proof skeletons."
     ),
 }
 
@@ -69,12 +74,14 @@ The skeleton should contain meaningful Lean proof structure such as `have`,
 structure.
 
 Requirements:
+- Start the file with `import Mathlib`.
+- Then include `set_option linter.style.header false`.
+- Put any Lean comments only after the import line.
 - Name the theorem `{name}` exactly.
 - Return exactly one Lean `theorem` declaration and no extra declarations.
-- The code must typecheck with `import Mathlib`.
 - Use a `:= by` proof block with structured `have`, `suffices`, or `calc` steps that reflect the informal proof.
 - Use `sorry` holes where proof details are not completed. Full proof completion is not required.
-- Do not introduce axioms, constants, namespaces, imports, definitions, or lemmas.
+- Do not introduce axioms, constants, namespaces, definitions, or lemmas.
 - Return only Lean code.
 
 Dataset: {dataset}
@@ -94,13 +101,14 @@ Return one clean Lean 4 theorem statement, filled by `sorry`. You do not have
 to prove it.
 
 Requirements:
+- Start the file with `import Mathlib`.
+- Then include `set_option linter.style.header false`.
 - Name the theorem `{name}` exactly.
 - Preserve the same theorem intent as the natural-language theorem and Lean 4 sketch proof.
 - Return exactly one Lean `theorem` declaration and no extra declarations.
-- The code must typecheck with `import Mathlib`.
 - End the declaration with exactly `:= by sorry`.
 - Do not include `have`, `suffices`, `calc`, proof-plan comments, or any proof skeleton.
-- Do not introduce axioms, constants, namespaces, imports, definitions, or lemmas.
+- Do not introduce axioms, constants, namespaces, definitions, or lemmas.
 - Return only Lean code.
 
 Dataset: {dataset}
@@ -196,8 +204,8 @@ def contains_forbidden_declaration(text: str) -> bool:
         re.search(
             r"(?m)^\s*(?:"
             r"axiom|constant|def|abbrev|instance|example|class|structure|inductive|"
-            r"namespace|section|import|open|variable|variables|universe|universes|"
-            r"set_option|local|attribute|notation|opaque|mutual|macro|syntax|"
+            r"namespace|section|open|variable|variables|universe|universes|"
+            r"local|attribute|notation|opaque|mutual|macro|syntax|"
             r"#check|#eval|#print"
             r")\b",
             scan_text,
@@ -209,6 +217,10 @@ def has_structured_skeleton_marker(text: str) -> bool:
     return bool(re.search(r"\b(?:have|suffices|calc)\b", text))
 
 
+def starts_with_import_mathlib(text: str) -> bool:
+    return text.lstrip().startswith("import Mathlib")
+
+
 def has_skeleton_marker(text: str) -> bool:
     return bool(re.search(r"\b(?:have|suffices|calc)\b", text) or "--" in text or "/-" in text)
 
@@ -218,6 +230,7 @@ def validate_stage_output(text: str, expected_name: str | None, stage: str) -> d
     theorem_or_lemma_declarations = theorem_or_lemma_names(text)
     actual_name = theorem_declarations[0] if len(theorem_declarations) == 1 else None
     name_matches = bool(expected_name) and actual_name == expected_name
+    starts_with_import = starts_with_import_mathlib(text)
     has_sorry = bool(re.search(r"\bsorry\b", text))
     has_by_block = ":= by" in text
     has_final_stub = ":= by sorry" in text
@@ -238,6 +251,8 @@ def validate_stage_output(text: str, expected_name: str | None, stage: str) -> d
         notes.append(f"theorem name {actual_name!r} does not match {expected_name!r}")
     if has_forbidden_decl:
         notes.append("output contains a forbidden top-level declaration or command")
+    if not starts_with_import:
+        notes.append("file must start with 'import Mathlib'")
 
     if stage == STAGE1:
         if not has_by_block:
@@ -250,6 +265,7 @@ def validate_stage_output(text: str, expected_name: str | None, stage: str) -> d
             len(theorem_declarations) == 1
             and len(theorem_or_lemma_declarations) == 1
             and name_matches
+            and starts_with_import
             and has_by_block
             and has_sorry
             and structured_skeleton_marker
@@ -266,6 +282,7 @@ def validate_stage_output(text: str, expected_name: str | None, stage: str) -> d
             len(theorem_declarations) == 1
             and len(theorem_or_lemma_declarations) == 1
             and name_matches
+            and starts_with_import
             and has_final_stub
             and ends_with_final_stub
             and not skeleton_marker
@@ -281,6 +298,7 @@ def validate_stage_output(text: str, expected_name: str | None, stage: str) -> d
         "expected_name": expected_name,
         "actual_name": actual_name,
         "name_matches": name_matches,
+        "starts_with_import_mathlib": starts_with_import,
         "has_by_block": has_by_block,
         "has_sorry": has_sorry,
         "has_final_stub": has_final_stub,
@@ -351,7 +369,15 @@ def lean_feedback(lean_result: dict[str, Any] | None) -> str:
 
 
 def lean_input(output_text: str) -> str:
-    return LEAN_PREAMBLE + output_text.strip() + "\n"
+    text = output_text.strip()
+    lines = [
+        line
+        for line in text.splitlines()
+        if not re.match(r"\s*import\s+\S+\s*$", line)
+        and not re.match(r"\s*set_option\s+linter\.style\.header\s+false\s*$", line)
+    ]
+    body = "\n".join(lines).strip()
+    return LEAN_PREAMBLE + body + "\n"
 
 
 def run_lean(code: str, *, lean_project: Path, timeout: float) -> dict[str, Any]:
@@ -778,6 +804,10 @@ def dry_run(rows: list[dict[str, Any]]) -> None:
     print(f"\n--- dry run Stage 1 initial prompt: {row.get('name')} ---")
     print(render_stage1_initial_prompt(row))
     placeholder_skeleton = f"""\
+import Mathlib
+
+set_option linter.style.header false
+
 theorem {row["name"]} : True := by
   -- A compiling Lean sketch proof would appear here.
   sorry"""

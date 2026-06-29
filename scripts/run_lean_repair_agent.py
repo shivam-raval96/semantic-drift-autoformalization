@@ -30,14 +30,21 @@ except ImportError:
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
 DEFAULT_INPUT = REPO_ROOT / "LADR_all_material" / "LADR_pilot_27.jsonl"
-DEFAULT_OUTPUT = REPO_ROOT / "LADR_all_material" / "generated" / "lean_statement_agent_ab.jsonl"
+DEFAULT_OUTPUT = (
+    REPO_ROOT
+    / "LADR_all_material"
+    / "generated"
+    / "pilot_27_thms"
+    / "repair_agent_ab"
+    / "lean_statement_agent_ab.jsonl"
+)
 DEFAULT_LEAN_PROJECT = REPO_ROOT / "lean_checker"
 
 CONDITIONS = ("statement_only", "statement_plus_proof")
-PROMPT_VERSION = "ladr_statement_repair_agent_v2"
+PROMPT_VERSION = "ladr_statement_repair_agent_v3"
 SYSTEM_PROMPT = (
-    "Return only one Lean 4 theorem declaration. Do not use Markdown, comments, "
-    "explanations, or proof attempts."
+    "Return only one complete Lean 4 file. The first non-empty line must be "
+    "`import Mathlib`. Do not use Markdown or explanations outside Lean code."
 )
 LEAN_PREAMBLE = """\
 import Mathlib
@@ -48,10 +55,13 @@ set_option linter.style.header false
 
 BASE_RULES = """\
 Requirements:
+- Start the file with `import Mathlib`.
+- Then include `set_option linter.style.header false`.
+- Put any Lean comments only after the import line.
 - Name the theorem `{name}`.
-- It should typecheck with `import Mathlib`.
-- End with `:= by sorry`.
-- Return only the theorem declaration.
+- Include exactly one Lean `theorem` declaration.
+- The theorem declaration should end with `:= by sorry`.
+- Return only the complete Lean file.
 """
 
 INITIAL_PROMPT = """\
@@ -112,11 +122,26 @@ def clean_model_text(text: str) -> str:
     return text
 
 
+def lean_input(output_text: str) -> str:
+    text = output_text.strip()
+    lines = [
+        line
+        for line in text.splitlines()
+        if not re.match(r"\s*import\s+\S+\s*$", line)
+        and not re.match(r"\s*set_option\s+linter\.style\.header\s+false\s*$", line)
+    ]
+    body = "\n".join(lines).strip()
+    return LEAN_PREAMBLE + body + "\n"
+
+
 def validate_output(text: str, expected_name: str | None) -> dict[str, Any]:
     declaration_names = re.findall(r"(?m)^\s*(?:theorem|lemma)\s+([^\s:]+)", text)
+    starts_with_import = text.lstrip().startswith("import Mathlib")
     has_sorry_stub = ":= by sorry" in text
     actual_name = declaration_names[0] if len(declaration_names) == 1 else None
     notes: list[str] = []
+    if not starts_with_import:
+        notes.append("file must start with 'import Mathlib'")
     if len(declaration_names) != 1:
         notes.append(f"expected one theorem/lemma declaration, found {len(declaration_names)}")
     if expected_name and actual_name != expected_name:
@@ -125,11 +150,13 @@ def validate_output(text: str, expected_name: str | None) -> dict[str, Any]:
         notes.append("missing ':= by sorry'")
     return {
         "has_sorry_stub": has_sorry_stub,
+        "starts_with_import_mathlib": starts_with_import,
         "declaration_count": len(declaration_names),
         "expected_name": expected_name,
         "actual_name": actual_name,
         "name_matches": bool(expected_name) and actual_name == expected_name,
-        "passed_basic_checks": len(declaration_names) == 1
+        "passed_basic_checks": starts_with_import
+        and len(declaration_names) == 1
         and has_sorry_stub
         and bool(expected_name)
         and actual_name == expected_name,
@@ -266,10 +293,6 @@ def parse_lean_json(stdout: str) -> tuple[list[dict[str, Any]], list[str]]:
         else:
             raw_lines.append(line)
     return messages, raw_lines
-
-
-def lean_input(output_text: str) -> str:
-    return LEAN_PREAMBLE + output_text.strip() + "\n"
 
 
 def run_lean(code: str, *, lean_project: Path, timeout: float) -> dict[str, Any]:
