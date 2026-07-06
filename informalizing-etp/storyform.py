@@ -15,8 +15,10 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
 
 OP_SYMBOLS = ("∘", "◇", "*")
@@ -443,6 +445,44 @@ def render_story(e_text: str, f_text: str, theme_key: Optional[str] = None) -> T
     return story, metadata
 
 
+# ------------------------------------------------------------------ Export
+
+
+def _sanitize(label: str) -> str:
+    return re.sub(r"[^A-Za-z0-9_-]", "_", label)
+
+
+def record_filename(metadata: dict) -> str:
+    """Deterministic filename for a corpus record.
+
+    Uses ETP labels when both are present, otherwise a hash of the
+    canonicalized pair; the theme key is included so the same pair
+    rendered under different themes never collides.
+    """
+    label_e = metadata.get("label_e")
+    label_f = metadata.get("label_f")
+    if label_e and label_f:
+        stem = f"{_sanitize(label_e)}-{_sanitize(label_f)}"
+    else:
+        digest = hashlib.sha256(
+            f"{metadata['canonical_e']} => {metadata['canonical_f']}".encode("utf-8")
+        ).hexdigest()[:12]
+        stem = f"pair-{digest}"
+    return f"{stem}-{metadata['theme']}.json"
+
+
+def write_record(story: str, metadata: dict, out_dir: Path) -> Path:
+    """Write one (story, metadata) record as a JSON file; return its path."""
+    out_dir = Path(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / record_filename(metadata)
+    record = {"story": story, "metadata": metadata}
+    path.write_text(
+        json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return path
+
+
 # --------------------------------------------------------------------- CLI
 
 
@@ -462,7 +502,14 @@ def main(argv: Optional[List[str]] = None) -> int:
     cli.add_argument(
         "--json",
         action="store_true",
-        help="emit a JSON record pairing the story with its formal metadata",
+        help="print a JSON record pairing the story with its formal metadata",
+    )
+    cli.add_argument(
+        "--out-dir",
+        type=Path,
+        metavar="DIR",
+        help="write the JSON record to a file in DIR (created if missing); "
+        "the filename is deterministic, from the ETP labels or a hash of the pair",
     )
     args = cli.parse_args(argv)
 
@@ -475,7 +522,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.f_label:
         metadata["label_f"] = args.f_label
 
-    if args.json:
+    if args.out_dir is not None:
+        path = write_record(story, metadata, args.out_dir)
+        print(path)
+    elif args.json:
         print(json.dumps({"story": story, "metadata": metadata}, ensure_ascii=False))
     else:
         print(story)

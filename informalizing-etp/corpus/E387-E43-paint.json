@@ -1,0 +1,20 @@
+{
+  "story": "In a certain paint workshop, the colorist follows one unbreakable habit. Take any two pigments at all — call the first crimson and the second ochre. She runs two procedures side by side.\n\nIn the first, she pours crimson into ochre and sets the result aside as Batch 1.\n\nIn the second, she pours ochre into ochre and calls the result Batch 2; then she pours Batch 2 into crimson and calls that Batch 3.\n\nHowever she chooses her two starting pigments, Batch 1 and Batch 3 always come out the exact same color. That is simply how this workshop works, without exception.\n\nOne morning her apprentice wonders about something. Take any two pigments — again call the first crimson and the second ochre. Pour crimson into ochre and set the result aside as Batch 1. Separately, pour ochre into crimson and call the result Batch 2.\n\nIn this workshop, must Batch 1 and Batch 2 always come out the same color?",
+  "metadata": {
+    "theme": "paint",
+    "equation_e": "x ∘ y = (y ∘ y) ∘ x",
+    "equation_f": "x ∘ y = y ∘ x",
+    "canonical_e": "(v1 ∘ v2) = ((v2 ∘ v2) ∘ v1)",
+    "canonical_f": "(v1 ∘ v2) = (v2 ∘ v1)",
+    "palette_e": {
+      "x": "crimson",
+      "y": "ochre"
+    },
+    "palette_f": {
+      "x": "crimson",
+      "y": "ochre"
+    },
+    "label_e": "E387",
+    "label_f": "E43"
+  }
+}

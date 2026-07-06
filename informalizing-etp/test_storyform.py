@@ -7,8 +7,11 @@
 4. Coverage — degenerate shapes render without error.
 """
 
+import json
 import re
+import tempfile
 import unittest
+from pathlib import Path
 
 from backparse import backparse
 from storyform import (
@@ -17,8 +20,10 @@ from storyform import (
     ParseError,
     canonical,
     parse_equation,
+    record_filename,
     render_story,
     select_theme,
+    write_record,
 )
 
 # Implication pairs exercising the shapes that matter: the CLAUDE.md
@@ -168,6 +173,42 @@ class CoverageTest(unittest.TestCase):
     def test_too_many_variables_rejected(self):
         with self.assertRaises(ValueError):
             render_story("x = y ∘ (z ∘ (w ∘ (u ∘ (v ∘ q))))", "x = y", "paint")
+
+
+class ExportTest(unittest.TestCase):
+    """JSON records land in files with deterministic names, and the
+    story inside a written file still round-trips through the back-parser."""
+
+    def test_write_record_with_labels(self):
+        story, metadata = render_story(
+            "x ∘ y = (y ∘ y) ∘ x", "x ∘ y = y ∘ x", "paint"
+        )
+        metadata["label_e"] = "E387"
+        metadata["label_f"] = "E43"
+        with tempfile.TemporaryDirectory() as tmp:
+            path = write_record(story, metadata, Path(tmp) / "corpus")
+            self.assertEqual(path.name, "E387-E43-paint.json")
+            record = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(record["story"], story)
+            self.assertEqual(record["metadata"], metadata)
+            recovered = backparse(record["story"])
+            self.assertEqual(
+                canonical(*recovered["habit_law"]), metadata["canonical_e"]
+            )
+            self.assertEqual(
+                canonical(*recovered["question_law"]), metadata["canonical_f"]
+            )
+
+    def test_filename_without_labels_is_deterministic(self):
+        _, metadata = render_story("x = x ◇ x", "x ◇ y = y ◇ x", "tea")
+        name = record_filename(metadata)
+        self.assertRegex(name, r"^pair-[0-9a-f]{12}-tea\.json$")
+        self.assertEqual(name, record_filename(metadata))
+
+    def test_same_pair_different_themes_do_not_collide(self):
+        _, paint_meta = render_story("x = y ∘ x", "x = y", "paint")
+        _, tea_meta = render_story("x = y ∘ x", "x = y", "tea")
+        self.assertNotEqual(record_filename(paint_meta), record_filename(tea_meta))
 
 
 class WorkedExampleTest(unittest.TestCase):

@@ -55,10 +55,20 @@ python3 storyform.py "x ∘ y = (y ∘ y) ∘ x" "x ∘ y = y ∘ x"
 # Force a theme
 python3 storyform.py "x = x ◇ x" "x ◇ y = y ◇ x" --theme tea
 
-# Emit a JSON corpus record: story plus formal metadata
+# Print a JSON corpus record: story plus formal metadata
 python3 storyform.py "x ∘ y = (y ∘ y) ∘ x" "x ∘ y = y ∘ x" \
     --e-label E387 --f-label E43 --json
+
+# Write the JSON record to a file instead (prints the path)
+python3 storyform.py "x ∘ y = (y ∘ y) ∘ x" "x ∘ y = y ∘ x" \
+    --e-label E387 --f-label E43 --out-dir corpus
 ```
+
+With `--out-dir`, the record is written to `DIR/<name>.json` with a
+deterministic filename: `E387-E43-paint.json` when both ETP labels are
+given, otherwise `pair-<hash>-<theme>.json` from a hash of the
+canonicalized pair. Re-rendering the same pair overwrites the same file,
+so a corpus directory never accumulates duplicates.
 
 Equations follow the ETP convention: fully parenthesized nesting, with
 `∘`, `◇`, or `*` as the operation symbol. Ambiguous chains like
