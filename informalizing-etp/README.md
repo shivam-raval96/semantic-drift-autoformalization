@@ -126,6 +126,8 @@ annotations in the text.
 
 ## Files
 
+- [examples.md](examples.md) — one implication (E387 ⇒ E43) rendered
+  under every theme, side by side.
 - [storyform.py](storyform.py) — parser, theme loader, renderer, and CLI.
 - [themes/](themes/) — one JSON file per theme; schema and authoring
   rules documented in [themes/README.md](themes/README.md).
