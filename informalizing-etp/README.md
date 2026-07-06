@@ -128,6 +128,8 @@ annotations in the text.
 
 - [examples.md](examples.md) — one implication (E387 ⇒ E43) rendered
   under every theme, side by side.
+- [examples-tea.md](examples-tea.md) — the complementary cut: one theme
+  (tea) rendering several implications of different shapes.
 - [storyform.py](storyform.py) — parser, theme loader, renderer, and CLI.
 - [themes/](themes/) — one JSON file per theme; schema and authoring
   rules documented in [themes/README.md](themes/README.md).
