@@ -1,0 +1,18 @@
+{
+  "key": "tea",
+  "notes": "Pouring a finished brew over another tea's leaves keeps the two operands in visibly different roles.",
+  "intro": "In a certain mountain teahouse, the tea master follows one unbreakable habit.",
+  "subject": "he",
+  "possessive": "his",
+  "element_singular": "tea",
+  "element_plural": "teas",
+  "palette": ["jasmine", "oolong", "rooibos", "sencha", "chamomile", "darjeeling"],
+  "op_agent": "pours {a} over the leaves of {b}",
+  "op_imperative": "pour {a} over the leaves of {b}",
+  "result_noun": "Brew",
+  "same_habit": "taste exactly the same",
+  "same_question": "taste the same",
+  "closing": "That is simply how this teahouse works, without exception.",
+  "question_intro": "One evening his newest server wonders about something.",
+  "question_lead": "In this teahouse"
+}

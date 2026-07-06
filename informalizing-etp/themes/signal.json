@@ -1,0 +1,18 @@
+{
+  "key": "signal",
+  "notes": "Feeding one signal through another's channel keeps source ({a}) and carrier ({b}) distinct.",
+  "intro": "At a certain mountaintop relay station, the operator follows one unbreakable habit.",
+  "subject": "he",
+  "possessive": "his",
+  "element_singular": "signal",
+  "element_plural": "signals",
+  "palette": ["whistle", "hum", "chirp", "buzz", "drone", "trill"],
+  "op_agent": "feeds {a} through {b}",
+  "op_imperative": "feed {a} through {b}",
+  "result_noun": "Relay",
+  "same_habit": "sound exactly alike",
+  "same_question": "sound exactly alike",
+  "closing": "That is simply how this station works, without exception.",
+  "question_intro": "One night his trainee wonders about something.",
+  "question_lead": "At this station"
+}

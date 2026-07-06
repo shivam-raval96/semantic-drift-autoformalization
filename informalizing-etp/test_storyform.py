@@ -17,12 +17,16 @@ from backparse import backparse
 from storyform import (
     THEME_ORDER,
     THEMES,
+    THEMES_DIR,
     ParseError,
+    ThemeError,
     canonical,
+    load_theme,
     parse_equation,
     record_filename,
     render_story,
     select_theme,
+    theme_from_dict,
     write_record,
 )
 
@@ -173,6 +177,53 @@ class CoverageTest(unittest.TestCase):
     def test_too_many_variables_rejected(self):
         with self.assertRaises(ValueError):
             render_story("x = y ∘ (z ∘ (w ∘ (u ∘ (v ∘ q))))", "x = y", "paint")
+
+
+class ThemeFileTest(unittest.TestCase):
+    """Themes load from themes/*.json and the loader rejects files
+    that break the authoring rules in themes/README.md."""
+
+    def test_themes_come_from_disk_in_sorted_order(self):
+        stems = sorted(path.stem for path in THEMES_DIR.glob("*.json"))
+        self.assertEqual(list(THEME_ORDER), stems)
+        self.assertGreaterEqual(len(THEMES), 4)
+        for key, theme in THEMES.items():
+            self.assertEqual(key, theme.key)
+
+    def test_key_must_match_filename(self):
+        good = json.loads((THEMES_DIR / "paint.json").read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "renamed.json"
+            path.write_text(json.dumps(good), encoding="utf-8")
+            with self.assertRaises(ThemeError):
+                load_theme(path)
+
+    def test_invalid_themes_rejected(self):
+        good = json.loads((THEMES_DIR / "paint.json").read_text(encoding="utf-8"))
+        breakages = [
+            {"palette": good["palette"][:5]},  # too few names
+            {"palette": good["palette"][:5] + ["Crimson"]},  # not lowercase
+            {"palette": good["palette"][:5] + ["crimson"]},  # duplicate
+            {"op_agent": "mixes {a} and more"},  # missing {b}
+            {"op_imperative": "pour {a} into {b} into {b}"},  # {b} twice
+            {"subject": "they"},  # back-parser contract
+            {"result_noun": "batch"},  # not capitalized
+            {"result_noun": "Crimson"},  # collides with palette
+            {"intro": ""},  # empty required field
+            {"question_lead": 3},  # wrong type
+            {"extra_field": "x"},  # unknown field
+        ]
+        for breakage in breakages:
+            data = {**good, **breakage}
+            with self.subTest(breakage=breakage):
+                with self.assertRaises(ThemeError):
+                    theme_from_dict(data)
+
+    def test_notes_field_is_allowed_and_ignored(self):
+        good = json.loads((THEMES_DIR / "paint.json").read_text(encoding="utf-8"))
+        good["notes"] = "author documentation"
+        theme = theme_from_dict(good)
+        self.assertEqual(theme.key, "paint")
 
 
 class ExportTest(unittest.TestCase):

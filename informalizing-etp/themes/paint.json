@@ -1,0 +1,18 @@
+{
+  "key": "paint",
+  "notes": "The theme from CLAUDE.md's worked example. Pouring is order-sensitive: 'pour a into b' is visibly different from 'pour b into a'.",
+  "intro": "In a certain paint workshop, the colorist follows one unbreakable habit.",
+  "subject": "she",
+  "possessive": "her",
+  "element_singular": "pigment",
+  "element_plural": "pigments",
+  "palette": ["crimson", "ochre", "teal", "indigo", "saffron", "viridian"],
+  "op_agent": "pours {a} into {b}",
+  "op_imperative": "pour {a} into {b}",
+  "result_noun": "Batch",
+  "same_habit": "come out the exact same color",
+  "same_question": "come out the same color",
+  "closing": "That is simply how this workshop works, without exception.",
+  "question_intro": "One morning her apprentice wonders about something.",
+  "question_lead": "In this workshop"
+}

@@ -165,98 +165,135 @@ def canonical(lhs: Term, rhs: Term) -> str:
 
 @dataclass(frozen=True)
 class Theme:
-    key: str
-    intro: str  # opening sentence naming setting, agent, and the habit
-    subject: str  # "she" / "he"
-    possessive: str  # "her" / "his"
-    element_singular: str
-    element_plural: str
-    palette: Tuple[str, ...]  # at least 6 names, mapped by first appearance
+    """A story setting, loaded from themes/<key>.json.
+
+    See themes/README.md for the full field-by-field documentation,
+    an annotated example story, and the authoring rules each field
+    must satisfy.
+    """
+
+    key: str  # unique theme id; must match the JSON filename stem
+    intro: str  # opening sentence naming the setting, agent, and habit
+    subject: str  # agent's subject pronoun: "she" or "he"
+    possessive: str  # matching possessive pronoun: "her" / "his"
+    element_singular: str  # one element, e.g. "pigment"
+    element_plural: str  # e.g. "pigments"
+    palette: Tuple[str, ...]  # >= 6 element names, assigned by first appearance
     op_agent: str  # third-person op clause, e.g. "pours {a} into {b}"
     op_imperative: str  # imperative op clause, e.g. "pour {a} into {b}"
-    result_noun: str  # "Batch", "Brew", ...
-    same_habit: str  # "come out the exact same color"
-    same_question: str  # "come out the same color"
+    result_noun: str  # intermediate label, e.g. "Batch" -> "Batch 1"
+    same_habit: str  # sameness phrase in the habit's comparison sentence
+    same_question: str  # sameness phrase in the closing question
     closing: str  # habit closer, restating the exceptionless custom
     question_intro: str  # sentence introducing the wonderer
-    question_lead: str  # "In this workshop"
+    question_lead: str  # question opener, e.g. "In this workshop"
 
 
-THEMES: Dict[str, Theme] = {
-    theme.key: theme
-    for theme in (
-        Theme(
-            key="paint",
-            intro="In a certain paint workshop, the colorist follows one unbreakable habit.",
-            subject="she",
-            possessive="her",
-            element_singular="pigment",
-            element_plural="pigments",
-            palette=("crimson", "ochre", "teal", "indigo", "saffron", "viridian"),
-            op_agent="pours {a} into {b}",
-            op_imperative="pour {a} into {b}",
-            result_noun="Batch",
-            same_habit="come out the exact same color",
-            same_question="come out the same color",
-            closing="That is simply how this workshop works, without exception.",
-            question_intro="One morning her apprentice wonders about something.",
-            question_lead="In this workshop",
-        ),
-        Theme(
-            key="tea",
-            intro="In a certain mountain teahouse, the tea master follows one unbreakable habit.",
-            subject="he",
-            possessive="his",
-            element_singular="tea",
-            element_plural="teas",
-            palette=("jasmine", "oolong", "rooibos", "sencha", "chamomile", "darjeeling"),
-            op_agent="pours {a} over the leaves of {b}",
-            op_imperative="pour {a} over the leaves of {b}",
-            result_noun="Brew",
-            same_habit="taste exactly the same",
-            same_question="taste the same",
-            closing="That is simply how this teahouse works, without exception.",
-            question_intro="One evening his newest server wonders about something.",
-            question_lead="In this teahouse",
-        ),
-        Theme(
-            key="graft",
-            intro="In a certain hillside orchard, the gardener follows one unbreakable habit.",
-            subject="she",
-            possessive="her",
-            element_singular="cutting",
-            element_plural="cuttings",
-            palette=("quince", "medlar", "damson", "mulberry", "persimmon", "loquat"),
-            op_agent="grafts {a} onto {b}",
-            op_imperative="graft {a} onto {b}",
-            result_noun="Graft",
-            same_habit="grow into exactly the same plant",
-            same_question="grow into the same plant",
-            closing="That is simply how this orchard works, without exception.",
-            question_intro="One spring her neighbor wonders about something.",
-            question_lead="In this orchard",
-        ),
-        Theme(
-            key="signal",
-            intro="At a certain mountaintop relay station, the operator follows one unbreakable habit.",
-            subject="he",
-            possessive="his",
-            element_singular="signal",
-            element_plural="signals",
-            palette=("whistle", "hum", "chirp", "buzz", "drone", "trill"),
-            op_agent="feeds {a} through {b}",
-            op_imperative="feed {a} through {b}",
-            result_noun="Relay",
-            same_habit="sound exactly alike",
-            same_question="sound exactly alike",
-            closing="That is simply how this station works, without exception.",
-            question_intro="One night his trainee wonders about something.",
-            question_lead="At this station",
-        ),
-    )
-}
+class ThemeError(ValueError):
+    """A theme file is malformed or breaks an authoring rule."""
 
-THEME_ORDER: Tuple[str, ...] = ("paint", "tea", "graft", "signal")
+
+THEMES_DIR = Path(__file__).resolve().parent / "themes"
+
+_THEME_STRING_FIELDS = (
+    "key",
+    "intro",
+    "subject",
+    "possessive",
+    "element_singular",
+    "element_plural",
+    "op_agent",
+    "op_imperative",
+    "result_noun",
+    "same_habit",
+    "same_question",
+    "closing",
+    "question_intro",
+    "question_lead",
+)
+# Free-text fields for theme authors, ignored by the renderer.
+_THEME_OPTIONAL_FIELDS = ("notes",)
+
+
+def theme_from_dict(data: dict, source: str = "<dict>") -> Theme:
+    """Validate a raw theme mapping and build a Theme.
+
+    The checks enforce what the design invariants and the back-parser
+    need from a theme; themes/README.md explains each rule.
+    """
+    if not isinstance(data, dict):
+        raise ThemeError(f"{source}: theme must be a JSON object")
+    allowed = set(_THEME_STRING_FIELDS) | {"palette"} | set(_THEME_OPTIONAL_FIELDS)
+    unknown = sorted(set(data) - allowed)
+    if unknown:
+        raise ThemeError(f"{source}: unknown fields {unknown}")
+    for field in _THEME_STRING_FIELDS:
+        value = data.get(field)
+        if not isinstance(value, str) or not value.strip():
+            raise ThemeError(f"{source}: {field!r} must be a non-empty string")
+    palette = data.get("palette")
+    if (
+        not isinstance(palette, list)
+        or len(palette) < 6
+        or any(not isinstance(n, str) or not re.fullmatch(r"[a-z]+", n) for n in palette)
+    ):
+        raise ThemeError(
+            f"{source}: 'palette' must be a list of at least 6 lowercase "
+            "single-word names"
+        )
+    if len(set(palette)) != len(palette):
+        raise ThemeError(f"{source}: palette names must be distinct")
+    for field in ("op_agent", "op_imperative"):
+        template = data[field]
+        if template.count("{a}") != 1 or template.count("{b}") != 1:
+            raise ThemeError(
+                f"{source}: {field!r} must mention {{a}} and {{b}} exactly once each"
+            )
+    if data["subject"] not in ("she", "he"):
+        raise ThemeError(
+            f"{source}: 'subject' must be 'she' or 'he'; the back-parser "
+            "matches exactly these pronouns"
+        )
+    if not re.fullmatch(r"[A-Z][a-z]+", data["result_noun"]):
+        raise ThemeError(
+            f"{source}: 'result_noun' must be a single capitalized word"
+        )
+    if data["result_noun"].lower() in palette:
+        raise ThemeError(
+            f"{source}: 'result_noun' must not collide with a palette name"
+        )
+    fields = {field: data[field] for field in _THEME_STRING_FIELDS}
+    return Theme(palette=tuple(palette), **fields)
+
+
+def load_theme(path: Path) -> Theme:
+    path = Path(path)
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ThemeError(f"{path}: invalid JSON ({error})") from error
+    theme = theme_from_dict(data, source=str(path))
+    if theme.key != path.stem:
+        raise ThemeError(
+            f"{path}: key {theme.key!r} does not match filename stem {path.stem!r}"
+        )
+    return theme
+
+
+def load_themes(directory: Path = THEMES_DIR) -> Dict[str, Theme]:
+    """Load every themes/*.json, in sorted filename order."""
+    paths = sorted(Path(directory).glob("*.json"))
+    if not paths:
+        raise ThemeError(f"no theme files found in {directory}")
+    return {theme.key: theme for theme in map(load_theme, paths)}
+
+
+THEMES: Dict[str, Theme] = load_themes()
+
+# Sorted filename order. Auto-selection hashes into this tuple, so adding
+# or removing a theme file redistributes which pairs get which theme;
+# pass an explicit theme key to pin one.
+THEME_ORDER: Tuple[str, ...] = tuple(THEMES)
 
 
 def select_theme(e_text: str, f_text: str) -> str:

@@ -108,6 +108,13 @@ Every action phrasing is order-sensitive by design — symmetric wordings
 law may not have. Each palette has six names, enough for the maximum of
 six distinct variables an ETP law can use.
 
+Themes live as JSON files in [themes/](themes/), one file per theme,
+loaded and validated at import time. To add a theme, drop a new
+`themes/<key>.json` in place and run the test suite — every theme on
+disk is automatically covered by the round-trip and no-leakage tests.
+See [themes/README.md](themes/README.md) for the full schema, an
+annotated example story, and the authoring rules.
+
 ### Invertibility
 
 The rendering grammar is injective: the story text alone determines both
@@ -119,7 +126,9 @@ annotations in the text.
 
 ## Files
 
-- [storyform.py](storyform.py) — parser, themes, renderer, and CLI.
+- [storyform.py](storyform.py) — parser, theme loader, renderer, and CLI.
+- [themes/](themes/) — one JSON file per theme; schema and authoring
+  rules documented in [themes/README.md](themes/README.md).
 - [backparse.py](backparse.py) — recovers both laws from story text alone.
 - [test_storyform.py](test_storyform.py) — test suite.
 - [CLAUDE.md](CLAUDE.md) — full design document: invariants, conventions,
