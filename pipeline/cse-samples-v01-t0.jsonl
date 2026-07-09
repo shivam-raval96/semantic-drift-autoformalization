@@ -1,0 +1,720 @@
+{"item_id": "L-eq2484-r0", "rung": 0, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((x * ((y * z) * z)) * x)"}
+{"item_id": "L-eq2484-r0", "rung": 0, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x * (y * z * z) * x"}
+{"item_id": "L-eq2484-r0", "rung": 0, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((x * ((y * z) * z)) * x)"}
+{"item_id": "L-eq2484-r1", "rung": 1, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * (y * (z * z))) * x"}
+{"item_id": "L-eq2484-r1", "rung": 1, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (a * ((b * c) * c)) * a"}
+{"item_id": "L-eq2484-r1", "rung": 1, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = (x * ((y * (z * z)) * (z * z))) * x"}
+{"item_id": "L-eq2484-r2", "rung": 2, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * ((y * z) * z)) * x"}
+{"item_id": "L-eq2484-r2", "rung": 2, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = (Ana's piece * ((Bo's piece * Cy's piece) * Cy's piece)) * Ana's piece"}
+{"item_id": "L-eq2484-r2", "rung": 2, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (x * ((y * z) * z)) * x"}
+{"item_id": "L-eq2484-r3", "rung": 3, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * z) * (z * (w * x))"}
+{"item_id": "L-eq2484-r3", "rung": 3, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (b * (c * (c * a)))"}
+{"item_id": "L-eq2484-r3", "rung": 3, "intended_law": "x = ((x * ((y * z) * z)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * (z * (z * x))) = x"}
+{"item_id": "L-eq1336-r0", "rung": 0, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * (((y * z) * y) * x))"}
+{"item_id": "L-eq1336-r0", "rung": 0, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (y * z * y * x)"}
+{"item_id": "L-eq1336-r0", "rung": 0, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * (((y * z) * y) * x))"}
+{"item_id": "L-eq1336-r1", "rung": 1, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (((y * z) * y) * x)"}
+{"item_id": "L-eq1336-r1", "rung": 1, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (((b * c) * b) * a)"}
+{"item_id": "L-eq1336-r1", "rung": 1, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (((y * z) * y) * x)"}
+{"item_id": "L-eq1336-r2", "rung": 2, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (((y * z) * y) * x)"}
+{"item_id": "L-eq1336-r2", "rung": 2, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Bo's piece * (((Bo's piece * Cy's piece) * Bo's piece) * Ana's piece)"}
+{"item_id": "L-eq1336-r2", "rung": 2, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (((y * z) * y) * x)"}
+{"item_id": "L-eq1336-r3", "rung": 3, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (y * (z * (y * x)))"}
+{"item_id": "L-eq1336-r3", "rung": 3, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (b * (c * b) * a)"}
+{"item_id": "L-eq1336-r3", "rung": 3, "intended_law": "x = (y * (((y * z) * y) * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * (w * y) * x)"}
+{"item_id": "L-eq4188-r0", "rung": 0, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = ((y * z) * w) * z"}
+{"item_id": "L-eq4188-r0", "rung": 0, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (y * z * w * z)"}
+{"item_id": "L-eq4188-r0", "rung": 0, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (((y * z) * w) * z)"}
+{"item_id": "L-eq4188-r1", "rung": 1, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = ((y * z) * w) * z"}
+{"item_id": "L-eq4188-r1", "rung": 1, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * y = ((y * z) * d) * z"}
+{"item_id": "L-eq4188-r1", "rung": 1, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * b = ((b * c) * d) * c"}
+{"item_id": "L-eq4188-r2", "rung": 2, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = ((y * z) * w) * z"}
+{"item_id": "L-eq4188-r2", "rung": 2, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = (y * z) * z \\)"}
+{"item_id": "L-eq4188-r2", "rung": 2, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = ((y * z) * w) * z"}
+{"item_id": "L-eq4188-r3", "rung": 3, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (w * y)"}
+{"item_id": "L-eq4188-r3", "rung": 3, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * y = z * w * z"}
+{"item_id": "L-eq4188-r3", "rung": 3, "intended_law": "(x * y) = (((y * z) * w) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * b = b * (c * (d * c))"}
+{"item_id": "L-eq4610-r0", "rung": 0, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * x) * y = (y * z) * x"}
+{"item_id": "L-eq4610-r0", "rung": 0, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x^2 * y) = (y * z * x)"}
+{"item_id": "L-eq4610-r0", "rung": 0, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "((x * x) * y) = ((y * z) * x)"}
+{"item_id": "L-eq4610-r1", "rung": 1, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x*x)*y = (y*z)*x"}
+{"item_id": "L-eq4610-r1", "rung": 1, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "((x * x) * y) = (y * z) * x"}
+{"item_id": "L-eq4610-r1", "rung": 1, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * x) * y = (y * z) * x"}
+{"item_id": "L-eq4610-r2", "rung": 2, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "((x*y)*z) = (z*w)*x"}
+{"item_id": "L-eq4610-r2", "rung": 2, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "((x * x) * y) = ((y * z) * x)"}
+{"item_id": "L-eq4610-r2", "rung": 2, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * x * y = y * z * x"}
+{"item_id": "L-eq4610-r3", "rung": 3, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * y) * z = z * w * x"}
+{"item_id": "L-eq4610-r3", "rung": 3, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * x) * y = z * x * y"}
+{"item_id": "L-eq4610-r3", "rung": 3, "intended_law": "((x * x) * y) = ((y * z) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x*(x*y) = y*(z*x)"}
+{"item_id": "L-eq167-r0", "rung": 0, "intended_law": "x = ((y * x) * (x * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * x) * (x * y))"}
+{"item_id": "L-eq167-r0", "rung": 0, "intended_law": "x = ((y * x) * (x * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y^2 * x^2"}
+{"item_id": "L-eq167-r0", "rung": 0, "intended_law": "x = ((y * x) * (x * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * x) * (x * y))"}
+{"item_id": "L-eq167-r1", "rung": 1, "intended_law": "x = ((y * x) * (x * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * x) * (x * y)"}
+{"item_id": "L-eq167-r1", "rung": 1, "intended_law": "x = ((y * x) * (x * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * a) * (a * b)"}
+{"item_id": "L-eq167-r1", "rung": 1, "intended_law": "x = ((y * x) * (x * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * x) * (x * y)"}
+{"item_id": "L-eq167-r2", "rung": 2, "intended_law": "x = ((y * x) * (x * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * x) * (x * y)"}
+{"item_id": "L-eq167-r2", "rung": 2, "intended_law": "x = ((y * x) * (x * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * x) * (x * y)"}
+{"item_id": "L-eq167-r2", "rung": 2, "intended_law": "x = ((y * x) * (x * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * x) * (x * y)"}
+{"item_id": "L-eq167-r3", "rung": 3, "intended_law": "x = ((y * x) * (x * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * x * x * y"}
+{"item_id": "L-eq167-r3", "rung": 3, "intended_law": "x = ((y * x) * (x * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (a * b) * (a * a) * b"}
+{"item_id": "L-eq167-r3", "rung": 3, "intended_law": "x = ((y * x) * (x * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * x * x * y"}
+{"item_id": "L-eq669-r0", "rung": 0, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * (x * ((x * y) * x)))"}
+{"item_id": "L-eq669-r0", "rung": 0, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (x * (x * y * x))"}
+{"item_id": "L-eq669-r0", "rung": 0, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * (x * ((x * y) * x)))"}
+{"item_id": "L-eq669-r1", "rung": 1, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (x * ((x * y) * x))"}
+{"item_id": "L-eq669-r1", "rung": 1, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (a * ((a * b) * a))"}
+{"item_id": "L-eq669-r1", "rung": 1, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (x * ((x * y) * x))"}
+{"item_id": "L-eq669-r2", "rung": 2, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * (x * (x * y) * x)) = x * (y * (x * y))"}
+{"item_id": "L-eq669-r2", "rung": 2, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (x * ((x * y) * x))"}
+{"item_id": "L-eq669-r2", "rung": 2, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (x * ((x * y) * x))"}
+{"item_id": "L-eq669-r3", "rung": 3, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * x * x * y * x"}
+{"item_id": "L-eq669-r3", "rung": 3, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (a * b) * (a * (a * b))"}
+{"item_id": "L-eq669-r3", "rung": 3, "intended_law": "x = (y * (x * ((x * y) * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * x * x * y * x"}
+{"item_id": "L-eq2719-r0", "rung": 0, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((y * x) * (z * x)) * w)"}
+{"item_id": "L-eq2719-r0", "rung": 0, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * x * z * x) * w"}
+{"item_id": "L-eq2719-r0", "rung": 0, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (((y * x) * (z * x)) * w)"}
+{"item_id": "L-eq2719-r1", "rung": 1, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * x) * (z * x)) * w"}
+{"item_id": "L-eq2719-r1", "rung": 1, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = ((b * a) * (c * a)) * d"}
+{"item_id": "L-eq2719-r1", "rung": 1, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (((z * x) * (w * x)) * y)"}
+{"item_id": "L-eq2719-r2", "rung": 2, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * x) * (z * x)) * w"}
+{"item_id": "L-eq2719-r2", "rung": 2, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = ((Bo's piece * Ana's piece) * (Cy's piece * Ana's piece)) * Dee's piece"}
+{"item_id": "L-eq2719-r2", "rung": 2, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = ((y * x) * (z * x)) * w"}
+{"item_id": "L-eq2719-r3", "rung": 3, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * x * z * x * w"}
+{"item_id": "L-eq2719-r3", "rung": 3, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (a * (c * (a * d)))"}
+{"item_id": "L-eq2719-r3", "rung": 3, "intended_law": "x = (((y * x) * (z * x)) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (a * (c * (a * d)))) = a"}
+{"item_id": "L-eq2161-r0", "rung": 0, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((y * z) * x) * (x * x))"}
+{"item_id": "L-eq2161-r0", "rung": 0, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * z * x * x * x)"}
+{"item_id": "L-eq2161-r0", "rung": 0, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (((y * z) * x) * (x * x))"}
+{"item_id": "L-eq2161-r1", "rung": 1, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * x) * (x * x)"}
+{"item_id": "L-eq2161-r1", "rung": 1, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = ((b * c) * a) * (a * a)"}
+{"item_id": "L-eq2161-r1", "rung": 1, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * z) * x) * (x * x)"}
+{"item_id": "L-eq2161-r2", "rung": 2, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * x) * (x * x)"}
+{"item_id": "L-eq2161-r2", "rung": 2, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( a = ((b \\ast c) \\ast a) \\ast (a \\ast a) \\)"}
+{"item_id": "L-eq2161-r2", "rung": 2, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * z) * x) * (x * x)"}
+{"item_id": "L-eq2161-r3", "rung": 3, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * x * x * x"}
+{"item_id": "L-eq2161-r3", "rung": 3, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * c) * (a * a)"}
+{"item_id": "L-eq2161-r3", "rung": 3, "intended_law": "x = (((y * z) * x) * (x * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * (y * (x * (x * x)))"}
+{"item_id": "L-eq1060-r0", "rung": 0, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * ((y * (z * y)) * y))"}
+{"item_id": "L-eq1060-r0", "rung": 0, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x * (y^2 * z * y)"}
+{"item_id": "L-eq1060-r0", "rung": 0, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (x * ((y * (z * y)) * y))"}
+{"item_id": "L-eq1060-r1", "rung": 1, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * (y * (z * y) * y)"}
+{"item_id": "L-eq1060-r1", "rung": 1, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * ((b * (c * b)) * b)"}
+{"item_id": "L-eq1060-r1", "rung": 1, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * ((y * (z * y)) * y)"}
+{"item_id": "L-eq1060-r2", "rung": 2, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * (((y * (z * y)) * y))"}
+{"item_id": "L-eq1060-r2", "rung": 2, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Ana's piece * ((Bo's piece * (Cy's piece * Bo's piece)) * Bo's piece)"}
+{"item_id": "L-eq1060-r2", "rung": 2, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * ((y * (z * y)) * y)"}
+{"item_id": "L-eq1060-r3", "rung": 3, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (w * w))"}
+{"item_id": "L-eq1060-r3", "rung": 3, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (b * (c * (b * b)))"}
+{"item_id": "L-eq1060-r3", "rung": 3, "intended_law": "x = (x * ((y * (z * y)) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * (y * (z * (y * y)))"}
+{"item_id": "L-eq4217-r0", "rung": 0, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((z * y) * z) * y / y"}
+{"item_id": "L-eq4217-r0", "rung": 0, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (z * y * z * y)"}
+{"item_id": "L-eq4217-r0", "rung": 0, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (((z * y) * z) * y)"}
+{"item_id": "L-eq4217-r1", "rung": 1, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = (z * y) * z * y"}
+{"item_id": "L-eq4217-r1", "rung": 1, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a * b = ((c * b) * c) * b"}
+{"item_id": "L-eq4217-r1", "rung": 1, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = ((z * y) * z) * y"}
+{"item_id": "L-eq4217-r2", "rung": 2, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = ((z * y) * z) * y"}
+{"item_id": "L-eq4217-r2", "rung": 2, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( (x * y) = ((z * y) * z) * y \\)"}
+{"item_id": "L-eq4217-r2", "rung": 2, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = ((z * y) * z) * y"}
+{"item_id": "L-eq4217-r3", "rung": 3, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (y * (z * y))"}
+{"item_id": "L-eq4217-r3", "rung": 3, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( a * b = (c * b) * (c * b) \\)"}
+{"item_id": "L-eq4217-r3", "rung": 3, "intended_law": "(x * y) = (((z * y) * z) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = z * y * z * y"}
+{"item_id": "L-eq2054-r0", "rung": 0, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((x * y) * x) * (y * y))"}
+{"item_id": "L-eq2054-r0", "rung": 0, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x^2 * y^2 * x"}
+{"item_id": "L-eq2054-r0", "rung": 0, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x\u00b2y\u00b3"}
+{"item_id": "L-eq2054-r1", "rung": 1, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * y) * (x * (y * y))"}
+{"item_id": "L-eq2054-r1", "rung": 1, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = ((a * b) * a) * (b * b)"}
+{"item_id": "L-eq2054-r1", "rung": 1, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((x * y) * x) * (y * y)"}
+{"item_id": "L-eq2054-r2", "rung": 2, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((x * y) * x) * (y * y)"}
+{"item_id": "L-eq2054-r2", "rung": 2, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = ((Ana's piece * Bo's piece) * Ana's piece) * (Bo's piece * Bo's piece)"}
+{"item_id": "L-eq2054-r2", "rung": 2, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((x * y) * x) * (y * y)"}
+{"item_id": "L-eq2054-r3", "rung": 3, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * y * x * y * y"}
+{"item_id": "L-eq2054-r3", "rung": 3, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (b * (a * b * b))"}
+{"item_id": "L-eq2054-r3", "rung": 3, "intended_law": "x = (((x * y) * x) * (y * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = x * (y * (x * (y * y)))"}
+{"item_id": "L-eq311-r0", "rung": 0, "intended_law": "(x * x) = (x * (y * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x\u00b2 = xyz"}
+{"item_id": "L-eq311-r0", "rung": 0, "intended_law": "(x * x) = (x * (y * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x^2 = x * (y * z)"}
+{"item_id": "L-eq311-r0", "rung": 0, "intended_law": "(x * x) = (x * (y * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * x) = (x * (y * z))"}
+{"item_id": "L-eq311-r1", "rung": 1, "intended_law": "(x * x) = (x * (y * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * x = x * (y * z)"}
+{"item_id": "L-eq311-r1", "rung": 1, "intended_law": "(x * x) = (x * (y * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * x = x * (y * z)"}
+{"item_id": "L-eq311-r1", "rung": 1, "intended_law": "(x * x) = (x * (y * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * x = x * (y * z)"}
+{"item_id": "L-eq311-r2", "rung": 2, "intended_law": "(x * x) = (x * (y * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = x * (z * w)"}
+{"item_id": "L-eq311-r2", "rung": 2, "intended_law": "(x * x) = (x * (y * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * x) = (x * (y * z))"}
+{"item_id": "L-eq311-r2", "rung": 2, "intended_law": "(x * x) = (x * (y * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * x = x * (y * z)"}
+{"item_id": "L-eq311-r3", "rung": 3, "intended_law": "(x * x) = (x * (y * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * x = x * (y * z)"}
+{"item_id": "L-eq311-r3", "rung": 3, "intended_law": "(x * x) = (x * (y * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * x = x * y * z"}
+{"item_id": "L-eq311-r3", "rung": 3, "intended_law": "(x * x) = (x * (y * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * x = x * (y * z)"}
+{"item_id": "L-eq3346-r0", "rung": 0, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (x * (y * y))"}
+{"item_id": "L-eq3346-r0", "rung": 0, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (y * (x * (y * y)))"}
+{"item_id": "L-eq3346-r0", "rung": 0, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (y * (x * (y * y)))"}
+{"item_id": "L-eq3346-r1", "rung": 1, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (x * (y * y))"}
+{"item_id": "L-eq3346-r1", "rung": 1, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * y = y * (x * (y * y))"}
+{"item_id": "L-eq3346-r1", "rung": 1, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * (x * (y * y))"}
+{"item_id": "L-eq3346-r2", "rung": 2, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (x * (y * y))"}
+{"item_id": "L-eq3346-r2", "rung": 2, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = y * (x * (y * y)) \\)"}
+{"item_id": "L-eq3346-r2", "rung": 2, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * (x * (y * y))"}
+{"item_id": "L-eq3346-r3", "rung": 3, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (x * (y * y))"}
+{"item_id": "L-eq3346-r3", "rung": 3, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( a * b = b * (b * b) \\)"}
+{"item_id": "L-eq3346-r3", "rung": 3, "intended_law": "(x * y) = (y * (x * (y * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * x * y * y"}
+{"item_id": "L-eq4005-r0", "rung": 0, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * y) = ((z * (y * x)) * x)"}
+{"item_id": "L-eq4005-r0", "rung": 0, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (z * (y * x) * x)"}
+{"item_id": "L-eq4005-r0", "rung": 0, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = ((z * (y * x)) * x)"}
+{"item_id": "L-eq4005-r1", "rung": 1, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = (z * (y * x)) * x"}
+{"item_id": "L-eq4005-r1", "rung": 1, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(a * b) = (c * (b * a)) * a"}
+{"item_id": "L-eq4005-r1", "rung": 1, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = (z * (y * x)) * x"}
+{"item_id": "L-eq4005-r2", "rung": 2, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = (z * (y * x)) * x"}
+{"item_id": "L-eq4005-r2", "rung": 2, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) * z = (y * (x * y)) * x"}
+{"item_id": "L-eq4005-r2", "rung": 2, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = (z * (y * x)) * x"}
+{"item_id": "L-eq4005-r3", "rung": 3, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (y * (x * x))"}
+{"item_id": "L-eq4005-r3", "rung": 3, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = z * y * x * x \\)"}
+{"item_id": "L-eq4005-r3", "rung": 3, "intended_law": "(x * y) = ((z * (y * x)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = z * y * x * x"}
+{"item_id": "L-eq3621-r0", "rung": 0, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * ((z * y) * y)"}
+{"item_id": "L-eq3621-r0", "rung": 0, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (z * (z * y * y))"}
+{"item_id": "L-eq3621-r0", "rung": 0, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (z * ((z * y) * y))"}
+{"item_id": "L-eq3621-r1", "rung": 1, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (z * (y * y))"}
+{"item_id": "L-eq3621-r1", "rung": 1, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a * b = c * ((c * b) * b)"}
+{"item_id": "L-eq3621-r1", "rung": 1, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = z * ((z * y) * y)"}
+{"item_id": "L-eq3621-r2", "rung": 2, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * ((z * y) * y)"}
+{"item_id": "L-eq3621-r2", "rung": 2, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (z * ((z * y) * y))"}
+{"item_id": "L-eq3621-r2", "rung": 2, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = z * ((z * y) * y)"}
+{"item_id": "L-eq3621-r3", "rung": 3, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (w * (y * y))"}
+{"item_id": "L-eq3621-r3", "rung": 3, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( a * b = c * c * b * b \\)"}
+{"item_id": "L-eq3621-r3", "rung": 3, "intended_law": "(x * y) = (z * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = z * z * y * y"}
+{"item_id": "L-eq47-r0", "rung": 0, "intended_law": "x = (x * (x * (x * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * (x * (x * x)))"}
+{"item_id": "L-eq47-r0", "rung": 0, "intended_law": "x = (x * (x * (x * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x^5"}
+{"item_id": "L-eq47-r0", "rung": 0, "intended_law": "x = (x * (x * (x * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x^4"}
+{"item_id": "L-eq47-r1", "rung": 1, "intended_law": "x = (x * (x * (x * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * (x * (x * x))"}
+{"item_id": "L-eq47-r1", "rung": 1, "intended_law": "x = (x * (x * (x * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (a * (a * a))"}
+{"item_id": "L-eq47-r1", "rung": 1, "intended_law": "x = (x * (x * (x * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * (x * (x * x))"}
+{"item_id": "L-eq47-r2", "rung": 2, "intended_law": "x = (x * (x * (x * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * (x * (x * x))"}
+{"item_id": "L-eq47-r2", "rung": 2, "intended_law": "x = (x * (x * (x * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x * (x * (x * x))"}
+{"item_id": "L-eq47-r2", "rung": 2, "intended_law": "x = (x * (x * (x * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * (x * (x * x))"}
+{"item_id": "L-eq47-r3", "rung": 3, "intended_law": "x = (x * (x * (x * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * x * x * x"}
+{"item_id": "L-eq47-r3", "rung": 3, "intended_law": "x = (x * (x * (x * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (a * (a * a))"}
+{"item_id": "L-eq47-r3", "rung": 3, "intended_law": "x = (x * (x * (x * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (x * (x * x)) = x"}
+{"item_id": "L-eq788-r0", "rung": 0, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * (z * ((z * w) * z)))"}
+{"item_id": "L-eq788-r0", "rung": 0, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * (z * w * z))"}
+{"item_id": "L-eq788-r0", "rung": 0, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * (z * ((z * w) * z)))"}
+{"item_id": "L-eq788-r1", "rung": 1, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * ((z * w) * z))"}
+{"item_id": "L-eq788-r1", "rung": 1, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (c * ((c * d) * c))"}
+{"item_id": "L-eq788-r1", "rung": 1, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a = b * (c * ((c * d) * c))"}
+{"item_id": "L-eq788-r2", "rung": 2, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * ((z * w) * z))"}
+{"item_id": "L-eq788-r2", "rung": 2, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Bo's piece * (Cy's piece * ((Cy's piece * Dee's piece) * Cy's piece))"}
+{"item_id": "L-eq788-r2", "rung": 2, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * ((z * w) * z))"}
+{"item_id": "L-eq788-r3", "rung": 3, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (z * (w * z)))"}
+{"item_id": "L-eq788-r3", "rung": 3, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * c * c * d * c"}
+{"item_id": "L-eq788-r3", "rung": 3, "intended_law": "x = (y * (z * ((z * w) * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (c * (d * c)))) = a"}
+{"item_id": "L-eq457-r0", "rung": 0, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * (y * (z * (z * w))))"}
+{"item_id": "L-eq457-r0", "rung": 0, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x * (y * (z * (z * w)))"}
+{"item_id": "L-eq457-r0", "rung": 0, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * y * z * z * w"}
+{"item_id": "L-eq457-r1", "rung": 1, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "a = a * (b * (c * (c * d)))"}
+{"item_id": "L-eq457-r1", "rung": 1, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (b * (c * (c * d)))"}
+{"item_id": "L-eq457-r1", "rung": 1, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a = a * (b * (c * (c * d)))"}
+{"item_id": "L-eq457-r2", "rung": 2, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * (y * (z * (z * w)))"}
+{"item_id": "L-eq457-r2", "rung": 2, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Ana's piece * (Bo's piece * (Cy's piece * (Cy's piece * Dee's piece)))"}
+{"item_id": "L-eq457-r2", "rung": 2, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (x * (y * (y * z))) = x"}
+{"item_id": "L-eq457-r3", "rung": 3, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * z) * (z * w)"}
+{"item_id": "L-eq457-r3", "rung": 3, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (b * (c * (c * d)))"}
+{"item_id": "L-eq457-r3", "rung": 3, "intended_law": "x = (x * (y * (z * (z * w))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a = a * (b * (c * (c * d)))"}
+{"item_id": "L-eq3440-r0", "rung": 0, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (w * (z * x))"}
+{"item_id": "L-eq3440-r0", "rung": 0, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (z * (w * (z * x)))"}
+{"item_id": "L-eq3440-r0", "rung": 0, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (z * (w * (z * x)))"}
+{"item_id": "L-eq3440-r1", "rung": 1, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (w * (z * x))"}
+{"item_id": "L-eq3440-r1", "rung": 1, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = z * (d * (z * x)) \\)"}
+{"item_id": "L-eq3440-r1", "rung": 1, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * b = c * (d * (c * a))"}
+{"item_id": "L-eq3440-r2", "rung": 2, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x*y = z*(w*(z*(x*y)))"}
+{"item_id": "L-eq3440-r2", "rung": 2, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (z * (w * (z * x)))"}
+{"item_id": "L-eq3440-r2", "rung": 2, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = z * (w * (z * x))"}
+{"item_id": "L-eq3440-r3", "rung": 3, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * w * z * x"}
+{"item_id": "L-eq3440-r3", "rung": 3, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = z * d * z * x \\)"}
+{"item_id": "L-eq3440-r3", "rung": 3, "intended_law": "(x * y) = (z * (w * (z * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * b = c * d * c * a"}
+{"item_id": "L-eq1706-r0", "rung": 0, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * x) * ((z * y) * y))"}
+{"item_id": "L-eq1706-r0", "rung": 0, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * x) * (z * y * y)"}
+{"item_id": "L-eq1706-r0", "rung": 0, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * x) * ((z * y) * y))"}
+{"item_id": "L-eq1706-r1", "rung": 1, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * x) * ((z * y) * y)"}
+{"item_id": "L-eq1706-r1", "rung": 1, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * a) * ((c * b) * b)"}
+{"item_id": "L-eq1706-r1", "rung": 1, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * x) * ((z * y) * y)"}
+{"item_id": "L-eq1706-r2", "rung": 2, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * x) * ((z * y) * y)"}
+{"item_id": "L-eq1706-r2", "rung": 2, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x = (y * x) * ((z * y) * y) \\)"}
+{"item_id": "L-eq1706-r2", "rung": 2, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = (y * x) * ((z * y) * y)"}
+{"item_id": "L-eq1706-r3", "rung": 3, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (x * (z * (w * w)))"}
+{"item_id": "L-eq1706-r3", "rung": 3, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * a) * (c * (b * b))"}
+{"item_id": "L-eq1706-r3", "rung": 3, "intended_law": "x = ((y * x) * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (x * (z * (y * y)))"}
+{"item_id": "L-eq1143-r0", "rung": 0, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((y * (z * w)) * z))"}
+{"item_id": "L-eq1143-r0", "rung": 0, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (y * (z * w) * z)"}
+{"item_id": "L-eq1143-r0", "rung": 0, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * ((y * (z * w)) * z))"}
+{"item_id": "L-eq1143-r1", "rung": 1, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "a = b * (c * (d * c)) * c"}
+{"item_id": "L-eq1143-r1", "rung": 1, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * ((b * (c * d)) * c)"}
+{"item_id": "L-eq1143-r1", "rung": 1, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a = a * ((a * (b * c)) * b)"}
+{"item_id": "L-eq1143-r2", "rung": 2, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((y * (z * w)) * z)"}
+{"item_id": "L-eq1143-r2", "rung": 2, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Bo's piece * (Bo's piece * (Cy's piece * Dee's piece) * Cy's piece)"}
+{"item_id": "L-eq1143-r2", "rung": 2, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((y * (z * w)) * z)"}
+{"item_id": "L-eq1143-r3", "rung": 3, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (y * (z * (w * z)))"}
+{"item_id": "L-eq1143-r3", "rung": 3, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (b * (c * (d * c)))"}
+{"item_id": "L-eq1143-r3", "rung": 3, "intended_law": "x = (y * ((y * (z * w)) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (d * c))) = b"}
+{"item_id": "L-eq1320-r0", "rung": 0, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * (((y * x) * z) * z))"}
+{"item_id": "L-eq1320-r0", "rung": 0, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (y * x * z * z)"}
+{"item_id": "L-eq1320-r0", "rung": 0, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * (((y * x) * z) * z))"}
+{"item_id": "L-eq1320-r1", "rung": 1, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((y * x) * z) * z"}
+{"item_id": "L-eq1320-r1", "rung": 1, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * (a * c * c))"}
+{"item_id": "L-eq1320-r1", "rung": 1, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (((y * x) * z) * z)"}
+{"item_id": "L-eq1320-r2", "rung": 2, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (((y * x) * z) * z)"}
+{"item_id": "L-eq1320-r2", "rung": 2, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Bo's piece * (((Bo's piece * Ana's piece) * Cy's piece) * Cy's piece)"}
+{"item_id": "L-eq1320-r2", "rung": 2, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (((y * x) * z) * z)"}
+{"item_id": "L-eq1320-r3", "rung": 3, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * y * x * z * z"}
+{"item_id": "L-eq1320-r3", "rung": 3, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * b) * (a * (c * c))"}
+{"item_id": "L-eq1320-r3", "rung": 3, "intended_law": "x = (y * (((y * x) * z) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (y * (x * (z * z)))"}
+{"item_id": "L-eq2219-r0", "rung": 0, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((y * z) * w) * (y * z))"}
+{"item_id": "L-eq2219-r0", "rung": 0, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * z)\u00b2 * w"}
+{"item_id": "L-eq2219-r0", "rung": 0, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y\u00b2 * z\u00b2 * w"}
+{"item_id": "L-eq2219-r1", "rung": 1, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * w) * (y * z)"}
+{"item_id": "L-eq2219-r1", "rung": 1, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = ((b * c) * d) * (b * c)"}
+{"item_id": "L-eq2219-r1", "rung": 1, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a = ((b * c) * d) * (b * c)"}
+{"item_id": "L-eq2219-r2", "rung": 2, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * w) * (y * z)"}
+{"item_id": "L-eq2219-r2", "rung": 2, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = ((Bo's piece * Cy's piece) * Dee's piece) * (Bo's piece * Cy's piece)"}
+{"item_id": "L-eq2219-r2", "rung": 2, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = ((y * z) * w) * (y * z)"}
+{"item_id": "L-eq2219-r3", "rung": 3, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * w * y * z"}
+{"item_id": "L-eq2219-r3", "rung": 3, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * c * d * b * c"}
+{"item_id": "L-eq2219-r3", "rung": 3, "intended_law": "x = (((y * z) * w) * (y * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (d * (b * c)))) = a"}
+{"item_id": "L-eq1215-r0", "rung": 0, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((z * (w * w)) * w))"}
+{"item_id": "L-eq1215-r0", "rung": 0, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * (w^3))"}
+{"item_id": "L-eq1215-r0", "rung": 0, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * z * w^3"}
+{"item_id": "L-eq1215-r1", "rung": 1, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (w * w)) * w"}
+{"item_id": "L-eq1215-r1", "rung": 1, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * ((c * (d * d)) * d)"}
+{"item_id": "L-eq1215-r1", "rung": 1, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a = b * ((c * (d * d)) * d)"}
+{"item_id": "L-eq1215-r2", "rung": 2, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((z * (w * w)) * w)"}
+{"item_id": "L-eq1215-r2", "rung": 2, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Bo's piece * (Cy's piece * (Dee's piece * (Dee's piece * Dee's piece))) * Dee's piece"}
+{"item_id": "L-eq1215-r2", "rung": 2, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((z * (w * w)) * w)"}
+{"item_id": "L-eq1215-r3", "rung": 3, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "a = b * (c * (d * (d * d)))"}
+{"item_id": "L-eq1215-r3", "rung": 3, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (c * (d * (d * d)))"}
+{"item_id": "L-eq1215-r3", "rung": 3, "intended_law": "x = (y * ((z * (w * w)) * w))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a = b * c * d * d * d"}
+{"item_id": "L-eq979-r0", "rung": 0, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((z * z) * (x * z)))"}
+{"item_id": "L-eq979-r0", "rung": 0, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z^2 * (x * z))"}
+{"item_id": "L-eq979-r0", "rung": 0, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * z\u00b2 * x * z"}
+{"item_id": "L-eq979-r1", "rung": 1, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((z * z) * (x * z))"}
+{"item_id": "L-eq979-r1", "rung": 1, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * ((c * c) * (a * c))"}
+{"item_id": "L-eq979-r1", "rung": 1, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((z * z) * (x * z))"}
+{"item_id": "L-eq979-r2", "rung": 2, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((z * z) * (x * z))"}
+{"item_id": "L-eq979-r2", "rung": 2, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( a = b * ((c * c) * (a * c)) \\)"}
+{"item_id": "L-eq979-r2", "rung": 2, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((z * z) * (x * z))"}
+{"item_id": "L-eq979-r3", "rung": 3, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * z * x * z"}
+{"item_id": "L-eq979-r3", "rung": 3, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * c) * (c * a) * c"}
+{"item_id": "L-eq979-r3", "rung": 3, "intended_law": "x = (y * ((z * z) * (x * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * z * z * x * z"}
+{"item_id": "L-eq447-r0", "rung": 0, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * (y * (z * (x * y))))"}
+{"item_id": "L-eq447-r0", "rung": 0, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x * (y * (z * (x * y)))"}
+{"item_id": "L-eq447-r0", "rung": 0, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (x * (y * (z * (x * y))))"}
+{"item_id": "L-eq447-r1", "rung": 1, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * (y * (z * (x * y)))"}
+{"item_id": "L-eq447-r1", "rung": 1, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (b * (c * (a * b)))"}
+{"item_id": "L-eq447-r1", "rung": 1, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * (z * (x * y))) = x"}
+{"item_id": "L-eq447-r2", "rung": 2, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * (y * (z * (x * y)))"}
+{"item_id": "L-eq447-r2", "rung": 2, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x * (y * (z * (x * y)))"}
+{"item_id": "L-eq447-r2", "rung": 2, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * (z * (x * y))) = x"}
+{"item_id": "L-eq447-r3", "rung": 3, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * y) * (z * (x * y))"}
+{"item_id": "L-eq447-r3", "rung": 3, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (b * (c * a * b))"}
+{"item_id": "L-eq447-r3", "rung": 3, "intended_law": "x = (x * (y * (z * (x * y))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = x * (y * z * x * y)"}
+{"item_id": "L-eq2585-r0", "rung": 0, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * ((z * y) * x)) * y)"}
+{"item_id": "L-eq2585-r0", "rung": 0, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * (z * y * x)) * y"}
+{"item_id": "L-eq2585-r0", "rung": 0, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * ((z * y) * x)) * y)"}
+{"item_id": "L-eq2585-r1", "rung": 1, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((z * y) * x)) * y"}
+{"item_id": "L-eq2585-r1", "rung": 1, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * (c * b * a)) * b"}
+{"item_id": "L-eq2585-r1", "rung": 1, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * ((z * y) * x)) * y"}
+{"item_id": "L-eq2585-r2", "rung": 2, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((z * y) * x)) * y"}
+{"item_id": "L-eq2585-r2", "rung": 2, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = (Bo's piece * (Cy's piece * Bo's piece * Ana's piece)) * Bo's piece"}
+{"item_id": "L-eq2585-r2", "rung": 2, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * ((z * y) * x)) * y"}
+{"item_id": "L-eq2585-r3", "rung": 3, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (y * (x * y)))"}
+{"item_id": "L-eq2585-r3", "rung": 3, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * c * b * a * b"}
+{"item_id": "L-eq2585-r3", "rung": 3, "intended_law": "x = ((y * ((z * y) * x)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * (y * (x * (z * x)))"}
+{"item_id": "L-eq1604-r0", "rung": 0, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * (w * (x * y)))"}
+{"item_id": "L-eq1604-r0", "rung": 0, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * z) * (w * (x * y))"}
+{"item_id": "L-eq1604-r0", "rung": 0, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * z) * (w * (x * y)))"}
+{"item_id": "L-eq1604-r1", "rung": 1, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * z) * (w * (x * y))"}
+{"item_id": "L-eq1604-r1", "rung": 1, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * c) * (d * (a * b))"}
+{"item_id": "L-eq1604-r1", "rung": 1, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * c) = ((b * c) * (d * (a * b)))"}
+{"item_id": "L-eq1604-r2", "rung": 2, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * z) * (w * (x * y))"}
+{"item_id": "L-eq1604-r2", "rung": 2, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * z) * (w * (x * y))"}
+{"item_id": "L-eq1604-r2", "rung": 2, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = (y * z) * (w * (x * y))"}
+{"item_id": "L-eq1604-r3", "rung": 3, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (w * (x * y)))"}
+{"item_id": "L-eq1604-r3", "rung": 3, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (c * (d * (a * b)))"}
+{"item_id": "L-eq1604-r3", "rung": 3, "intended_law": "x = ((y * z) * (w * (x * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (d * (a * b)))) = a"}
+{"item_id": "L-eq546-r0", "rung": 0, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * (z * (x * (z * y))))"}
+{"item_id": "L-eq546-r0", "rung": 0, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * (x * (z * y)))"}
+{"item_id": "L-eq546-r0", "rung": 0, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * (z * (x * (z * y))))"}
+{"item_id": "L-eq546-r1", "rung": 1, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (x * (z * y)))"}
+{"item_id": "L-eq546-r1", "rung": 1, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (c * (a * (c * b)))"}
+{"item_id": "L-eq546-r1", "rung": 1, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * (x * (z * y)))"}
+{"item_id": "L-eq546-r2", "rung": 2, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (x * (z * y)))"}
+{"item_id": "L-eq546-r2", "rung": 2, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * (x * (z * w)))"}
+{"item_id": "L-eq546-r2", "rung": 2, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * (x * (z * y)))"}
+{"item_id": "L-eq546-r3", "rung": 3, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * x * z * y"}
+{"item_id": "L-eq546-r3", "rung": 3, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * c) * (a * c) * b"}
+{"item_id": "L-eq546-r3", "rung": 3, "intended_law": "x = (y * (z * (x * (z * y))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * (x * (z * y)))"}
+{"item_id": "L-eq1592-r0", "rung": 0, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * (z * (y * z)))"}
+{"item_id": "L-eq1592-r0", "rung": 0, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * z)^2 * z"}
+{"item_id": "L-eq1592-r0", "rung": 0, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * z) * (z * (y * z)))"}
+{"item_id": "L-eq1592-r1", "rung": 1, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * (z * (y * z))"}
+{"item_id": "L-eq1592-r1", "rung": 1, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * c) * (c * (b * c))"}
+{"item_id": "L-eq1592-r1", "rung": 1, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * z) * (z * (y * z))"}
+{"item_id": "L-eq1592-r2", "rung": 2, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * z) * (z * (y * z))"}
+{"item_id": "L-eq1592-r2", "rung": 2, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = (Bo's piece * Cy's piece) * (Cy's piece * (Bo's piece * Cy's piece))"}
+{"item_id": "L-eq1592-r2", "rung": 2, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * z) * (z * (y * z))"}
+{"item_id": "L-eq1592-r3", "rung": 3, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * z * y * z"}
+{"item_id": "L-eq1592-r3", "rung": 3, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * c * c * b * c"}
+{"item_id": "L-eq1592-r3", "rung": 3, "intended_law": "x = ((y * z) * (z * (y * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * (z * (y * z)))"}
+{"item_id": "L-eq4623-r0", "rung": 0, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * x) * y = (z * z) * w"}
+{"item_id": "L-eq4623-r0", "rung": 0, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x^2 * y) = (z^2 * w)"}
+{"item_id": "L-eq4623-r0", "rung": 0, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "((x * x) * y) = ((z * z) * w)"}
+{"item_id": "L-eq4623-r1", "rung": 1, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * x) * y = (z * z) * w"}
+{"item_id": "L-eq4623-r1", "rung": 1, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "((x * x) * y) = ((z * z) * w)"}
+{"item_id": "L-eq4623-r1", "rung": 1, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * x) * y = (z * z) * w"}
+{"item_id": "L-eq4623-r2", "rung": 2, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * x) * y = (z * z) * w"}
+{"item_id": "L-eq4623-r2", "rung": 2, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "((x * x) * y) = ((z * z) * w)"}
+{"item_id": "L-eq4623-r2", "rung": 2, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * x) * y = (z * z) * w"}
+{"item_id": "L-eq4623-r3", "rung": 3, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * y) * z = (w * x) * (y * z)"}
+{"item_id": "L-eq4623-r3", "rung": 3, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) * z = (w * w) * d"}
+{"item_id": "L-eq4623-r3", "rung": 3, "intended_law": "((x * x) * y) = ((z * z) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (x * y) = z * (z * w)"}
+{"item_id": "L-eq4238-r0", "rung": 0, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = ((z * z) * w) * y"}
+{"item_id": "L-eq4238-r0", "rung": 0, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * y = (z * z * w) * y"}
+{"item_id": "L-eq4238-r0", "rung": 0, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (((z * z) * w) * y)"}
+{"item_id": "L-eq4238-r1", "rung": 1, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = ((z * z) * w) * y"}
+{"item_id": "L-eq4238-r1", "rung": 1, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = ((z * z) * w) * y \\)"}
+{"item_id": "L-eq4238-r1", "rung": 1, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * b = ((c * c) * d) * b"}
+{"item_id": "L-eq4238-r2", "rung": 2, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x*y = ((z*z)*w)*y"}
+{"item_id": "L-eq4238-r2", "rung": 2, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( (x * y) = ((z * z) * w) * y \\)"}
+{"item_id": "L-eq4238-r2", "rung": 2, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = ((z * z) * w) * y"}
+{"item_id": "L-eq4238-r3", "rung": 3, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (z * (w * y))"}
+{"item_id": "L-eq4238-r3", "rung": 3, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * y = z * z * d * y"}
+{"item_id": "L-eq4238-r3", "rung": 3, "intended_law": "(x * y) = (((z * z) * w) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * b = c * (c * (d * b))"}
+{"item_id": "L-eq3323-r0", "rung": 0, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = x * (y * (z * z))"}
+{"item_id": "L-eq3323-r0", "rung": 0, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (x * (y * (z * z)))"}
+{"item_id": "L-eq3323-r0", "rung": 0, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (x * (y * (z * z)))"}
+{"item_id": "L-eq3323-r1", "rung": 1, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = x * (y * (z * z))"}
+{"item_id": "L-eq3323-r1", "rung": 1, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( a * b = a * (b * (c * c)) \\)"}
+{"item_id": "L-eq3323-r1", "rung": 1, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = x * (y * (z * z))"}
+{"item_id": "L-eq3323-r2", "rung": 2, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = x * (y * (z * z))"}
+{"item_id": "L-eq3323-r2", "rung": 2, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = x * (y * (z * z)) \\)"}
+{"item_id": "L-eq3323-r2", "rung": 2, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = x * (y * (z * z))"}
+{"item_id": "L-eq3323-r3", "rung": 3, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = x * (y * (z * z))"}
+{"item_id": "L-eq3323-r3", "rung": 3, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( a * b = a * (b * c * c) \\)"}
+{"item_id": "L-eq3323-r3", "rung": 3, "intended_law": "(x * y) = (x * (y * (z * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = x * y * z * z"}
+{"item_id": "L-eq4490-r0", "rung": 0, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * y) = (z * x) * y"}
+{"item_id": "L-eq4490-r0", "rung": 0, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x (y^2) = (z x) y \\)"}
+{"item_id": "L-eq4490-r0", "rung": 0, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * (y * y)) = ((z * x) * y)"}
+{"item_id": "L-eq4490-r1", "rung": 1, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * y) = (z * x) * y"}
+{"item_id": "L-eq4490-r1", "rung": 1, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( a * (b * b) = (c * a) * b \\)"}
+{"item_id": "L-eq4490-r1", "rung": 1, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * y) = (z * x) * y"}
+{"item_id": "L-eq4490-r2", "rung": 2, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * y) = (z * x) * y"}
+{"item_id": "L-eq4490-r2", "rung": 2, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * (y * y)) = ((z * x) * y)"}
+{"item_id": "L-eq4490-r2", "rung": 2, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * y) = (z * x) * y"}
+{"item_id": "L-eq4490-r3", "rung": 3, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * y) * y = z * x * y"}
+{"item_id": "L-eq4490-r3", "rung": 3, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * (y * y) = z * (x * y)"}
+{"item_id": "L-eq4490-r3", "rung": 3, "intended_law": "(x * (y * y)) = ((z * x) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x*(y*y) = z*(x*y)"}
+{"item_id": "L-eq3798-r0", "rung": 0, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * y) = ((z * x) * (w * y))"}
+{"item_id": "L-eq3798-r0", "rung": 0, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (z * w) * (x * y)"}
+{"item_id": "L-eq3798-r0", "rung": 0, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = ((z * x) * (w * y))"}
+{"item_id": "L-eq3798-r1", "rung": 1, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = (z * x) * (w * y)"}
+{"item_id": "L-eq3798-r1", "rung": 1, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = ((z * x) * (w * y))"}
+{"item_id": "L-eq3798-r1", "rung": 1, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = (z * x) * (w * y)"}
+{"item_id": "L-eq3798-r2", "rung": 2, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x*y = (z*x)*(w*y)"}
+{"item_id": "L-eq3798-r2", "rung": 2, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = ((z * x) * (w * y))"}
+{"item_id": "L-eq3798-r2", "rung": 2, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = (z * x) * (w * y)"}
+{"item_id": "L-eq3798-r3", "rung": 3, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (x * w) * y"}
+{"item_id": "L-eq3798-r3", "rung": 3, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = z * x * d * y \\)"}
+{"item_id": "L-eq3798-r3", "rung": 3, "intended_law": "(x * y) = ((z * x) * (w * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * b = c * (a * (d * b))"}
+{"item_id": "L-eq595-r0", "rung": 0, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * (z * (w * (y * z))))"}
+{"item_id": "L-eq595-r0", "rung": 0, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * (w * (y * z)))"}
+{"item_id": "L-eq595-r0", "rung": 0, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * z * w * y * z"}
+{"item_id": "L-eq595-r1", "rung": 1, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (w * (y * z)))"}
+{"item_id": "L-eq595-r1", "rung": 1, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (c * (d * (b * c)))"}
+{"item_id": "L-eq595-r1", "rung": 1, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (a * b))) = a"}
+{"item_id": "L-eq595-r2", "rung": 2, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (w * (y * z)))"}
+{"item_id": "L-eq595-r2", "rung": 2, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = (Bo's piece * (Cy's piece * (Dee's piece * (Bo's piece * Cy's piece))))"}
+{"item_id": "L-eq595-r2", "rung": 2, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * (w * (y * z)))"}
+{"item_id": "L-eq595-r3", "rung": 3, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (w * (y * z)))"}
+{"item_id": "L-eq595-r3", "rung": 3, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * c * d * b * c"}
+{"item_id": "L-eq595-r3", "rung": 3, "intended_law": "x = (y * (z * (w * (y * z))))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (d * (b * c)))) = a"}
+{"item_id": "L-eq911-r0", "rung": 0, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((y * x) * (y * z)))"}
+{"item_id": "L-eq911-r0", "rung": 0, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (y * x * y * z)"}
+{"item_id": "L-eq911-r0", "rung": 0, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * ((y * x) * (y * z)))"}
+{"item_id": "L-eq911-r1", "rung": 1, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((y * x) * (y * z))"}
+{"item_id": "L-eq911-r1", "rung": 1, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * ((b * a) * (b * c))"}
+{"item_id": "L-eq911-r1", "rung": 1, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((y * x) * (y * z))"}
+{"item_id": "L-eq911-r2", "rung": 2, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((y * x) * (y * z))"}
+{"item_id": "L-eq911-r2", "rung": 2, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Bo's piece * ((Bo's piece * Ana's piece) * (Bo's piece * Cy's piece))"}
+{"item_id": "L-eq911-r2", "rung": 2, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((y * x) * (y * z))"}
+{"item_id": "L-eq911-r3", "rung": 3, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (y * (x * (y * z)))"}
+{"item_id": "L-eq911-r3", "rung": 3, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (b * (a * b * c))"}
+{"item_id": "L-eq911-r3", "rung": 3, "intended_law": "x = (y * ((y * x) * (y * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (y * (x * (y * z)))"}
+{"item_id": "L-eq2563-r0", "rung": 0, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * ((y * z) * w)) * y)"}
+{"item_id": "L-eq2563-r0", "rung": 0, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y^2 * z * w * y"}
+{"item_id": "L-eq2563-r0", "rung": 0, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (y * z * w) * y"}
+{"item_id": "L-eq2563-r1", "rung": 1, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((y * (y * z)) * w) * y"}
+{"item_id": "L-eq2563-r1", "rung": 1, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * ((b * (c * d)) * b)"}
+{"item_id": "L-eq2563-r1", "rung": 1, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a = (b * ((b * c) * d)) * b"}
+{"item_id": "L-eq2563-r2", "rung": 2, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((y * z) * w)) * y"}
+{"item_id": "L-eq2563-r2", "rung": 2, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = (Bo's piece * (Bo's piece * (Cy's piece * Dee's piece))) * Bo's piece"}
+{"item_id": "L-eq2563-r2", "rung": 2, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * (( y * z) * w)) * y)"}
+{"item_id": "L-eq2563-r3", "rung": 3, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (y * (z * (w * y)))"}
+{"item_id": "L-eq2563-r3", "rung": 3, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (b * (c * d * b))"}
+{"item_id": "L-eq2563-r3", "rung": 3, "intended_law": "x = ((y * ((y * z) * w)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (d * b))) = b"}
+{"item_id": "L-eq3556-r0", "rung": 0, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (y * x) * y"}
+{"item_id": "L-eq3556-r0", "rung": 0, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (y * (y * x * y))"}
+{"item_id": "L-eq3556-r0", "rung": 0, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (y * ((y * x) * y))"}
+{"item_id": "L-eq3556-r1", "rung": 1, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (y * (x * y))"}
+{"item_id": "L-eq3556-r1", "rung": 1, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a * b = b * ((b * a) * b)"}
+{"item_id": "L-eq3556-r1", "rung": 1, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * ((y * x) * y)"}
+{"item_id": "L-eq3556-r2", "rung": 2, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (x * y * y)"}
+{"item_id": "L-eq3556-r2", "rung": 2, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = y * ((y * x) * y) \\)"}
+{"item_id": "L-eq3556-r2", "rung": 2, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * ((y * x) * y)"}
+{"item_id": "L-eq3556-r3", "rung": 3, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (y * (x * y))"}
+{"item_id": "L-eq3556-r3", "rung": 3, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * y = y * (y * x * y)"}
+{"item_id": "L-eq3556-r3", "rung": 3, "intended_law": "(x * y) = (y * ((y * x) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * (y * (x * y))"}
+{"item_id": "L-eq139-r0", "rung": 0, "intended_law": "x = (y * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((z * y) * y))"}
+{"item_id": "L-eq139-r0", "rung": 0, "intended_law": "x = (y * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * y^2)"}
+{"item_id": "L-eq139-r0", "rung": 0, "intended_law": "x = (y * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * ((z * y) * y))"}
+{"item_id": "L-eq139-r1", "rung": 1, "intended_law": "x = (y * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (y * y))"}
+{"item_id": "L-eq139-r1", "rung": 1, "intended_law": "x = (y * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * ((c * b) * b)"}
+{"item_id": "L-eq139-r1", "rung": 1, "intended_law": "x = (y * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((z * y) * y)"}
+{"item_id": "L-eq139-r2", "rung": 2, "intended_law": "x = (y * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((z * y) * y)"}
+{"item_id": "L-eq139-r2", "rung": 2, "intended_law": "x = (y * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x = y * (z * y) * y \\)"}
+{"item_id": "L-eq139-r2", "rung": 2, "intended_law": "x = (y * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = (z * y) * y"}
+{"item_id": "L-eq139-r3", "rung": 3, "intended_law": "x = (y * ((z * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (y * y))"}
+{"item_id": "L-eq139-r3", "rung": 3, "intended_law": "x = (y * ((z * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * c * b * b"}
+{"item_id": "L-eq139-r3", "rung": 3, "intended_law": "x = (y * ((z * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * b = (b * (b * (b * a)))"}
+{"item_id": "L-eq2747-r0", "rung": 0, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((y * y) * (y * y)) * y)"}
+{"item_id": "L-eq2747-r0", "rung": 0, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y^5"}
+{"item_id": "L-eq2747-r0", "rung": 0, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y^5"}
+{"item_id": "L-eq2747-r1", "rung": 1, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * y) * (y * y) * y"}
+{"item_id": "L-eq2747-r1", "rung": 1, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (((b * b) * (b * b)) * b)"}
+{"item_id": "L-eq2747-r1", "rung": 1, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * y) * (y * y)) * y"}
+{"item_id": "L-eq2747-r2", "rung": 2, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * y) * (y * y)) * y"}
+{"item_id": "L-eq2747-r2", "rung": 2, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = (((Bo's piece * Bo's piece) * (Bo's piece * Bo's piece)) * Bo's piece)"}
+{"item_id": "L-eq2747-r2", "rung": 2, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = ((y * y) * (y * y)) * y"}
+{"item_id": "L-eq2747-r3", "rung": 3, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (w * (y * y)))"}
+{"item_id": "L-eq2747-r3", "rung": 3, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * b * b * b * b"}
+{"item_id": "L-eq2747-r3", "rung": 3, "intended_law": "x = (((y * y) * (y * y)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * y * y * y * y"}
+{"item_id": "L-eq3319-r0", "rung": 0, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x\u2074 = y\u2076"}
+{"item_id": "L-eq3319-r0", "rung": 0, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) = (x * (y^3))"}
+{"item_id": "L-eq3319-r0", "rung": 0, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (x * (y * (y * y)))"}
+{"item_id": "L-eq3319-r1", "rung": 1, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = x * (y * (y * y))"}
+{"item_id": "L-eq3319-r1", "rung": 1, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( a * b = a * (b * (b * b)) \\)"}
+{"item_id": "L-eq3319-r1", "rung": 1, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = x * (y * (y * y))"}
+{"item_id": "L-eq3319-r2", "rung": 2, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = x * (y * (y * y))"}
+{"item_id": "L-eq3319-r2", "rung": 2, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = x * (y * (y * y)) \\)"}
+{"item_id": "L-eq3319-r2", "rung": 2, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = x * (y * (y * y))"}
+{"item_id": "L-eq3319-r3", "rung": 3, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = x * (y * (y * y))"}
+{"item_id": "L-eq3319-r3", "rung": 3, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * y = x * (y * (y * (y * y)))"}
+{"item_id": "L-eq3319-r3", "rung": 3, "intended_law": "(x * y) = (x * (y * (y * y)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = x * y * y * y"}
+{"item_id": "L-eq3491-r0", "rung": 0, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x\u00b2 = y * (zx) * x"}
+{"item_id": "L-eq3491-r0", "rung": 0, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x^2 = y * (z * x * x)"}
+{"item_id": "L-eq3491-r0", "rung": 0, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * x) = (y * ((z * x) * x))"}
+{"item_id": "L-eq3491-r1", "rung": 1, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * x = y * ((z * x) * x)"}
+{"item_id": "L-eq3491-r1", "rung": 1, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a * a = b * ((c * a) * a)"}
+{"item_id": "L-eq3491-r1", "rung": 1, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * x = y * ((z * x) * x)"}
+{"item_id": "L-eq3491-r2", "rung": 2, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * x = y * ((z * x) * x)"}
+{"item_id": "L-eq3491-r2", "rung": 2, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * x = y * ((z * x) * x) \\)"}
+{"item_id": "L-eq3491-r2", "rung": 2, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * x = y * ((z * x) * x)"}
+{"item_id": "L-eq3491-r3", "rung": 3, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x*x = y*(z*(x*x))"}
+{"item_id": "L-eq3491-r3", "rung": 3, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * x = y * z * x * x"}
+{"item_id": "L-eq3491-r3", "rung": 3, "intended_law": "(x * x) = (y * ((z * x) * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * x = y * (z * (w * w))"}
+{"item_id": "L-eq744-r0", "rung": 0, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * (z * ((x * y) * x)))"}
+{"item_id": "L-eq744-r0", "rung": 0, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * ((x * y) * x))"}
+{"item_id": "L-eq744-r0", "rung": 0, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * (z * ((x * y) * x)))"}
+{"item_id": "L-eq744-r1", "rung": 1, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * ((x * y) * x))"}
+{"item_id": "L-eq744-r1", "rung": 1, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (c * ((a * b) * a))"}
+{"item_id": "L-eq744-r1", "rung": 1, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * ((x * y) * x))"}
+{"item_id": "L-eq744-r2", "rung": 2, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * ((x * y) * x))"}
+{"item_id": "L-eq744-r2", "rung": 2, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * ((x * y) * x))"}
+{"item_id": "L-eq744-r2", "rung": 2, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * ((x * y) * x))"}
+{"item_id": "L-eq744-r3", "rung": 3, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * x * y * x"}
+{"item_id": "L-eq744-r3", "rung": 3, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * c) * (a * b * a)"}
+{"item_id": "L-eq744-r3", "rung": 3, "intended_law": "x = (y * (z * ((x * y) * x)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * (x * (y * x)))"}
+{"item_id": "L-eq1542-r0", "rung": 0, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * y) * (z * (y * w)))"}
+{"item_id": "L-eq1542-r0", "rung": 0, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y^2 * z * (y * w)"}
+{"item_id": "L-eq1542-r0", "rung": 0, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y\u00b2 \u00b7 z \u00b7 y \u00b7 w = y\u00b3zw"}
+{"item_id": "L-eq1542-r1", "rung": 1, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "a = (b * b) * (c * (b * d))"}
+{"item_id": "L-eq1542-r1", "rung": 1, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * b) * (c * (b * d))"}
+{"item_id": "L-eq1542-r1", "rung": 1, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a = (b * b) * (c * (b * d))"}
+{"item_id": "L-eq1542-r2", "rung": 2, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * y) * (z * (y * w))"}
+{"item_id": "L-eq1542-r2", "rung": 2, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = (Bo's piece * Bo's piece) * (Cy's piece * (Bo's piece * Dee's piece))"}
+{"item_id": "L-eq1542-r2", "rung": 2, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * x = (x * x) * (z * (x * w))"}
+{"item_id": "L-eq1542-r3", "rung": 3, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (y * (z * (y * w)))"}
+{"item_id": "L-eq1542-r3", "rung": 3, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (b * (c * (b * d)))"}
+{"item_id": "L-eq1542-r3", "rung": 3, "intended_law": "x = ((y * y) * (z * (y * w)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (b * d))) = b"}
+{"item_id": "L-eq1058-r0", "rung": 0, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * ((y * (z * x)) * w))"}
+{"item_id": "L-eq1058-r0", "rung": 0, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x * (y * (z * x) * w)"}
+{"item_id": "L-eq1058-r0", "rung": 0, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (x * ((y * (z * x)) * w))"}
+{"item_id": "L-eq1058-r1", "rung": 1, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * (y * (z * x) * w)"}
+{"item_id": "L-eq1058-r1", "rung": 1, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * ((b * (c * a)) * d)"}
+{"item_id": "L-eq1058-r1", "rung": 1, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * ((y * (z * x)) * w)"}
+{"item_id": "L-eq1058-r2", "rung": 2, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * ((y * (z * x)) * w)"}
+{"item_id": "L-eq1058-r2", "rung": 2, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Ana's piece * ((Bo's piece * (Cy's piece * Ana's piece)) * Dee's piece)"}
+{"item_id": "L-eq1058-r2", "rung": 2, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * ((y * (z * x)) * w)"}
+{"item_id": "L-eq1058-r3", "rung": 3, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * z) * (x * w)"}
+{"item_id": "L-eq1058-r3", "rung": 3, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (b * (c * (a * d)))"}
+{"item_id": "L-eq1058-r3", "rung": 3, "intended_law": "x = (x * ((y * (z * x)) * w))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (a * d))) = a"}
+{"item_id": "L-eq1354-r0", "rung": 0, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * (((z * x) * y) * y))"}
+{"item_id": "L-eq1354-r0", "rung": 0, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * x * y * y)"}
+{"item_id": "L-eq1354-r0", "rung": 0, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * (((z * x) * y) * y))"}
+{"item_id": "L-eq1354-r1", "rung": 1, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (((z * x) * y) * y)"}
+{"item_id": "L-eq1354-r1", "rung": 1, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * ((c * a) * b * b)"}
+{"item_id": "L-eq1354-r1", "rung": 1, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (((z * x) * y) * y)"}
+{"item_id": "L-eq1354-r2", "rung": 2, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (((z * x) * y) * y)"}
+{"item_id": "L-eq1354-r2", "rung": 2, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * z) * ((x * y) * z) * z"}
+{"item_id": "L-eq1354-r2", "rung": 2, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (((z * x) * y) * y)"}
+{"item_id": "L-eq1354-r3", "rung": 3, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * x * y * y"}
+{"item_id": "L-eq1354-r3", "rung": 3, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * c) * (a * b * b)"}
+{"item_id": "L-eq1354-r3", "rung": 3, "intended_law": "x = (y * (((z * x) * y) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * (x * (y * y)))"}
+{"item_id": "L-eq4615-r0", "rung": 0, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "((x * x) * y) = ((z * x) * y)"}
+{"item_id": "L-eq4615-r0", "rung": 0, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x^2 * y = z * x * y"}
+{"item_id": "L-eq4615-r0", "rung": 0, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "((x * x) * y) = ((z * x) * y)"}
+{"item_id": "L-eq4615-r1", "rung": 1, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x*x)*y = (z*x)*y"}
+{"item_id": "L-eq4615-r1", "rung": 1, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * x) * y = (z * x) * y"}
+{"item_id": "L-eq4615-r1", "rung": 1, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * x) * y = (z * x) * y"}
+{"item_id": "L-eq4615-r2", "rung": 2, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x*x)*z = (y*x)*z"}
+{"item_id": "L-eq4615-r2", "rung": 2, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "((x * x) * y) = ((z * x) * y)"}
+{"item_id": "L-eq4615-r2", "rung": 2, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * x * y = z * x * y"}
+{"item_id": "L-eq4615-r3", "rung": 3, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "(x * y) * z = z * (x * y)"}
+{"item_id": "L-eq4615-r3", "rung": 3, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * x) * y = z * (x * y)"}
+{"item_id": "L-eq4615-r3", "rung": 3, "intended_law": "((x * x) * y) = ((z * x) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (x * y) = z * (x * y)"}
+{"item_id": "L-eq2546-r0", "rung": 0, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * ((y * y) * z)) * x)"}
+{"item_id": "L-eq2546-r0", "rung": 0, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y^2 * z * y * x"}
+{"item_id": "L-eq2546-r0", "rung": 0, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * ((y * y) * z)) * x)"}
+{"item_id": "L-eq2546-r1", "rung": 1, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((y * y) * z) * x"}
+{"item_id": "L-eq2546-r1", "rung": 1, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * (b * b * c)) * a"}
+{"item_id": "L-eq2546-r1", "rung": 1, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * ((y * y) * z)) * x"}
+{"item_id": "L-eq2546-r2", "rung": 2, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((y * y) * z)) * x"}
+{"item_id": "L-eq2546-r2", "rung": 2, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = (Bo's piece * (Bo's piece * (Bo's piece * Cy's piece))) * Ana's piece"}
+{"item_id": "L-eq2546-r2", "rung": 2, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * ((y * y) * z)) * x"}
+{"item_id": "L-eq2546-r3", "rung": 3, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * y * y * z * x"}
+{"item_id": "L-eq2546-r3", "rung": 3, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (b * (b * c)) * a"}
+{"item_id": "L-eq2546-r3", "rung": 3, "intended_law": "x = ((y * ((y * y) * z)) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (y * (y * (z * x)))"}
+{"item_id": "L-eq1363-r0", "rung": 0, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * (((z * x) * w) * z))"}
+{"item_id": "L-eq1363-r0", "rung": 0, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (z * x * w * z)"}
+{"item_id": "L-eq1363-r0", "rung": 0, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = (y * (((z * x) * w) * z))"}
+{"item_id": "L-eq1363-r1", "rung": 1, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((z * x) * w) * z"}
+{"item_id": "L-eq1363-r1", "rung": 1, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * ((c * a * d) * c)"}
+{"item_id": "L-eq1363-r1", "rung": 1, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (((c * a) * d) * c) = b * (((c * b) * d) * c)"}
+{"item_id": "L-eq1363-r2", "rung": 2, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (((x * z) * w) * z)"}
+{"item_id": "L-eq1363-r2", "rung": 2, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = Bo's piece * (((Cy's piece * Ana's piece) * Dee's piece) * Cy's piece)"}
+{"item_id": "L-eq1363-r2", "rung": 2, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (((z * x) * w) * z)"}
+{"item_id": "L-eq1363-r3", "rung": 3, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (x * w))"}
+{"item_id": "L-eq1363-r3", "rung": 3, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * c) * (a * d) * c"}
+{"item_id": "L-eq1363-r3", "rung": 3, "intended_law": "x = (y * (((z * x) * w) * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (a * (b * (c * x))))) = x"}
+{"item_id": "L-eq4520-r0", "rung": 0, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * z) = (x * w) * z"}
+{"item_id": "L-eq4520-r0", "rung": 0, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * (y * z)) = ((x * w) * z)"}
+{"item_id": "L-eq4520-r0", "rung": 0, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * (y * z)) = ((x * w) * z)"}
+{"item_id": "L-eq4520-r1", "rung": 1, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * z) = (x * w) * z"}
+{"item_id": "L-eq4520-r1", "rung": 1, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * (y * z) = (x * w) * z"}
+{"item_id": "L-eq4520-r1", "rung": 1, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * z) = (x * w) * z"}
+{"item_id": "L-eq4520-r2", "rung": 2, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x*(y*z) = (x*w)*z"}
+{"item_id": "L-eq4520-r2", "rung": 2, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * (y * z)) = ((x * w) * z)"}
+{"item_id": "L-eq4520-r2", "rung": 2, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * z) = (x * w) * z"}
+{"item_id": "L-eq4520-r3", "rung": 3, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * z) = x * (w * z)"}
+{"item_id": "L-eq4520-r3", "rung": 3, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) * z = (x * d) * z"}
+{"item_id": "L-eq4520-r3", "rung": 3, "intended_law": "(x * (y * z)) = ((x * w) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * z) = x * (w * z)"}
+{"item_id": "L-eq3372-r0", "rung": 0, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (z * (z * z))"}
+{"item_id": "L-eq3372-r0", "rung": 0, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x * y = y * (z * (z * z))"}
+{"item_id": "L-eq3372-r0", "rung": 0, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) = (y * (z * (z * z)))"}
+{"item_id": "L-eq3372-r1", "rung": 1, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (z * (z * z))"}
+{"item_id": "L-eq3372-r1", "rung": 1, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a * b = b * (c * (c * c))"}
+{"item_id": "L-eq3372-r1", "rung": 1, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * (z * (z * z))"}
+{"item_id": "L-eq3372-r2", "rung": 2, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = y * (z * (z * z))"}
+{"item_id": "L-eq3372-r2", "rung": 2, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x * y = y * (z * (z * z)) \\)"}
+{"item_id": "L-eq3372-r2", "rung": 2, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * (z * (z * z))"}
+{"item_id": "L-eq3372-r3", "rung": 3, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * y = z * (w * (w * w))"}
+{"item_id": "L-eq3372-r3", "rung": 3, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a * b = b * c * c * c"}
+{"item_id": "L-eq3372-r3", "rung": 3, "intended_law": "(x * y) = (y * (z * (z * z)))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * z * z * z"}
+{"item_id": "L-eq1086-r0", "rung": 0, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * ((x * (y * y)) * y))"}
+{"item_id": "L-eq1086-r0", "rung": 0, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (x * (y^3))"}
+{"item_id": "L-eq1086-r0", "rung": 0, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((x * y\u00b2) * y)"}
+{"item_id": "L-eq1086-r1", "rung": 1, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((x * (y * y)) * y)"}
+{"item_id": "L-eq1086-r1", "rung": 1, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (a * (b * b)) * b"}
+{"item_id": "L-eq1086-r1", "rung": 1, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((x * (y * y)) * y)"}
+{"item_id": "L-eq1086-r2", "rung": 2, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * ((x * (y * y)) * y)"}
+{"item_id": "L-eq1086-r2", "rung": 2, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y * (x * (y * y) * y)"}
+{"item_id": "L-eq1086-r2", "rung": 2, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * ((x * (y * y)) * y)"}
+{"item_id": "L-eq1086-r3", "rung": 3, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * x * y * y * y"}
+{"item_id": "L-eq1086-r3", "rung": 3, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * a) * (b * (b * b))"}
+{"item_id": "L-eq1086-r3", "rung": 3, "intended_law": "x = (y * ((x * (y * y)) * y))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * x * y * y * y"}
+{"item_id": "L-eq2832-r0", "rung": 0, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((y * z) * (w * z)) * y)"}
+{"item_id": "L-eq2832-r0", "rung": 0, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y * z) * (w * z) * y"}
+{"item_id": "L-eq2832-r0", "rung": 0, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y\u00b2 * z\u00b2 * w * z"}
+{"item_id": "L-eq2832-r1", "rung": 1, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * (w * z)) * y"}
+{"item_id": "L-eq2832-r1", "rung": 1, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = ((b * c) * (d * c)) * b"}
+{"item_id": "L-eq2832-r1", "rung": 1, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * b = ((b * c) * (d * c)) * b"}
+{"item_id": "L-eq2832-r2", "rung": 2, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * (w * z)) * y"}
+{"item_id": "L-eq2832-r2", "rung": 2, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = ((Bo's piece * Cy's piece) * (Dee's piece * Cy's piece)) * Bo's piece"}
+{"item_id": "L-eq2832-r2", "rung": 2, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * z) * (w * z)) * y"}
+{"item_id": "L-eq2832-r3", "rung": 3, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * w * z * y"}
+{"item_id": "L-eq2832-r3", "rung": 3, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * (c * (d * (c * b)))"}
+{"item_id": "L-eq2832-r3", "rung": 3, "intended_law": "x = (((y * z) * (w * z)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "a * (b * (c * (d * (c * b)))) = a"}
+{"item_id": "L-eq2673-r0", "rung": 0, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((x * y) * (y * y)) * y)"}
+{"item_id": "L-eq2673-r0", "rung": 0, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = x * y^3"}
+{"item_id": "L-eq2673-r0", "rung": 0, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * y^5"}
+{"item_id": "L-eq2673-r1", "rung": 1, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (x * y) * (y * y) * y"}
+{"item_id": "L-eq2673-r1", "rung": 1, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = ((a * b) * (b * b)) * b"}
+{"item_id": "L-eq2673-r1", "rung": 1, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((x * y) * (y * y)) * y"}
+{"item_id": "L-eq2673-r2", "rung": 2, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((x * y) * (y * y)) * y"}
+{"item_id": "L-eq2673-r2", "rung": 2, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = ((Ana's piece * Bo's piece) * (Bo's piece * Bo's piece)) * Bo's piece"}
+{"item_id": "L-eq2673-r2", "rung": 2, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((x * y) * (y * y)) * y"}
+{"item_id": "L-eq2673-r3", "rung": 3, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = x * (y * (y * (y * y)))"}
+{"item_id": "L-eq2673-r3", "rung": 3, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = a * (b * (b * (b * b)))"}
+{"item_id": "L-eq2673-r3", "rung": 3, "intended_law": "x = (((x * y) * (y * y)) * y)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = x * (y * (y * (y * y)))"}
+{"item_id": "L-eq296-r0", "rung": 0, "intended_law": "x = (((y * z) * y) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((y * z) * y) * z)"}
+{"item_id": "L-eq296-r0", "rung": 0, "intended_law": "x = (((y * z) * y) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y^2 * z^2"}
+{"item_id": "L-eq296-r0", "rung": 0, "intended_law": "x = (((y * z) * y) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y\u00b2 * z\u00b2"}
+{"item_id": "L-eq296-r1", "rung": 1, "intended_law": "x = (((y * z) * y) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * z) * y * z"}
+{"item_id": "L-eq296-r1", "rung": 1, "intended_law": "x = (((y * z) * y) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = ((b * c) * b) * c"}
+{"item_id": "L-eq296-r1", "rung": 1, "intended_law": "x = (((y * z) * y) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = ((x * z) * x) * z"}
+{"item_id": "L-eq296-r2", "rung": 2, "intended_law": "x = (((y * z) * y) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * y) * z"}
+{"item_id": "L-eq296-r2", "rung": 2, "intended_law": "x = (((y * z) * y) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = ((Bo's piece * Cy's piece) * Bo's piece) * Cy's piece"}
+{"item_id": "L-eq296-r2", "rung": 2, "intended_law": "x = (((y * z) * y) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = ((y * z) * y) * z"}
+{"item_id": "L-eq296-r3", "rung": 3, "intended_law": "x = (((y * z) * y) * z)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (z * (y * z))"}
+{"item_id": "L-eq296-r3", "rung": 3, "intended_law": "x = (((y * z) * y) * z)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = b * c * b * c"}
+{"item_id": "L-eq296-r3", "rung": 3, "intended_law": "x = (((y * z) * y) * z)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * z * y * z"}
+{"item_id": "L-eq3201-r0", "rung": 0, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((((y * z) * y) * z) * x)"}
+{"item_id": "L-eq3201-r0", "rung": 0, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = (y^2 * z^2 * x)"}
+{"item_id": "L-eq3201-r0", "rung": 0, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((((y * z) * y) * z) * x)"}
+{"item_id": "L-eq3201-r1", "rung": 1, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * z) * y) * z * x"}
+{"item_id": "L-eq3201-r1", "rung": 1, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (((b * c) * b) * c) * a"}
+{"item_id": "L-eq3201-r1", "rung": 1, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = (((y * z) * y) * z) * x"}
+{"item_id": "L-eq3201-r2", "rung": 2, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((y * z) * y) * z) * x"}
+{"item_id": "L-eq3201-r2", "rung": 2, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = (((Bo's piece * Cy's piece) * Bo's piece) * Cy's piece) * Ana's piece"}
+{"item_id": "L-eq3201-r2", "rung": 2, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * ((((y * z) * y) * z) * x)"}
+{"item_id": "L-eq3201-r3", "rung": 3, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * z * y * z * x"}
+{"item_id": "L-eq3201-r3", "rung": 3, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * c) * (b * c) * a"}
+{"item_id": "L-eq3201-r3", "rung": 3, "intended_law": "x = ((((y * z) * y) * z) * x)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (z * (y * (z * x)))"}
+{"item_id": "L-eq4455-r0", "rung": 0, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * x) = (z * x) * w"}
+{"item_id": "L-eq4455-r0", "rung": 0, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * (y * x)) = ((z * x) * w)"}
+{"item_id": "L-eq4455-r0", "rung": 0, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * (y * x)) = ((z * x) * w)"}
+{"item_id": "L-eq4455-r1", "rung": 1, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * x) = (z * x) * w"}
+{"item_id": "L-eq4455-r1", "rung": 1, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * (y * x)) = ((z * x) * w)"}
+{"item_id": "L-eq4455-r1", "rung": 1, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * (y * x)) = ((z * x) * w)"}
+{"item_id": "L-eq4455-r2", "rung": 2, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (x * y) = (z * x) * w"}
+{"item_id": "L-eq4455-r2", "rung": 2, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * (y * x)) = ((z * x) * w)"}
+{"item_id": "L-eq4455-r2", "rung": 2, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * (y * x) = (z * x) * w"}
+{"item_id": "L-eq4455-r3", "rung": 3, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x * (y * (x * z)) = (w * x) * (z * x)"}
+{"item_id": "L-eq4455-r3", "rung": 3, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "openai/gpt-4o-mini", "k": 0, "output": "(x * y) * x = z * x * w"}
+{"item_id": "L-eq4455-r3", "rung": 3, "intended_law": "(x * (y * x)) = ((z * x) * w)", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "(x * y) * x = z * x * w"}
+{"item_id": "L-eq2134-r0", "rung": 0, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((y * y) * y) * (x * x))"}
+{"item_id": "L-eq2134-r0", "rung": 0, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y^3 * x^2"}
+{"item_id": "L-eq2134-r0", "rung": 0, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y\u00b3x\u00b2"}
+{"item_id": "L-eq2134-r1", "rung": 1, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * y) * (y * (x * x))"}
+{"item_id": "L-eq2134-r1", "rung": 1, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = ((b * b) * b) * (a * a)"}
+{"item_id": "L-eq2134-r1", "rung": 1, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * y) * y) * (x * x)"}
+{"item_id": "L-eq2134-r2", "rung": 2, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * y) * y) * (x * x)"}
+{"item_id": "L-eq2134-r2", "rung": 2, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "Ana's piece = ((Bo's piece * Bo's piece) * Bo's piece) * (Ana's piece * Ana's piece)"}
+{"item_id": "L-eq2134-r2", "rung": 2, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * y) * y) * (x * x)"}
+{"item_id": "L-eq2134-r3", "rung": 3, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * (y * (y * (x * x)))"}
+{"item_id": "L-eq2134-r3", "rung": 3, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * b) * (b * a * a)"}
+{"item_id": "L-eq2134-r3", "rung": 3, "intended_law": "x = (((y * y) * y) * (x * x))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x * y = y * (y * (x * x))"}
+{"item_id": "L-eq2136-r0", "rung": 0, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (((y * y) * y) * (x * z))"}
+{"item_id": "L-eq2136-r0", "rung": 0, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "x = y^3 * (x * z)"}
+{"item_id": "L-eq2136-r0", "rung": 0, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y\u00b3xz"}
+{"item_id": "L-eq2136-r1", "rung": 1, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = (y * y) * (y * (x * z))"}
+{"item_id": "L-eq2136-r1", "rung": 1, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = ((b * b) * b) * (a * c)"}
+{"item_id": "L-eq2136-r1", "rung": 1, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * y) * y) * (x * z)"}
+{"item_id": "L-eq2136-r2", "rung": 2, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = ((y * y) * y) * (x * z)"}
+{"item_id": "L-eq2136-r2", "rung": 2, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "\\( x = ((y * y) * y) * (x * z) \\)"}
+{"item_id": "L-eq2136-r2", "rung": 2, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = ((y * y) * y) * (x * z)"}
+{"item_id": "L-eq2136-r3", "rung": 3, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "meta-llama/llama-3.3-70b-instruct", "k": 0, "output": "x = y * y * y * x * z"}
+{"item_id": "L-eq2136-r3", "rung": 3, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "openai/gpt-4o-mini", "k": 0, "output": "a = (b * b * b) * (a * c)"}
+{"item_id": "L-eq2136-r3", "rung": 3, "intended_law": "x = (((y * y) * y) * (x * z))", "model": "anthropic/claude-sonnet-4.6", "k": 0, "output": "x = y * (y * (y * (x * z)))"}
