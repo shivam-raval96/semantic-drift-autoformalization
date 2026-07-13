@@ -147,9 +147,37 @@ Things to notice, all of which follow from the invariants below:
 - Python 3, standard library only unless a dependency clearly pays for
   itself.
 
+## Formalization grading — the reverse eval
+
+`checkform.py` grades a model's attempt to formalize a story back into the
+implication, with no LLM judging anywhere:
+
+- The prompt (`formalize_prompt.md`) is self-contained: it teaches a tiny
+  prefix syntax (`op(first, second)` over ingredient-name variables) and
+  asks for exactly two lines, `ASSUME:` (the custom) and `ASK:` (the
+  questioned regularity). It assumes no knowledge of Lean, magmas, or the
+  ETP, and mentions none of them. Its worked example uses a made-up theme
+  (librarian stacking books) that must never be added to `themes/`.
+- Grading is purely syntactic: extract the last `ASSUME:`/`ASK:` lines,
+  parse, canonicalize (reusing `canonical()`), compare against the record's
+  `canonical_e`/`canonical_f`.
+- Accepted symmetries — each is a faithful reading of the story: variable
+  renaming (always); swapping the sides of either equation ("always come
+  out the same" is symmetric); and dualization, i.e. mirroring every op's
+  argument order uniformly across *both* equations (the story never says
+  which participant is `op`'s first argument, and the prompt deliberately
+  does not dictate a convention).
+- Never lenient: the direction of the implication (ASSUME vs ASK), or a
+  dualization applied to only one of the two equations.
+- The verdict reports the *minimal* matching transform (`swap_e`, `swap_f`,
+  `dual`) so evals can distinguish exact-convention answers from dualized
+  ones. CLI exit codes: 0 correct, 1 wrong, 2 unparseable.
+
 ## Testing
 
-No tests yet. When adding them, priority order:
+Renderer tests live in `test_storyform.py`, grader tests in
+`test_checkform.py`; run both with `python3 -m unittest test_storyform
+test_checkform`. Renderer priority order:
 1. Round-trip test — a back-parser recovers both term trees from the story
    text alone, matching the original pair of ASTs.
 2. No-leakage test — story text contains no digits attached to equations,
@@ -158,6 +186,12 @@ No tests yet. When adding them, priority order:
 3. Determinism test — two renders of the same pair are identical.
 4. Coverage test — the renderer handles degenerate shapes (bare-variable
    sides, repeated variables, maximal 4-operation nesting) without error.
+
+Grader tests cover extraction from messy responses, malformed-syntax
+rejection, one test per verdict class (accepted symmetries and the
+never-lenient cases), determinism, and a corpus round-trip. Note: telling
+dualization apart from a side swap requires a questioned law that is
+asymmetric under dualization — commutativity cannot distinguish them.
 
 ## Roadmap
 
@@ -171,6 +205,9 @@ No tests yet. When adding them, priority order:
   autoformalization robustness evaluation.
 - **Theme library growth**: more action domains, each vetted against the
   order-sensitivity, injectivity, and no-leakage invariants.
+- **Batch eval harness**: run a model over every corpus prompt and
+  aggregate checkform verdicts (correct / dualized / swapped / wrong /
+  unparseable rates).
 
 ## Pitfalls to remember
 

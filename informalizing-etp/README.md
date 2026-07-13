@@ -124,6 +124,49 @@ story text → term trees — and the test suite round-trips every story
 through it. This is what makes the metadata trustworthy without any
 annotations in the text.
 
+## Grading model formalizations
+
+The corpus exists to test whether models can formalize the stories back.
+[checkform.py](checkform.py) closes that loop without assuming the model
+knows Lean or any ETP convention: [formalize_prompt.md](formalize_prompt.md)
+teaches a tiny self-contained answer syntax inside the prompt itself, and
+grading is pure syntactic comparison — no LLM judging.
+
+The model is asked to end its response with two lines in a prefix notation
+defined entirely in the prompt (an expression is an ingredient name or
+`op(first, second)`):
+
+```
+ASSUME: op(x, y) = op(op(y, y), x)
+ASK: op(x, y) = op(y, x)
+```
+
+The checker extracts the last `ASSUME:`/`ASK:` lines from the raw response,
+parses them, canonicalizes, and compares against the record's
+`canonical_e`/`canonical_f`. Three symmetries are accepted, because each is
+a faithful reading of the story:
+
+- **Variable renaming** — names are arbitrary; canonicalization absorbs them.
+- **Side swap** (per equation) — "the two results always come out the same"
+  is symmetric, so the order of an equation's sides is not recoverable intent.
+- **Consistent dualization** — the story never says which participant of the
+  action is `op`'s first argument; an answer using the opposite convention
+  uniformly across *both* equations is the dual implication, semantically
+  the same claim.
+
+The direction of the implication (ASSUME vs ASK) is never lenient. The
+verdict JSON reports `status` (`correct` / `wrong` / `unparseable`) and the
+minimal accepted `transform` (`swap_e`, `swap_f`, `dual` flags), so eval
+stats can distinguish exact-convention answers from dualized ones.
+
+```sh
+# Print the filled prompt for a corpus record
+python3 checkform.py prompt corpus/E387-E43-paint.json
+
+# Grade a raw model response; exit 0 correct, 1 wrong, 2 unparseable
+python3 checkform.py grade corpus/E387-E43-paint.json response.txt
+```
+
 ## Files
 
 - [examples.md](examples.md) — one implication (E387 ⇒ E43) rendered
@@ -134,17 +177,22 @@ annotations in the text.
 - [themes/](themes/) — one JSON file per theme; schema and authoring
   rules documented in [themes/README.md](themes/README.md).
 - [backparse.py](backparse.py) — recovers both laws from story text alone.
-- [test_storyform.py](test_storyform.py) — test suite.
+- [formalize_prompt.md](formalize_prompt.md) — self-contained prompt
+  teaching the answer syntax; `{story}` placeholder filled per record.
+- [checkform.py](checkform.py) — answer extraction, prefix parser, and
+  syntactic grader with CLI.
+- [test_storyform.py](test_storyform.py) — renderer test suite.
+- [test_checkform.py](test_checkform.py) — grader test suite.
 - [CLAUDE.md](CLAUDE.md) — full design document: invariants, conventions,
   pitfalls, and roadmap.
 
 ## Testing
 
 ```sh
-python3 test_storyform.py
+python3 -m unittest test_storyform test_checkform
 ```
 
-The suite covers, in priority order:
+The renderer suite covers, in priority order:
 
 1. **Round-trip** — the back-parser recovers both term trees and the
    palette order from story text, across all pairs and themes.
@@ -160,6 +208,13 @@ The suite covers, in priority order:
 It also byte-compares the E387 ⇒ E43 habit against the worked example in
 CLAUDE.md.
 
+The grader suite covers answer extraction from messy responses, rejection
+of malformed syntax, one test per verdict class — including the symmetries
+that must be accepted (side swap, uniform dualization) and those that must
+not (reversed implication, dual applied to only one equation) — plus
+determinism and a round-trip where a perfect answer built from each corpus
+record's own equations grades correct.
+
 ## Roadmap
 
 - **ETP data ingestion** — load equations and implication pairs from the
@@ -167,5 +222,8 @@ CLAUDE.md.
 - **Corpus export** — batch JSONL export pairing stories with formal
   metadata (ETP numbers, raw equations, Lean statements).
 - **CI round-trip gate** — run the back-parser over every exported story.
+- **Batch eval harness** — run a model over every corpus prompt and
+  aggregate checkform verdicts (correct / dualized / swapped / wrong /
+  unparseable rates).
 - **Theme library growth** — more action domains, each vetted against the
   order-sensitivity, injectivity, and no-leakage invariants.

@@ -15,6 +15,8 @@ with:
 python3 storyform.py "<E>" "<F>" --theme tea
 ```
 
+
+
 ## 1. `x = x ∘ x` ⇒ `x ∘ y = y ∘ x`
 
 *The habit's left side is a bare variable, so it renders as a single procedure compared against the starting tea itself.*
