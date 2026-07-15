@@ -173,6 +173,27 @@ implication, with no LLM judging anywhere:
   `dual`) so evals can distinguish exact-convention answers from dualized
   ones. CLI exit codes: 0 correct, 1 wrong, 2 unparseable.
 
+## Benchmarking and charts
+
+- `benchmark.py` runs the eval end to end: sample (E, F) pairs from the ETP
+  equation list (uniform `--n`, or `--stratify-ops N` for N pairs per
+  total-operation bin 1–8 — uniform sampling lands almost entirely on
+  maximal 4+4-op pairs), render stories, query models via OpenRouter
+  (`OPENROUTER_API_KEY`), grade with checkform, and write a resumable run
+  directory (`run_meta.json`, `samples.jsonl`, `results.jsonl`,
+  `summary.md`). Rerunning the same `--out-dir` retries only api-error rows.
+  `--reasoning on|off` standardizes thinking across models: a uniform
+  prompt wrapper for every model plus the native reasoning toggle where
+  supported (with per-vendor floors: qwen3 needs `/no_think`, gpt-5 floors
+  at `effort: minimal`); rows record `reasoning_tokens` so regime
+  compliance is auditable. `--dry-run` exercises everything but the
+  network and must grade 100% exact.
+- `charts.py RUN_DIR... --out report.html` renders run directories into a
+  self-contained HTML chart report (no dependencies, inline SVG, light and
+  dark). Runs over the same pair set are grouped and compared: regime
+  dumbbell per model, accuracy-vs-complexity lines when the sample spans
+  operation bins, verdict-composition bars, and a data table per figure.
+
 ## Testing
 
 Renderer tests live in `test_storyform.py`, grader tests in
