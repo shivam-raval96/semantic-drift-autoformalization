@@ -193,6 +193,11 @@ implication, with no LLM judging anywhere:
   dark). Runs over the same pair set are grouped and compared: regime
   dumbbell per model, accuracy-vs-complexity lines when the sample spans
   operation bins, verdict-composition bars, and a data table per figure.
+- Reports meant to be shared go in `reports/` (committed; `results/` is
+  gitignored raw run data). Each report is one self-contained file — it can
+  also be published as a claude.ai Artifact or emailed as-is. `charts.py
+  --pdf` additionally prints a PDF next to the HTML (uses headless
+  Chrome/Chromium; print styles keep figures unbroken across pages).
 
 ## Testing
 

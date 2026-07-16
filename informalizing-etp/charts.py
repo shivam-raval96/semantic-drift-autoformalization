@@ -503,6 +503,15 @@ th { color: var(--muted); font-weight: 500; font-size: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { #tooltip { transition: none; } }
 [data-tip]:focus { outline: 2px solid var(--s1); outline-offset: 2px; }
+@media print {
+  figure { break-inside: avoid; }
+  .tiles { break-inside: avoid; flex-wrap: nowrap; }
+  .tile { flex: 1 1 auto; padding: 10px 12px; }
+  .tile .value { font-size: 20px; }
+  h2 { break-after: avoid; }
+  #tooltip { display: none; }
+  main { padding: 0 0 24px; }
+}
 """
 
 JS = """
@@ -564,6 +573,38 @@ symmetry (sides swapped, or both equations uniformly dualized).</p>
 """
 
 
+CHROME_PATHS = (
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "/Applications/Chromium.app/Contents/MacOS/Chromium",
+    "google-chrome",
+    "chromium",
+)
+
+
+def export_pdf(html_path: Path, pdf_path: Path) -> None:
+    """Print the report to PDF with headless Chrome/Chromium."""
+    import shutil
+    import subprocess
+
+    chrome = next(
+        (c for c in CHROME_PATHS if Path(c).exists() or shutil.which(c)), None
+    )
+    if chrome is None:
+        raise SystemExit("--pdf needs Google Chrome or Chromium installed")
+    subprocess.run(
+        [
+            chrome,
+            "--headless",
+            "--disable-gpu",
+            "--no-pdf-header-footer",
+            f"--print-to-pdf={pdf_path.resolve()}",
+            html_path.resolve().as_uri(),
+        ],
+        check=True,
+        capture_output=True,
+    )
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     cli = argparse.ArgumentParser(
         description="Render benchmark.py run directories into an HTML chart report."
@@ -571,6 +612,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     cli.add_argument("run_dirs", nargs="+", type=Path)
     cli.add_argument("--out", type=Path, default=Path("results/report.html"))
     cli.add_argument("--title", default="ETP story-formalization benchmark")
+    cli.add_argument(
+        "--pdf",
+        action="store_true",
+        help="also print the report to PDF next to --out (needs Chrome/Chromium)",
+    )
     args = cli.parse_args(argv)
 
     runs = [load_run(d) for d in args.run_dirs]
@@ -578,6 +624,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(report, encoding="utf-8")
     print(args.out)
+    if args.pdf:
+        pdf_path = args.out.with_suffix(".pdf")
+        export_pdf(args.out, pdf_path)
+        print(pdf_path)
     return 0
 
 
