@@ -50,6 +50,12 @@ def main():
     valid = [r for r in rows if not r['verdict'].startswith('syntax')]
     tr, te = split_rows(valid, 'mixed')
     ytr, yte = y_of(tr), y_of(te)
+    if not len(te) or len(set(ytr)) < 2 or len(set(yte)) < 2:
+        sys.exit(f"gauntlet needs both classes on both sides of the split; got "
+                 f"train {len(tr)} / test {len(te)} from {len(valid)} valid rows in {tres}.\n"
+                 "This capture cannot support the kill test (the in-repo Qwen-0.5B capture has 19\n"
+                 "valid items, one register). Ask a mentor to sync the Llama-3.1-8B capture\n"
+                 "(MENTEES.md: 'What's deliberately not here').")
     lines = [f"# Gauntlet — can input-side features match the probe? ({tres})", "",
              f"train {len(tr)} (drift {ytr.sum()}) / test {len(te)} (drift {yte.sum()}), "
              "identical split for every contender.", "",

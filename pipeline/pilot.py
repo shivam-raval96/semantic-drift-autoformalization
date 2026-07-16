@@ -122,10 +122,15 @@ class ApiBackend:
                 return ''.join(b.text for b in resp.content if b.type == 'text')
             return call
         # openai and openrouter both speak the OpenAI protocol
-        import openai
+        # key check BEFORE the sdk import: fails loud on missing key even where
+        # the sdk isn't installed (offline test machines)
         if self.provider == 'openrouter':
             if not os.environ.get('OPENROUTER_API_KEY'):
                 raise RuntimeError('OPENROUTER_API_KEY not set (https://openrouter.ai/keys)')
+        elif not os.environ.get('OPENAI_API_KEY'):
+            raise RuntimeError('OPENAI_API_KEY not set')
+        import openai
+        if self.provider == 'openrouter':
             try:  # soft budget guard: warn (never block) past 80% of the key's limit
                 import urllib.request
                 req = urllib.request.Request(
@@ -139,8 +144,6 @@ class ApiBackend:
             client = openai.OpenAI(base_url='https://openrouter.ai/api/v1',
                                    api_key=os.environ['OPENROUTER_API_KEY'])
         else:
-            if not os.environ.get('OPENAI_API_KEY'):
-                raise RuntimeError('OPENAI_API_KEY not set')
             client = openai.OpenAI()
 
         # OpenRouter expects max_tokens; native OpenAI's newer models want
