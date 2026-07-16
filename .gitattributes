@@ -1,0 +1,4 @@
+# Normalize all text files to LF in the repo (prevents CRLF churn in diffs).
+* text=auto
+*.png binary
+*.npz binary

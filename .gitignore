@@ -1,5 +1,14 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# regenerated run outputs (deterministic from committed inputs; commit the
+# inputs and the code, not these)
 pipeline/report.md
 pipeline/report.csv
+pipeline/data-v2.jsonl
+pipeline/runs.log
+pipeline/cse-report.md
+pipeline/cse-results.jsonl
+pipeline/gauntlet-report.md
+pipeline/probe-report-*.md
