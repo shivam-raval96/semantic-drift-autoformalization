@@ -1,0 +1,11 @@
+# Core (everything in MENTEES.md "first tasks" runs with just these two;
+# the pipeline itself — pilot.py, test_pilot.py — is stdlib-only)
+numpy
+scikit-learn
+
+# Optional, install only when your experiment needs them:
+# openai          # ApiBackend, OpenAI/OpenRouter providers (pilot.py run --backend api)
+# anthropic       # ApiBackend, Anthropic provider
+# z3-solver       # z3_check.py: certificate search past size 4
+# torch           # hf_backend.py / steer.py: open-weight runs + activation capture (GPU; see LAMBDA.md)
+# transformers    # ditto

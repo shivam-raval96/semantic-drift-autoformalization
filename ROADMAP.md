@@ -72,4 +72,4 @@ not hidden.
 - `pipeline/` provenance: copied 2026-07-04 from the local `semdiff_pilot` working
   tree (its own git history lives there). Treat this copy as canonical going forward
   or re-sync deliberately — don't edit both.
-- Nothing here has been pushed; review locally first.
+- Branches live on origin; work lands by PR (see MENTEES.md conventions).
