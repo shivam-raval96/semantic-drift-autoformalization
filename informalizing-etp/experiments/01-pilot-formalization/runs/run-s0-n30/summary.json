@@ -1,0 +1,54 @@
+{
+  "deepseek/deepseek-chat-v3.1": {
+    "counts": {
+      "exact": 21,
+      "correct-swapped": 6,
+      "correct-dualized": 0,
+      "wrong": 2,
+      "unparseable": 1,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.9,
+    "exact_rate": 0.7
+  },
+  "qwen/qwen3-32b": {
+    "counts": {
+      "exact": 17,
+      "correct-swapped": 10,
+      "correct-dualized": 0,
+      "wrong": 2,
+      "unparseable": 1,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.9,
+    "exact_rate": 0.5667
+  },
+  "openai/gpt-4o-mini": {
+    "counts": {
+      "exact": 2,
+      "correct-swapped": 0,
+      "correct-dualized": 0,
+      "wrong": 25,
+      "unparseable": 3,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.0667,
+    "exact_rate": 0.0667
+  },
+  "google/gemini-2.5-flash": {
+    "counts": {
+      "exact": 13,
+      "correct-swapped": 5,
+      "correct-dualized": 0,
+      "wrong": 10,
+      "unparseable": 2,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.6,
+    "exact_rate": 0.4333
+  }
+}

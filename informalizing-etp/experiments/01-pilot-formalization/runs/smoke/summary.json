@@ -1,0 +1,15 @@
+{
+  "openai/gpt-4o-mini": {
+    "counts": {
+      "exact": 0,
+      "correct-swapped": 0,
+      "correct-dualized": 0,
+      "wrong": 2,
+      "unparseable": 0,
+      "api-error": 0
+    },
+    "graded": 2,
+    "correct_rate": 0.0,
+    "exact_rate": 0.0
+  }
+}

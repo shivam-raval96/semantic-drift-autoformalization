@@ -183,6 +183,9 @@ python3 checkform.py grade corpus/E387-E43-paint.json response.txt
   syntactic grader with CLI.
 - [test_storyform.py](test_storyform.py) — renderer test suite.
 - [test_checkform.py](test_checkform.py) — grader test suite.
+- [experiments/](experiments/) — the committed lab notebook: each
+  benchmark experiment with its write-up, run data, and chart report
+  (conventions in [experiments/README.md](experiments/README.md)).
 - [CLAUDE.md](CLAUDE.md) — full design document: invariants, conventions,
   pitfalls, and roadmap.
 

@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-07-14T22:01:50.384873+00:00",
+  "seed": 0,
+  "n": 2,
+  "models": [
+    "openai/gpt-4o-mini"
+  ],
+  "dry_run": false,
+  "max_tokens": 4096,
+  "equations_sha256": "e30e1a6735011ff36fdb228d37b232eb7cda9d4a836cbbefc69c07e6871c8010"
+}

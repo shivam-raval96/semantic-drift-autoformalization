@@ -193,11 +193,26 @@ implication, with no LLM judging anywhere:
   dark). Runs over the same pair set are grouped and compared: regime
   dumbbell per model, accuracy-vs-complexity lines when the sample spans
   operation bins, verdict-composition bars, and a data table per figure.
-- Reports meant to be shared go in `reports/` (committed; `results/` is
-  gitignored raw run data). Each report is one self-contained file — it can
-  also be published as a claude.ai Artifact or emailed as-is. `charts.py
-  --pdf` additionally prints a PDF next to the HTML (uses headless
-  Chrome/Chromium; print styles keep figures unbroken across pages).
+- Each report is one self-contained file — it can also be published as a
+  claude.ai Artifact or emailed as-is. `charts.py --pdf` additionally
+  prints a PDF next to the HTML (uses headless Chrome/Chromium; print
+  styles keep figures unbroken across pages).
+
+## Experiments
+
+- `experiments/` is the committed lab notebook: one numbered directory per
+  experiment (`NN-slug/`) containing `EXPERIMENT.md` (question, setup —
+  models tested and thinking regime — prompts, reproduce commands, results,
+  conclusions), `runs/` (the benchmark.py run directories), and `report/`
+  (the charts.py output). The full convention, the EXPERIMENT.md template,
+  and the step-by-step recipe for running a new experiment — written so a
+  subagent can follow it unattended — live in `experiments/README.md`,
+  along with the backlog of planned experiments.
+- `results/` remains gitignored scratch space for smoke tests and dry runs;
+  anything worth keeping is run with `--out-dir experiments/NN-slug/runs/...`
+  from the start.
+- Run directories are immutable after the fact; a prompt-template change
+  means a new experiment, not an edit to an old one.
 
 ## Testing
 
