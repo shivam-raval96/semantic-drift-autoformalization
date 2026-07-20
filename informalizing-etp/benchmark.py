@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Benchmark: LLM formalization of ETP implication stories via OpenRouter.
 
-For each sampled (E, F) equation pair: render the question-story with
-storyform, build the formalization prompt with checkform, send it to each
-model through the OpenRouter chat-completions API, and grade the raw
-response syntactically with checkform.grade. Sampling is seeded and the
-story pipeline is pure, so a run is reproducible end to end; only the
-model responses are nondeterministic.
+For each sampled (E, F) equation pair: render the question in the chosen
+form (--form story: themed storyform narrative with formalize_prompt.md;
+--form literal: direct literalform description with literal_prompt.md),
+build the formalization prompt with checkform, send it to each model
+through the OpenRouter chat-completions API, and grade the raw response
+syntactically with checkform.grade. Sampling is seeded and both render
+pipelines are pure, so a run is reproducible end to end; only the model
+responses are nondeterministic. The RNG stream never depends on the form,
+so story and literal runs with the same seed cover the same pair set.
 
 Artifacts, written under --out-dir:
     run_meta.json   seed, n, models, equations-file sha256, CLI args
@@ -39,8 +42,19 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+from checkform import PROMPT_PATH as STORY_PROMPT_PATH
 from checkform import build_prompt, grade
+from literalform import render_description
 from storyform import Op, ParseError, Term, Var, parse_equation, render_story
+
+LITERAL_PROMPT_PATH = Path(__file__).resolve().parent / "literal_prompt.md"
+
+# Each form is a (renderer, prompt template) arm over the same record
+# schema; checkform grades both unchanged.
+FORMS = {
+    "story": (render_story, STORY_PROMPT_PATH),
+    "literal": (render_description, LITERAL_PROMPT_PATH),
+}
 
 EQUATIONS_URL = (
     "https://raw.githubusercontent.com/teorth/equational_theories/main/data/equations.txt"
@@ -63,24 +77,39 @@ DEFAULT_MODELS = (
 )
 
 # Uniform per-regime prompt wrappers, applied identically to every model
-# on top of the untouched formalize_prompt.md output. "on" also enables
+# on top of the untouched prompt-template output. "on" also enables
 # native reasoning where the model supports OpenRouter's reasoning
 # parameter; "off" disables it there. Models without the parameter get
-# the wrapper alone.
+# the wrapper alone. The "on" prefix is form-specific: the story wording
+# is kept byte-identical to earlier runs, and the literal arm has no
+# numbered intermediates to point at.
 REGIME_PREFIX = {
-    "on": (
-        "Work through the story step by step first — write out what "
-        "expression each numbered intermediate stands for, one at a time — "
-        "and only then finish with the two required lines.\n\n"
-    ),
+    "on": {
+        "story": (
+            "Work through the story step by step first — write out what "
+            "expression each numbered intermediate stands for, one at a time — "
+            "and only then finish with the two required lines.\n\n"
+        ),
+        "literal": (
+            "Work through the description step by step first — write out what "
+            "expression each application of the operation stands for, one at "
+            "a time — and only then finish with the two required lines.\n\n"
+        ),
+    },
 }
 REGIME_SUFFIX = {
     "off": "\n\nRespond with only the two required lines, and no other text before them.",
 }
 
 
-def wrap_prompt(prompt: str, regime: Optional[str], model: str = "") -> str:
-    text = REGIME_PREFIX.get(regime, "") + prompt + REGIME_SUFFIX.get(regime, "")
+def regime_prefix(regime: Optional[str], form: str) -> str:
+    return REGIME_PREFIX.get(regime, {}).get(form, "")
+
+
+def wrap_prompt(
+    prompt: str, regime: Optional[str], model: str = "", form: str = "story"
+) -> str:
+    text = regime_prefix(regime, form) + prompt + REGIME_SUFFIX.get(regime, "")
     # Qwen3's vendor-documented soft switch; some providers ignore the
     # OpenRouter reasoning toggle for it (observed: DeepInfra).
     if regime == "off" and model.startswith("qwen/qwen3"):
@@ -128,13 +157,39 @@ def load_equations(path: Path = EQUATIONS_PATH, url: str = EQUATIONS_URL) -> Tup
 # --------------------------------------------------------------- Sampling
 
 
-def sample_pairs(equations: List[str], n: int, seed: int) -> List[dict]:
+def make_sample(
+    equations: List[str], e_num: int, f_num: int, form: str
+) -> Optional[dict]:
+    """Render one (E, F) pair in the given form, or None if unrenderable."""
+    render, template = FORMS[form]
+    try:
+        story, metadata = render(equations[e_num - 1], equations[f_num - 1])
+    except (ParseError, ValueError):
+        return None
+    metadata["label_e"] = f"E{e_num}"
+    metadata["label_f"] = f"E{f_num}"
+    prompt = build_prompt({"story": story, "metadata": metadata}, template_path=template)
+    return {
+        "pair_id": f"E{e_num}-E{f_num}",
+        "form": form,
+        "story": story,
+        "metadata": metadata,
+        "prompt": prompt,
+        "prompt_hash": hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:12],
+    }
+
+
+def sample_pairs(
+    equations: List[str], n: int, seed: int, form: str = "story"
+) -> List[dict]:
     """Deterministically sample n renderable (E, F) pairs.
 
     Draws ordered pairs from a seeded RNG, discarding duplicates, E = F,
-    and pairs storyform cannot render (parse failures, more variables
+    and pairs the renderer cannot handle (parse failures, more variables
     than the theme palette holds). Discards consume the same RNG stream,
-    so the result depends only on (equations, n, seed).
+    so the result depends only on (equations, n, seed, form) — and both
+    renderers reject exactly the same pairs, so story and literal runs
+    with one seed cover the identical pair set.
     """
     rng = random.Random(seed)
     samples: List[dict] = []
@@ -149,23 +204,9 @@ def sample_pairs(equations: List[str], n: int, seed: int) -> List[dict]:
         if e_num == f_num or (e_num, f_num) in chosen:
             continue
         chosen.add((e_num, f_num))
-        e_text, f_text = equations[e_num - 1], equations[f_num - 1]
-        try:
-            story, metadata = render_story(e_text, f_text)
-        except (ParseError, ValueError):
-            continue
-        metadata["label_e"] = f"E{e_num}"
-        metadata["label_f"] = f"E{f_num}"
-        prompt = build_prompt({"story": story, "metadata": metadata})
-        samples.append(
-            {
-                "pair_id": f"E{e_num}-E{f_num}",
-                "story": story,
-                "metadata": metadata,
-                "prompt": prompt,
-                "prompt_hash": hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:12],
-            }
-        )
+        sample = make_sample(equations, e_num, f_num, form)
+        if sample is not None:
+            samples.append(sample)
     return samples
 
 
@@ -195,7 +236,11 @@ def _complexity(sample: dict) -> dict:
 
 
 def sample_pairs_stratified(
-    equations: List[str], per_bin: int, seed: int, bins: Tuple[int, ...] = tuple(range(1, 9))
+    equations: List[str],
+    per_bin: int,
+    seed: int,
+    bins: Tuple[int, ...] = tuple(range(1, 9)),
+    form: str = "story",
 ) -> List[dict]:
     """Deterministically sample per_bin renderable pairs for each total
     operation count in bins.
@@ -237,20 +282,9 @@ def sample_pairs_stratified(
             if e_num == f_num or (e_num, f_num) in chosen:
                 continue
             chosen.add((e_num, f_num))
-            try:
-                story, metadata = render_story(equations[e_num - 1], equations[f_num - 1])
-            except (ParseError, ValueError):
+            sample = make_sample(equations, e_num, f_num, form)
+            if sample is None:
                 continue
-            metadata["label_e"] = f"E{e_num}"
-            metadata["label_f"] = f"E{f_num}"
-            prompt = build_prompt({"story": story, "metadata": metadata})
-            sample = {
-                "pair_id": f"E{e_num}-E{f_num}",
-                "story": story,
-                "metadata": metadata,
-                "prompt": prompt,
-                "prompt_hash": hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:12],
-            }
             sample.update(_complexity(sample))
             samples.append(sample)
             got += 1
@@ -393,12 +427,14 @@ def bucket_of(row: dict) -> str:
 
 
 def run_one(sample: dict, model: str, caller, regime: Optional[str]) -> dict:
-    sent_prompt = wrap_prompt(sample["prompt"], regime, model)
+    form = sample.get("form", "story")
+    sent_prompt = wrap_prompt(sample["prompt"], regime, model, form)
     call = caller(model, sent_prompt, sample)
     response = call["content"]
     verdict = grade(response, sample["metadata"]) if response is not None else None
     row = {
         "pair_id": sample["pair_id"],
+        "form": form,
         "label_e": sample["metadata"]["label_e"],
         "label_f": sample["metadata"]["label_f"],
         "theme": sample["metadata"]["theme"],
@@ -514,6 +550,13 @@ def main(argv: Optional[List[str]] = None) -> int:
         "instead of --n uniform pairs (complexity studies)",
     )
     cli.add_argument(
+        "--form",
+        choices=tuple(FORMS),
+        default="story",
+        help="rendering arm: themed question-story (storyform) or direct "
+        "literal description (literalform); default story",
+    )
+    cli.add_argument(
         "--models",
         default=",".join(DEFAULT_MODELS),
         help="comma-separated OpenRouter model slugs",
@@ -544,14 +587,16 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     models = [m.strip() for m in args.models.split(",") if m.strip()]
     regime = args.reasoning
+    form = args.form
     max_tokens = args.max_tokens or (16384 if regime == "on" else 4096)
+    form_tag = f"-{form}" if form != "story" else ""
     suffix = f"-think-{regime}" if regime else ""
     stem = (
         f"run-strat{args.stratify_ops}-s{args.seed}"
         if args.stratify_ops
         else f"run-s{args.seed}-n{args.n}"
     )
-    out_dir = args.out_dir or Path(f"results/{stem}{suffix}")
+    out_dir = args.out_dir or Path(f"results/{stem}{form_tag}{suffix}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     api_key = os.environ.get("OPENROUTER_API_KEY", "")
@@ -577,9 +622,11 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     equations, equations_sha = load_equations(args.equations_path)
     if args.stratify_ops:
-        samples = sample_pairs_stratified(equations, args.stratify_ops, args.seed)
+        samples = sample_pairs_stratified(
+            equations, args.stratify_ops, args.seed, form=form
+        )
     else:
-        samples = sample_pairs(equations, args.n, args.seed)
+        samples = sample_pairs(equations, args.n, args.seed, form=form)
 
     (out_dir / "run_meta.json").write_text(
         json.dumps(
@@ -588,11 +635,12 @@ def main(argv: Optional[List[str]] = None) -> int:
                 "seed": args.seed,
                 "n": args.n,
                 "stratify_ops": args.stratify_ops,
+                "form": form,
                 "models": models,
                 "dry_run": args.dry_run,
                 "max_tokens": max_tokens,
                 "reasoning_regime": regime,
-                "regime_prefix": REGIME_PREFIX.get(regime, ""),
+                "regime_prefix": regime_prefix(regime, form),
                 "regime_suffix": REGIME_SUFFIX.get(regime, ""),
                 "native_reasoning": {m: v for m, v in native_reasoning.items()},
                 "equations_sha256": equations_sha,
@@ -653,7 +701,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     notes_text = "".join(f"\n**Compliance:** {note}\n" for note in notes)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
     (out_dir / "summary.md").write_text(
-        f"# Benchmark run: seed={args.seed}, n={args.n}, "
+        f"# Benchmark run: seed={args.seed}, n={args.n}, form={form}, "
         f"reasoning={regime or 'legacy'}\n\n{table}\n{notes_text}",
         encoding="utf-8",
     )

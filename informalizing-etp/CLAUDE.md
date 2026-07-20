@@ -208,10 +208,14 @@ implication, with no LLM judging anywhere:
 - `benchmark.py` runs the eval end to end: sample (E, F) pairs from the ETP
   equation list (uniform `--n`, or `--stratify-ops N` for N pairs per
   total-operation bin 1–8 — uniform sampling lands almost entirely on
-  maximal 4+4-op pairs), render stories, query models via OpenRouter
-  (`OPENROUTER_API_KEY`), grade with checkform, and write a resumable run
-  directory (`run_meta.json`, `samples.jsonl`, `results.jsonl`,
-  `summary.md`). Rerunning the same `--out-dir` retries only api-error rows.
+  maximal 4+4-op pairs), render each pair in the chosen arm (`--form story`
+  themed stories with `formalize_prompt.md`; `--form literal` direct
+  descriptions with `literal_prompt.md` — sampling never consults the form,
+  so equal seeds give the identical pair set in both arms), query models
+  via OpenRouter (`OPENROUTER_API_KEY`), grade with checkform, and write a
+  resumable run directory (`run_meta.json`, `samples.jsonl`,
+  `results.jsonl`, `summary.md`). Rerunning the same `--out-dir` retries
+  only api-error rows.
   `--reasoning on|off` standardizes thinking across models: a uniform
   prompt wrapper for every model plus the native reasoning toggle where
   supported (with per-vendor floors: qwen3 needs `/no_think`, gpt-5 floors

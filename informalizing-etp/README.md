@@ -167,6 +167,10 @@ python3 literalform.py "x ∘ y = (y ∘ y) ∘ x" "x ∘ y = y ∘ x" \
 Comparing model accuracy on the two arms — literal description vs. themed
 story of the identical implication — measures how much of the
 formalization difficulty comes from the story indirection itself.
+`benchmark.py --form literal` runs the eval on this arm end to end
+(rendering with literalform and prompting with `literal_prompt.md`);
+sampling ignores the form, so story and literal runs with the same seed
+score the identical pair set and differ only in the rendering.
 
 ## Grading model formalizations
 
