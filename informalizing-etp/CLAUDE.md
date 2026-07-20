@@ -147,6 +147,36 @@ Things to notice, all of which follow from the invariants below:
 - Python 3, standard library only unless a dependency clearly pays for
   itself.
 
+## Literal descriptions — the direct arm
+
+`literalform.py` renders the same implications as **direct**
+natural-language descriptions ("for every choice of objects x and y, the
+result of applying the operation to x as its first input and y as its
+second input is always equal to ..."), question-framed like the stories.
+`literal_prompt.md` is its companion formalization prompt; records use the
+same schema (with `theme`/`style` set to `"literal"`), so `checkform.py`
+grades both arms unchanged.
+
+How the invariants apply to literalform:
+
+- **Deliberate exceptions**: invariant 2's no-leakage rule is relaxed —
+  variable letters (x, y, z, w, u, v) and words like "operation" appear by
+  design. Op symbols, equation numbers, and ETP references are still
+  banned from the text. Invariant 5's named-intermediates rule is replaced
+  by a words-only *prefix* grammar: nesting renders inline, kept
+  unambiguous because each "the result of applying the operation to ..."
+  consumes exactly one "as its first input and" and one "as its second
+  input".
+- **Fully in force**: question framing and no answers (1), determinism
+  (3), order-sensitive rendering (4) — the text names first/second inputs
+  explicitly — invertibility (6; `backparse_literal` round-trips every
+  pair in tests), and faithfulness over fluency (7).
+
+Note on grading: because the literal text fixes the argument order
+explicitly, a dualized answer is not a faithful reading of *this* arm —
+but checkform still accepts `dual` and reports it in the verdict's
+`transform`, so evals can count dualized answers separately.
+
 ## Formalization grading — the reverse eval
 
 `checkform.py` grades a model's attempt to formalize a story back into the
@@ -216,9 +246,10 @@ implication, with no LLM judging anywhere:
 
 ## Testing
 
-Renderer tests live in `test_storyform.py`, grader tests in
-`test_checkform.py`; run both with `python3 -m unittest test_storyform
-test_checkform`. Renderer priority order:
+Renderer tests live in `test_storyform.py`, literal-renderer tests in
+`test_literalform.py`, grader tests in `test_checkform.py`; run all with
+`python3 -m unittest test_storyform test_literalform test_checkform`.
+Renderer priority order:
 1. Round-trip test — a back-parser recovers both term trees from the story
    text alone, matching the original pair of ASTs.
 2. No-leakage test — story text contains no digits attached to equations,

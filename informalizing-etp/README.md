@@ -124,6 +124,50 @@ story text → term trees — and the test suite round-trips every story
 through it. This is what makes the metadata trustworthy without any
 annotations in the text.
 
+## Literal descriptions — the direct arm
+
+[literalform.py](literalform.py) is the contrasting renderer: instead of a
+fuzzy themed story, it renders the same implication as a **direct**
+natural-language description — plain English that openly talks about an
+operation, its two ordered inputs, and lettered variables (x, y, z, ...),
+with no story dressing:
+
+> Suppose the following always holds: for every choice of objects x and y,
+> the result of applying the operation to x as its first input and y as its
+> second input is always equal to the result of applying the operation to
+> the result of applying the operation to y as its first input and y as its
+> second input as its first input and x as its second input.
+>
+> Does it follow that ...?
+
+Terms use a words-only prefix grammar — each "the result of applying the
+operation to ... as its first input and ... as its second input" is one
+application, its inputs possibly such results themselves — so nesting is
+unambiguous without parentheses and the text stays injective
+(`backparse_literal` recovers both term trees; the test suite round-trips
+every pair). Like storyform it is a pure function of the (E, F) pair, and
+it emits the same record schema, so `checkform.py` grades answers to
+either style unchanged.
+
+[literal_prompt.md](literal_prompt.md) is the companion system prompt:
+same self-contained `op(first, second)` / `ASSUME:` / `ASK:` contract as
+`formalize_prompt.md`, but teaching the mapping from the literal grammar
+("first input" → first argument of `op`) instead of from story
+conventions. Pass it to `build_prompt` via `template_path`.
+
+```sh
+# Render a literal description
+python3 literalform.py "x ∘ y = (y ∘ y) ∘ x" "x ∘ y = y ∘ x"
+
+# Write a checkform-compatible record (filename tagged -literal)
+python3 literalform.py "x ∘ y = (y ∘ y) ∘ x" "x ∘ y = y ∘ x" \
+    --e-label E387 --f-label E43 --out-dir corpus
+```
+
+Comparing model accuracy on the two arms — literal description vs. themed
+story of the identical implication — measures how much of the
+formalization difficulty comes from the story indirection itself.
+
 ## Grading model formalizations
 
 The corpus exists to test whether models can formalize the stories back.
@@ -177,11 +221,17 @@ python3 checkform.py grade corpus/E387-E43-paint.json response.txt
 - [themes/](themes/) — one JSON file per theme; schema and authoring
   rules documented in [themes/README.md](themes/README.md).
 - [backparse.py](backparse.py) — recovers both laws from story text alone.
+- [literalform.py](literalform.py) — the direct arm: literal
+  natural-language descriptions of the same implications, with its own
+  back-parser.
 - [formalize_prompt.md](formalize_prompt.md) — self-contained prompt
   teaching the answer syntax; `{story}` placeholder filled per record.
+- [literal_prompt.md](literal_prompt.md) — companion prompt for literal
+  descriptions; same answer syntax, graded by the same checker.
 - [checkform.py](checkform.py) — answer extraction, prefix parser, and
   syntactic grader with CLI.
 - [test_storyform.py](test_storyform.py) — renderer test suite.
+- [test_literalform.py](test_literalform.py) — literal-renderer test suite.
 - [test_checkform.py](test_checkform.py) — grader test suite.
 - [experiments/](experiments/) — the committed lab notebook: each
   benchmark experiment with its write-up, run data, and chart report
