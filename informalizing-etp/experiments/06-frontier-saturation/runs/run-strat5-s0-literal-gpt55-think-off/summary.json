@@ -1,18 +1,18 @@
 {
   "openai/gpt-5.5": {
     "counts": {
-      "exact": 20,
+      "exact": 40,
       "correct-swapped": 0,
       "correct-dualized": 0,
       "wrong": 0,
       "unparseable": 0,
       "api-error": 0
     },
-    "graded": 20,
+    "graded": 40,
     "correct_rate": 1.0,
     "exact_rate": 1.0,
-    "median_response_len": 493,
-    "rows_with_reasoning": 20,
-    "median_reasoning_tokens": 594
+    "median_response_len": 55,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
   }
 }

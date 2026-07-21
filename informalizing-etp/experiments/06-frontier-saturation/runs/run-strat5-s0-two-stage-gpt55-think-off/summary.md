@@ -1,5 +1,5 @@
-# Benchmark run: seed=0, n=20, form=story, reasoning=on
+# Benchmark run: seed=0, n=30, form=two-stage, reasoning=off
 
 | model | exact | correct-swapped | correct-dualized | wrong | unparseable | api-error | graded | correct% | rsn rows | med rsn toks |
 |---|---|---|---|---|---|---|---|---|---|---|
-| openai/gpt-5.5 | 20 | 0 | 0 | 0 | 0 | 0 | 20 | 100.0 | 20 | 594 |
+| openai/gpt-5.5 | 40 | 0 | 0 | 0 | 0 | 0 | 40 | 100.0 | 0 | 0 |
