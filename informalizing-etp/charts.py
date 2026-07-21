@@ -361,18 +361,39 @@ def by_model_counts(run: dict) -> Dict[str, Dict[str, int]]:
     return out
 
 
-def ops_bins(run: dict) -> List[int]:
-    return sorted({r.get("ops_total") for r in run["rows"] if r.get("ops_total")})
+def metric_bins(run: dict, key: str) -> List[int]:
+    return sorted({r.get(key) for r in run["rows"] if r.get(key)})
 
 
-def acc_by_ops(run: dict) -> Dict[int, float]:
+def acc_by_metric(run: dict, key: str) -> Dict[int, float]:
     out = {}
-    for b in ops_bins(run):
-        rows = [r for r in run["rows"] if r.get("ops_total") == b]
+    for b in metric_bins(run, key):
+        rows = [r for r in run["rows"] if r.get(key) == b]
         pct = correct_pct(rows)
         if pct is not None:
             out[b] = pct
     return out
+
+
+# The two complexity measures every results row carries (stratified runs
+# only; uniform sampling records neither): (row key, figure-title word,
+# x-axis title, caption phrase, data-table summary).
+COMPLEXITY_METRICS = (
+    (
+        "ops_total",
+        "operation count",
+        "total operations in the implication",
+        "by the implication's total operation count (both equations combined)",
+        "Data: pooled correct rate per operation-count bin",
+    ),
+    (
+        "depth",
+        "nesting depth",
+        "maximum nesting depth in the implication",
+        "by the deepest operation nesting across the four equation sides",
+        "Data: pooled correct rate per depth bin",
+    ),
+)
 
 
 def data_table(headers: List[str], rows: List[List[object]], summary: str) -> str:
@@ -459,27 +480,29 @@ def render_group(group: List[dict], fig_no: List[int]) -> str:
             )
         )
 
-    bins = ops_bins(group[0])
-    if len(bins) >= 3:
+    for key, measure, x_title, phrase, summary in COMPLEXITY_METRICS:
+        bins = metric_bins(group[0], key)
+        if len(bins) < 3:
+            continue
         series = []
         for i, run in enumerate(group):
             series.append(
                 {"name": run["label"], "color": SERIES_VARS[i % len(SERIES_VARS)],
-                 "points": acc_by_ops(run)}
+                 "points": acc_by_metric(run, key)}
             )
         fig_no[0] += 1
         table = data_table(
-            ["total operations", *[s["name"] + " %" for s in series]],
+            [x_title, *[s["name"] + " %" for s in series]],
             [[b, *[f"{s['points'].get(b, float('nan')):.0f}" for s in series]] for b in bins],
-            "Data: pooled correct rate per operation-count bin",
+            summary,
         )
         sections.append(
             figure(
                 fig_no[0],
-                f"Accuracy vs implication complexity — {sample_tag(group[0])}",
-                "Correct rate pooled over all models, by the implication's total "
-                "operation count (both equations combined). " + sample_note(group[0]),
-                line_chart(series, bins, "total operations in the implication") + table,
+                f"Accuracy vs {measure} — {sample_tag(group[0])}",
+                f"Correct rate pooled over all models, {phrase}. "
+                + sample_note(group[0]),
+                line_chart(series, bins, x_title) + table,
             )
         )
 
@@ -562,29 +585,30 @@ def render_form_group(group: List[dict], fig_no: List[int]) -> str:
             )
         )
 
-        bins = ops_bins(runs[0])
-        if len(bins) >= 3:
+        for key, measure, x_title, phrase, summary in COMPLEXITY_METRICS:
+            bins = metric_bins(runs[0], key)
+            if len(bins) < 3:
+                continue
             line_series = [
-                {"name": name, "color": color, "points": acc_by_ops(r)}
+                {"name": name, "color": color, "points": acc_by_metric(r, key)}
                 for r, (name, color) in zip(runs, series)
             ]
             fig_no[0] += 1
             table = data_table(
-                ["total operations", *[s["name"] + " %" for s in line_series]],
+                [x_title, *[s["name"] + " %" for s in line_series]],
                 [
                     [b, *[f"{s['points'].get(b, float('nan')):.0f}" for s in line_series]]
                     for b in bins
                 ],
-                "Data: pooled correct rate per operation-count bin",
+                summary,
             )
             sections.append(
                 figure(
                     fig_no[0],
-                    f"Accuracy vs implication complexity — {label} · {sample_tag(runs[0])}",
-                    "Correct rate pooled over all models, by the implication's "
-                    f"total operation count; one line per form, {label} regime. "
-                    + sample_note(runs[0]),
-                    line_chart(line_series, bins, "total operations in the implication")
+                    f"Accuracy vs {measure} — {label} · {sample_tag(runs[0])}",
+                    f"Correct rate pooled over all models, {phrase}; one line per "
+                    f"form, {label} regime. " + sample_note(runs[0]),
+                    line_chart(line_series, bins, x_title)
                     + table,
                 )
             )
