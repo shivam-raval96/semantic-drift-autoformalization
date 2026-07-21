@@ -42,6 +42,9 @@ python3 charts.py experiments/06-frontier-saturation/runs/* \
 | Uniform pilot (20) | 20 | 0 | 0 | 0 | 100% | 594 | $0.64 |
 | Stratified 5 x 8 (40) | 39 | 1 | 0 | 0 | 100% | 516 | $1.05 |
 
+The OpenRouter-reported cost was $0.640155 for the 20-pair pilot and
+$1.051775 for the 40-pair stratified run, or **$1.691930 total ($1.69)**.
+
 `correct-swapped` exchanges the sides of one equality and is semantically
 equivalent under the benchmark's accepted symmetries.
 
