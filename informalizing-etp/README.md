@@ -177,6 +177,16 @@ formalization difficulty comes from the story indirection itself.
 sampling ignores the form, so story and literal runs with the same seed
 score the identical pair set and differ only in the rendering.
 
+`benchmark.py --form two-stage` decomposes the story arm into two model
+calls: stage 1 sends the themed story with
+[abstract_prompt.md](abstract_prompt.md), asking the model to rewrite it
+as a literalform-style description, and stage 2 feeds that raw output —
+verbatim, no extraction — into `literal_prompt.md` to produce the two
+`ASSUME:`/`ASK:` lines, graded as usual. Comparing this pipeline against
+the single-shot story arm measures whether explicit abstraction helps;
+comparing against the literal arm (whose stage-2 task is identical)
+isolates how much fidelity stage 1 loses.
+
 ## Grading model formalizations
 
 The corpus exists to test whether models can formalize the stories back.
@@ -237,11 +247,16 @@ python3 checkform.py grade corpus/E387-E43-paint.json response.txt
   teaching the answer syntax; `{story}` placeholder filled per record.
 - [literal_prompt.md](literal_prompt.md) — companion prompt for literal
   descriptions; same answer syntax, graded by the same checker.
+- [abstract_prompt.md](abstract_prompt.md) — stage-1 prompt of the
+  two-stage arm: rewrite a themed story as a literalform-style
+  description.
 - [checkform.py](checkform.py) — answer extraction, prefix parser, and
   syntactic grader with CLI.
 - [test_storyform.py](test_storyform.py) — renderer test suite.
 - [test_literalform.py](test_literalform.py) — literal-renderer test suite.
 - [test_checkform.py](test_checkform.py) — grader test suite.
+- [test_benchmark.py](test_benchmark.py) — benchmark test suite
+  (two-stage arm, regime wrappers).
 - [experiments/](experiments/) — the committed lab notebook: each
   benchmark experiment with its write-up, run data, and chart report
   (conventions in [experiments/README.md](experiments/README.md)).

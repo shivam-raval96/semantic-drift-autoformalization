@@ -215,7 +215,7 @@ implication, with no LLM judging anywhere:
   maximal 4+4-op pairs), render each pair in the chosen arm (`--form story`
   themed stories with `formalize_prompt.md`; `--form literal` direct
   descriptions with `literal_prompt.md` — sampling never consults the form,
-  so equal seeds give the identical pair set in both arms), query models
+  so equal seeds give the identical pair set in every arm), query models
   via OpenRouter (`OPENROUTER_API_KEY`), grade with checkform, and write a
   resumable run directory (`run_meta.json`, `samples.jsonl`,
   `results.jsonl`, `summary.md`). Rerunning the same `--out-dir` retries
@@ -226,6 +226,16 @@ implication, with no LLM judging anywhere:
   at `effort: minimal`); rows record `reasoning_tokens` so regime
   compliance is auditable. `--dry-run` exercises everything but the
   network and must grade 100% exact.
+  `--form two-stage` is the decomposed arm: stage 1 sends the themed
+  story with `abstract_prompt.md`, asking the model to rewrite it as a
+  literalform-style description; stage 2 feeds stage 1's raw response —
+  verbatim, no extraction — into `literal_prompt.md` and the final
+  answer is graded as usual. Rows keep the standard schema (top-level
+  call fields describe the graded stage-2 call) plus `stage1_*`
+  bookkeeping; stage 1 gets its own regime wrapper wording ("abstract"),
+  stage 2 reuses the literal wording unchanged. In a dry run stage 1
+  "answers" with the deterministic literalform rendering, so the full
+  pipeline still must grade 100% exact.
 - `charts.py RUN_DIR... --out report.html` renders run directories into a
   self-contained HTML chart report (no dependencies, inline SVG, light and
   dark). Runs over the same pair set are grouped and compared: regime
@@ -255,8 +265,10 @@ implication, with no LLM judging anywhere:
 ## Testing
 
 Renderer tests live in `test_storyform.py`, literal-renderer tests in
-`test_literalform.py`, grader tests in `test_checkform.py`; run all with
-`python3 -m unittest test_storyform test_literalform test_checkform`.
+`test_literalform.py`, grader tests in `test_checkform.py`, benchmark
+(two-stage arm and regime wrappers) tests in `test_benchmark.py`; run all
+with `python3 -m unittest test_storyform test_literalform test_checkform
+test_benchmark`.
 Renderer priority order:
 1. Round-trip test — a back-parser recovers both term trees from the story
    text alone, matching the original pair of ASTs.

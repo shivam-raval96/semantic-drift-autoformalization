@@ -3,13 +3,16 @@
 
 For each sampled (E, F) equation pair: render the question in the chosen
 form (--form story: themed storyform narrative with formalize_prompt.md;
---form literal: direct literalform description with literal_prompt.md),
-build the formalization prompt with checkform, send it to each model
-through the OpenRouter chat-completions API, and grade the raw response
-syntactically with checkform.grade. Sampling is seeded and both render
-pipelines are pure, so a run is reproducible end to end; only the model
-responses are nondeterministic. The RNG stream never depends on the form,
-so story and literal runs with the same seed cover the same pair set.
+--form literal: direct literalform description with literal_prompt.md;
+--form two-stage: the story, first abstracted by the model into a literal
+description with abstract_prompt.md, whose output is then formalized with
+literal_prompt.md in a second call), build the formalization prompt with
+checkform, send it to each model through the OpenRouter chat-completions
+API, and grade the raw response syntactically with checkform.grade.
+Sampling is seeded and both render pipelines are pure, so a run is
+reproducible end to end; only the model responses are nondeterministic.
+The RNG stream never depends on the form, so runs of any form with the
+same seed cover the same pair set.
 
 Artifacts, written under --out-dir:
     run_meta.json   seed, n, models, equations-file sha256, CLI args
@@ -48,12 +51,17 @@ from literalform import render_description
 from storyform import Op, ParseError, Term, Var, parse_equation, render_story
 
 LITERAL_PROMPT_PATH = Path(__file__).resolve().parent / "literal_prompt.md"
+ABSTRACT_PROMPT_PATH = Path(__file__).resolve().parent / "abstract_prompt.md"
 
 # Each form is a (renderer, prompt template) arm over the same record
-# schema; checkform grades both unchanged.
+# schema; checkform grades all of them unchanged. The two-stage arm
+# renders the story and prompts for its literalform-style abstraction
+# (stage 1); the stage-2 prompt is built at run time from
+# LITERAL_PROMPT_PATH and the stage-1 response (see run_two_stage).
 FORMS = {
     "story": (render_story, STORY_PROMPT_PATH),
     "literal": (render_description, LITERAL_PROMPT_PATH),
+    "two-stage": (render_story, ABSTRACT_PROMPT_PATH),
 }
 
 EQUATIONS_URL = (
@@ -80,11 +88,16 @@ DEFAULT_MODELS = (
 # on top of the untouched prompt-template output. "on" also enables
 # native reasoning where the model supports OpenRouter's reasoning
 # parameter; "off" disables it there. Models without the parameter get
-# the wrapper alone. The "on" prefix is form-specific; each wording is
-# kept byte-identical to earlier runs (story: experiments 01-02, literal:
-# experiment 03). The literal wording predates literalform's named
-# intermediates, but still fits: "each application of the operation" is
-# exactly one definition step.
+# the wrapper alone. Wordings are form-specific and kept byte-identical
+# to earlier runs (story: experiments 01-02, literal: experiments 03-04).
+# The literal wording predates literalform's named intermediates, but
+# still fits: "each application of the operation" is exactly one
+# definition step. "abstract" is the two-stage arm's stage-1 wrapper —
+# its output is a description, not the two lines, so it gets its own
+# wording; stage 2 reuses the literal wrapper unchanged.
+_TWO_LINES_SUFFIX = (
+    "\n\nRespond with only the two required lines, and no other text before them."
+)
 REGIME_PREFIX = {
     "on": {
         "story": (
@@ -97,10 +110,22 @@ REGIME_PREFIX = {
             "expression each application of the operation stands for, one at "
             "a time — and only then finish with the two required lines.\n\n"
         ),
+        "abstract": (
+            "Work through the story step by step first — write out what "
+            "expression each numbered intermediate stands for, one at a time — "
+            "and only then finish with the complete rewritten description.\n\n"
+        ),
     },
 }
 REGIME_SUFFIX = {
-    "off": "\n\nRespond with only the two required lines, and no other text before them.",
+    "off": {
+        "story": _TWO_LINES_SUFFIX,
+        "literal": _TWO_LINES_SUFFIX,
+        "abstract": (
+            "\n\nRespond with only the rewritten description, and no other "
+            "text before it."
+        ),
+    },
 }
 
 
@@ -108,10 +133,14 @@ def regime_prefix(regime: Optional[str], form: str) -> str:
     return REGIME_PREFIX.get(regime, {}).get(form, "")
 
 
+def regime_suffix(regime: Optional[str], form: str) -> str:
+    return REGIME_SUFFIX.get(regime, {}).get(form, "")
+
+
 def wrap_prompt(
     prompt: str, regime: Optional[str], model: str = "", form: str = "story"
 ) -> str:
-    text = regime_prefix(regime, form) + prompt + REGIME_SUFFIX.get(regime, "")
+    text = regime_prefix(regime, form) + prompt + regime_suffix(regime, form)
     # Qwen3's vendor-documented soft switch; some providers ignore the
     # OpenRouter reasoning toggle for it (observed: DeepInfra).
     if regime == "off" and model.startswith("qwen/qwen3"):
@@ -428,13 +457,9 @@ def bucket_of(row: dict) -> str:
     return "exact"
 
 
-def run_one(sample: dict, model: str, caller, regime: Optional[str]) -> dict:
-    form = sample.get("form", "story")
-    sent_prompt = wrap_prompt(sample["prompt"], regime, model, form)
-    call = caller(model, sent_prompt, sample)
-    response = call["content"]
-    verdict = grade(response, sample["metadata"]) if response is not None else None
-    row = {
+def _row_base(sample: dict, model: str, regime: Optional[str], form: str) -> dict:
+    """The row fields identifying the (pair, model) task, shared by both arms."""
+    return {
         "pair_id": sample["pair_id"],
         "form": form,
         "label_e": sample["metadata"]["label_e"],
@@ -447,17 +472,90 @@ def run_one(sample: dict, model: str, caller, regime: Optional[str]) -> dict:
         "ops_total": sample.get("ops_total"),
         "depth": sample.get("depth"),
         "prompt_hash": sample["prompt_hash"],
-        "sent_prompt_hash": hashlib.sha256(sent_prompt.encode("utf-8")).hexdigest()[:12],
-        "response": response,
-        "verdict": verdict,
-        "api_error": call["error"],
-        "usage": call["usage"],
-        "latency_s": call["latency_s"],
-        "routed_model": call.get("routed_model"),
-        "provider": call.get("provider"),
-        "finish_reason": call.get("finish_reason"),
-        "reasoning_tokens": call.get("reasoning_tokens"),
     }
+
+
+def _hash12(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:12]
+
+
+def run_one(sample: dict, model: str, caller, regime: Optional[str]) -> dict:
+    form = sample.get("form", "story")
+    if form == "two-stage":
+        return run_two_stage(sample, model, caller, regime)
+    sent_prompt = wrap_prompt(sample["prompt"], regime, model, form)
+    call = caller(model, sent_prompt, sample)
+    response = call["content"]
+    verdict = grade(response, sample["metadata"]) if response is not None else None
+    row = _row_base(sample, model, regime, form)
+    row.update(
+        sent_prompt_hash=_hash12(sent_prompt),
+        response=response,
+        verdict=verdict,
+        api_error=call["error"],
+        usage=call["usage"],
+        latency_s=call["latency_s"],
+        routed_model=call.get("routed_model"),
+        provider=call.get("provider"),
+        finish_reason=call.get("finish_reason"),
+        reasoning_tokens=call.get("reasoning_tokens"),
+    )
+    row["bucket"] = bucket_of(row)
+    return row
+
+
+def run_two_stage(sample: dict, model: str, caller, regime: Optional[str]) -> dict:
+    """Two model calls: story -> literal description -> the two lines.
+
+    Stage 1 sends the sample's prompt (the story under abstract_prompt.md)
+    and stage 2 feeds its raw response — verbatim, with no extraction or
+    validation, since the pipeline's end-to-end fidelity is the
+    measurement — into literal_prompt.md. Top-level call fields describe
+    stage 2 (the graded call) so grading, aggregation, resume, and charts
+    are unchanged; stage-1 bookkeeping lives in the stage1_* fields.
+    """
+    stage1_sent = wrap_prompt(sample["prompt"], regime, model, "abstract")
+    call1 = caller(model, stage1_sent, sample, stage=1)
+    stage1_response = call1["content"]
+
+    call2 = stage2_sent = None
+    if stage1_response is not None:
+        stage2_prompt = build_prompt(
+            {"story": stage1_response}, template_path=LITERAL_PROMPT_PATH
+        )
+        stage2_sent = wrap_prompt(stage2_prompt, regime, model, "literal")
+        call2 = caller(model, stage2_sent, sample, stage=2)
+
+    response = call2["content"] if call2 else None
+    verdict = grade(response, sample["metadata"]) if response is not None else None
+    errors = [
+        f"stage {n}: {call['error']}"
+        for n, call in ((1, call1), (2, call2))
+        if call and call["error"]
+    ]
+
+    row = _row_base(sample, model, regime, "two-stage")
+    final = call2 or {"usage": None, "latency_s": None}
+    row.update(
+        sent_prompt_hash=_hash12(stage2_sent) if stage2_sent is not None else None,
+        response=response,
+        verdict=verdict,
+        api_error="; ".join(errors) or None,
+        usage=final.get("usage"),
+        latency_s=final.get("latency_s"),
+        routed_model=final.get("routed_model"),
+        provider=final.get("provider"),
+        finish_reason=final.get("finish_reason"),
+        reasoning_tokens=final.get("reasoning_tokens"),
+        stage1_sent_prompt_hash=_hash12(stage1_sent),
+        stage1_response=stage1_response,
+        stage1_usage=call1["usage"],
+        stage1_latency_s=call1["latency_s"],
+        stage1_routed_model=call1.get("routed_model"),
+        stage1_provider=call1.get("provider"),
+        stage1_finish_reason=call1.get("finish_reason"),
+        stage1_reasoning_tokens=call1.get("reasoning_tokens"),
+    )
     row["bucket"] = bucket_of(row)
     return row
 
@@ -514,7 +612,15 @@ def compliance_notes(rows: List[dict], regime: Optional[str]) -> List[str]:
     if regime == "off":
         # <= 16 tokens is an empty think-block artifact, not actual reasoning
         offenders = sorted(
-            {row["model"] for row in rows if (row.get("reasoning_tokens") or 0) > 16}
+            {
+                row["model"]
+                for row in rows
+                if max(
+                    row.get("reasoning_tokens") or 0,
+                    row.get("stage1_reasoning_tokens") or 0,
+                )
+                > 16
+            }
         )
         if offenders:
             notes.append(
@@ -555,8 +661,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         "--form",
         choices=tuple(FORMS),
         default="story",
-        help="rendering arm: themed question-story (storyform) or direct "
-        "literal description (literalform); default story",
+        help="rendering arm: themed question-story (storyform), direct "
+        "literal description (literalform), or two-stage (story abstracted "
+        "into a literal description by the model, then formalized in a "
+        "second call); default story",
     )
     cli.add_argument(
         "--models",
@@ -630,27 +738,36 @@ def main(argv: Optional[List[str]] = None) -> int:
     else:
         samples = sample_pairs(equations, args.n, args.seed, form=form)
 
+    # Two-stage wraps its stage-1 prompt with the "abstract" wording and
+    # its stage-2 prompt with the literal wording; record both.
+    wrap_form = "abstract" if form == "two-stage" else form
+    template_path = FORMS[form][1]
+    meta = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "seed": args.seed,
+        "n": args.n,
+        "stratify_ops": args.stratify_ops,
+        "form": form,
+        "models": models,
+        "dry_run": args.dry_run,
+        "max_tokens": max_tokens,
+        "reasoning_regime": regime,
+        "regime_prefix": regime_prefix(regime, wrap_form),
+        "regime_suffix": regime_suffix(regime, wrap_form),
+        "native_reasoning": {m: v for m, v in native_reasoning.items()},
+        "equations_sha256": equations_sha,
+        "prompt_template": template_path.name,
+        "prompt_template_sha256": hashlib.sha256(template_path.read_bytes()).hexdigest(),
+    }
+    if form == "two-stage":
+        meta["stage2_template"] = LITERAL_PROMPT_PATH.name
+        meta["stage2_template_sha256"] = hashlib.sha256(
+            LITERAL_PROMPT_PATH.read_bytes()
+        ).hexdigest()
+        meta["stage2_regime_prefix"] = regime_prefix(regime, "literal")
+        meta["stage2_regime_suffix"] = regime_suffix(regime, "literal")
     (out_dir / "run_meta.json").write_text(
-        json.dumps(
-            {
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "seed": args.seed,
-                "n": args.n,
-                "stratify_ops": args.stratify_ops,
-                "form": form,
-                "models": models,
-                "dry_run": args.dry_run,
-                "max_tokens": max_tokens,
-                "reasoning_regime": regime,
-                "regime_prefix": regime_prefix(regime, form),
-                "regime_suffix": REGIME_SUFFIX.get(regime, ""),
-                "native_reasoning": {m: v for m, v in native_reasoning.items()},
-                "equations_sha256": equations_sha,
-            },
-            indent=2,
-        )
-        + "\n",
-        encoding="utf-8",
+        json.dumps(meta, indent=2) + "\n", encoding="utf-8"
     )
     with (out_dir / "samples.jsonl").open("w", encoding="utf-8") as fh:
         for sample in samples:
@@ -668,15 +785,25 @@ def main(argv: Optional[List[str]] = None) -> int:
           f"({len(rows)} already done)")
 
     if args.dry_run:
-        def caller(model: str, prompt: str, sample: dict) -> dict:
+        # Stage 1 of the two-stage arm "answers" with the deterministic
+        # literalform rendering, so the dry run exercises the real stage-2
+        # prompt build on stage-1 output and must still grade 100% exact.
+        def caller(model: str, prompt: str, sample: dict, stage: int = 2) -> dict:
+            metadata = sample["metadata"]
+            if stage == 1:
+                content = render_description(
+                    metadata["equation_e"], metadata["equation_f"]
+                )[0]
+            else:
+                content = synthesize_response(metadata)
             return {
-                "content": synthesize_response(sample["metadata"]),
+                "content": content,
                 "error": None,
                 "usage": None,
                 "latency_s": 0.0,
             }
     else:
-        def caller(model: str, prompt: str, sample: dict) -> dict:
+        def caller(model: str, prompt: str, sample: dict, stage: int = 2) -> dict:
             return call_openrouter(
                 model, prompt, api_key, max_tokens, args.timeout,
                 reasoning=native_reasoning[model],
