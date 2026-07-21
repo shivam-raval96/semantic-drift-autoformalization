@@ -21,6 +21,7 @@ from pathlib import Path
 from benchmark import (
     ABSTRACT_PROMPT_PATH,
     STORY_PROMPT_PATH,
+    build_reasoning_payload,
     make_sample,
     run_one,
     synthesize_response,
@@ -156,6 +157,51 @@ class RegimeWrapperTest(unittest.TestCase):
     def test_qwen_soft_switch_survives(self):
         wrapped = wrap_prompt("P", "off", model="qwen/qwen3-32b", form="abstract")
         self.assertTrue(wrapped.endswith("\n/no_think"))
+
+
+class NativeReasoningTest(unittest.TestCase):
+    def test_off_uses_none_when_supported(self):
+        info = {
+            "supported_parameters": ["reasoning"],
+            "reasoning": {
+                "mandatory": False,
+                "supported_efforts": ["high", "medium", "low", "none"],
+            },
+        }
+        self.assertEqual(
+            build_reasoning_payload("off", info),
+            {"effort": "none", "exclude": True},
+        )
+
+    def test_off_disables_optional_reasoning_without_effort_none(self):
+        info = {
+            "supported_parameters": ["reasoning"],
+            "reasoning": {"mandatory": False},
+        }
+        self.assertEqual(
+            build_reasoning_payload("off", info),
+            {"enabled": False, "exclude": True},
+        )
+
+    def test_off_uses_lowest_effort_for_mandatory_reasoning(self):
+        info = {
+            "supported_parameters": ["reasoning"],
+            "reasoning": {
+                "mandatory": True,
+                "supported_efforts": ["high", "medium", "low"],
+            },
+        }
+        self.assertEqual(
+            build_reasoning_payload("off", info),
+            {"effort": "low", "exclude": True},
+        )
+
+    def test_on_enables_supported_reasoning(self):
+        info = {"supported_parameters": ["reasoning"]}
+        self.assertEqual(build_reasoning_payload("on", info), {"enabled": True})
+
+    def test_unsupported_reasoning_has_no_native_payload(self):
+        self.assertIsNone(build_reasoning_payload("off", {}))
 
 
 if __name__ == "__main__":

@@ -392,11 +392,11 @@ def call_openrouter(
     return {"content": None, "error": error, "usage": None, "latency_s": None}
 
 
-def validate_models(models: List[str], api_key: str, timeout: float) -> Dict[str, set]:
+def validate_models(models: List[str], api_key: str, timeout: float) -> Dict[str, dict]:
     """Fail fast if a requested model slug is unknown to OpenRouter.
 
-    Returns each requested model's supported_parameters set, so the
-    caller knows which models accept the native reasoning toggle.
+    Returns each requested model's metadata, including its supported
+    parameters and reasoning capabilities.
     """
     request = urllib.request.Request(
         OPENROUTER_MODELS_URL, headers={"Authorization": f"Bearer {api_key}"}
@@ -411,7 +411,30 @@ def validate_models(models: List[str], api_key: str, timeout: float) -> Dict[str
             hint = f" (close matches: {', '.join(near)})" if near else ""
             lines.append(f"  {model}{hint}")
         raise SystemExit("unknown OpenRouter model(s):\n" + "\n".join(lines))
-    return {m: set(entries[m].get("supported_parameters") or ()) for m in models}
+    return {m: entries[m] for m in models}
+
+
+def build_reasoning_payload(regime: Optional[str], model_info: dict) -> Optional[dict]:
+    """Translate the benchmark regime into the model's native API setting."""
+    supported = set(model_info.get("supported_parameters") or ())
+    if not regime or "reasoning" not in supported:
+        return None
+    if regime == "on":
+        return {"enabled": True}
+
+    reasoning = model_info.get("reasoning") or {}
+    efforts = reasoning.get("supported_efforts") or ()
+    if "none" in efforts:
+        return {"effort": "none", "exclude": True}
+    if not reasoning.get("mandatory", False):
+        return {"enabled": False, "exclude": True}
+
+    # Some endpoints cannot disable reasoning. Preserve the historical
+    # behavior by selecting their lowest advertised effort.
+    for effort in ("minimal", "low", "medium", "high", "xhigh", "max"):
+        if effort in efforts:
+            return {"effort": effort, "exclude": True}
+    return {"enabled": True, "exclude": True}
 
 
 # ---------------------------------------------------------------- Dry run
@@ -710,25 +733,16 @@ def main(argv: Optional[List[str]] = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     api_key = os.environ.get("OPENROUTER_API_KEY", "")
-    supports: Dict[str, set] = {}
+    model_info: Dict[str, dict] = {}
     if not args.dry_run:
         if not api_key:
             raise SystemExit("OPENROUTER_API_KEY is not set (use --dry-run to test offline)")
-        supports = validate_models(models, api_key, args.timeout)
+        model_info = validate_models(models, api_key, args.timeout)
     # Native toggle only where the model supports it; wrapper covers the rest.
-    def reasoning_payload(model: str) -> Optional[dict]:
-        if not regime or "reasoning" not in supports.get(model, set()):
-            return None
-        if regime == "on":
-            return {"enabled": True}
-        if model.startswith("openai/gpt-5"):
-            # reasoning is mandatory for this endpoint; minimal is the floor
-            return {"effort": "minimal", "exclude": True}
-        # exclude:true is belt-and-braces: some providers ignore the bare
-        # toggle, and hiding the reasoning stream keeps content clean.
-        return {"enabled": False, "exclude": True}
-
-    native_reasoning = {m: reasoning_payload(m) for m in models}
+    native_reasoning = {
+        model: build_reasoning_payload(regime, model_info.get(model, {}))
+        for model in models
+    }
 
     equations, equations_sha = load_equations(args.equations_path)
     if args.stratify_ops:
