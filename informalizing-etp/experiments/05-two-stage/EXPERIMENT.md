@@ -126,6 +126,15 @@ python3 benchmark.py --seed 0 --stratify-ops 5 --form two-stage --reasoning on -
 
 python3 charts.py experiments/05-two-stage/runs/* \
     --out experiments/05-two-stage/report/benchmark-report.html --pdf
+
+# cross-arm comparison against the committed exp-02 (story) and exp-04
+# (literal) runs — identical pair sets by construction:
+python3 charts.py \
+    experiments/02-reasoning-and-complexity/runs/* \
+    experiments/04-structured-literal/runs/* \
+    experiments/05-two-stage/runs/* \
+    --title "ETP formalization benchmark · story vs literal vs two-stage" \
+    --out experiments/05-two-stage/report/comparison-report.html --pdf
 ```
 
 (All eight default models; `--models` may be omitted.)
@@ -133,7 +142,10 @@ python3 charts.py experiments/05-two-stage/runs/* \
 ## Results
 
 Artifacts: the four run directories under `runs/` (each with `summary.md`),
-and `report/benchmark-report.html` / `.pdf`.
+`report/benchmark-report.html` / `.pdf` (this experiment's runs, regime
+comparison), and `report/comparison-report.html` / `.pdf` (the headline
+figures: story vs literal vs two-stage per model and regime, on the
+identical pair sets from experiments 02 and 04).
 
 Correct% by regime (uniform n=30 / stratified 40), experiment-02/03/04 row
 order:

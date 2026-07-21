@@ -81,6 +81,17 @@ def group_runs(runs: List[dict]) -> List[List[dict]]:
     return list(groups.values())
 
 
+# Rendering arms in pipeline order; used to order and color cross-form
+# comparison figures (story blue, literal green, two-stage purple).
+FORM_ORDER = {"story": 0, "literal": 1, "two-stage": 2}
+FORM_COLORS = {"story": "var(--s1)", "literal": "var(--s2)", "two-stage": "var(--s3)"}
+REGIME_ORDER = {"off": 0, "on": 1, None: 2}
+
+
+def run_form(run: dict) -> str:
+    return run["meta"].get("form", "story")
+
+
 def experiment_title(group: List[dict]) -> str:
     meta = group[0]["meta"]
     pairs = len(group[0]["samples"])
@@ -88,6 +99,10 @@ def experiment_title(group: List[dict]) -> str:
         how = f"{pairs} pairs, {meta['stratify_ops']} per operation-count bin 1–8"
     else:
         how = f"{pairs} uniformly sampled pairs"
+    forms = sorted({run_form(r) for r in group}, key=lambda f: FORM_ORDER.get(f, 9))
+    if len(forms) > 1:
+        regimes = " and ".join(dict.fromkeys(run["label"] for run in group))
+        return f"{how} · seed {meta['seed']} · {' vs '.join(forms)} · {regimes}"
     regimes = " vs ".join(run["label"] for run in group)
     return f"{how} · seed {meta['seed']} · {regimes}"
 
@@ -235,6 +250,64 @@ def dumbbell_chart(rows: List[dict], a_name: str, b_name: str) -> str:
     )
 
 
+def dot_rows_chart(rows: List[dict], series: List[Tuple[str, str]]) -> str:
+    """rows: [{label, values: [...], tips: [...]}] parallel to series
+    [(name, color)]; values 0..100 or None. The connector spans the row's
+    min and max, which are the two values labelled."""
+    left, right, top, row_h = 250, 60, 12, 34
+    plot_w = VB_W - left - right
+    height = top + row_h * len(rows) + 30
+    x_of = lambda v: left + plot_w * v / 100
+    parts = []
+    for tick in (0, 25, 50, 75, 100):
+        x = x_of(tick)
+        parts.append(
+            f'<line x1="{x:.1f}" y1="{top}" x2="{x:.1f}" y2="{top + row_h * len(rows)}" class="grid"/>'
+            f'<text x="{x:.1f}" y="{height - 8}" class="tick" text-anchor="middle">{tick}%</text>'
+        )
+    for i, row in enumerate(rows):
+        cy = top + row_h * i + row_h / 2
+        parts.append(
+            f'<text x="{left - 14}" y="{cy + 4:.1f}" class="row-label" text-anchor="end">'
+            f"{esc(row['label'])}</text>"
+        )
+        vals = [v for v in row["values"] if v is not None]
+        if len(vals) >= 2:
+            lo, hi = min(vals), max(vals)
+            parts.append(
+                f'<line x1="{x_of(lo):.1f}" y1="{cy:.1f}" x2="{x_of(hi):.1f}" y2="{cy:.1f}" '
+                'class="connector"/>'
+            )
+        for value, (_, color), tip in zip(row["values"], series, row["tips"]):
+            if value is None:
+                continue
+            parts.append(
+                f'<circle cx="{x_of(value):.1f}" cy="{cy:.1f}" r="7" class="ring"/>'
+                f'<circle cx="{x_of(value):.1f}" cy="{cy:.1f}" r="5" fill="{color}" {_tip(tip)}/>'
+            )
+        if vals:
+            lo, hi = min(vals), max(vals)
+            if x_of(lo) - 12 > left + 8:
+                lo_label = (
+                    f'<text x="{x_of(lo) - 12:.1f}" y="{cy + 4:.1f}" class="value" '
+                    f'text-anchor="end">{lo:.0f}</text>'
+                )
+            else:
+                lo_label = (
+                    f'<text x="{x_of(lo):.1f}" y="{cy - 12:.1f}" class="value" '
+                    f'text-anchor="middle">{lo:.0f}</text>'
+                )
+            parts.append(
+                lo_label
+                + f'<text x="{x_of(hi) + 12:.1f}" y="{cy + 4:.1f}" class="value">{hi:.0f}</text>'
+            )
+    svg = "".join(parts)
+    return (
+        legend_chips(series)
+        + f'<svg viewBox="0 0 {VB_W} {height}" role="img">{svg}</svg>'
+    )
+
+
 def stacked_bars(rows: List[dict]) -> str:
     """rows: [{label, counts: {bucket: n}}]; one horizontal bar per row."""
     left, right, top, row_h, bar_h = 250, 70, 8, 30, 18
@@ -326,6 +399,8 @@ def figure(number: int, title: str, caption: str, body: str) -> str:
 
 
 def render_group(group: List[dict], fig_no: List[int]) -> str:
+    if len({run_form(r) for r in group}) > 1:
+        return render_form_group(group, fig_no)
     sections = [f"<h2>{esc(experiment_title(group))}</h2>"]
     models = group[0]["models"]
 
@@ -406,6 +481,109 @@ def render_group(group: List[dict], fig_no: List[int]) -> str:
             figure(
                 fig_no[0],
                 f"Verdict composition — {run['label']} regime",
+                "How each model's answers grade out; the right-hand figure is the "
+                "correct rate (exact + swapped + dualized).",
+                stacked_bars(rows) + table,
+            )
+        )
+    return "".join(sections)
+
+
+def render_form_group(group: List[dict], fig_no: List[int]) -> str:
+    """Cross-arm comparison: the same pair set rendered in different forms.
+
+    One correct-rate figure per regime with a dot per form, per-form
+    complexity lines per regime, then the per-run verdict compositions
+    labelled by form and regime."""
+    group = sorted(
+        group,
+        key=lambda r: (REGIME_ORDER.get(r["regime"], 9), FORM_ORDER.get(run_form(r), 9)),
+    )
+    sections = [f"<h2>{esc(experiment_title(group))}</h2>"]
+    models = group[0]["models"]
+
+    for regime in dict.fromkeys(r["regime"] for r in group):
+        runs = [r for r in group if r["regime"] == regime]
+        label = runs[0]["label"]
+        series = [
+            (run_form(r), FORM_COLORS.get(run_form(r), SERIES_VARS[i % len(SERIES_VARS)]))
+            for i, r in enumerate(runs)
+        ]
+        counts = [by_model_counts(r) for r in runs]
+        rows = []
+        for m in models:
+            values = [correct_pct_counts(c[m]) for c in counts]
+            rows.append(
+                {
+                    "label": short_model(m),
+                    "values": values,
+                    "tips": [
+                        f"{m} · {name} · {label}: {v:.1f}% correct"
+                        for (name, _), v in zip(series, values)
+                    ],
+                }
+            )
+        rows.sort(key=lambda r: r["values"][-1], reverse=True)
+        fig_no[0] += 1
+        table = data_table(
+            ["model", *[f"{name} %" for name, _ in series]],
+            [[r["label"], *[f"{v:.1f}" for v in r["values"]]] for r in rows],
+            "Data: correct rate per model and form",
+        )
+        sections.append(
+            figure(
+                fig_no[0],
+                f"Correct rate by model and form — {label}",
+                "The same pairs rendered per arm; each row compares one model "
+                f"across the forms under the {label} regime.",
+                dot_rows_chart(rows, series) + table,
+            )
+        )
+
+        bins = ops_bins(runs[0])
+        if len(bins) >= 3:
+            line_series = [
+                {"name": name, "color": color, "points": acc_by_ops(r)}
+                for r, (name, color) in zip(runs, series)
+            ]
+            fig_no[0] += 1
+            table = data_table(
+                ["total operations", *[s["name"] + " %" for s in line_series]],
+                [
+                    [b, *[f"{s['points'].get(b, float('nan')):.0f}" for s in line_series]]
+                    for b in bins
+                ],
+                "Data: pooled correct rate per operation-count bin",
+            )
+            sections.append(
+                figure(
+                    fig_no[0],
+                    f"Accuracy vs implication complexity — {label}",
+                    "Correct rate pooled over all models, by the implication's "
+                    f"total operation count; one line per form, {label} regime.",
+                    line_chart(line_series, bins, "total operations in the implication")
+                    + table,
+                )
+            )
+
+    for run in group:
+        counts_by = by_model_counts(run)
+        rows = [{"label": short_model(m), "counts": counts_by[m]} for m in models]
+        rows.sort(key=lambda r: correct_pct_counts(r["counts"]), reverse=True)
+        fig_no[0] += 1
+        table = data_table(
+            ["model", *[name for name, _ in COMPOSITION], "correct %"],
+            [
+                [r["label"], *[r["counts"].get(name, 0) for name, _ in COMPOSITION],
+                 f"{correct_pct_counts(r['counts']):.1f}"]
+                for r in rows
+            ],
+            "Data: verdict counts per model",
+        )
+        sections.append(
+            figure(
+                fig_no[0],
+                f"Verdict composition — {run_form(run)} · {run['label']}",
                 "How each model's answers grade out; the right-hand figure is the "
                 "correct rate (exact + swapped + dualized).",
                 stacked_bars(rows) + table,
