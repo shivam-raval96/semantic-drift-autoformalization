@@ -535,6 +535,37 @@ document.querySelectorAll('[data-tip]').forEach(el => {
 """
 
 
+# Header lead sentence per rendering arm; picked when every run in the
+# report used the same form (mixed-form reports fall back to neutral).
+FORM_LEAD = {
+    "story": (
+        "Stories generated from Equational Theories Project implications\n"
+        "(<code>storyform.py</code>), formalized back by each model over OpenRouter"
+    ),
+    "literal": (
+        "Literal descriptions of Equational Theories Project implications\n"
+        "(<code>literalform.py</code>), formalized back by each model over OpenRouter"
+    ),
+    "two-stage": (
+        "Stories generated from Equational Theories Project implications\n"
+        "(<code>storyform.py</code>), each abstracted by the model into a literal\n"
+        "description (<code>abstract_prompt.md</code>) and then formalized in a\n"
+        "second call (<code>literal_prompt.md</code>) over OpenRouter"
+    ),
+}
+NEUTRAL_LEAD = (
+    "Equational Theories Project implications rendered per each run's form,\n"
+    "formalized back by each model over OpenRouter"
+)
+
+FORM_TITLE_TAG = {"literal": " · literal arm", "two-stage": " · two-stage arm"}
+
+
+def report_form(runs: List[dict]) -> Optional[str]:
+    forms = {r["meta"].get("form", "story") for r in runs}
+    return forms.pop() if len(forms) == 1 else None
+
+
 def render_report(runs: List[dict], title: str) -> str:
     total_rows = sum(len(r["rows"]) for r in runs)
     models = sorted({m for r in runs for m in r["models"]})
@@ -559,8 +590,7 @@ def render_report(runs: List[dict], title: str) -> str:
 <main>
 <header>
 <h1>{esc(title)}</h1>
-<p class="sub">Stories generated from Equational Theories Project implications
-(<code>storyform.py</code>), formalized back by each model over OpenRouter, and
+<p class="sub">{FORM_LEAD.get(report_form(runs), NEUTRAL_LEAD)}, and
 graded syntactically (<code>checkform.py</code>). Correct = exact, or an accepted
 symmetry (sides swapped, or both equations uniformly dualized).</p>
 <p class="meta">{run_list}</p>
@@ -611,7 +641,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     cli.add_argument("run_dirs", nargs="+", type=Path)
     cli.add_argument("--out", type=Path, default=Path("results/report.html"))
-    cli.add_argument("--title", default="ETP story-formalization benchmark")
+    cli.add_argument(
+        "--title",
+        default=None,
+        help="report title; default names the arm when all runs share one form",
+    )
     cli.add_argument(
         "--pdf",
         action="store_true",
@@ -620,7 +654,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = cli.parse_args(argv)
 
     runs = [load_run(d) for d in args.run_dirs]
-    report = render_report(runs, args.title)
+    title = args.title or (
+        "ETP story-formalization benchmark" + FORM_TITLE_TAG.get(report_form(runs), "")
+    )
+    report = render_report(runs, title)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(report, encoding="utf-8")
     print(args.out)
