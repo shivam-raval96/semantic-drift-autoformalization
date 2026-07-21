@@ -80,9 +80,11 @@ DEFAULT_MODELS = (
 # on top of the untouched prompt-template output. "on" also enables
 # native reasoning where the model supports OpenRouter's reasoning
 # parameter; "off" disables it there. Models without the parameter get
-# the wrapper alone. The "on" prefix is form-specific: the story wording
-# is kept byte-identical to earlier runs, and the literal arm has no
-# numbered intermediates to point at.
+# the wrapper alone. The "on" prefix is form-specific; each wording is
+# kept byte-identical to earlier runs (story: experiments 01-02, literal:
+# experiment 03). The literal wording predates literalform's named
+# intermediates, but still fits: "each application of the operation" is
+# exactly one definition step.
 REGIME_PREFIX = {
     "on": {
         "story": (

@@ -132,28 +132,33 @@ natural-language description — plain English that openly talks about an
 operation, its two ordered inputs, and lettered variables (x, y, z, ...),
 with no story dressing:
 
-> Suppose the following always holds: for every choice of objects x and y,
-> the result of applying the operation to x as its first input and y as its
-> second input is always equal to the result of applying the operation to
-> the result of applying the operation to y as its first input and y as its
-> second input as its first input and x as its second input.
+> Suppose the following always holds. For every choice of objects x and y,
+> apply the operation to x as its first input and y as its second input,
+> and call the result Value 1; then apply the operation to y as its first
+> input and y as its second input, and call the result Value 2; then apply
+> the operation to Value 2 as its first input and x as its second input,
+> and call the result Value 3. Then Value 1 is always equal to Value 3.
 >
-> Does it follow that ...?
+> Now consider the following question. ... Does it follow that ...?
 
-Terms use a words-only prefix grammar — each "the result of applying the
-operation to ... as its first input and ... as its second input" is one
-application, its inputs possibly such results themselves — so nesting is
-unambiguous without parentheses and the text stays injective
-(`backparse_literal` recovers both term trees; the test suite round-trips
-every pair). Like storyform it is a pure function of the (E, F) pair, and
-it emits the same record schema, so `checkform.py` grades answers to
-either style unchanged.
+Terms render as definition steps — each application of the operation is
+introduced on its own and its result named ("call the result Value 1"),
+the literal counterpart of the story arm's named intermediates
+("Batch 1") — so nesting never appears inline, is unambiguous without
+parentheses, and the text stays injective (`backparse_literal` recovers
+both term trees; the test suite round-trips every pair). Like storyform
+it is a pure function of the (E, F) pair, and it emits the same record
+schema, so `checkform.py` grades answers to either style unchanged.
+(Through experiment 03 the literal arm instead rendered nesting inline in
+a words-only prefix grammar; the definition-step grammar replaced it for
+experiment 04.)
 
 [literal_prompt.md](literal_prompt.md) is the companion system prompt:
 same self-contained `op(first, second)` / `ASSUME:` / `ASK:` contract as
 `formalize_prompt.md`, but teaching the mapping from the literal grammar
-("first input" → first argument of `op`) instead of from story
-conventions. Pass it to `build_prompt` via `template_path`.
+("first input" → first argument of `op`, Value names unfolded into nested
+expressions) instead of from story conventions. Pass it to `build_prompt`
+via `template_path`.
 
 ```sh
 # Render a literal description

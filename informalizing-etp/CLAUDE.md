@@ -150,27 +150,31 @@ Things to notice, all of which follow from the invariants below:
 ## Literal descriptions — the direct arm
 
 `literalform.py` renders the same implications as **direct**
-natural-language descriptions ("for every choice of objects x and y, the
-result of applying the operation to x as its first input and y as its
-second input is always equal to ..."), question-framed like the stories.
-`literal_prompt.md` is its companion formalization prompt; records use the
-same schema (with `theme`/`style` set to `"literal"`), so `checkform.py`
-grades both arms unchanged.
+natural-language descriptions, question-framed like the stories. Each
+application of the operation is introduced as its own definition step
+with a named result ("apply the operation to x as its first input and y
+as its second input, and call the result Value 1"), and later steps refer
+to earlier results by name — the literal counterpart of the story arm's
+named intermediates ("Batch 1"). `literal_prompt.md` is its companion
+formalization prompt (it teaches unfolding Value names into nested
+`op(...)`); records use the same schema (with `theme`/`style` set to
+`"literal"`), so `checkform.py` grades both arms unchanged. (Through
+experiment 03 the literal arm instead used a words-only inline prefix
+grammar with no named intermediates; the definition-step grammar replaced
+it for experiment 04.)
 
 How the invariants apply to literalform:
 
 - **Deliberate exceptions**: invariant 2's no-leakage rule is relaxed —
-  variable letters (x, y, z, w, u, v) and words like "operation" appear by
-  design. Op symbols, equation numbers, and ETP references are still
-  banned from the text. Invariant 5's named-intermediates rule is replaced
-  by a words-only *prefix* grammar: nesting renders inline, kept
-  unambiguous because each "the result of applying the operation to ..."
-  consumes exactly one "as its first input and" and one "as its second
-  input".
+  variable letters (x, y, z, w, u, v), words like "operation", and
+  numbered intermediate labels ("Value 1") appear by design. Op symbols,
+  equation numbers, and ETP references are still banned from the text.
 - **Fully in force**: question framing and no answers (1), determinism
   (3), order-sensitive rendering (4) — the text names first/second inputs
-  explicitly — invertibility (6; `backparse_literal` round-trips every
-  pair in tests), and faithfulness over fluency (7).
+  explicitly — named intermediates, never nested prose (5): the step
+  counter is shared across both sides of a law, exactly as in storyform;
+  invertibility (6; `backparse_literal` round-trips every pair in tests);
+  and faithfulness over fluency (7).
 
 Note on grading: because the literal text fixes the argument order
 explicitly, a dualized answer is not a faithful reading of *this* arm —

@@ -15,14 +15,15 @@ The description has two parts:
 1. A regularity that is assumed to always hold, introduced by "Suppose the
    following always holds": for every choice of the named objects, two
    described results are always equal.
-2. A closing question, introduced by "Does it follow that", asking whether
-   a second regularity must also always hold.
+2. A closing question, introduced by "Now consider the following question",
+   asking whether a second regularity must also always hold.
 
-Described results may be nested: an input of the operation can itself be
-"the result of applying the operation to ...". Read these inside out — each
-"the result of applying the operation to A as its first input and B as its
-second input" is one application of the operation, whose inputs A and B may
-themselves be such results.
+Each application of the operation is introduced as its own step, and its
+result is given a name: "apply the operation to x as its first input and y
+as its second input, and call the result Value 1". A later step may use a
+named result as an input, so a name like Value 2 can stand for a compound
+expression built out of earlier steps. Each Value name stands for exactly
+the expression its defining step describes — no more, no less.
 
 ## Your notation
 
@@ -46,12 +47,14 @@ ASK: <equation for the regularity the closing question asks about>
 2. What the description calls the operation's **first input** is the first
    argument of `op`, and the **second input** is the second argument —
    `op(first input, second input)`, everywhere in both lines.
-3. Translate each nested "the result of applying the operation to ..."
-   phrase into a nested `op(...)` expression, nesting as deep as needed.
+3. The named results (Value 1, Value 2, ...) are shorthand, not objects:
+   replace each one by the expression its defining step describes, nesting
+   `op(...)` as deep as needed. No Value name may appear in your two lines.
 4. If one side of an equality is just an object's name, that side of the
    equation is just that letter.
-5. The assumption and the question each quantify over their objects afresh;
-   translate each on its own terms even though the same letters reappear.
+5. The assumption and the question each quantify over their objects afresh
+   and each restarts its Value numbering; translate each on its own terms
+   even though the same letters and Value names reappear.
 6. End your response with exactly the two lines, nothing after them.
 
 ## Worked example (a different description)
@@ -60,21 +63,23 @@ ASK: <equation for the regularity the closing question asks about>
 > two objects into one. The operation takes a first input and a second
 > input, and the order of the inputs matters.
 >
-> Suppose the following always holds: for every choice of objects x and y,
-> the result of applying the operation to x as its first input and the
-> result of applying the operation to x as its first input and y as its
-> second input as its second input is always equal to y.
+> Suppose the following always holds. For every choice of objects x and y,
+> apply the operation to x as its first input and y as its second input,
+> and call the result Value 1; then apply the operation to x as its first
+> input and Value 1 as its second input, and call the result Value 2. Then
+> Value 2 is always equal to y.
 >
-> Does it follow that for every choice of objects x and y, the result of
-> applying the operation to x as its first input and y as its second input
-> is always equal to the result of applying the operation to y as its first
-> input and x as its second input?
+> Now consider the following question. For every choice of objects x and y,
+> apply the operation to x as its first input and y as its second input,
+> and call the result Value 1; then apply the operation to y as its first
+> input and x as its second input, and call the result Value 2. Does it
+> follow that Value 1 is always equal to Value 2?
 
-In the assumption, the outer application has `x` as its first input; its
-second input is itself "the result of applying the operation to x as its
-first input and y as its second input", i.e. `op(x, y)`. So the left side
-is `op(x, op(x, y))`, and it is always equal to `y` alone. The question
-compares one application in each input order:
+In the assumption, Value 1 is `op(x, y)`; Value 2 applies the operation to
+x as its first input and Value 1 as its second input, so unfolding Value 1
+it is `op(x, op(x, y))`; and the assumption says Value 2 always equals y
+alone. In the question, Value 1 is `op(x, y)` and Value 2 is `op(y, x)` —
+one application in each input order:
 
 ```
 ASSUME: op(x, op(x, y)) = y

@@ -6,11 +6,13 @@ implication "law E implies law F" becomes a plain-English description that
 openly talks about an operation, its two ordered inputs, and named
 variables. No setting, no agent, no palette — a literal translation.
 
-Terms render in a words-only prefix grammar, so nesting is unambiguous
-without parentheses: each "the result of applying the operation to ..."
-opens a node that consumes its own "as its first input and ... as its
-second input". Like storyform, the renderer is a pure function of the
-(E, F) pair, and the description alone determines both term trees.
+Terms render as definition steps, mirroring storyform's named
+intermediates: each application of the operation is introduced on its own
+("apply the operation to x as its first input and y as its second input,
+and call the result Value 1"), and later steps refer to earlier results
+by name, so nesting never appears inline. Like storyform, the renderer
+is a pure function of the (E, F) pair, and the description alone
+determines both term trees.
 """
 
 from __future__ import annotations
@@ -38,11 +40,19 @@ VARIABLE_LETTERS = ("x", "y", "z", "w", "u", "v")
 
 STYLE = "literal"
 
+# Intermediate-result label, the literal arm's counterpart to a theme's
+# result_noun ("Batch 1" -> "Value 1"). Must not collide with any theme
+# vocabulary (the no-fuzz test enforces this) or with a variable letter.
+RESULT_NOUN = "Value"
+
 OPENING = (
     "Consider a collection of objects together with an operation that "
     "combines two objects into one. The operation takes a first input and "
     "a second input, and the order of the inputs matters."
 )
+
+ASSUME_LEAD = "Suppose the following always holds."
+QUESTION_LEAD = "Now consider the following question."
 
 
 # -------------------------------------------------------------- Rendering
@@ -58,15 +68,32 @@ def _rename(lhs: Term, rhs: Term) -> Dict[str, str]:
     return {name: VARIABLE_LETTERS[i] for i, name in enumerate(order)}
 
 
-def render_term(term: Term, name_of: Dict[str, str]) -> str:
-    """Words-only prefix rendering of one term (injective by construction)."""
+Step = Tuple[str, str, int]  # (left input ref, right input ref, value number)
+
+
+def _linearize(term: Term, name_of: Dict[str, str], counter: List[int]) -> Tuple[str, List[Step]]:
+    """Post-order walk: each application becomes a numbered definition step.
+
+    Returns the reference naming this term's result ("x" or "Value 3")
+    and the steps that compute it. The counter is shared across both
+    sides of a law so names never clash.
+    """
     if isinstance(term, Var):
-        return name_of[term.name]
-    left = render_term(term.left, name_of)
-    right = render_term(term.right, name_of)
+        return name_of[term.name], []
+    left_ref, left_steps = _linearize(term.left, name_of, counter)
+    right_ref, right_steps = _linearize(term.right, name_of, counter)
+    counter[0] += 1
+    number = counter[0]
+    ref = f"{RESULT_NOUN} {number}"
+    return ref, left_steps + right_steps + [(left_ref, right_ref, number)]
+
+
+def _step_text(step: Step) -> str:
+    left_ref, right_ref, number = step
     return (
-        f"the result of applying the operation to {left} as its first "
-        f"input and {right} as its second input"
+        f"apply the operation to {left_ref} as its first input and "
+        f"{right_ref} as its second input, and call the result "
+        f"{RESULT_NOUN} {number}"
     )
 
 
@@ -80,13 +107,43 @@ def _quantifier(letters: List[str]) -> str:
     return f"for every choice of objects {listing}"
 
 
-def render_law(lhs: Term, rhs: Term) -> str:
-    """One law as a quantified equality clause (no trailing punctuation)."""
+def _capitalize(sentence: str) -> str:
+    return sentence[0].upper() + sentence[1:]
+
+
+def _law_parts(lhs: Term, rhs: Term) -> Tuple[List[str], List[Step], str, str]:
+    """Quantifier letters, definition steps, and the two compared refs."""
     name_of = _rename(lhs, rhs)
     letters = [name_of[v] for v in variables_in_order(lhs, rhs)]
-    left = render_term(lhs, name_of)
-    right = render_term(rhs, name_of)
-    return f"{_quantifier(letters)}, {left} is always equal to {right}"
+    counter = [0]
+    lhs_ref, lhs_steps = _linearize(lhs, name_of, counter)
+    rhs_ref, rhs_steps = _linearize(rhs, name_of, counter)
+    return letters, lhs_steps + rhs_steps, lhs_ref, rhs_ref
+
+
+def render_assumption(lhs: Term, rhs: Term) -> str:
+    """The assumed law as one paragraph of definition steps."""
+    letters, steps, lhs_ref, rhs_ref = _law_parts(lhs, rhs)
+    quantifier = _capitalize(_quantifier(letters))
+    equality = f"{lhs_ref} is always equal to {rhs_ref}"
+    if steps:
+        procedure = "; then ".join(_step_text(step) for step in steps)
+        return f"{ASSUME_LEAD} {quantifier}, {procedure}. Then {equality}."
+    return f"{ASSUME_LEAD} {quantifier}, {equality}."
+
+
+def render_question(lhs: Term, rhs: Term) -> str:
+    """The questioned law as one paragraph, closing with the question."""
+    letters, steps, lhs_ref, rhs_ref = _law_parts(lhs, rhs)
+    equality = f"{lhs_ref} is always equal to {rhs_ref}"
+    if steps:
+        quantifier = _capitalize(_quantifier(letters))
+        procedure = "; then ".join(_step_text(step) for step in steps)
+        return (
+            f"{QUESTION_LEAD} {quantifier}, {procedure}. "
+            f"Does it follow that {equality}?"
+        )
+    return f"{QUESTION_LEAD} Does it follow that, {_quantifier(letters)}, {equality}?"
 
 
 def render_description(e_text: str, f_text: str) -> Tuple[str, dict]:
@@ -101,8 +158,8 @@ def render_description(e_text: str, f_text: str) -> Tuple[str, dict]:
 
     paragraphs = [
         OPENING,
-        f"Suppose the following always holds: {render_law(e_lhs, e_rhs)}.",
-        f"Does it follow that {render_law(f_lhs, f_rhs)}?",
+        render_assumption(e_lhs, e_rhs),
+        render_question(f_lhs, f_rhs),
     ]
     description = "\n\n".join(paragraphs)
 
@@ -128,66 +185,96 @@ class LiteralBackparseError(ValueError):
     pass
 
 
-_OP_PHRASE = "the result of applying the operation to "
-_FIRST_SEP = " as its first input and "
-_SECOND_SEP = " as its second input"
-
-
-class _PhraseReader:
-    """Recursive-descent reader for the words-only prefix grammar."""
-
-    def __init__(self, text: str):
-        self.text = text
-        self.pos = 0
-
-    def _expect(self, literal: str) -> None:
-        if not self.text.startswith(literal, self.pos):
-            context = self.text[self.pos : self.pos + 40]
-            raise LiteralBackparseError(
-                f"expected {literal!r} at {context!r}"
-            )
-        self.pos += len(literal)
-
-    def read_term(self) -> Term:
-        if self.text.startswith(_OP_PHRASE, self.pos):
-            self.pos += len(_OP_PHRASE)
-            left = self.read_term()
-            self._expect(_FIRST_SEP)
-            right = self.read_term()
-            self._expect(_SECOND_SEP)
-            return Op(left, right)
-        for letter in VARIABLE_LETTERS:
-            if self.text.startswith(letter, self.pos):
-                end = self.pos + len(letter)
-                if end == len(self.text) or not self.text[end].isalpha():
-                    self.pos = end
-                    return Var(letter)
-        context = self.text[self.pos : self.pos + 40]
-        raise LiteralBackparseError(f"expected a term at {context!r}")
-
-
 _LETTER = f"(?:{'|'.join(VARIABLE_LETTERS)})"
-# Matches _quantifier's output: "an object x", "objects x and y", or the
-# Oxford-comma listing "objects x, y, and z".
+_REF = rf"(?:{_LETTER}|{RESULT_NOUN} \d+)"
+_STEP_RE = re.compile(
+    rf"apply the operation to (?P<a>{_REF}) as its first input and "
+    rf"(?P<b>{_REF}) as its second input, and call the result "
+    rf"{RESULT_NOUN} (?P<n>\d+)"
+)
+_EQUALITY_RE = re.compile(rf"(?P<x>{_REF}) is always equal to (?P<y>{_REF})")
+# Matches _quantifier's output ("an object x", "objects x and y", or the
+# Oxford-comma listing "objects x, y, and z"), capitalized or not.
 _QUANTIFIER_RE = re.compile(
-    rf"^for every choice of (?:an object {_LETTER}"
+    rf"[Ff]or every choice of (?:an object {_LETTER}"
     rf"|objects {_LETTER}(?:, {_LETTER})*,? and {_LETTER}), "
 )
 
 
-def _parse_law_clause(clause: str) -> Tuple[Term, Term]:
-    match = _QUANTIFIER_RE.match(clause)
-    if not match:
-        raise LiteralBackparseError(f"no quantifier prefix in {clause!r}")
-    reader = _PhraseReader(clause[match.end() :])
-    lhs = reader.read_term()
-    reader._expect(" is always equal to ")
-    rhs = reader.read_term()
-    if reader.pos != len(reader.text):
-        raise LiteralBackparseError(
-            f"trailing text {reader.text[reader.pos:]!r}"
+def _resolve(ref: str, values: Dict[int, Term]) -> Term:
+    match = re.fullmatch(rf"{RESULT_NOUN} (\d+)", ref)
+    if match:
+        number = int(match.group(1))
+        if number not in values:
+            raise LiteralBackparseError(f"{ref!r} used before it was defined")
+        return values[number]
+    return Var(ref)
+
+
+def _parse_procedure(text: str) -> Dict[int, Term]:
+    """Build the value environment from a law's definition steps, in order."""
+    values: Dict[int, Term] = {}
+    for part in text.split("; then "):
+        match = _STEP_RE.fullmatch(part)
+        if not match:
+            raise LiteralBackparseError(f"malformed step {part!r}")
+        number = int(match.group("n"))
+        if number != len(values) + 1:
+            raise LiteralBackparseError(
+                f"{RESULT_NOUN} {number} defined out of order"
+            )
+        values[number] = Op(
+            _resolve(match.group("a"), values),
+            _resolve(match.group("b"), values),
         )
-    return lhs, rhs
+    return values
+
+
+def _parse_equality(text: str, values: Dict[int, Term]) -> Tuple[Term, Term]:
+    match = _EQUALITY_RE.fullmatch(text)
+    if not match:
+        raise LiteralBackparseError(f"malformed equality {text!r}")
+    return _resolve(match.group("x"), values), _resolve(match.group("y"), values)
+
+
+def _parse_assumption(paragraph: str) -> Tuple[Term, Term]:
+    prefix = ASSUME_LEAD + " "
+    if not paragraph.startswith(prefix) or not paragraph.endswith("."):
+        raise LiteralBackparseError("malformed assumption paragraph")
+    body = paragraph[len(prefix) : -1]
+    match = _QUANTIFIER_RE.match(body)
+    if not match:
+        raise LiteralBackparseError(f"no quantifier prefix in {body!r}")
+    rest = body[match.end() :]
+    if ". Then " in rest:
+        procedure, equality_text = rest.split(". Then ", 1)
+        values = _parse_procedure(procedure)
+    else:
+        equality_text, values = rest, {}
+    return _parse_equality(equality_text, values)
+
+
+def _parse_question(paragraph: str) -> Tuple[Term, Term]:
+    prefix = QUESTION_LEAD + " "
+    if not paragraph.startswith(prefix) or not paragraph.endswith("?"):
+        raise LiteralBackparseError("malformed question paragraph")
+    body = paragraph[len(prefix) : -1]
+    ask = "Does it follow that "
+    if body.startswith("Does it follow that, "):
+        rest = body[len("Does it follow that, ") :]
+        match = _QUANTIFIER_RE.match(rest)
+        if not match:
+            raise LiteralBackparseError(f"no quantifier prefix in {rest!r}")
+        return _parse_equality(rest[match.end() :], {})
+    match = _QUANTIFIER_RE.match(body)
+    if not match:
+        raise LiteralBackparseError(f"no quantifier prefix in {body!r}")
+    rest = body[match.end() :]
+    procedure, sep, equality_text = rest.partition(". " + ask)
+    if not sep:
+        raise LiteralBackparseError("question paragraph has no closing question")
+    values = _parse_procedure(procedure)
+    return _parse_equality(equality_text, values)
 
 
 def backparse_literal(description: str) -> dict:
@@ -195,18 +282,10 @@ def backparse_literal(description: str) -> dict:
     paragraphs = description.split("\n\n")
     if len(paragraphs) != 3 or paragraphs[0] != OPENING:
         raise LiteralBackparseError("not a literal description")
-    suppose = paragraphs[1]
-    question = paragraphs[2]
-    prefix_e = "Suppose the following always holds: "
-    prefix_f = "Does it follow that "
-    if not suppose.startswith(prefix_e) or not suppose.endswith("."):
-        raise LiteralBackparseError("malformed 'Suppose' paragraph")
-    if not question.startswith(prefix_f) or not question.endswith("?"):
-        raise LiteralBackparseError("malformed question paragraph")
     return {
         "style": STYLE,
-        "habit_law": _parse_law_clause(suppose[len(prefix_e) : -1]),
-        "question_law": _parse_law_clause(question[len(prefix_f) : -1]),
+        "habit_law": _parse_assumption(paragraphs[1]),
+        "question_law": _parse_question(paragraphs[2]),
     }
 
 
