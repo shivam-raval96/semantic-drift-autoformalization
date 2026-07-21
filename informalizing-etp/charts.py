@@ -390,6 +390,27 @@ def data_table(headers: List[str], rows: List[List[object]], summary: str) -> st
 # ---------------------------------------------------------------- Figures
 
 
+def sample_tag(run: dict) -> str:
+    """Short sample identifier for figure titles, e.g. "uniform 30"."""
+    pairs = len(run["samples"])
+    return f"stratified {pairs}" if run["meta"].get("stratify_ops") else f"uniform {pairs}"
+
+
+def sample_note(run: dict) -> str:
+    """One caption sentence saying what the run's sample covers."""
+    pairs = len(run["samples"])
+    per_bin = run["meta"].get("stratify_ops")
+    if per_bin:
+        return (
+            f"Sample: {pairs} pairs, {per_bin} per total-operation bin 1–8 — "
+            "the full complexity range, including trivial laws."
+        )
+    return (
+        f"Sample: {pairs} uniformly drawn pairs — almost entirely maximal "
+        "4+4-operation implications."
+    )
+
+
 def figure(number: int, title: str, caption: str, body: str) -> str:
     return (
         f'<figure><figcaption><span class="fig-no">Figure {number}</span> '
@@ -430,9 +451,10 @@ def render_group(group: List[dict], fig_no: List[int]) -> str:
         sections.append(
             figure(
                 fig_no[0],
-                f"Correct rate by model: {a['label']} vs {b['label']}",
+                f"Correct rate by model: {a['label']} vs {b['label']} — {sample_tag(a)}",
                 f"Same {len(a['samples'])} stories under both regimes; "
-                "each row connects a model's cold-pass rate to its deliberate rate.",
+                "each row connects a model's cold-pass rate to its deliberate rate. "
+                + sample_note(a),
                 dumbbell_chart(rows, a["label"], b["label"]) + table,
             )
         )
@@ -454,9 +476,9 @@ def render_group(group: List[dict], fig_no: List[int]) -> str:
         sections.append(
             figure(
                 fig_no[0],
-                "Accuracy vs implication complexity",
+                f"Accuracy vs implication complexity — {sample_tag(group[0])}",
                 "Correct rate pooled over all models, by the implication's total "
-                "operation count (both equations combined).",
+                "operation count (both equations combined). " + sample_note(group[0]),
                 line_chart(series, bins, "total operations in the implication") + table,
             )
         )
@@ -480,9 +502,9 @@ def render_group(group: List[dict], fig_no: List[int]) -> str:
         sections.append(
             figure(
                 fig_no[0],
-                f"Verdict composition — {run['label']} regime",
+                f"Verdict composition — {run['label']} regime · {sample_tag(run)}",
                 "How each model's answers grade out; the right-hand figure is the "
-                "correct rate (exact + swapped + dualized).",
+                "correct rate (exact + swapped + dualized). " + sample_note(run),
                 stacked_bars(rows) + table,
             )
         )
@@ -533,9 +555,9 @@ def render_form_group(group: List[dict], fig_no: List[int]) -> str:
         sections.append(
             figure(
                 fig_no[0],
-                f"Correct rate by model and form — {label}",
+                f"Correct rate by model and form — {label} · {sample_tag(runs[0])}",
                 "The same pairs rendered per arm; each row compares one model "
-                f"across the forms under the {label} regime.",
+                f"across the forms under the {label} regime. " + sample_note(runs[0]),
                 dot_rows_chart(rows, series) + table,
             )
         )
@@ -558,9 +580,10 @@ def render_form_group(group: List[dict], fig_no: List[int]) -> str:
             sections.append(
                 figure(
                     fig_no[0],
-                    f"Accuracy vs implication complexity — {label}",
+                    f"Accuracy vs implication complexity — {label} · {sample_tag(runs[0])}",
                     "Correct rate pooled over all models, by the implication's "
-                    f"total operation count; one line per form, {label} regime.",
+                    f"total operation count; one line per form, {label} regime. "
+                    + sample_note(runs[0]),
                     line_chart(line_series, bins, "total operations in the implication")
                     + table,
                 )
@@ -583,9 +606,9 @@ def render_form_group(group: List[dict], fig_no: List[int]) -> str:
         sections.append(
             figure(
                 fig_no[0],
-                f"Verdict composition — {run_form(run)} · {run['label']}",
+                f"Verdict composition — {run_form(run)} · {run['label']} · {sample_tag(run)}",
                 "How each model's answers grade out; the right-hand figure is the "
-                "correct rate (exact + swapped + dualized).",
+                "correct rate (exact + swapped + dualized). " + sample_note(run),
                 stacked_bars(rows) + table,
             )
         )
