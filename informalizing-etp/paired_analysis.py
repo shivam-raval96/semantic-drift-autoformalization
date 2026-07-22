@@ -89,9 +89,17 @@ def is_correct(row: dict) -> bool:
     return row["bucket"] in CORRECT_BUCKETS
 
 
-def build_observations(story_dir: Path, literal_dir: Path) -> Tuple[List[dict], List[str]]:
-    story_runs = discover_runs(story_dir)
-    literal_runs = discover_runs(literal_dir)
+def build_observations(
+    story_dir: Path, literal_dir: Path, direct_runs: bool = False
+) -> Tuple[List[dict], List[str]]:
+    if direct_runs:
+        story = load_run(story_dir)
+        literal = load_run(literal_dir)
+        story_runs = {story["key"]: story}
+        literal_runs = {literal["key"]: literal}
+    else:
+        story_runs = discover_runs(story_dir)
+        literal_runs = discover_runs(literal_dir)
     if set(story_runs) != set(literal_runs):
         raise ValueError(
             "story and literal experiments do not contain the same run groups: "
@@ -293,18 +301,24 @@ def number(value: Optional[float], digits: int = 3) -> str:
     return "-" if value is None else f"{value:.{digits}f}"
 
 
+def sample_name(row: dict) -> str:
+    sample = "Complex" if row["sampling"] == "uniform" else "Stratified"
+    model_n = row.get("model_n")
+    pair_n = row["n"] // model_n if model_n else row["n"]
+    return f"{sample} {pair_n}"
+
+
 def group_name(row: dict) -> str:
-    sample = "Complex 30" if row["sampling"] == "uniform" else "Stratified 40"
     reasoning = "Reasoning off" if row["regime"] == "off" else "Reasoning on"
-    return f"{sample} / {reasoning}"
+    return f"{sample_name(row)} / {reasoning}"
 
 
 def markdown_report(summary_rows: List[dict], warnings: List[str]) -> str:
     lines = [
         "# Story–Literal Paired Correlation",
         "",
-        "This analysis pairs Experiment 02 (Story → RG) with Experiment 04 "
-        "(Structured Literal NL → RG) by `pair_id × model`. No new model calls were made.",
+        "This analysis pairs Story → RG with Structured Literal NL → RG by "
+        "`pair_id × model`. No new model calls were made.",
         "",
         "## Results",
         "",
@@ -318,7 +332,7 @@ def markdown_report(summary_rows: List[dict], warnings: List[str]) -> str:
         lines.append(
             "| {sampling} | {regime} | {n} | {story} | {literal} | {p_yes} | "
             "{p_no} | {diff} | {phi} | {model_r} |".format(
-                sampling="Complex 30" if row["sampling"] == "uniform" else "Stratified 40",
+                sampling=sample_name(row),
                 regime=row["regime"],
                 n=row["n"],
                 story=pct(row["story_accuracy"]),
@@ -330,37 +344,36 @@ def markdown_report(summary_rows: List[dict], warnings: List[str]) -> str:
                 model_r=number(row["model_pearson"]),
             )
         )
-    off = {(row["sampling"], row["regime"]): row for row in summary_rows}
-    hard = off[("uniform", "off")]
-    strat = off[("stratified", "off")]
+    lines.extend(["", "## Interpretation", ""])
+    off_rows = [row for row in summary_rows if row["regime"] == "off"]
+    for row in off_rows:
+        lines.append(
+            f"- {sample_name(row)}: Story accuracy rises from "
+            f"{pct(row['p_story_given_literal_wrong'])} when Literal fails to "
+            f"{pct(row['p_story_given_literal_correct'])} when Literal succeeds "
+            f"(phi {number(row['phi'])}; model Pearson r "
+            f"{number(row['model_pearson'])})."
+        )
+    if any(row["regime"] == "on" for row in summary_rows):
+        lines.append(
+            "- With reasoning on, near-ceiling results can make conditional rates "
+            "and correlations unstable."
+        )
+    lines.append(
+        "- Literal-correct/Story-wrong cases isolate a likely narrative-abstraction "
+        "bottleneck; failures on both forms indicate structural-encoding difficulty."
+    )
+    model_counts = [row.get("model_n") for row in summary_rows if row.get("model_n")]
+    model_count = max(model_counts) if model_counts else 0
     lines.extend(
         [
             "",
-            "## Interpretation",
-            "",
-            f"- With reasoning off, Literal success is predictive: Story accuracy rises from "
-            f"{pct(hard['p_story_given_literal_wrong'])} to "
-            f"{pct(hard['p_story_given_literal_correct'])} on the complex set, and from "
-            f"{pct(strat['p_story_given_literal_wrong'])} to "
-            f"{pct(strat['p_story_given_literal_correct'])} on the stratified set.",
-            f"- The corresponding phi coefficients are {number(hard['phi'])} and "
-            f"{number(strat['phi'])}, a moderate positive item-model association.",
-            f"- Across the eight models, Literal and Story accuracy correlate strongly when "
-            f"reasoning is off: Pearson r is {number(hard['model_pearson'])} on the complex "
-            f"set and {number(strat['model_pearson'])} on the stratified set (Spearman "
-            f"{number(hard['model_spearman'])} and {number(strat['model_spearman'])}).",
-            "- With reasoning on, both tasks are near ceiling. Conditional rates based on the "
-            "few Literal failures are unstable and should not be interpreted as evidence of no association.",
-            "- Literal-correct/Story-wrong cases isolate a likely narrative-abstraction bottleneck; "
-            "failures on both forms indicate that structural encoding is already difficult without the story.",
-            "",
             "## Limitations",
             "",
-            "The model-level correlations use only eight models. The pair-model associations are "
-            "descriptive: rows from the same model and equation are "
-            "not statistically independent; a confirmatory analysis should use a mixed-effects model "
-            "with model and equation effects. The comparison uses Structured Literal because it retains "
-            "the Story arm's named-intermediate scaffold.",
+            f"The model-level correlations use {model_count} models. The pair-model "
+            "associations are descriptive: rows from the same model and equation are "
+            "not statistically independent; a confirmatory analysis should use a "
+            "mixed-effects model with model and equation effects.",
         ]
     )
     if warnings:
@@ -388,7 +401,7 @@ def html_report(summary_rows: List[dict], model_rows: List[dict], warnings: List
     matrices_off = []
     matrices_on = []
     for row in summary_rows:
-        sample = "Complex 30" if row["sampling"] == "uniform" else "Stratified 40"
+        sample = sample_name(row)
         if row["regime"] == "off":
             accuracy_gap = row["literal_accuracy"] - row["story_accuracy"]
             task_panels.append(
@@ -509,7 +522,7 @@ summary {{ cursor:pointer; font-weight:700; }}
 </section>
 <section class="section note">
 <h2>Reading the result</h2>
-<p>With reasoning off, Story success is substantially more likely when the matching Literal item succeeds, and accuracy correlates strongly across the eight models. With reasoning on, both tasks are near ceiling, so both forms of correlation are unstable.</p>
+<p>With reasoning off, Story success is substantially more likely when the matching Literal item succeeds. Near-ceiling conditions can make both forms of correlation unstable.</p>
 </section>
 <details><summary>Reasoning-on ceiling results</summary>
 <div class="table-wrap"><table>
@@ -533,13 +546,27 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--story", type=Path, default=DEFAULT_STORY_EXPERIMENT)
     parser.add_argument("--literal", type=Path, default=DEFAULT_LITERAL_EXPERIMENT)
-    parser.add_argument("--out", type=Path, default=DEFAULT_OUT_DIR)
-    return parser.parse_args()
+    parser.add_argument("--story-run", type=Path)
+    parser.add_argument("--literal-run", type=Path)
+    parser.add_argument("--out", type=Path)
+    args = parser.parse_args()
+    if (args.story_run is None) != (args.literal_run is None):
+        parser.error("--story-run and --literal-run must be provided together")
+    if args.story_run is not None and args.out is None:
+        parser.error("--out is required with --story-run/--literal-run")
+    if args.out is None:
+        args.out = DEFAULT_OUT_DIR
+    return args
 
 
 def main() -> int:
     args = parse_args()
-    observations, warnings = build_observations(args.story, args.literal)
+    if args.story_run is not None:
+        observations, warnings = build_observations(
+            args.story_run, args.literal_run, direct_runs=True
+        )
+    else:
+        observations, warnings = build_observations(args.story, args.literal)
     summary_rows = sorted(
         grouped_summaries(observations, ("sampling", "regime")), key=_sort_key
     )

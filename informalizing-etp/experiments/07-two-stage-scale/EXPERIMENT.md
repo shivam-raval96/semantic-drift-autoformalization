@@ -261,6 +261,20 @@ Run notes:
   exception, for this family. `correct-dualized` remains rare (3 rows
   total).
 
+### Paired Story-Literal analysis
+
+Pairing Story and Literal outcomes for the same `pair_id × model`
+confirms that Literal success predicts Story success:
+
+| sample | paired rows | P(Story correct \| Literal correct) | P(Story correct \| Literal wrong) | phi | model r |
+|---|---:|---:|---:|---:|---:|
+| All 160 pairs | 1,440 | 71.1% | 18.3% | 0.466 | 0.884 |
+| Excluding vacuous laws (105 pairs) | 945 | 66.0% | 17.6% | 0.456 | 0.889 |
+
+The association remains stable after removing vacuous laws. This
+supports Experiment 05's answer: below saturation, performance on
+Literal NL → RG is strongly predictive of performance on Story → RG.
+
 ## Conclusions
 
 - **Experiment 05's no-think picture survives 4× the sample.** Every
