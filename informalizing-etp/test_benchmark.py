@@ -12,9 +12,19 @@
    story in formalize_prompt.md, the literalform rendering of its laws).
 4. Regime wrappers — the story/literal wordings are byte-identical to
    the pre-two-stage constants; the abstract wording applies to stage 1.
+5. Experiment 08 additions — the --prompt-template override reaches the
+   sample's prompt, drop_vacuous removes exactly the zero-op-law pairs,
+   and the two hint templates stay consistent with their sources
+   (formalize_prompt.md plus the shared hint paragraph; the literalform
+   abstraction in the example arm).
+6. Experiment 09 additions — sample_pairs_balanced draws both laws of a
+   pair from the same per-equation-ops bin (including bins past the ETP
+   cap, over a genform corpus), deterministically per seed; the label
+   prefix threads through labels and pair ids and defaults to "E".
 """
 
 import re
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -22,11 +32,14 @@ from benchmark import (
     ABSTRACT_PROMPT_PATH,
     STORY_PROMPT_PATH,
     build_reasoning_payload,
+    drop_vacuous,
     make_sample,
     run_one,
+    sample_pairs_balanced,
     synthesize_response,
     wrap_prompt,
 )
+from genform import generate_corpus
 from literalform import render_description
 
 EQUATIONS = ["x ∘ y = (y ∘ y) ∘ x", "x ∘ y = y ∘ x"]
@@ -34,6 +47,17 @@ EQUATIONS = ["x ∘ y = (y ∘ y) ∘ x", "x ∘ y = y ∘ x"]
 # The worked example's laws: librarian story in formalize_prompt.md.
 LIBRARIAN_E = "x ∘ (x ∘ y) = y"
 LIBRARIAN_F = "x ∘ y = y ∘ x"
+
+# Experiment 08's hint templates and the paragraph they share.
+HINT_PROMPT_PATH = Path(__file__).resolve().parent / "formalize_hint_prompt.md"
+HINT_EXAMPLE_PROMPT_PATH = (
+    Path(__file__).resolve().parent / "formalize_hint_example_prompt.md"
+)
+HINT_PARAGRAPH = (
+    "The approach you should take to finding a formalization is first\n"
+    "abstracting away unnecessary details about the story, and only then\n"
+    "translating into the output format.\n"
+)
 
 # Byte-exact copies of the wrapper wordings used by experiments 01-04;
 # the two-stage refactor must not change what earlier arms send.
@@ -202,6 +226,114 @@ class NativeReasoningTest(unittest.TestCase):
 
     def test_unsupported_reasoning_has_no_native_payload(self):
         self.assertIsNone(build_reasoning_payload("off", {}))
+
+
+class PromptTemplateOverrideTest(unittest.TestCase):
+    def test_override_reaches_the_sample_prompt(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            template = Path(tmp) / "override.md"
+            template.write_text("MARKER TOP\n\n{story}\n", encoding="utf-8")
+            sample = make_sample(EQUATIONS, 1, 2, "story", template_path=template)
+        self.assertTrue(sample["prompt"].startswith("MARKER TOP"))
+        self.assertIn(sample["story"], sample["prompt"])
+
+    def test_default_template_is_unchanged_without_override(self):
+        sample = make_sample(EQUATIONS, 1, 2, "story")
+        self.assertIn("translate what it describes", sample["prompt"])
+
+
+class DropVacuousTest(unittest.TestCase):
+    def test_drops_exactly_the_zero_op_pairs_in_order(self):
+        equations = ["x = x", "x = y", "x ∘ y = (y ∘ y) ∘ x", "x ∘ y = y ∘ x"]
+        samples = [
+            make_sample(equations, e, f, "story")
+            for e in range(1, 5)
+            for f in range(1, 5)
+            if e != f
+        ]
+        self.assertNotIn(None, samples)
+        kept = drop_vacuous(samples)
+        self.assertEqual([s["pair_id"] for s in kept], ["E3-E4", "E4-E3"])
+
+
+class BalancedSamplerTest(unittest.TestCase):
+    # A synthetic list spanning the ETP cap: bins 1-3 plus a 5-op bin
+    # the ETP list could never supply.
+    EQUATIONS = generate_corpus(seed=1, bins=range(1, 4), per_bin=8) + (
+        generate_corpus(seed=1, bins=range(5, 6), per_bin=8)
+    )
+
+    def test_both_laws_carry_the_bin_op_count(self):
+        samples = sample_pairs_balanced(
+            self.EQUATIONS, 3, seed=0, bins=(1, 2, 3, 5), label_prefix="S"
+        )
+        self.assertEqual(len(samples), 12)
+        for index, sample in enumerate(samples):
+            target = (1, 2, 3, 5)[index // 3]
+            self.assertEqual(sample["ops_e"], target)
+            self.assertEqual(sample["ops_f"], target)
+            self.assertEqual(sample["ops_total"], 2 * target)
+
+    def test_pairs_are_distinct_and_labeled(self):
+        samples = sample_pairs_balanced(
+            self.EQUATIONS, 3, seed=0, bins=(1, 2, 3, 5), label_prefix="S"
+        )
+        pair_ids = [sample["pair_id"] for sample in samples]
+        self.assertEqual(len(pair_ids), len(set(pair_ids)))
+        for sample in samples:
+            self.assertRegex(sample["pair_id"], r"^S\d+-S\d+$")
+            e_label, f_label = sample["pair_id"].split("-")
+            self.assertNotEqual(e_label, f_label)
+            self.assertEqual(sample["metadata"]["label_e"], e_label)
+            self.assertEqual(sample["metadata"]["label_f"], f_label)
+
+    def test_same_seed_same_pairs_across_forms(self):
+        story = sample_pairs_balanced(self.EQUATIONS, 3, seed=0, bins=(2, 3))
+        literal = sample_pairs_balanced(
+            self.EQUATIONS, 3, seed=0, bins=(2, 3), form="literal"
+        )
+        self.assertEqual(
+            [s["pair_id"] for s in story], [s["pair_id"] for s in literal]
+        )
+
+    def test_label_prefix_defaults_to_etp_numbering(self):
+        samples = sample_pairs_balanced(self.EQUATIONS, 2, seed=0, bins=(2,))
+        for sample in samples:
+            self.assertRegex(sample["pair_id"], r"^E\d+-E\d+$")
+
+    def test_missing_bin_is_refused(self):
+        with self.assertRaises(SystemExit):
+            sample_pairs_balanced(self.EQUATIONS, 2, seed=0, bins=(4,))
+
+
+class HintTemplateTest(unittest.TestCase):
+    def test_hint_arm_is_formalize_prompt_plus_the_paragraph(self):
+        hint = HINT_PROMPT_PATH.read_text(encoding="utf-8")
+        base = STORY_PROMPT_PATH.read_text(encoding="utf-8")
+        self.assertEqual(hint.replace(HINT_PARAGRAPH + "\n", "", 1), base)
+
+    def test_both_arms_share_the_paragraph_and_one_story_slot(self):
+        for path in (HINT_PROMPT_PATH, HINT_EXAMPLE_PROMPT_PATH):
+            text = path.read_text(encoding="utf-8")
+            self.assertIn(HINT_PARAGRAPH, text)
+            self.assertEqual(text.count("{story}"), 1)
+
+    def test_example_arm_abstraction_matches_literalform(self):
+        template = normalized(HINT_EXAMPLE_PROMPT_PATH.read_text(encoding="utf-8"))
+        description = normalized(render_description(LIBRARIAN_E, LIBRARIAN_F)[0])
+        self.assertIn(description, template)
+
+    def test_example_arm_story_matches_formalize_prompt(self):
+        template = normalized(HINT_EXAMPLE_PROMPT_PATH.read_text(encoding="utf-8"))
+        source = STORY_PROMPT_PATH.read_text(encoding="utf-8")
+        quoted = [line for line in source.splitlines() if line.startswith(">")]
+        story = normalized("\n".join(quoted))
+        self.assertIn(story, template)
+
+    def test_example_arm_translates_from_the_lettered_abstraction(self):
+        text = HINT_EXAMPLE_PROMPT_PATH.read_text(encoding="utf-8")
+        self.assertIn("ASSUME: op(x, op(x, y)) = y", text)
+        self.assertIn("ASK: op(x, y) = op(y, x)", text)
 
 
 if __name__ == "__main__":

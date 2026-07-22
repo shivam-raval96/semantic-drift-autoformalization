@@ -47,6 +47,8 @@ from typing import Dict, List, Optional, Tuple
 
 from checkform import PROMPT_PATH as STORY_PROMPT_PATH
 from checkform import build_prompt, grade
+from filter_vacuous import is_vacuous
+from genform import parse_bins
 from literalform import render_description
 from storyform import Op, ParseError, Term, Var, parse_equation, render_story
 
@@ -189,19 +191,31 @@ def load_equations(path: Path = EQUATIONS_PATH, url: str = EQUATIONS_URL) -> Tup
 
 
 def make_sample(
-    equations: List[str], e_num: int, f_num: int, form: str
+    equations: List[str],
+    e_num: int,
+    f_num: int,
+    form: str,
+    template_path: Optional[Path] = None,
+    label_prefix: str = "E",
 ) -> Optional[dict]:
-    """Render one (E, F) pair in the given form, or None if unrenderable."""
+    """Render one (E, F) pair in the given form, or None if unrenderable.
+
+    label_prefix names the equations after their line numbers; the
+    default "E" matches ETP numbering. Synthetic lists should pass a
+    distinct prefix so their labels cannot be misread as ETP numbers.
+    """
     render, template = FORMS[form]
+    if template_path is not None:
+        template = template_path
     try:
         story, metadata = render(equations[e_num - 1], equations[f_num - 1])
     except (ParseError, ValueError):
         return None
-    metadata["label_e"] = f"E{e_num}"
-    metadata["label_f"] = f"E{f_num}"
+    metadata["label_e"] = f"{label_prefix}{e_num}"
+    metadata["label_f"] = f"{label_prefix}{f_num}"
     prompt = build_prompt({"story": story, "metadata": metadata}, template_path=template)
     return {
-        "pair_id": f"E{e_num}-E{f_num}",
+        "pair_id": f"{label_prefix}{e_num}-{label_prefix}{f_num}",
         "form": form,
         "story": story,
         "metadata": metadata,
@@ -211,7 +225,12 @@ def make_sample(
 
 
 def sample_pairs(
-    equations: List[str], n: int, seed: int, form: str = "story"
+    equations: List[str],
+    n: int,
+    seed: int,
+    form: str = "story",
+    template_path: Optional[Path] = None,
+    label_prefix: str = "E",
 ) -> List[dict]:
     """Deterministically sample n renderable (E, F) pairs.
 
@@ -235,7 +254,7 @@ def sample_pairs(
         if e_num == f_num or (e_num, f_num) in chosen:
             continue
         chosen.add((e_num, f_num))
-        sample = make_sample(equations, e_num, f_num, form)
+        sample = make_sample(equations, e_num, f_num, form, template_path, label_prefix)
         if sample is not None:
             samples.append(sample)
     return samples
@@ -272,6 +291,8 @@ def sample_pairs_stratified(
     seed: int,
     bins: Tuple[int, ...] = tuple(range(1, 9)),
     form: str = "story",
+    template_path: Optional[Path] = None,
+    label_prefix: str = "E",
 ) -> List[dict]:
     """Deterministically sample per_bin renderable pairs for each total
     operation count in bins.
@@ -313,13 +334,83 @@ def sample_pairs_stratified(
             if e_num == f_num or (e_num, f_num) in chosen:
                 continue
             chosen.add((e_num, f_num))
-            sample = make_sample(equations, e_num, f_num, form)
+            sample = make_sample(
+                equations, e_num, f_num, form, template_path, label_prefix
+            )
             if sample is None:
                 continue
             sample.update(_complexity(sample))
             samples.append(sample)
             got += 1
     return samples
+
+
+def sample_pairs_balanced(
+    equations: List[str],
+    per_bin: int,
+    seed: int,
+    bins: Tuple[int, ...] = tuple(range(1, 11)),
+    form: str = "story",
+    template_path: Optional[Path] = None,
+    label_prefix: str = "E",
+) -> List[dict]:
+    """Deterministically sample per_bin renderable pairs per
+    per-equation operation count, both laws drawn from the same bin.
+
+    sample_pairs_stratified bins by the pair's summed operation count,
+    so one bin mixes very different splits — experiment 07 found the
+    mix distorts the complexity axis (a bin-4 pair can be a vacuous law
+    against a 4-op partner). Here E and F each carry exactly the bin's
+    op count: bins are homogeneous, ops_total = 2 * bin, and no bin
+    contains a vacuous law. The ETP list stops at 4 ops per equation;
+    bins above 4 need a synthetic list (--equations-path, genform.py).
+    Same-seed determinism as sample_pairs.
+    """
+    rng = random.Random(seed)
+    by_ops: Dict[int, List[int]] = {}
+    for number, text in enumerate(equations, start=1):
+        try:
+            lhs, rhs = parse_equation(text)
+        except ParseError:
+            continue
+        by_ops.setdefault(_term_ops(lhs) + _term_ops(rhs), []).append(number)
+
+    samples: List[dict] = []
+    chosen = set()
+    for target in bins:
+        pool = by_ops.get(target, [])
+        if len(pool) < 2:
+            raise SystemExit(f"no equations available for eq-ops bin {target}")
+        got = 0
+        attempts = 0
+        while got < per_bin:
+            attempts += 1
+            if attempts > 1000 * per_bin:
+                raise SystemExit(f"could not fill eq-ops bin {target}")
+            e_num = pool[rng.randrange(len(pool))]
+            f_num = pool[rng.randrange(len(pool))]
+            if e_num == f_num or (e_num, f_num) in chosen:
+                continue
+            chosen.add((e_num, f_num))
+            sample = make_sample(
+                equations, e_num, f_num, form, template_path, label_prefix
+            )
+            if sample is None:
+                continue
+            sample.update(_complexity(sample))
+            samples.append(sample)
+            got += 1
+    return samples
+
+
+def drop_vacuous(samples: List[dict]) -> List[dict]:
+    """Filter out pairs containing a zero-op law (E1 x = x, E2 x = y).
+
+    Applied after sampling, so the RNG stream is untouched: the surviving
+    pairs are exactly the unfiltered draw minus the vacuous ones, in the
+    same order (see the vacuous-law convention in experiments/README.md).
+    """
+    return [sample for sample in samples if not is_vacuous(sample)]
 
 
 # ------------------------------------------------------------- OpenRouter
@@ -681,6 +772,37 @@ def main(argv: Optional[List[str]] = None) -> int:
         "instead of --n uniform pairs (complexity studies)",
     )
     cli.add_argument(
+        "--stratify-eq-ops",
+        type=int,
+        default=None,
+        metavar="PER_BIN",
+        help="sample PER_BIN pairs per per-equation operation count, "
+        "both laws drawn from the same bin (see --eq-bins); balanced "
+        "complexity studies, needed past the ETP cap (genform.py)",
+    )
+    cli.add_argument(
+        "--eq-bins",
+        default="1:10",
+        metavar="MIN:MAX",
+        help="per-equation operation counts covered by --stratify-eq-ops "
+        "(default 1:10)",
+    )
+    cli.add_argument(
+        "--label-prefix",
+        default="E",
+        metavar="PREFIX",
+        help="prefix for equation labels and pair ids (default E, the "
+        "ETP numbering; use a distinct prefix for synthetic lists so "
+        "labels cannot be misread as ETP numbers)",
+    )
+    cli.add_argument(
+        "--exclude-vacuous",
+        action="store_true",
+        help="drop sampled pairs containing a zero-op law (E1 x = x, "
+        "E2 x = y); applied after the draw, so the surviving pair ids "
+        "match the unfiltered draw",
+    )
+    cli.add_argument(
         "--form",
         choices=tuple(FORMS),
         default="story",
@@ -688,6 +810,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         "literal description (literalform), or two-stage (story abstracted "
         "into a literal description by the model, then formalized in a "
         "second call); default story",
+    )
+    cli.add_argument(
+        "--prompt-template",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="override the chosen form's prompt template (for two-stage, "
+        "the stage-1 template); recorded in run_meta.json",
     )
     cli.add_argument(
         "--models",
@@ -718,17 +848,20 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     args = cli.parse_args(argv)
 
+    if args.stratify_ops and args.stratify_eq_ops:
+        raise SystemExit("--stratify-ops and --stratify-eq-ops are mutually exclusive")
     models = [m.strip() for m in args.models.split(",") if m.strip()]
     regime = args.reasoning
     form = args.form
     max_tokens = args.max_tokens or (16384 if regime == "on" else 4096)
     form_tag = f"-{form}" if form != "story" else ""
     suffix = f"-think-{regime}" if regime else ""
-    stem = (
-        f"run-strat{args.stratify_ops}-s{args.seed}"
-        if args.stratify_ops
-        else f"run-s{args.seed}-n{args.n}"
-    )
+    if args.stratify_eq_ops:
+        stem = f"run-eqstrat{args.stratify_eq_ops}-s{args.seed}"
+    elif args.stratify_ops:
+        stem = f"run-strat{args.stratify_ops}-s{args.seed}"
+    else:
+        stem = f"run-s{args.seed}-n{args.n}"
     out_dir = args.out_dir or Path(f"results/{stem}{form_tag}{suffix}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -744,23 +877,52 @@ def main(argv: Optional[List[str]] = None) -> int:
         for model in models
     }
 
+    if args.equations_path != EQUATIONS_PATH and not args.equations_path.exists():
+        # Without this, load_equations would silently download the ETP
+        # list into the missing path.
+        raise SystemExit(f"equations file not found: {args.equations_path}")
     equations, equations_sha = load_equations(args.equations_path)
-    if args.stratify_ops:
+    if args.stratify_eq_ops:
+        samples = sample_pairs_balanced(
+            equations,
+            args.stratify_eq_ops,
+            args.seed,
+            bins=tuple(parse_bins(args.eq_bins)),
+            form=form,
+            template_path=args.prompt_template,
+            label_prefix=args.label_prefix,
+        )
+    elif args.stratify_ops:
         samples = sample_pairs_stratified(
-            equations, args.stratify_ops, args.seed, form=form
+            equations,
+            args.stratify_ops,
+            args.seed,
+            form=form,
+            template_path=args.prompt_template,
+            label_prefix=args.label_prefix,
         )
     else:
-        samples = sample_pairs(equations, args.n, args.seed, form=form)
+        samples = sample_pairs(
+            equations, args.n, args.seed, form=form,
+            template_path=args.prompt_template,
+            label_prefix=args.label_prefix,
+        )
+    if args.exclude_vacuous:
+        samples = drop_vacuous(samples)
 
     # Two-stage wraps its stage-1 prompt with the "abstract" wording and
     # its stage-2 prompt with the literal wording; record both.
     wrap_form = "abstract" if form == "two-stage" else form
-    template_path = FORMS[form][1]
+    template_path = args.prompt_template or FORMS[form][1]
     meta = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "seed": args.seed,
         "n": args.n,
         "stratify_ops": args.stratify_ops,
+        "stratify_eq_ops": args.stratify_eq_ops,
+        "eq_bins": args.eq_bins if args.stratify_eq_ops else None,
+        "label_prefix": args.label_prefix,
+        "exclude_vacuous": args.exclude_vacuous,
         "form": form,
         "models": models,
         "dry_run": args.dry_run,

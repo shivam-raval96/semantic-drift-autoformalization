@@ -36,7 +36,7 @@ COMPOSITION = (
     ("wrong", "var(--c-wrong)"),
     ("unparseable", "var(--c-unp)"),
 )
-SERIES_VARS = ("var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)")
+SERIES_VARS = ("var(--s1)", "var(--s2)", "var(--s3)", "var(--s4)", "var(--s5)")
 
 VB_W = 860  # SVG viewBox width shared by all charts
 
@@ -92,14 +92,62 @@ def run_form(run: dict) -> str:
     return run["meta"].get("form", "story")
 
 
+# Template each form uses by default; a run whose recorded prompt_template
+# differs is a prompt-variant arm (benchmark.py --prompt-template) and gets
+# a derived label ("story + hint") so same-form runs stay distinguishable.
+DEFAULT_TEMPLATES = {
+    "story": "formalize_prompt.md",
+    "literal": "literal_prompt.md",
+    "two-stage": "abstract_prompt.md",
+}
+
+
+def run_arm(run: dict) -> str:
+    form = run_form(run)
+    template = run["meta"].get("prompt_template")
+    if not template or template == DEFAULT_TEMPLATES.get(form):
+        return form
+    stem = Path(template).stem
+    for affix in ("formalize_", "_prompt"):
+        stem = stem.replace(affix, "")
+    return f"{form} + {stem.replace('_', ' + ')}"
+
+
+def arm_order_key(arm: str) -> Tuple[int, str]:
+    return (FORM_ORDER.get(arm.split(" + ", 1)[0], 9), arm)
+
+
+def arm_colors(arms: List[str]) -> Dict[str, str]:
+    """Base forms keep their fixed colors; variant arms take unused vars."""
+    colors = {arm: FORM_COLORS[arm] for arm in arms if arm in FORM_COLORS}
+    unused = [c for c in SERIES_VARS if c not in colors.values()]
+    for arm in arms:
+        if arm not in colors:
+            colors[arm] = unused.pop(0) if unused else SERIES_VARS[-1]
+    return colors
+
+
+def _ops_bins(samples: List[dict]) -> List[int]:
+    return sorted({s["ops_total"] for s in samples if s.get("ops_total") is not None})
+
+
 def experiment_title(group: List[dict]) -> str:
     meta = group[0]["meta"]
     pairs = len(group[0]["samples"])
-    if meta.get("stratify_ops"):
+    if meta.get("stratify_eq_ops"):
+        bins = (meta.get("eq_bins") or "1:10").replace(":", "–")
+        how = (
+            f"{pairs} pairs, {meta['stratify_eq_ops']} per per-equation "
+            f"operation bin {bins}, both laws from the same bin"
+        )
+    elif meta.get("stratify_ops"):
         how = f"{pairs} pairs, {meta['stratify_ops']} per operation-count bin 1–8"
+        bins = _ops_bins(group[0]["samples"])
+        if bins and bins[0] > 1:
+            how += f" minus vacuous-law pairs (bins {bins[0]}–{bins[-1]} remain)"
     else:
         how = f"{pairs} uniformly sampled pairs"
-    forms = sorted({run_form(r) for r in group}, key=lambda f: FORM_ORDER.get(f, 9))
+    forms = sorted({run_arm(r) for r in group}, key=arm_order_key)
     if len(forms) > 1:
         regimes = " and ".join(dict.fromkeys(run["label"] for run in group))
         return f"{how} · seed {meta['seed']} · {' vs '.join(forms)} · {regimes}"
@@ -152,12 +200,15 @@ def line_chart(
     series: List[dict], x_values: List[int], x_title: str, height: int = 320
 ) -> str:
     """series: [{name, color, points: {x: value}}] with values in 0..100."""
-    left, right, top, bottom = 56, 120, 16, 44
+    left, top, bottom = 56, 16, 44
+    # the right margin holds "name NN%" end labels; size it to the longest
+    right = max(120, 12 + round(6.5 * max(len(s["name"]) + 5 for s in series)))
     plot_w, plot_h = VB_W - left - right, height - top - bottom
     x_of = lambda x: left + plot_w * (x_values.index(x) / max(1, len(x_values) - 1))
     y_of = lambda v: top + plot_h * (1 - v / 100)
 
     parts = _grid_and_yaxis(left, left + plot_w, y_of, [0, 25, 50, 75, 100])
+    end_labels: List[list] = []
     for x in x_values:
         parts.append(
             f'<text x="{x_of(x):.1f}" y="{height - 22}" class="tick" text-anchor="middle">{x}</text>'
@@ -181,11 +232,20 @@ def line_chart(
                 f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="4" fill="{s["color"]}" {tip}/>'
             )
         end_x, end_y = pts[-1]
-        end_v = s["points"][x_values[-1]]
-        parts.append(
-            f'<text x="{end_x + 12:.1f}" y="{end_y + 4:.1f}" class="end-label">'
-            f'{esc(s["name"])} {end_v:.0f}%</text>'
-        )
+        end_v = s["points"][[x for x in x_values if x in s["points"]][-1]]
+        end_labels.append([end_x, end_y, f'{s["name"]} {end_v:.0f}%'])
+    # converging lines land their end labels on top of each other; sweep
+    # top-down keeping 14px between labels, then shift back into the plot
+    end_labels.sort(key=lambda l: l[1])
+    for i in range(1, len(end_labels)):
+        end_labels[i][1] = max(end_labels[i][1], end_labels[i - 1][1] + 14)
+    excess = end_labels[-1][1] - (height - bottom) if end_labels else 0
+    for label in end_labels:
+        label[1] -= max(0, excess)
+    parts.extend(
+        f'<text x="{x + 12:.1f}" y="{y + 4:.1f}" class="end-label">{esc(text)}</text>'
+        for x, y, text in end_labels
+    )
     svg = "".join(parts)
     return (
         legend_chips([(s["name"], s["color"]) for s in series])
@@ -414,14 +474,31 @@ def data_table(headers: List[str], rows: List[List[object]], summary: str) -> st
 def sample_tag(run: dict) -> str:
     """Short sample identifier for figure titles, e.g. "uniform 30"."""
     pairs = len(run["samples"])
+    if run["meta"].get("stratify_eq_ops"):
+        return f"balanced {pairs}"
     return f"stratified {pairs}" if run["meta"].get("stratify_ops") else f"uniform {pairs}"
 
 
 def sample_note(run: dict) -> str:
     """One caption sentence saying what the run's sample covers."""
     pairs = len(run["samples"])
+    per_eq = run["meta"].get("stratify_eq_ops")
+    if per_eq:
+        bins = (run["meta"].get("eq_bins") or "1:10").replace(":", "–")
+        return (
+            f"Sample: {pairs} pairs, {per_eq} per per-equation operation bin "
+            f"{bins} — both laws of a pair carry the bin's exact operation "
+            "count."
+        )
     per_bin = run["meta"].get("stratify_ops")
     if per_bin:
+        bins = _ops_bins(run["samples"])
+        if bins and bins[0] > 1:
+            return (
+                f"Sample: {pairs} pairs — {per_bin} per total-operation bin "
+                "1–8, minus the pairs containing a zero-op (vacuous) law; "
+                f"bins {bins[0]}–{bins[-1]} remain."
+            )
         return (
             f"Sample: {pairs} pairs, {per_bin} per total-operation bin 1–8 — "
             "the full complexity range, including trivial laws."
@@ -441,7 +518,7 @@ def figure(number: int, title: str, caption: str, body: str) -> str:
 
 
 def render_group(group: List[dict], fig_no: List[int]) -> str:
-    if len({run_form(r) for r in group}) > 1:
+    if len({run_arm(r) for r in group}) > 1:
         return render_form_group(group, fig_no)
     sections = [f"<h2>{esc(experiment_title(group))}</h2>"]
     models = group[0]["models"]
@@ -542,7 +619,7 @@ def render_form_group(group: List[dict], fig_no: List[int]) -> str:
     labelled by form and regime."""
     group = sorted(
         group,
-        key=lambda r: (REGIME_ORDER.get(r["regime"], 9), FORM_ORDER.get(run_form(r), 9)),
+        key=lambda r: (REGIME_ORDER.get(r["regime"], 9), arm_order_key(run_arm(r))),
     )
     sections = [f"<h2>{esc(experiment_title(group))}</h2>"]
     models = group[0]["models"]
@@ -550,10 +627,9 @@ def render_form_group(group: List[dict], fig_no: List[int]) -> str:
     for regime in dict.fromkeys(r["regime"] for r in group):
         runs = [r for r in group if r["regime"] == regime]
         label = runs[0]["label"]
-        series = [
-            (run_form(r), FORM_COLORS.get(run_form(r), SERIES_VARS[i % len(SERIES_VARS)]))
-            for i, r in enumerate(runs)
-        ]
+        arms = [run_arm(r) for r in runs]
+        colors = arm_colors(arms)
+        series = [(arm, colors[arm]) for arm in arms]
         counts = [by_model_counts(r) for r in runs]
         rows = []
         for m in models:
@@ -630,7 +706,7 @@ def render_form_group(group: List[dict], fig_no: List[int]) -> str:
         sections.append(
             figure(
                 fig_no[0],
-                f"Verdict composition — {run_form(run)} · {run['label']} · {sample_tag(run)}",
+                f"Verdict composition — {run_arm(run)} · {run['label']} · {sample_tag(run)}",
                 "How each model's answers grade out; the right-hand figure is the "
                 "correct rate (exact + swapped + dualized). " + sample_note(run),
                 stacked_bars(rows) + table,
@@ -646,28 +722,28 @@ CSS = """
 :root {
   --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
   --muted: #898781; --grid: #e1e0d9; --border: rgba(11,11,11,0.10);
-  --s1: #2a78d6; --s2: #1baf7a; --s3: #4a3aa7; --s4: #eb6834;
+  --s1: #2a78d6; --s2: #1baf7a; --s3: #4a3aa7; --s4: #eb6834; --s5: #b13fa8;
   --c-exact: #256abf; --c-swap: #6da7ec; --c-dual: #b7d3f6;
   --c-wrong: #e34948; --c-unp: #898781;
 }
 @media (prefers-color-scheme: dark) { :root {
   --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7;
   --muted: #898781; --grid: #2c2c2a; --border: rgba(255,255,255,0.10);
-  --s1: #3987e5; --s2: #199e70; --s3: #9085e9; --s4: #d95926;
+  --s1: #3987e5; --s2: #199e70; --s3: #9085e9; --s4: #d95926; --s5: #d75bc8;
   --c-exact: #3987e5; --c-swap: #86b6ef; --c-dual: #cde2fb;
   --c-wrong: #e66767; --c-unp: #898781;
 } }
 :root[data-theme="light"] {
   --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
   --muted: #898781; --grid: #e1e0d9; --border: rgba(11,11,11,0.10);
-  --s1: #2a78d6; --s2: #1baf7a; --s3: #4a3aa7; --s4: #eb6834;
+  --s1: #2a78d6; --s2: #1baf7a; --s3: #4a3aa7; --s4: #eb6834; --s5: #b13fa8;
   --c-exact: #256abf; --c-swap: #6da7ec; --c-dual: #b7d3f6;
   --c-wrong: #e34948; --c-unp: #898781;
 }
 :root[data-theme="dark"] {
   --page: #0d0d0d; --surface: #1a1a19; --ink: #ffffff; --ink-2: #c3c2b7;
   --muted: #898781; --grid: #2c2c2a; --border: rgba(255,255,255,0.10);
-  --s1: #3987e5; --s2: #199e70; --s3: #9085e9; --s4: #d95926;
+  --s1: #3987e5; --s2: #199e70; --s3: #9085e9; --s4: #d95926; --s5: #d75bc8;
   --c-exact: #3987e5; --c-swap: #86b6ef; --c-dual: #cde2fb;
   --c-wrong: #e66767; --c-unp: #898781;
 }
