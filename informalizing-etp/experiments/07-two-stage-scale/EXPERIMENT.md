@@ -126,11 +126,10 @@ python3 charts.py experiments/07-two-stage-scale/runs/* \
     --title "ETP formalization benchmark · story vs literal vs two-stage at scale (no-think)" \
     --out experiments/07-two-stage-scale/report/comparison-report.html --pdf
 
-# vacuous-law-excluded view: copy each run dir into results/no-vacuous/<run>/
-# keeping run_meta.json and only the samples.jsonl / results.jsonl rows with
-# min(ops_e, ops_f) > 0 (drops the 55 pairs containing E1 "x = x" or
-# E2 "x = y"; 105 pairs and bins 2-8 remain), then:
-python3 charts.py results/no-vacuous/* \
+# vacuous-law-excluded view (drops the 55 pairs containing E1 "x = x"
+# or E2 "x = y"; 105 pairs and bins 2-8 remain):
+python3 filter_vacuous.py experiments/07-two-stage-scale
+python3 charts.py results/no-vacuous/07-two-stage-scale/runs/* \
     --title "ETP formalization benchmark · story vs literal vs two-stage at scale (no-think) · vacuous laws excluded" \
     --out experiments/07-two-stage-scale/report/comparison-report-no-vacuous.html --pdf
 ```

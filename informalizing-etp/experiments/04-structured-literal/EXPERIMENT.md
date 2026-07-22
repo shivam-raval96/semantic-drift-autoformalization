@@ -140,6 +140,33 @@ Run notes:
 - Off-regime failures skew `wrong` rather than `unparseable`, except
   gpt-5-mini (uniform/off: 10 of 30 unparseable at `effort: minimal`).
 
+**Vacuous-law-excluded view** (added 2026-07-22). Experiment 07
+identified pairs containing a vacuous law (E1 `x = x` / E2 `x = y`) as
+a measurement hazard, and the convention is now to exclude them
+(`experiments/README.md`). The uniform n=30 runs contain no such
+pairs; the stratified runs keep 24 of 40.
+`report/benchmark-report-no-vacuous.html` / `.pdf` re-renders the
+charts over the filtered copies (`python3 filter_vacuous.py
+experiments/04-structured-literal`, then the charts.py command over
+the `results/no-vacuous/...` runs). Correct% on the 24 surviving
+stratified pairs (original 40-pair number in parentheses):
+
+| model | off | on |
+|---|---|---|
+| deepseek/deepseek-chat-v3.1 | 87.5 (90.0) | 100 (100) |
+| google/gemini-2.5-flash | 79.2 (85.0) | 100 (100) |
+| meta-llama/llama-3.3-70b-instruct | 75.0 (80.0) | 100 (100) |
+| anthropic/claude-haiku-4.5 | 75.0 (82.5) | 100 (100) |
+| openai/gpt-5-mini | 66.7 (70.0) | 100 (100) |
+| mistralai/mistral-small-3.2-24b-instruct | 41.7 (60.0) | 100 (95.0) |
+| qwen/qwen3-32b | 37.5 (52.5) | 95.8 (97.5) |
+| openai/gpt-4o-mini | 33.3 (57.5) | 100 (100) |
+
+The off regime drops hardest at the weak end (gpt-4o-mini −24.2,
+mistral −18.3, qwen −15.0): renderer-written literal text reads
+vacuous laws at ~100% (experiment 07), so those pairs padded exactly
+the models with the least headroom. The on regime stays at ceiling.
+
 ## Conclusions
 
 - **Named intermediates close the thinking-on gap completely.** On the

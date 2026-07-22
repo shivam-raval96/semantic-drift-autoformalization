@@ -48,6 +48,23 @@ report to `experiments/05-story-literal-correlation/report/`.
 One Experiment 04 complex/reasoning-on API error remains ungraded, so that
 condition contains 239 rather than 240 paired observations.
 
+**Vacuous-law-excluded view** (added 2026-07-22). Experiment 07
+identified pairs containing a vacuous law (E1 `x = x` / E2 `x = y`) as
+a measurement hazard, and the convention is now to exclude them
+(`experiments/README.md`). `report/no-vacuous/` holds the same
+analysis over filtered copies of the experiment 02 and 04 runs
+(`python3 filter_vacuous.py experiments/02-reasoning-and-complexity
+experiments/04-structured-literal`, then `python3 paired_analysis.py
+--story results/no-vacuous/02-reasoning-and-complexity --literal
+results/no-vacuous/04-structured-literal --out
+experiments/05-story-literal-correlation/report/no-vacuous`). The
+uniform ("Complex 30") rows are unchanged; the stratified rows drop to
+N=192 (24 pairs): off-regime association softens but stands (phi
+0.381 → 0.327, model Pearson r 0.945 → 0.805), while the stratified/on
+association disappears outright (phi 0.126 → −0.013, r 0.449 →
+−0.173) — that cell's apparent correlation was carried by the vacuous
+pairs, and matches the uniform/on rows' null result.
+
 ## Conclusions
 
 - **Reasoning off**: Literal performance strongly predicts Story performance

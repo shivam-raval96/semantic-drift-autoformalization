@@ -119,6 +119,31 @@ Run notes:
   checkform accepts. No `correct-dualized` rows anywhere: with explicit
   first/second-input wording, no model dualized.
 
+**Vacuous-law-excluded view** (added 2026-07-22). Experiment 07
+identified pairs containing a vacuous law (E1 `x = x` / E2 `x = y`) as
+a measurement hazard, and the convention is now to exclude them
+(`experiments/README.md`). The uniform n=30 runs contain no such
+pairs; the stratified runs keep 24 of 40.
+`report/benchmark-report-no-vacuous.html` / `.pdf` re-renders the
+charts over the filtered copies (`python3 filter_vacuous.py
+experiments/03-literal-reasoning-and-complexity`, then the charts.py
+command over the `results/no-vacuous/...` runs). Correct% on the 24
+surviving stratified pairs (original 40-pair number in parentheses):
+
+| model | off | on |
+|---|---|---|
+| openai/gpt-4o-mini | 95.8 (97.5) | 66.7 (75.0) |
+| google/gemini-2.5-flash | 95.8 (97.5) | 91.7 (95.0) |
+| qwen/qwen3-32b | 91.7 (95.0) | 87.5 (92.5) |
+| openai/gpt-5-mini | 91.7 (95.0) | 100 (100) |
+| deepseek/deepseek-chat-v3.1 | 87.5 (92.5) | 100 (100) |
+| anthropic/claude-haiku-4.5 | 87.5 (92.5) | 91.7 (95.0) |
+| meta-llama/llama-3.3-70b-instruct | 79.2 (87.5) | 83.3 (87.5) |
+| mistralai/mistral-small-3.2-24b-instruct | 70.8 (80.0) | 79.2 (85.0) |
+
+Uniform small drops (2–9 points) in both regimes: vacuous pairs were
+easy for this arm too, but its margins were narrower to begin with.
+
 ## Conclusions
 
 - The narrative disguise is most of the no-thinking difficulty. With

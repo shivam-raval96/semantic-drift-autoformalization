@@ -91,8 +91,10 @@ Conventions that keep experiments comparable:
   bin's operations in the partner law, producing a spurious dip at
   ops-bin 4 that a total-operations axis misreads as non-monotone
   difficulty. Practicalities: neither sampler has an exclusion flag
-  yet, so filter the sampled pairs (keep `min(ops_e, ops_f) > 0`) or
-  verify `samples.jsonl` before spending API budget — and note that
+  yet, so verify `samples.jsonl` before spending API budget; for
+  existing runs, `filter_vacuous.py` copies run directories with the
+  vacuous pairs removed (every affected experiment's `-no-vacuous`
+  report is generated from such copies). Note also that
   ops-bin 1 consists *entirely* of vacuous-law pairs, so stratified
   sampling without them means bins 2–8. Uniform `--n` sampling is
   effectively unaffected (it almost never draws them). When comparing

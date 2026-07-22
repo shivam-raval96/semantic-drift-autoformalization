@@ -210,6 +210,44 @@ Run notes:
   renderers about. All 18 of its stratified/on failures are off-grammar
   stage-1 outputs of this character.
 
+**Vacuous-law-excluded view** (added 2026-07-22). Experiment 07
+identified pairs containing a vacuous law (E1 `x = x` / E2 `x = y`) as
+a measurement hazard — in the two-stage arm specifically, stage 1
+embellishes the vacuous side with an invented operation in ~42% of
+readings — and the convention is now to exclude them
+(`experiments/README.md`). The uniform n=30 runs contain no such
+pairs; the stratified runs keep 24 of 40.
+`report/benchmark-report-no-vacuous.html` / `.pdf` and
+`report/comparison-report-no-vacuous.html` / `.pdf` re-render this
+experiment's reports over filtered copies (`python3 filter_vacuous.py
+experiments/02-reasoning-and-complexity
+experiments/04-structured-literal experiments/05-two-stage`, then the
+same charts.py commands over the `results/no-vacuous/...` runs).
+Correct% on the 24 surviving stratified pairs (original 40-pair number
+in parentheses):
+
+| model | off | on |
+|---|---|---|
+| deepseek/deepseek-chat-v3.1 | 79.2 (70.0) | 100 (100) |
+| google/gemini-2.5-flash | 79.2 (67.5) | 100 (100) |
+| anthropic/claude-haiku-4.5 | 75.0 (67.5) | 100 (92.5) |
+| meta-llama/llama-3.3-70b-instruct | 75.0 (60.0) | 95.8 (90.0) |
+| openai/gpt-5-mini | 66.7 (57.5) | 100 (100) |
+| mistralai/mistral-small-3.2-24b-instruct | 45.8 (42.5) | 95.8 (77.5) |
+| qwen/qwen3-32b | 29.2 (22.5) | 91.7 (77.5) |
+| openai/gpt-4o-mini | 25.0 (20.0) | 83.3 (55.0) |
+
+Unlike the single-shot arms, every number *rises*: the two-stage
+penalty was concentrated on the vacuous pairs. In particular, the
+stratified/on "cost of decomposition" this experiment reported for the
+weaker half largely dissolves — gpt-4o-mini 55.0 → 83.3, mistral
+77.5 → 95.8, qwen 77.5 → 91.7 — consistent with the run note that
+gpt-4o-mini's collapse was concentrated in degenerate low-complexity
+laws. The conclusions' "two-stage beats story off-regime" reading
+survives on the filtered pairs; the "weaker half pays for the second
+hop" reading was substantially a vacuous-law effect (experiment 07
+measures both at scale).
+
 ## Conclusions
 
 - **Decomposition helps exactly where models cannot think, and costs
