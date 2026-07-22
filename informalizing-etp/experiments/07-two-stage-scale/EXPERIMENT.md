@@ -265,6 +265,9 @@ Run notes:
 
 **TL;DR:** Yes. Literal NL → RG success predicts Story → RG success.
 
+- If a model succeeds on Literal NL → RG, its Story → RG success rate is **71.1%**.
+- If a model fails on Literal NL → RG, its Story → RG success rate is only **18.3%**.
+
 | sample | paired rows | P(Story correct \| Literal correct) | P(Story correct \| Literal wrong) | phi | model r |
 |---|---:|---:|---:|---:|---:|
 | All 160 pairs | 1,440 | 71.1% | 18.3% | 0.466 | 0.884 |
