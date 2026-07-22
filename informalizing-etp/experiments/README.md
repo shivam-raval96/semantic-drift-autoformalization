@@ -80,6 +80,24 @@ Conventions that keep experiments comparable:
   template fixed across the conditions being compared.
 - Never edit `formalize_prompt.md` mid-experiment; if the prompt changes,
   that is a new experiment.
+- **Exclude vacuous laws** — E1 `x = x` and E2 `x = y`, the only zero-op
+  laws — from every sample, unless the experiment is specifically about
+  them. Experiment 07 (`07-two-stage-scale/EXPERIMENT.md`) showed pairs
+  containing one are a measurement hazard rather than a complexity
+  gradation: models misread the vacuous law itself in ~20% of readings
+  by inventing an operation the text never states (42% in the two-stage
+  arm, whose stage-1 procedure grammar invites a "missing" definition
+  step), and under `--stratify-ops` these pairs concentrate all of a
+  bin's operations in the partner law, producing a spurious dip at
+  ops-bin 4 that a total-operations axis misreads as non-monotone
+  difficulty. Practicalities: neither sampler has an exclusion flag
+  yet, so filter the sampled pairs (keep `min(ops_e, ops_f) > 0`) or
+  verify `samples.jsonl` before spending API budget — and note that
+  ops-bin 1 consists *entirely* of vacuous-law pairs, so stratified
+  sampling without them means bins 2–8. Uniform `--n` sampling is
+  effectively unaffected (it almost never draws them). When comparing
+  against pre-07 runs, prefer the vacuous-excluded view
+  (`07-two-stage-scale/report/comparison-report-no-vacuous.*`).
 
 ## Planned experiments
 
