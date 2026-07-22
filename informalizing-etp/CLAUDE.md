@@ -1,0 +1,319 @@
+# CLAUDE.md
+
+## Project: Storyform — Deterministic Informalization of ETP Implications
+
+This project converts implication statements from the Equational Theories
+Project (ETP) into natural-language stories. The magma operation becomes a
+concrete, order-sensitive action (pouring paint, steeping tea, grafting
+plants), and each implication statement is rendered as a deterministic story
+built around that action.
+
+Scope and form:
+- We informalize the *statement* "law E implies law F" — never its proof and
+  never a counterexample. Truth is irrelevant; every (E, F) pair is treated
+  identically.
+- Every story reads as a **question**: it narrates a world whose custom
+  always holds (law E) and ends by asking whether a second regularity
+  (law F) must also hold.
+- Stories are **pure narrative**. They contain no mathematical notation, no
+  equation numbers, no variable letters, no bracketed formal statements —
+  nothing that reveals the abstract source. The formal side of each pair
+  lives only in external metadata, never in the story text.
+
+This is the *reverse* of autoformalization: formal → informal, with fidelity
+guaranteed by construction rather than checked after the fact. Output pairs
+(story, formal statement) are intended as a corpus for training and
+stress-testing autoformalization systems on non-standard phrasings.
+
+## Background context
+
+- The ETP (Tao et al., 2024–2025) resolved all 22,028,942 implications among
+  the 4,694 simplest equational laws for magmas, fully verified in Lean 4.
+  Repo: `github.com/teorth/equational_theories`. Report: arXiv:2512.07087.
+- A magma is a set with one binary operation and no axioms. Laws are
+  universally quantified identities like `x ∘ y = (y ∘ y) ∘ x`.
+- "E implies F" means: every magma satisfying E also satisfies F.
+- Background docs live in `/mnt/project/` (read-only).
+
+## Intended architecture
+
+Pipeline: equation string → AST → SSA-style procedure → themed question-story.
+
+- **AST**: parse equations into a term tree. Use a recursive-descent parser
+  expecting the ETP convention of fully parenthesized nesting. Op symbols
+  to support: `∘`, `◇`, `*`.
+- **Themes**: each theme defines a setting, agent, element noun, a fixed
+  palette of element names, and a sentence template for the operation. Theme
+  selection should be a deterministic function of the equation pair (e.g. a
+  hash mod the number of themes).
+- **Law renderer**: renders a single equational law as a narrated habit —
+  "take any two pigments; follow these steps; the two results always come
+  out the same color." Universal quantification is expressed as "take any
+  ... at all", with concrete palette names introduced as stand-ins.
+- **Question-story renderer**: the single top-level renderer for all (E, F)
+  pairs. It narrates a world where the first habit always holds, then poses
+  the second regularity as an open question ("must it also be true that
+  ...?"). The story never answers the question and never labels either habit
+  with a number, letter, or formula.
+
+## Worked example — target output shape
+
+Input: the implication `E387 ⇒ E43`, where E387 is `x ∘ y = (y ∘ y) ∘ x` and
+E43 is `x ∘ y = y ∘ x`. Suppose the hash of this pair selects the paint
+theme (`a ∘ b` = "pour a into b"). The rendered story:
+
+```
+In a certain paint workshop, the colorist follows one unbreakable
+habit. Take any two pigments at all — call the first crimson and the
+second ochre. She runs two procedures side by side.
+
+In the first, she pours crimson into ochre and sets the result aside
+as Batch 1.
+
+In the second, she pours ochre into ochre and calls the result
+Batch 2; then she pours Batch 2 into crimson and calls that Batch 3.
+
+However she chooses her two starting pigments, Batch 1 and Batch 3
+always come out the exact same color. That is simply how this
+workshop works, without exception.
+
+One morning her apprentice wonders about something. Take any two
+pigments — again call them crimson and ochre. Pour crimson into ochre
+and set the result aside as Batch 1. Separately, pour ochre into
+crimson and call the result Batch 2.
+
+In this workshop, must Batch 1 and Batch 2 always come out the same
+color?
+```
+
+Things to notice, all of which follow from the invariants below:
+- Nothing in the text mentions equations, rules by number, variable
+  letters, or the ETP — it reads as a self-contained story ending in a
+  question, and no formal statement is appended.
+- The story asserts only that the first habit holds and *asks* about the
+  second; it never answers, hints, or argues.
+- Argument order is preserved everywhere ("pour A into B" for `A ∘ B`),
+  so the question's two procedures are visibly different.
+- Each nested subterm becomes a named batch; batch numbering is shared
+  across the procedures of a single habit so names never clash.
+- The habit and the question each get their own fresh "take any two
+  pigments" clause — their choices are independent even though the same
+  palette names reappear.
+
+## Design invariants — do not break these
+
+1. **Statements only, phrased as questions.** The system renders the
+   implication claim as an unanswered question. No proofs, no
+   counterexamples, no Cayley tables, no truth-checking, no answers or
+   hints anywhere in the pipeline.
+2. **No formal leakage.** Story text must contain no mathematical notation,
+   equation numbers, variable letters, formulas, or references to laws,
+   magmas, or the ETP. The (story, formal statement) pairing is recorded
+   only in metadata alongside the story, never inside it.
+3. **Pure functions only.** The same (E, F) pair must always produce the
+   byte-identical story. No randomness, no clocks, no ambient state. Any
+   "variety" must be a deterministic function of the input (hashing is fine).
+4. **Order-sensitive action rendering.** `a ∘ b` renders with a fixed
+   argument convention ("pour a into b"). Never use symmetric phrasings
+   ("mix a and b") — they silently assert commutativity the law may not have.
+5. **No ambiguous nesting.** Term trees are always rendered as sequences of
+   steps with named intermediates ("Batch 1", "Brew 2"), never as nested
+   prose. Intermediate counters should be shared across both procedures of
+   a single law so names never clash.
+6. **Invertibility from narrative alone.** The rendering grammar must stay
+   injective: the story text by itself must determine both term trees, the
+   correspondence between palette names and variables (order of first
+   appearance), and every argument order. This is what makes the metadata
+   trustworthy without annotations in the text.
+7. **Faithfulness over fluency.** If a nicer-sounding phrasing loses
+   information (quantifier scope, argument order, tree shape, direction of
+   the question), reject it.
+
+## Conventions
+
+- Variables map to the theme's fixed name palette by order of first
+  appearance (LHS first, then RHS), introduced narratively ("call the first
+  crimson"). At least 6 palette names per theme — enough, since ETP laws
+  use at most 4 operations.
+- The habit (E) and the question (F) are quantified independently — reuse
+  of palette names across them carries no meaning, and each gets its own
+  "take any ..." clause.
+- Universal quantification is always narrated explicitly ("take any two
+  pigments at all", "however she chooses") — never left implicit.
+- The question must be one-directional: it asks whether the second
+  regularity follows, never whether the two habits are equivalent.
+- Canonical equation statements come from the ETP repo's equation list, not
+  reconstructed from memory; ETP numbering appears only in metadata.
+- Python 3, standard library only unless a dependency clearly pays for
+  itself.
+
+## Literal descriptions — the direct arm
+
+`literalform.py` renders the same implications as **direct**
+natural-language descriptions, question-framed like the stories. Each
+application of the operation is introduced as its own definition step
+with a named result ("apply the operation to x as its first input and y
+as its second input, and call the result Value 1"), and later steps refer
+to earlier results by name — the literal counterpart of the story arm's
+named intermediates ("Batch 1"). `literal_prompt.md` is its companion
+formalization prompt (it teaches unfolding Value names into nested
+`op(...)`); records use the same schema (with `theme`/`style` set to
+`"literal"`), so `checkform.py` grades both arms unchanged. (Through
+experiment 03 the literal arm instead used a words-only inline prefix
+grammar with no named intermediates; the definition-step grammar replaced
+it for experiment 04.)
+
+How the invariants apply to literalform:
+
+- **Deliberate exceptions**: invariant 2's no-leakage rule is relaxed —
+  variable letters (x, y, z, w, u, v), words like "operation", and
+  numbered intermediate labels ("Value 1") appear by design. Op symbols,
+  equation numbers, and ETP references are still banned from the text.
+- **Fully in force**: question framing and no answers (1), determinism
+  (3), order-sensitive rendering (4) — the text names first/second inputs
+  explicitly — named intermediates, never nested prose (5): the step
+  counter is shared across both sides of a law, exactly as in storyform;
+  invertibility (6; `backparse_literal` round-trips every pair in tests);
+  and faithfulness over fluency (7).
+
+Note on grading: because the literal text fixes the argument order
+explicitly, a dualized answer is not a faithful reading of *this* arm —
+but checkform still accepts `dual` and reports it in the verdict's
+`transform`, so evals can count dualized answers separately.
+
+## Formalization grading — the reverse eval
+
+`checkform.py` grades a model's attempt to formalize a story back into the
+implication, with no LLM judging anywhere:
+
+- The prompt (`formalize_prompt.md`) is self-contained: it teaches a tiny
+  prefix syntax (`op(first, second)` over ingredient-name variables) and
+  asks for exactly two lines, `ASSUME:` (the custom) and `ASK:` (the
+  questioned regularity). It assumes no knowledge of Lean, magmas, or the
+  ETP, and mentions none of them. Its worked example uses a made-up theme
+  (librarian stacking books) that must never be added to `themes/`.
+- Grading is purely syntactic: extract the last `ASSUME:`/`ASK:` lines,
+  parse, canonicalize (reusing `canonical()`), compare against the record's
+  `canonical_e`/`canonical_f`.
+- Accepted symmetries — each is a faithful reading of the story: variable
+  renaming (always); swapping the sides of either equation ("always come
+  out the same" is symmetric); and dualization, i.e. mirroring every op's
+  argument order uniformly across *both* equations (the story never says
+  which participant is `op`'s first argument, and the prompt deliberately
+  does not dictate a convention).
+- Never lenient: the direction of the implication (ASSUME vs ASK), or a
+  dualization applied to only one of the two equations.
+- The verdict reports the *minimal* matching transform (`swap_e`, `swap_f`,
+  `dual`) so evals can distinguish exact-convention answers from dualized
+  ones. CLI exit codes: 0 correct, 1 wrong, 2 unparseable.
+
+## Benchmarking and charts
+
+- `benchmark.py` runs the eval end to end: sample (E, F) pairs from the ETP
+  equation list (uniform `--n`, or `--stratify-ops N` for N pairs per
+  total-operation bin 1–8 — uniform sampling lands almost entirely on
+  maximal 4+4-op pairs), render each pair in the chosen arm (`--form story`
+  themed stories with `formalize_prompt.md`; `--form literal` direct
+  descriptions with `literal_prompt.md` — sampling never consults the form,
+  so equal seeds give the identical pair set in every arm), query models
+  via OpenRouter (`OPENROUTER_API_KEY`), grade with checkform, and write a
+  resumable run directory (`run_meta.json`, `samples.jsonl`,
+  `results.jsonl`, `summary.md`). Rerunning the same `--out-dir` retries
+  only api-error rows.
+  `--reasoning on|off` standardizes thinking across models: a uniform
+  prompt wrapper for every model plus the native reasoning toggle where
+  supported (with per-vendor floors: qwen3 needs `/no_think`, gpt-5 floors
+  at `effort: minimal`); rows record `reasoning_tokens` so regime
+  compliance is auditable. `--dry-run` exercises everything but the
+  network and must grade 100% exact.
+  `--form two-stage` is the decomposed arm: stage 1 sends the themed
+  story with `abstract_prompt.md`, asking the model to rewrite it as a
+  literalform-style description; stage 2 feeds stage 1's raw response —
+  verbatim, no extraction — into `literal_prompt.md` and the final
+  answer is graded as usual. Rows keep the standard schema (top-level
+  call fields describe the graded stage-2 call) plus `stage1_*`
+  bookkeeping; stage 1 gets its own regime wrapper wording ("abstract"),
+  stage 2 reuses the literal wording unchanged. In a dry run stage 1
+  "answers" with the deterministic literalform rendering, so the full
+  pipeline still must grade 100% exact.
+- `charts.py RUN_DIR... --out report.html` renders run directories into a
+  self-contained HTML chart report (no dependencies, inline SVG, light and
+  dark). Runs over the same pair set are grouped and compared: regime
+  dumbbell per model, accuracy-vs-complexity lines when the sample spans
+  operation bins, verdict-composition bars, and a data table per figure.
+- Each report is one self-contained file — it can also be published as a
+  claude.ai Artifact or emailed as-is. `charts.py --pdf` additionally
+  prints a PDF next to the HTML (uses headless Chrome/Chromium; print
+  styles keep figures unbroken across pages).
+
+## Experiments
+
+- `experiments/` is the committed lab notebook: one numbered directory per
+  experiment (`NN-slug/`) containing `EXPERIMENT.md` (question, setup —
+  models tested and thinking regime — prompts, reproduce commands, results,
+  conclusions), `runs/` (the benchmark.py run directories), and `report/`
+  (the charts.py output). The full convention, the EXPERIMENT.md template,
+  and the step-by-step recipe for running a new experiment — written so a
+  subagent can follow it unattended — live in `experiments/README.md`,
+  along with the backlog of planned experiments.
+- `results/` remains gitignored scratch space for smoke tests and dry runs;
+  anything worth keeping is run with `--out-dir experiments/NN-slug/runs/...`
+  from the start.
+- Run directories are immutable after the fact; a prompt-template change
+  means a new experiment, not an edit to an old one.
+
+## Testing
+
+Renderer tests live in `test_storyform.py`, literal-renderer tests in
+`test_literalform.py`, grader tests in `test_checkform.py`, benchmark
+(two-stage arm and regime wrappers) tests in `test_benchmark.py`; run all
+with `python3 -m unittest test_storyform test_literalform test_checkform
+test_benchmark`.
+Renderer priority order:
+1. Round-trip test — a back-parser recovers both term trees from the story
+   text alone, matching the original pair of ASTs.
+2. No-leakage test — story text contains no digits attached to equations,
+   no operator symbols, no single-letter variable mentions, and none of a
+   banned-word list ("equation", "law", "magma", "implies", "theorem", ...).
+3. Determinism test — two renders of the same pair are identical.
+4. Coverage test — the renderer handles degenerate shapes (bare-variable
+   sides, repeated variables, maximal 4-operation nesting) without error.
+
+Grader tests cover extraction from messy responses, malformed-syntax
+rejection, one test per verdict class (accepted symmetries and the
+never-lenient cases), determinism, and a corpus round-trip. Note: telling
+dualization apart from a side swap requires a questioned law that is
+asymmetric under dualization — commutativity cannot distinguish them.
+
+## Roadmap
+
+- **ETP data ingestion**: load the equation list and implication pairs from
+  the `teorth/equational_theories` repo data files rather than hard-coding
+  examples.
+- **Back-parser**: mechanical story → implication parser to enforce
+  invariant 6 in CI.
+- **Corpus export**: JSONL records pairing each story with its formal
+  metadata (equation numbers, raw equations, Lean statement) for
+  autoformalization robustness evaluation.
+- **Theme library growth**: more action domains, each vetted against the
+  order-sensitivity, injectivity, and no-leakage invariants.
+- **Batch eval harness**: run a model over every corpus prompt and
+  aggregate checkform verdicts (correct / dualized / swapped / wrong /
+  unparseable rates).
+
+## Pitfalls to remember
+
+- ETP equations are only meaningful with explicit parenthesization —
+  never assume associativity when parsing or rendering.
+- The LHS of many ETP laws is a bare variable (`x = ...`); the law renderer
+  must handle the degenerate side ("the result is always just crimson
+  again").
+- Named intermediates ("Batch 1") are narrative devices, not formal labels —
+  keep them, but never let genuine formal identifiers (x, y, E387, ∘) slip
+  into the text.
+- Do not let story language accidentally assert the converse, an
+  equivalence, or the answer to the question.
+- Do not "improve" stories with LLM rewriting inside the pipeline — that
+  reintroduces exactly the fidelity risk the deterministic design removes.
+  LLM polish, if ever added, goes in a separate post-processing stage with
+  a round-trip check gating its output.

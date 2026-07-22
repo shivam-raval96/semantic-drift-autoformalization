@@ -1,0 +1,130 @@
+{
+  "deepseek/deepseek-chat-v3.1": {
+    "counts": {
+      "exact": 15,
+      "correct-swapped": 2,
+      "correct-dualized": 0,
+      "wrong": 8,
+      "unparseable": 5,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.5667,
+    "exact_rate": 0.5,
+    "median_response_len": 141,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  },
+  "qwen/qwen3-32b": {
+    "counts": {
+      "exact": 1,
+      "correct-swapped": 0,
+      "correct-dualized": 0,
+      "wrong": 28,
+      "unparseable": 1,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.0333,
+    "exact_rate": 0.0333,
+    "median_response_len": 135,
+    "rows_with_reasoning": 24,
+    "median_reasoning_tokens": 1
+  },
+  "meta-llama/llama-3.3-70b-instruct": {
+    "counts": {
+      "exact": 2,
+      "correct-swapped": 3,
+      "correct-dualized": 0,
+      "wrong": 16,
+      "unparseable": 9,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.1667,
+    "exact_rate": 0.0667,
+    "median_response_len": 146,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  },
+  "mistralai/mistral-small-3.2-24b-instruct": {
+    "counts": {
+      "exact": 2,
+      "correct-swapped": 0,
+      "correct-dualized": 0,
+      "wrong": 22,
+      "unparseable": 6,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.0667,
+    "exact_rate": 0.0667,
+    "median_response_len": 152,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  },
+  "openai/gpt-4o-mini": {
+    "counts": {
+      "exact": 0,
+      "correct-swapped": 0,
+      "correct-dualized": 0,
+      "wrong": 26,
+      "unparseable": 4,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.0,
+    "exact_rate": 0.0,
+    "median_response_len": 151,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  },
+  "google/gemini-2.5-flash": {
+    "counts": {
+      "exact": 13,
+      "correct-swapped": 4,
+      "correct-dualized": 0,
+      "wrong": 12,
+      "unparseable": 1,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.5667,
+    "exact_rate": 0.4333,
+    "median_response_len": 140,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  },
+  "anthropic/claude-haiku-4.5": {
+    "counts": {
+      "exact": 1,
+      "correct-swapped": 4,
+      "correct-dualized": 0,
+      "wrong": 25,
+      "unparseable": 0,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.1667,
+    "exact_rate": 0.0333,
+    "median_response_len": 145,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  },
+  "openai/gpt-5-mini": {
+    "counts": {
+      "exact": 5,
+      "correct-swapped": 0,
+      "correct-dualized": 0,
+      "wrong": 19,
+      "unparseable": 6,
+      "api-error": 0
+    },
+    "graded": 30,
+    "correct_rate": 0.1667,
+    "exact_rate": 0.1667,
+    "median_response_len": 142,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  }
+}

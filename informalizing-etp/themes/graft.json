@@ -1,0 +1,18 @@
+{
+  "key": "graft",
+  "notes": "Grafting is naturally asymmetric: the scion ({a}) goes onto the stock ({b}).",
+  "intro": "In a certain hillside orchard, the gardener follows one unbreakable habit.",
+  "subject": "she",
+  "possessive": "her",
+  "element_singular": "cutting",
+  "element_plural": "cuttings",
+  "palette": ["quince", "medlar", "damson", "mulberry", "persimmon", "loquat"],
+  "op_agent": "grafts {a} onto {b}",
+  "op_imperative": "graft {a} onto {b}",
+  "result_noun": "Graft",
+  "same_habit": "grow into exactly the same plant",
+  "same_question": "grow into the same plant",
+  "closing": "That is simply how this orchard works, without exception.",
+  "question_intro": "One spring her neighbor wonders about something.",
+  "question_lead": "In this orchard"
+}
