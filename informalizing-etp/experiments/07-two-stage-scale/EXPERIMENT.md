@@ -125,6 +125,14 @@ python3 charts.py experiments/07-two-stage-scale/runs/run-strat20-s0-think-off \
 python3 charts.py experiments/07-two-stage-scale/runs/* \
     --title "ETP formalization benchmark · story vs literal vs two-stage at scale (no-think)" \
     --out experiments/07-two-stage-scale/report/comparison-report.html --pdf
+
+# vacuous-law-excluded view: copy each run dir into results/no-vacuous/<run>/
+# keeping run_meta.json and only the samples.jsonl / results.jsonl rows with
+# min(ops_e, ops_f) > 0 (drops the 55 pairs containing E1 "x = x" or
+# E2 "x = y"; 105 pairs and bins 2-8 remain), then:
+python3 charts.py results/no-vacuous/* \
+    --title "ETP formalization benchmark · story vs literal vs two-stage at scale (no-think) · vacuous laws excluded" \
+    --out experiments/07-two-stage-scale/report/comparison-report-no-vacuous.html --pdf
 ```
 
 Requires checkform's term-depth cap (`_MAX_TERM_DEPTH`, added during
@@ -134,10 +142,12 @@ this experiment — see run notes).
 
 Artifacts: the three run directories under `runs/` (each with
 `summary.md`), `report/benchmark-report.html` / `.pdf` (the two-stage
-run alone), and `report/comparison-report.html` / `.pdf` (the headline
+run alone), `report/comparison-report.html` / `.pdf` (the headline
 cross-arm figures: correct rate by model and form, and
 accuracy-vs-complexity with one line per form, all on the identical
-pair set).
+pair set), and `report/comparison-report-no-vacuous.html` / `.pdf`
+(the same figures over the 105 pairs containing no vacuous law —
+added after the bin-4 investigation below).
 
 Correct% over the 160 stratified pairs, no-think, per arm (two-stage
 column: experiment 05's strat5-off number in parentheses; not per-pair
@@ -173,6 +183,39 @@ Pooled correct% by total-operation bin 1–8 and by max nesting depth
 | story | 89 | 69 | 49 | 29 |
 | literal | 100 | 95 | 63 | 43 |
 | two-stage | 69 | 68 | 61 | 40 |
+
+**The bin-4 dip is a vacuous-law composition artifact, not a bug.**
+Bin 4 is the only bin ≥ 4 whose splits can include a zero-op law (E1
+`x = x` / E2 `x = y`; 0+5 needs a 5-op law, which doesn't exist), and
+it drew 12/20 such pairs. Those pairs score 42.0% pooled vs 74.5% for
+bin 4's other pairs — which sit exactly on the smooth curve — and bin
+5 rebounds because vacuous pairs are structurally impossible there.
+Law-level reading rates (a law graded correct up to its own side swap
+/ dualization, pooled over arms and models) explain the mechanism:
+0-op laws 79.7% (trivial is harder than simple — models embellish),
+1-op 95.4%, 2-op 89.7%, 3-op 74.0%, 4-op 57.5% (depth-4 chains
+~35–56%). A (0,4) split therefore multiplies a flat ~20% vacuous-side
+tax by the worst per-law regime in the benchmark; below bin 4 the
+partner stays on the easy side of the 3→4-op cliff, so bare pairs
+underperform their bins (e.g. 67.4 vs 92.6 in bin 3) without making
+the pooled curve non-monotone. The dry run grades this pair set 100%,
+and hand-checked failures are genuine model errors (e.g. deepseek
+shifting two pigments one nesting level in E1-E2254).
+
+Correct% on the 105 pairs with no vacuous law
+(`comparison-report-no-vacuous`):
+
+| model | story | literal | two-stage |
+|---|---|---|---|
+| openai/gpt-5.5 | 92.4 | **99.0** | **99.0** |
+| anthropic/claude-haiku-4.5 | 48.6 | 82.9 | 81.9 |
+| google/gemini-2.5-flash | 75.2 | 84.8 | 74.3 |
+| deepseek/deepseek-chat-v3.1 | 75.2 | 73.3 | 74.3 |
+| meta-llama/llama-3.3-70b-instruct | 37.1 | 61.0 | 63.8 |
+| mistralai/mistral-small-3.2-24b-instruct | 23.8 | 57.1 | 58.1 |
+| openai/gpt-5-mini | 45.7 | 55.2 | 58.1 |
+| qwen/qwen3-32b | 35.2 | 52.4 | 50.5 |
+| openai/gpt-4o-mini | 16.2 | 36.2 | 29.5 |
 
 Stage attribution (same mechanical procedure as experiment 05: the tail
 of the stage-1 response from its last "Consider a collection …"
@@ -266,8 +309,22 @@ Run notes:
   rewrite is an externalized reasoning pass that costs a flat toll and
   pays off only once the story is deep enough that one-shot reading
   breaks down.
+- **Excluding vacuous laws collapses most of the arm gaps at the low
+  end — the "two-stage toll" is nearly all a vacuous-law toll.** On
+  the 105 structured pairs, two-stage ≈ literal for seven of nine
+  models (llama, mistral, and gpt-5-mini even edge literal), and every
+  story-beats-two-stage inversion from the full sample disappears or
+  flattens to a tie (gpt-4o-mini flips outright, 16.2 story vs 29.5
+  two-stage). Stage-1 embellishment of trivial laws is where the
+  decomposition loses; give every law real structure and the
+  model-written rewrite is as good as the renderer's. The story arm,
+  by contrast, stays far behind everywhere — the narrative cost is
+  not a vacuous-law artifact.
 - Methodological: a benchmark whose grader can be crashed by a
   degenerate generation is itself part of the measurement — the
   depth-cap fix belongs in the harness permanently, and the runaway
   `op(`-repetition failure mode (concentrated in gpt-5-mini's
-  truncated rows) is worth counting explicitly if it recurs.
+  truncated rows) is worth counting explicitly if it recurs. Likewise,
+  the total-operation bin axis conflates per-law difficulty profiles:
+  depth (monotone here and in the filtered view) is the more
+  trustworthy complexity axis for future experiments.
