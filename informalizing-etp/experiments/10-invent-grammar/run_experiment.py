@@ -160,6 +160,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--models", default=",".join(DEFAULT_MODELS))
+    parser.add_argument("--prompt-template", type=Path, default=PROMPT_PATH)
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
     parser.add_argument("--max-tokens", type=int, default=16384)
     parser.add_argument("--timeout", type=float, default=180.0)
@@ -167,7 +168,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = parser.parse_args(argv)
 
     models = [m.strip() for m in args.models.split(",") if m.strip()]
-    template = PROMPT_PATH.read_text(encoding="utf-8")
+    template = args.prompt_template.read_text(encoding="utf-8")
     equations, equations_sha = load_equations()
     targets, examples = pick_materials(equations, args.seed)
 
@@ -194,7 +195,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         "temperature": 0,
         "max_tokens": args.max_tokens,
         "reasoning": "native-default",
-        "prompt_template": PROMPT_PATH.name,
+        "prompt_template": args.prompt_template.name,
         "prompt_template_sha256": hashlib.sha256(template.encode("utf-8")).hexdigest(),
         "equations_sha256": equations_sha,
         "targets": [brief(targets[key]) for key in ("low", "high")],

@@ -1,0 +1,63 @@
+{
+  "created_utc": "2026-07-22T17:07:11+00:00",
+  "seed": 0,
+  "models": [
+    "openai/gpt-5.5",
+    "google/gemini-2.5-flash"
+  ],
+  "k_values": [
+    1,
+    2,
+    3
+  ],
+  "temperature": 0,
+  "max_tokens": 16384,
+  "reasoning": "native-default",
+  "prompt_template": "invent_bnf_prompt.md",
+  "prompt_template_sha256": "3f673789da44ab5a95807a948ce14159fb15dd2fc4aa4c8847d8733ac7b8a641",
+  "equations_sha256": "e30e1a6735011ff36fdb228d37b232eb7cda9d4a836cbbefc69c07e6871c8010",
+  "targets": [
+    {
+      "pair_id": "E17-E4",
+      "equation_e": "x = y \u25c7 (y \u25c7 y)",
+      "equation_f": "x = x \u25c7 y",
+      "theme": "signal",
+      "ops_total": 3,
+      "depth": 2
+    },
+    {
+      "pair_id": "E3156-E3446",
+      "equation_e": "x = (((y \u25c7 y) \u25c7 y) \u25c7 z) \u25c7 y",
+      "equation_f": "x \u25c7 y = z \u25c7 (w \u25c7 (w \u25c7 y))",
+      "theme": "signal",
+      "ops_total": 8,
+      "depth": 4
+    }
+  ],
+  "examples": [
+    {
+      "pair_id": "E10-E4044",
+      "equation_e": "x = x \u25c7 (y \u25c7 x)",
+      "equation_f": "x \u25c7 y = (z \u25c7 (w \u25c7 y)) \u25c7 x",
+      "theme": "paint",
+      "ops_total": 6,
+      "depth": 3
+    },
+    {
+      "pair_id": "E13-E1576",
+      "equation_e": "x = y \u25c7 (x \u25c7 x)",
+      "equation_f": "x = (y \u25c7 z) \u25c7 (y \u25c7 (y \u25c7 w))",
+      "theme": "tea",
+      "ops_total": 6,
+      "depth": 3
+    },
+    {
+      "pair_id": "E28-E1750",
+      "equation_e": "x = (y \u25c7 x) \u25c7 x",
+      "equation_f": "x = (y \u25c7 y) \u25c7 ((z \u25c7 w) \u25c7 x)",
+      "theme": "graft",
+      "ops_total": 6,
+      "depth": 3
+    }
+  ]
+}

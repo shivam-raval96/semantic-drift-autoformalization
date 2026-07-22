@@ -11,27 +11,27 @@
   --bg: #F7F8F5; --panel: #FFFFFF; --ink: #24282C; --muted: #5D6670;
   --line: #DCE0DA; --code-bg: #F0F2ED; --gpt: #4A61C4; --gem: #A56F2B;
   --gpt-bg: rgba(74,97,196,.06); --gem-bg: rgba(165,111,43,.06);
-  --ok: #35773F;
+  --ok: #35773F; --bad: #A83232;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #1A1E22; --panel: #22272C; --ink: #DFE4E7; --muted: #98A1AA;
     --line: #343B41; --code-bg: #1D2226; --gpt: #8B9DE8; --gem: #D4A059;
     --gpt-bg: rgba(139,157,232,.07); --gem-bg: rgba(212,160,89,.07);
-    --ok: #7CBF85;
+    --ok: #7CBF85; --bad: #E08585;
   }
 }
 :root[data-theme="dark"] {
   --bg: #1A1E22; --panel: #22272C; --ink: #DFE4E7; --muted: #98A1AA;
   --line: #343B41; --code-bg: #1D2226; --gpt: #8B9DE8; --gem: #D4A059;
   --gpt-bg: rgba(139,157,232,.07); --gem-bg: rgba(212,160,89,.07);
-  --ok: #7CBF85;
+  --ok: #7CBF85; --bad: #E08585;
 }
 :root[data-theme="light"] {
   --bg: #F7F8F5; --panel: #FFFFFF; --ink: #24282C; --muted: #5D6670;
   --line: #DCE0DA; --code-bg: #F0F2ED; --gpt: #4A61C4; --gem: #A56F2B;
   --gpt-bg: rgba(74,97,196,.06); --gem-bg: rgba(165,111,43,.06);
-  --ok: #35773F;
+  --ok: #35773F; --bad: #A83232;
 }
 body {
   background: var(--bg); color: var(--ink);
@@ -41,7 +41,8 @@ body {
 main { max-width: 72rem; margin: 0 auto; }
 h1, h2, h3 { font-family: Charter, "Bitstream Charter", Georgia, serif; text-wrap: balance; }
 h1 { font-size: 1.9rem; margin: 0 0 .35rem; font-weight: 700; }
-h2 { font-size: 1.25rem; margin: 2.6rem 0 .9rem; }
+h2 { font-size: 1.25rem; margin: 2.6rem 0 .35rem; }
+.arm-sub { color: var(--muted); margin: 0 0 .9rem; font-size: .92rem; }
 .sub { color: var(--muted); max-width: 46rem; margin: 0 0 1rem; }
 .meta { display: flex; flex-wrap: wrap; gap: .45rem 1.1rem; color: var(--muted); margin: 0 0 .5rem;
   font-family: system-ui, -apple-system, sans-serif; font-size: .78rem; letter-spacing: .04em;
@@ -49,6 +50,8 @@ h2 { font-size: 1.25rem; margin: 2.6rem 0 .9rem; }
 .findings { margin: 1.6rem 0 0; padding: 0; list-style: none; max-width: 52rem; }
 .findings li { padding: .55rem 0 .55rem 1.1rem; border-left: 2px solid var(--line); margin: .55rem 0; }
 .findings li strong { font-weight: 700; }
+.findings-label { font-family: system-ui, -apple-system, sans-serif; font-size: .74rem;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--muted); margin: 1.4rem 0 0; }
 .tgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1rem; }
 .tcard { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1rem 1.1rem; }
 .tcard-head { display: flex; flex-wrap: wrap; gap: .35rem .8rem; align-items: baseline; margin-bottom: .5rem; }
@@ -77,9 +80,12 @@ pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-siz
 .chip { font-family: system-ui, -apple-system, sans-serif; font-size: .72rem; letter-spacing: .05em;
   text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px;
   padding: .12rem .6rem; }
-.faithful { color: var(--ok); font-family: system-ui, -apple-system, sans-serif; font-size: .72rem;
+.faithful, .broken { font-family: system-ui, -apple-system, sans-serif; font-size: .72rem;
   letter-spacing: .05em; text-transform: uppercase; }
+.faithful { color: var(--ok); }
 .faithful::before { content: "✓ "; }
+.broken { color: var(--bad); font-weight: 600; }
+.broken::before { content: "✗ "; }
 .cell-label { margin: 0; font-family: system-ui, -apple-system, sans-serif; font-size: .72rem;
   letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
 .note { margin: 0; font-size: .85rem; color: var(--muted); font-style: italic; }
@@ -94,21 +100,36 @@ footer code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size:
 <h1>Experiment 10 — Invent-your-own-grammar</h1>
 <p class="sub">Instead of being handed the benchmark’s <code>op(...)</code> / ASSUME / ASK notation, each model
 was asked to <em>design its own</em> rigid notation for a Storyform story and encode the story in it,
-with K = 1, 2, 3 example stories (other themes, no answers) shown as context.</p>
-<div class="meta"><span>gpt-5.5 + gemini-2.5-flash</span><span>2 targets · K ∈ {1,2,3} · 12 calls</span><span>seed 0 · temp 0 · native reasoning</span><span>$0.31 total</span><span>2026-07-22</span></div>
+with K = 1, 2, 3 example stories (other themes, no answers) shown as context. Two arms: notation fully
+free, and grammar required in BNF.</p>
+<div class="meta"><span>gpt-5.5 + gemini-2.5-flash</span><span>2 targets · K ∈ {1,2,3} · 2 arms · 24 calls</span><span>seed 0 · temp 0 · native reasoning</span><span>$1.04 total</span><span>2026-07-22</span></div>
 
+<p class="findings-label">Free-form arm</p>
 <ul class="findings">
   <li><strong>All 12 encodings are semantically faithful</strong> — hand-checked against the ground-truth laws
-      (up to renaming, side swap, dualization), including the 8-op, depth-4 target. Fidelity never differentiated.</li>
+      (up to renaming, side swap, dualization), including the 8-op, depth-4 target.</li>
   <li><strong>Both models converge on the project’s own design:</strong> declared free choices, named
       intermediate steps, one final equality, an assert-vs-ask marker. Named intermediaries beat nested
       expressions 11 : 1, and at K = 3 both models reinvent prefix <code>op(first, second)</code> almost verbatim.</li>
   <li><strong>gpt-5.5 drifts monotonically with K toward legibility:</strong> sigils (<code>!{…|…|…}</code>) at
-      K = 1, bracketed BNF at K = 2, spelled-out ASSERT/ASK keywords and story names at K = 3; spec length grows
-      with K and every encoding conforms to its own spec.</li>
+      K = 1, bracketed BNF at K = 2, spelled-out ASSERT/ASK keywords and story names at K = 3.</li>
   <li><strong>gemini-2.5-flash redesigns from scratch at every K</strong> — six calls, six structurally different
-      notations, specs 2–3× longer, with two latent defects (a mutually-dual operator gloss at K = 1; an encoding
-      that violates its own bracing rule).</li>
+      notations, specs 2–3× longer, with two latent defects.</li>
+</ul>
+
+<p class="findings-label">BNF-constrained arm</p>
+<ul class="findings">
+  <li><strong>The constraint held:</strong> all 12 responses lead with production rules. gpt-5.5’s BNF is complete
+      down to digit-level lexical rules, and each of its encodings is a one-line string its own grammar derives.</li>
+  <li><strong>BNF pushes gpt-5.5 to full abstraction:</strong> the story’s names vanish — every encoding uses
+      canonical <code>x1, x2 / r1, r2</code> — and reasoning spend rises 2–4× ($0.29 → $0.72 for its six calls).
+      At K = 3 it lands on <code>op(term, term)</code> again.</li>
+  <li><strong>BNF stabilizes gemini’s design but degrades its execution:</strong> all six calls now share one
+      CUSTOM/QUESTION keyword skeleton, yet the arm produced the experiment’s only unfaithful encoding
+      (low target, K = 3: an underivable step plus variable shadowing that matches no consistent reading of the
+      law) and two self-conformance violations at K = 1.</li>
+  <li><strong>Faithfulness: 11 / 12</strong> (free-form arm: 12 / 12) — requiring formal rigor in the spec did not
+      buy rigor in the encoding.</li>
 </ul>
 
 <h2>The two target stories</h2>
@@ -127,7 +148,8 @@ F (question): x ◇ y = z ◇ (w ◇ (w ◇ y))</pre>
       </div>
 </div>
 
-<h2>Invented grammars and encodings</h2>
+<h2>Free-form arm</h2>
+<p class="arm-sub">invent_prompt.md — notation left entirely open</p>
 
     <section class="block m-gpt">
       <div class="block-head">
@@ -459,7 +481,7 @@ It would be represented as:
           <p class="cell-label">Encoding</p>
           <pre class="encoding">CUSTOM { whistle, hum : { whistle, (hum -&gt; (hum -&gt; hum)) } }
 QUERY { whistle, hum : { whistle, (whistle -&gt; hum) } }</pre>
-          <p class="note">The only nested-expression encoding of the twelve; equality as an equivalence set.</p>
+          <p class="note">The only nested-expression encoding of the twenty-four; equality as an equivalence set.</p>
           <details class="grammar"><summary>Grammar spec · 2,985 chars</summary>
             <pre>My notation uses a functional style to represent the combining action and a set-like notation for equivalences.
 
@@ -752,9 +774,504 @@ Must `Expr_L` and `Expr_R` always come out the same?</pre>
         </div>
       </div>
     </section>
+<h2>BNF-constrained arm</h2>
+<p class="arm-sub">invent_bnf_prompt.md — grammar must be BNF production rules</p>
 
-<footer>Run artifacts: <code>experiments/10-invent-grammar/runs/run-mini/</code> · prompts under
-<code>prompts/</code> · template <code>invent_prompt.md</code> (sha256 d4edcb57eafc…)</footer>
+    <section class="block m-gpt">
+      <div class="block-head">
+        <h3><span class="dot"></span>gpt-5.5</h3>
+        <span class="target-tag">E17-E4 · low complexity · 3 ops, depth 2</span>
+      </div>
+      <div class="kgrid">
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 1 · paint</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">A[x1,x2]{r1=*(x2,x2);r2=*(x2,r1)}~(x1,r2)#Q[x1,x2]{r1=*(x1,x2)}~(x1,r1)</pre>
+          <p class="note">Story names abandoned across all six BNF encodings: canonical x1, x2 / r1, r2 only.</p>
+          <details class="grammar"><summary>Grammar spec · 1,468 chars</summary>
+            <pre>&lt;document&gt; ::= &lt;assertion&gt; "#" &lt;question&gt;
+&lt;assertion&gt; ::= "A" &lt;case&gt;
+&lt;question&gt; ::= "Q" &lt;case&gt;
+&lt;case&gt; ::= "[" &lt;var-list&gt; "]" "{" &lt;assign-list&gt; "}" "~" "(" &lt;term&gt; "," &lt;term&gt; ")"
+&lt;var-list&gt; ::= &lt;var&gt; | &lt;var&gt; "," &lt;var-list&gt;
+&lt;assign-list&gt; ::= &lt;assignment&gt; | &lt;assignment&gt; ";" &lt;assign-list&gt;
+&lt;assignment&gt; ::= &lt;res&gt; "=" "*" "(" &lt;term&gt; "," &lt;term&gt; ")"
+&lt;term&gt; ::= &lt;var&gt; | &lt;res&gt;
+&lt;var&gt; ::= "x" &lt;pos-int&gt;
+&lt;res&gt; ::= "r" &lt;pos-int&gt;
+&lt;pos-int&gt; ::= &lt;nonzero-digit&gt; | &lt;nonzero-digit&gt; &lt;digits&gt;
+&lt;digits&gt; ::= &lt;digit&gt; | &lt;digit&gt; &lt;digits&gt;
+&lt;digit&gt; ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+&lt;nonzero-digit&gt; ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+1. A &lt;document&gt; contains one asserted always-holding custom, marked by "A", and one asked regularity, marked by "Q"; "#" separates them.
+2. In a &lt;case&gt;, the variables inside "[" and "]" are the freely chosen starting things, universally quantified in their listed order.
+3. An &lt;assignment&gt; of the form r=*(a,b) means: perform the combining action with ordered first participant a and second participant b, and name the result r.
+4. Assignments inside "{" and "}" are performed from left to right.
+5. A &lt;res&gt; denotes the result named by its assignment; a valid encoding assigns each result name at most once and uses a result name only after it has been assigned in that case.
+6. "~(a,b)" states, inside "A", that a and b always come out the same; inside "Q", it asks whether a and b must always come out the same.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 2 · + tea</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">A[x1,x2:r1:=C(x2,x2);r2:=C(x2,r1)=&gt;x1=r2]Q[x1,x2:r1:=C(x1,x2)=&gt;x1=r1]</pre>
+          
+          <details class="grammar"><summary>Grammar spec · 1,779 chars</summary>
+            <pre>&lt;document&gt; ::= &lt;assertion&gt;&lt;question&gt;
+&lt;assertion&gt; ::= "A[" &lt;start-list&gt; ":" &lt;definition-list&gt; "=&gt;" &lt;equation&gt; "]"
+&lt;question&gt; ::= "Q[" &lt;start-list&gt; ":" &lt;definition-list&gt; "=&gt;" &lt;equation&gt; "]"
+&lt;start-list&gt; ::= &lt;start&gt; | &lt;start&gt; "," &lt;start-list&gt;
+&lt;definition-list&gt; ::= &lt;definition&gt; | &lt;definition&gt; ";" &lt;definition-list&gt;
+&lt;definition&gt; ::= &lt;result&gt; ":=" "C(" &lt;term&gt; "," &lt;term&gt; ")"
+&lt;equation&gt; ::= &lt;term&gt; "=" &lt;term&gt;
+&lt;term&gt; ::= &lt;start&gt; | &lt;result&gt;
+&lt;start&gt; ::= "x" &lt;positive&gt;
+&lt;result&gt; ::= "r" &lt;positive&gt;
+&lt;positive&gt; ::= &lt;nonzero&gt; | &lt;nonzero&gt;&lt;digits&gt;
+&lt;digits&gt; ::= &lt;digit&gt; | &lt;digit&gt;&lt;digits&gt;
+&lt;digit&gt; ::= "0" | &lt;nonzero&gt;
+&lt;nonzero&gt; ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+1. `&lt;document&gt;` is one asserted custom followed by one asked regularity.
+2. `A[...]` asserts that, for all freely chosen starting things listed before `:`, the definitions after `:` are performed in order and the equation after `=&gt;` always holds.
+3. `Q[...]` asks, without asserting, whether for all freely chosen starting things listed before `:`, the definitions after `:` are performed in order and the equation after `=&gt;` must always hold.
+4. `x1`, `x2`, etc. name freely chosen starting things. In this encoding, `x1` is the first named starting thing and `x2` is the second.
+5. `r1`, `r2`, etc. name intermediate results defined by the ordered definitions within the same bracketed block.
+6. `C(a,b)` means one performance of the combining action with first participant `a` and second participant `b`; the order of `a,b` is significant.
+7. `a=b` means the two denoted things come out the same in the relevant sense.
+8. Within a valid block, listed starts are distinct, each result is defined at most once, and any result used in a definition or equation has already been defined earlier in that same block.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 3 · + graft</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">ASSERT[x1,x2]{r1:=C(x2,x2);r2:=C(x2,r1)}(x1=r2)ASK[x1,x2]{r1:=C(x1,x2)}(x1=r1)</pre>
+          
+          <details class="grammar"><summary>Grammar spec · 1,502 chars</summary>
+            <pre>&lt;story&gt; ::= &lt;assertion&gt; &lt;question&gt;
+&lt;assertion&gt; ::= "ASSERT" &lt;clause&gt;
+&lt;question&gt; ::= "ASK" &lt;clause&gt;
+&lt;clause&gt; ::= "[" &lt;var-list&gt; "]" "{" &lt;assign-list&gt; "}" "(" &lt;equality&gt; ")"
+&lt;var-list&gt; ::= &lt;var&gt; | &lt;var&gt; "," &lt;var-list&gt;
+&lt;assign-list&gt; ::= "" | &lt;assignment-sequence&gt;
+&lt;assignment-sequence&gt; ::= &lt;assignment&gt; | &lt;assignment&gt; ";" &lt;assignment-sequence&gt;
+&lt;assignment&gt; ::= &lt;res&gt; ":=" "C" "(" &lt;term&gt; "," &lt;term&gt; ")"
+&lt;equality&gt; ::= &lt;term&gt; "=" &lt;term&gt;
+&lt;term&gt; ::= &lt;var&gt; | &lt;res&gt;
+&lt;var&gt; ::= "x" &lt;positive-integer&gt;
+&lt;res&gt; ::= "r" &lt;positive-integer&gt;
+&lt;positive-integer&gt; ::= &lt;nonzero-digit&gt; | &lt;nonzero-digit&gt; &lt;digits&gt;
+&lt;digits&gt; ::= "" | &lt;digit&gt; &lt;digits&gt;
+&lt;digit&gt; ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+&lt;nonzero-digit&gt; ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+1. A &lt;story&gt; consists of one asserted universal custom followed by one asked universal regularity.
+2. In a &lt;clause&gt;, the variables in brackets are the freely chosen starting things, in listed order.
+3. Assignments inside braces are performed from left to right.
+4. `rN:=C(a,b)` means: name as `rN` the result of applying the ordered combining action to first participant `a` and second participant `b`. No symmetry of `C` is assumed.
+5. In an `ASSERT` clause, the final equality is asserted to hold for all choices of the listed starting things after the listed assignments.
+6. In an `ASK` clause, the final equality is only the question: whether it must hold for all choices of the listed starting things after the listed assignments.</pre>
+          </details>
+        </div>
+      </div>
+    </section>
+    <section class="block m-gpt">
+      <div class="block-head">
+        <h3><span class="dot"></span>gpt-5.5</h3>
+        <span class="target-tag">E3156-E3446 · high complexity · 8 ops, depth 4</span>
+      </div>
+      <div class="kgrid">
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 1 · paint</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">STORY{ASSERTFORALL(w,h,c){r1:=(h*h);r2:=(r1*h);r3:=(r2*c);r4:=(r3*h);EQ(w,r4)};ASKFORALL(w,h,c,b){r1:=(w*h);r2:=(b*h);r3:=(b*r2);r4:=(c*r3);EQ(r1,r4)}}</pre>
+          <p class="note">Keywords concatenate (ASSERTFORALL): its BNF defines no whitespace, and the encoding follows the productions literally.</p>
+          <details class="grammar"><summary>Grammar spec · 1,385 chars</summary>
+            <pre>&lt;program&gt; ::= "STORY" "{" &lt;assertion&gt; ";" &lt;question&gt; "}"
+&lt;assertion&gt; ::= "ASSERT" &lt;clause&gt;
+&lt;question&gt; ::= "ASK" &lt;clause&gt;
+&lt;clause&gt; ::= "FORALL" "(" &lt;idlist&gt; ")" "{" &lt;body&gt; "}"
+&lt;idlist&gt; ::= &lt;id&gt; | &lt;id&gt; "," &lt;idlist&gt;
+&lt;body&gt; ::= &lt;equality&gt; | &lt;definition&gt; ";" &lt;body&gt;
+&lt;definition&gt; ::= &lt;id&gt; ":=" "(" &lt;id&gt; "*" &lt;id&gt; ")"
+&lt;equality&gt; ::= "EQ" "(" &lt;id&gt; "," &lt;id&gt; ")"
+&lt;id&gt; ::= &lt;letter&gt; | &lt;letter&gt; &lt;tail&gt;
+&lt;tail&gt; ::= &lt;char&gt; | &lt;char&gt; &lt;tail&gt;
+&lt;char&gt; ::= &lt;letter&gt; | &lt;digit&gt;
+&lt;letter&gt; ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+&lt;digit&gt; ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+1. A &lt;program&gt; contains exactly one asserted custom and exactly one asked regularity.
+2. "FORALL" "(" &lt;idlist&gt; ")" "{" &lt;body&gt; "}" means the listed identifiers are freely chosen starting things, universally quantified.
+3. A definition x:=(y*z) records one ordered combining action whose first participant is y and whose second participant is z; the result is named x.
+4. Definitions in a body are read from left to right. Each right-hand identifier must be either a starting identifier from the enclosing FORALL list or a result identifier defined earlier in the same body.
+5. EQ(x,y) states that x and y come out the same. Under ASSERT it is claimed always to hold; under ASK it is only queried.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 2 · + tea</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">ASSERT(x1,x2,x3)[r1:=*(x2,x2);r2:=*(r1,x2);r3:=*(r2,x3);r4:=*(r3,x2);]x1=r4;ASK(x1,x2,x3,x4)[r1:=*(x1,x2);r2:=*(x4,x2);r3:=*(x4,r2);r4:=*(x3,r3);]r1=r4;</pre>
+          
+          <details class="grammar"><summary>Grammar spec · 1,480 chars</summary>
+            <pre>&lt;story&gt; ::= &lt;assertion&gt; &lt;question&gt;
+&lt;assertion&gt; ::= "ASSERT" "(" &lt;var-list&gt; ")" "[" &lt;assignment-list&gt; "]" &lt;equality&gt; ";"
+&lt;question&gt; ::= "ASK" "(" &lt;var-list&gt; ")" "[" &lt;assignment-list&gt; "]" &lt;equality&gt; ";"
+&lt;var-list&gt; ::= &lt;var&gt; | &lt;var&gt; "," &lt;var-list&gt;
+&lt;assignment-list&gt; ::= &lt;assignment&gt; | &lt;assignment&gt; &lt;assignment-list&gt;
+&lt;assignment&gt; ::= &lt;result&gt; ":=" "*" "(" &lt;term&gt; "," &lt;term&gt; ")" ";"
+&lt;equality&gt; ::= &lt;term&gt; "=" &lt;term&gt;
+&lt;term&gt; ::= &lt;var&gt; | &lt;result&gt;
+&lt;var&gt; ::= "x" &lt;positive-integer&gt;
+&lt;result&gt; ::= "r" &lt;positive-integer&gt;
+&lt;positive-integer&gt; ::= &lt;nonzero-digit&gt; | &lt;nonzero-digit&gt; &lt;digit-string&gt;
+&lt;digit-string&gt; ::= &lt;digit&gt; | &lt;digit&gt; &lt;digit-string&gt;
+&lt;digit&gt; ::= "0" | &lt;nonzero-digit&gt;
+&lt;nonzero-digit&gt; ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+1. `ASSERT(...)` states an always-holding custom. The variables listed in parentheses are the freely chosen starting things for that custom.
+2. `ASK(...)` states the closing question. The variables listed in parentheses are the freely chosen starting things for that question.
+3. Each assignment `rN:=*(A,B);` means: perform the combining action with first participant `A` and second participant `B`, in that order, and name the result `rN`.
+4. Assignments inside one bracketed block are evaluated from left to right. Result names are local to their own block.
+5. The equality after the bracket gives the two terms said to come out the same. In `ASSERT`, it is asserted always to hold; in `ASK`, it is only asked whether it must always hold.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 3 · + graft</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">ASSERT(forall(x1,x2,x3){r1:=op(x2,x2);r2:=op(r1,x2);r3:=op(r2,x3);r4:=op(r3,x2)}=&gt;x1=r4)ASK(forall(x1,x2,x3,x4){r1:=op(x1,x2);r2:=op(x4,x2);r3:=op(x4,r2);r4:=op(x3,r3)}=&gt;r1=r4)</pre>
+          <p class="note">Lands on op(term, term) at K = 3 again.</p>
+          <details class="grammar"><summary>Grammar spec · 1,447 chars</summary>
+            <pre>&lt;story&gt; ::= &lt;assertion&gt; &lt;question&gt;
+&lt;assertion&gt; ::= "ASSERT" "(" &lt;block&gt; ")"
+&lt;question&gt; ::= "ASK" "(" &lt;block&gt; ")"
+&lt;block&gt; ::= "forall" "(" &lt;var-list&gt; ")" "{" &lt;step-list&gt; "}" "=&gt;" &lt;equality&gt;
+&lt;var-list&gt; ::= &lt;var&gt; | &lt;var&gt; "," &lt;var-list&gt;
+&lt;step-list&gt; ::= &lt;step&gt; | &lt;step&gt; ";" &lt;step-list&gt;
+&lt;step&gt; ::= &lt;result&gt; ":=" &lt;application&gt;
+&lt;application&gt; ::= "op" "(" &lt;term&gt; "," &lt;term&gt; ")"
+&lt;equality&gt; ::= &lt;term&gt; "=" &lt;term&gt;
+&lt;term&gt; ::= &lt;var&gt; | &lt;result&gt;
+&lt;var&gt; ::= "x" &lt;positive-integer&gt;
+&lt;result&gt; ::= "r" &lt;positive-integer&gt;
+&lt;positive-integer&gt; ::= &lt;nonzero-digit&gt; | &lt;nonzero-digit&gt; &lt;digit-sequence&gt;
+&lt;digit-sequence&gt; ::= &lt;digit&gt; | &lt;digit&gt; &lt;digit-sequence&gt;
+&lt;digit&gt; ::= "0" | &lt;nonzero-digit&gt;
+&lt;nonzero-digit&gt; ::= "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+1. A &lt;story&gt; has one asserted universal custom, marked by "ASSERT", and one merely asked universal regularity, marked by "ASK".
+2. In a &lt;block&gt;, "forall(...)" lists the freely chosen starting things; their order records first, second, third, and so on.
+3. A &lt;step&gt; records one performed combining action. "op(a,b)" means combine participant a with participant b in that order.
+4. Steps inside "{" and "}" are evaluated from left to right; the left side result name stores the result of that step.
+5. An &lt;equality&gt; after "=&gt;" names the two things claimed or asked to come out the same after the listed steps.
+6. No commutativity, associativity, identity law, or other property of "op" is assumed by the notation.</pre>
+          </details>
+        </div>
+      </div>
+    </section>
+    <section class="block m-gem">
+      <div class="block-head">
+        <h3><span class="dot"></span>gemini-2.5-flash</h3>
+        <span class="target-tag">E17-E4 · low complexity · 3 ops, depth 2</span>
+      </div>
+      <div class="kgrid">
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 1 · paint</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">CUSTOM SIGNALS whistle,hum PROCEDURES Relay1=hum THROUGH hum;Relay2=hum THROUGH Relay1 ASSERT whistle EQ Relay2
+QUESTION SIGNALS whistle,hum PROCEDURES Relay1=whistle THROUGH hum ASK whistle EQ Relay1</pre>
+          <p class="note">Grammar overfits the target theme (SIGNALS, THROUGH keywords) and uses EBNF (…)* repetition, not plain BNF.</p>
+          <details class="grammar"><summary>Grammar spec · 1,963 chars</summary>
+            <pre>&lt;story&gt; ::= &lt;custom&gt; &lt;question&gt;
+
+&lt;custom&gt; ::= "CUSTOM" &lt;signal_list&gt; &lt;procedure_list&gt; "ASSERT" &lt;equivalence_list&gt;
+&lt;question&gt; ::= "QUESTION" &lt;signal_list&gt; &lt;procedure_list&gt; "ASK" &lt;equivalence_list&gt;
+
+&lt;signal_list&gt; ::= "SIGNALS" &lt;signal_name&gt; ("," &lt;signal_name&gt;)*
+&lt;signal_name&gt; ::= &lt;identifier&gt;
+
+&lt;procedure_list&gt; ::= "PROCEDURES" &lt;procedure&gt; (";" &lt;procedure&gt;)*
+&lt;procedure&gt; ::= &lt;result_name&gt; "=" &lt;input_signal&gt; "THROUGH" &lt;input_signal&gt;
+&lt;result_name&gt; ::= &lt;identifier&gt;
+&lt;input_signal&gt; ::= &lt;signal_name&gt; | &lt;result_name&gt;
+
+&lt;equivalence_list&gt; ::= &lt;equivalence&gt; ("AND" &lt;equivalence&gt;)*
+&lt;equivalence&gt; ::= &lt;signal_name&gt; "EQ" &lt;input_signal&gt;
+
+&lt;identifier&gt; ::= &lt;letter&gt; (&lt;letter&gt; | &lt;digit&gt;)*
+&lt;letter&gt; ::= "a" | ... | "z" | "A" | ... | "Z"
+&lt;digit&gt; ::= "0" | ... | "9"
+
+Meaning Notes:
+1. `&lt;story&gt;`: Represents the entire story, composed of a custom and a question.
+2. `&lt;custom&gt;`: Describes the unbreakable habit. It specifies the initial signals, the sequence of operations, and the asserted equivalences.
+3. `&lt;question&gt;`: Describes the scenario for which a regularity is questioned. It specifies the initial signals, the sequence of operations, and the equivalences being asked about.
+4. `&lt;signal_list&gt;`: Defines the initial, freely chosen signals for a given part of the story.
+5. `&lt;signal_name&gt;`: A name given to an initial signal.
+6. `&lt;procedure_list&gt;`: A sequence of operations performed.
+7. `&lt;procedure&gt;`: A single operation where one signal is fed "THROUGH" another, producing a new result.
+8. `&lt;result_name&gt;`: A name given to the output of a procedure.
+9. `&lt;input_signal&gt;`: Can be either an initial signal (`&lt;signal_name&gt;`) or the result of a previous procedure (`&lt;result_name&gt;`).
+10. `&lt;equivalence_list&gt;`: A list of pairs of signals that are asserted or questioned to be equivalent.
+11. `&lt;equivalence&gt;`: A statement that two signals are equivalent. "EQ" stands for "is equivalent to".
+12. `&lt;identifier&gt;`: A general name for signals or results, starting with a letter.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 2 · + tea</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">CUSTOM INPUT whistle,hum PROCEDURE Relay1=hum&lt;-hum;Relay2=hum&lt;-Relay1 ASSERT whistle==Relay2
+QUESTION INPUT whistle,hum PROCEDURE Relay1=whistle&lt;-hum QUERY whistle==Relay1</pre>
+          
+          <details class="grammar"><summary>Grammar spec · 2,552 chars</summary>
+            <pre>&lt;story&gt; ::= &lt;custom&gt; &lt;question&gt;
+&lt;custom&gt; ::= "CUSTOM" &lt;input_vars&gt; &lt;procedure&gt; &lt;assertion&gt;
+&lt;question&gt; ::= "QUESTION" &lt;input_vars&gt; &lt;procedure&gt; &lt;query&gt;
+
+&lt;input_vars&gt; ::= "INPUT" &lt;var_list&gt;
+&lt;var_list&gt; ::= &lt;variable&gt; | &lt;variable&gt; "," &lt;var_list&gt;
+&lt;variable&gt; ::= &lt;identifier&gt;
+
+&lt;procedure&gt; ::= "PROCEDURE" &lt;step_list&gt;
+&lt;step_list&gt; ::= &lt;step&gt; | &lt;step&gt; ";" &lt;step_list&gt;
+&lt;step&gt; ::= &lt;identifier&gt; "=" &lt;operation&gt;
+&lt;operation&gt; ::= &lt;variable&gt; "&lt;-" &lt;variable&gt;
+
+&lt;assertion&gt; ::= "ASSERT" &lt;comparison_list&gt;
+&lt;query&gt; ::= "QUERY" &lt;comparison_list&gt;
+&lt;comparison_list&gt; ::= &lt;comparison&gt; | &lt;comparison&gt; "," &lt;comparison_list&gt;
+&lt;comparison&gt; ::= &lt;variable&gt; "==" &lt;variable&gt;
+
+&lt;identifier&gt; ::= &lt;letter&gt; | &lt;letter&gt; &lt;identifier_char&gt;
+&lt;identifier_char&gt; ::= &lt;letter&gt; | &lt;digit&gt;
+&lt;letter&gt; ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+&lt;digit&gt; ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+Meaning Notes:
+1. `&lt;story&gt;`: Represents a complete story, consisting of a custom and a question.
+2. `&lt;custom&gt;`: Describes the unbreakable habit of the workplace.
+3. `&lt;question&gt;`: Describes the regularity that is being questioned.
+4. `"CUSTOM"`: Keyword indicating the start of the custom definition.
+5. `"QUESTION"`: Keyword indicating the start of the question definition.
+6. `"INPUT"`: Keyword indicating the declaration of input variables (starting things).
+7. `&lt;var_list&gt;`: A comma-separated list of variables.
+8. `&lt;variable&gt;`: An identifier representing a named thing (e.g., a signal, a pigment).
+9. `"PROCEDURE"`: Keyword indicating the start of the sequence of operations.
+10. `&lt;step_list&gt;`: A semicolon-separated list of procedural steps.
+11. `&lt;step&gt;`: A single operation where a result is assigned to a new variable.
+12. `&lt;operation&gt;`: The combining action. The left variable is "fed through" or "poured into" the right variable. The order matters.
+13. `"ASSERT"`: Keyword indicating the start of the assertion (what always holds true).
+14. `"QUERY"`: Keyword indicating the start of the query (what is being asked).
+15. `&lt;comparison_list&gt;`: A comma-separated list of comparisons.
+16. `&lt;comparison&gt;`: An assertion or query that two variables are equivalent (e.g., "sound alike", "taste the same", "same color").
+17. `&lt;identifier&gt;`: A sequence of letters and digits, starting with a letter, used to name variables.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 3 · + graft</span><span class="broken">unfaithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">CUSTOM VARS whistle,hum PROC hum=hum-&gt;hum; Relay1=hum; Relay2=hum-&gt;Relay1 ASSERT whistle=Relay2
+QUESTION VARS whistle,hum PROC Relay1=whistle-&gt;hum ASK whistle=Relay1</pre>
+          <p class="note">Broken: Relay1=hum is not derivable from its own BNF, and no consistent reading of the shadowed hum yields the right law.</p>
+          <details class="grammar"><summary>Grammar spec · 1,939 chars</summary>
+            <pre>&lt;story&gt; ::= &lt;custom&gt; &lt;question&gt;
+&lt;custom&gt; ::= "CUSTOM" &lt;vars_decl&gt; &lt;procedure&gt; "ASSERT" &lt;equality_list&gt;
+&lt;question&gt; ::= "QUESTION" &lt;vars_decl&gt; &lt;procedure&gt; "ASK" &lt;equality_list&gt;
+&lt;vars_decl&gt; ::= "VARS" &lt;var_list&gt;
+&lt;var_list&gt; ::= &lt;variable&gt; | &lt;variable&gt; "," &lt;var_list&gt;
+&lt;variable&gt; ::= &lt;identifier&gt;
+&lt;procedure&gt; ::= "PROC" &lt;step_list&gt;
+&lt;step_list&gt; ::= &lt;step&gt; | &lt;step&gt; ";" &lt;step_list&gt;
+&lt;step&gt; ::= &lt;identifier&gt; "=" &lt;action&gt;
+&lt;action&gt; ::= &lt;operand&gt; "-&gt;" &lt;operand&gt;
+&lt;operand&gt; ::= &lt;variable&gt; | &lt;identifier&gt;
+&lt;equality_list&gt; ::= &lt;operand&gt; "=" &lt;operand&gt; | &lt;operand&gt; "=" &lt;operand&gt; "," &lt;equality_list&gt;
+&lt;identifier&gt; ::= &lt;letter&gt; | &lt;letter&gt; &lt;identifier_char&gt;
+&lt;identifier_char&gt; ::= &lt;letter&gt; | &lt;digit&gt;
+&lt;letter&gt; ::= "a" | "b" | ... | "z" | "A" | "B" | ... | "Z"
+&lt;digit&gt; ::= "0" | "1" | ... | "9"
+
+1.  `&lt;story&gt;`: Represents a complete story, consisting of a custom and a question.
+2.  `CUSTOM`: Keyword indicating the start of the custom part of the story.
+3.  `QUESTION`: Keyword indicating the start of the question part of the story.
+4.  `VARS`: Keyword indicating the declaration of variables (starting things).
+5.  `&lt;vars_decl&gt;`: Declares the variables (starting things) used in the subsequent procedure.
+6.  `&lt;variable&gt;`: A named starting thing, chosen freely.
+7.  `&lt;identifier&gt;`: A name for a variable or a result.
+8.  `PROC`: Keyword indicating the start of a procedure.
+9.  `&lt;procedure&gt;`: A sequence of steps describing the combining actions.
+10. `&lt;step&gt;`: A single combining action, assigning its result to an identifier.
+11. `&lt;action&gt;`: Represents the combining action. The left operand is "fed through" the right operand. The order matters.
+12. `&lt;operand&gt;`: A participant in an action, which can be a starting variable or a previously named result.
+13. `ASSERT`: Keyword indicating the assertion of equality in the custom.
+14. `ASK`: Keyword indicating the question of equality.
+15. `&lt;equality_list&gt;`: A comma-separated list of equalities between operands.</pre>
+          </details>
+        </div>
+      </div>
+    </section>
+    <section class="block m-gem">
+      <div class="block-head">
+        <h3><span class="dot"></span>gemini-2.5-flash</h3>
+        <span class="target-tag">E3156-E3446 · high complexity · 8 ops, depth 4</span>
+      </div>
+      <div class="kgrid">
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 1 · paint</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">CUSTOM INPUTS whistle,hum,chirp hum-&gt;hum=Relay1; Relay1-&gt;hum=Relay2; Relay2-&gt;chirp=Relay3; Relay3-&gt;hum=Relay4 ASSERT whistle==Relay4
+QUESTION INPUTS whistle,hum,chirp,buzz whistle-&gt;hum=Relay1; buzz-&gt;hum=Relay2; buzz-&gt;Relay2=Relay3; chirp-&gt;Relay3=Relay4 ASK Relay1==Relay4</pre>
+          <p class="note">Steps written result-last (hum-&gt;hum=Relay1), reversing its own production; Relay1 also breaks its lowercase-only identifier rule.</p>
+          <details class="grammar"><summary>Grammar spec · 2,476 chars</summary>
+            <pre>&lt;Story&gt; ::= &lt;Custom&gt; &lt;Question&gt;
+&lt;Custom&gt; ::= "CUSTOM" &lt;InputDeclaration&gt; &lt;ProcedureList&gt; "ASSERT" &lt;ResultComparisonList&gt;
+&lt;Question&gt; ::= "QUESTION" &lt;InputDeclaration&gt; &lt;ProcedureList&gt; "ASK" &lt;ResultComparisonList&gt;
+
+&lt;InputDeclaration&gt; ::= "INPUTS" &lt;IdentifierList&gt;
+&lt;IdentifierList&gt; ::= &lt;Identifier&gt; | &lt;Identifier&gt; "," &lt;IdentifierList&gt;
+&lt;Identifier&gt; ::= &lt;Letter&gt; | &lt;Letter&gt; &lt;Identifier&gt;
+&lt;Letter&gt; ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+
+&lt;ProcedureList&gt; ::= &lt;Procedure&gt; | &lt;Procedure&gt; ";" &lt;ProcedureList&gt;
+&lt;Procedure&gt; ::= &lt;Identifier&gt; "=" &lt;Operation&gt;
+&lt;Operation&gt; ::= &lt;Identifier&gt; "-&gt;" &lt;Identifier&gt;
+
+&lt;ResultComparisonList&gt; ::= &lt;ResultComparison&gt; | &lt;ResultComparison&gt; "," &lt;ResultComparisonList&gt;
+&lt;ResultComparison&gt; ::= &lt;Identifier&gt; "==" &lt;Identifier&gt;
+
+1.  `&lt;Story&gt;`: Represents a complete story, consisting of a custom and a question.
+2.  `&lt;Custom&gt;`: Describes the unbreakable habit of the workplace.
+3.  `&lt;Question&gt;`: Poses a query about a potential regularity.
+4.  `"CUSTOM"`: Keyword indicating the start of the custom description.
+5.  `"QUESTION"`: Keyword indicating the start of the question description.
+6.  `&lt;InputDeclaration&gt;`: Declares the initial, freely chosen items.
+7.  `"INPUTS"`: Keyword indicating the declaration of inputs.
+8.  `&lt;IdentifierList&gt;`: A comma-separated list of identifiers for the inputs.
+9.  `&lt;Identifier&gt;`: A name for a signal/pigment/etc., composed of letters.
+10. `&lt;Letter&gt;`: A lowercase English letter.
+11. `&lt;ProcedureList&gt;`: A sequence of operations, separated by semicolons.
+12. `&lt;Procedure&gt;`: Assigns the result of an operation to a new identifier.
+13. `&lt;Operation&gt;`: Represents the combining action. The identifier on the left is the first item, and the identifier on the right is the second item.
+14. `"="`: Assignment operator, assigning the result of an operation to an identifier.
+15. `"-&gt;"`: Operator representing the combining action. `A -&gt; B` means "A through B" or "A into B".
+16. `"ASSERT"`: Keyword indicating that the following comparisons always hold true in the custom.
+17. `"ASK"`: Keyword indicating that the following comparisons are being questioned.
+18. `&lt;ResultComparisonList&gt;`: A comma-separated list of comparisons between results.
+19. `&lt;ResultComparison&gt;`: Compares two identifiers, asserting or asking if they are equivalent.
+20. `"=="`: Comparison operator, meaning "is the same as" or "sounds/looks alike".</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 2 · + tea</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">CUSTOM VARS whistle,hum,chirp PROC Relay1=COMBINE(hum,hum);Relay2=COMBINE(Relay1,hum);Relay3=COMBINE(Relay2,chirp);Relay4=COMBINE(Relay3,hum) ASSERT whistle==Relay4
+QUESTION VARS whistle,hum,chirp,buzz PROC Relay1=COMBINE(whistle,hum);Relay2=COMBINE(buzz,hum);Relay3=COMBINE(buzz,Relay2);Relay4=COMBINE(chirp,Relay3) QUERY Relay1==Relay4</pre>
+          
+          <details class="grammar"><summary>Grammar spec · 2,707 chars</summary>
+            <pre>&lt;story&gt; ::= &lt;custom&gt; &lt;question&gt;
+&lt;custom&gt; ::= "CUSTOM" &lt;input_vars&gt; &lt;procedure&gt; &lt;assertion&gt;
+&lt;question&gt; ::= "QUESTION" &lt;input_vars&gt; &lt;procedure&gt; &lt;query&gt;
+
+&lt;input_vars&gt; ::= "VARS" &lt;var_list&gt;
+&lt;var_list&gt; ::= &lt;variable&gt; | &lt;variable&gt; "," &lt;var_list&gt;
+&lt;variable&gt; ::= &lt;identifier&gt;
+
+&lt;procedure&gt; ::= "PROC" &lt;step_list&gt;
+&lt;step_list&gt; ::= &lt;step&gt; | &lt;step&gt; ";" &lt;step_list&gt;
+&lt;step&gt; ::= &lt;result_var&gt; "=" &lt;action&gt; "(" &lt;operand1&gt; "," &lt;operand2&gt; ")"
+&lt;action&gt; ::= "COMBINE"
+&lt;operand1&gt; ::= &lt;variable&gt;
+&lt;operand2&gt; ::= &lt;variable&gt;
+&lt;result_var&gt; ::= &lt;identifier&gt;
+
+&lt;assertion&gt; ::= "ASSERT" &lt;comparison_list&gt;
+&lt;query&gt; ::= "QUERY" &lt;comparison_list&gt;
+&lt;comparison_list&gt; ::= &lt;comparison&gt; | &lt;comparison&gt; "," &lt;comparison_list&gt;
+&lt;comparison&gt; ::= &lt;variable&gt; "==" &lt;variable&gt;
+
+&lt;identifier&gt; ::= &lt;letter&gt; | &lt;letter&gt; &lt;identifier_char&gt;
+&lt;identifier_char&gt; ::= &lt;letter&gt; | &lt;digit&gt;
+&lt;letter&gt; ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+&lt;digit&gt; ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+1. `&lt;story&gt;`: Represents a complete story, consisting of a custom and a question.
+2. `&lt;custom&gt;`: Describes the unbreakable habit, including the initial variables, the procedure, and the assertion that always holds.
+3. `&lt;question&gt;`: Describes the scenario for which a regularity is questioned, including the initial variables, the procedure, and the query.
+4. `"VARS" &lt;var_list&gt;`: Declares the initial set of freely chosen items for the subsequent procedure.
+5. `&lt;variable&gt;`: An identifier representing a specific item (e.g., a signal, a pigment, a tea).
+6. `"PROC" &lt;step_list&gt;`: Defines a sequence of operations.
+7. `&lt;result_var&gt; "=" &lt;action&gt; "(" &lt;operand1&gt; "," &lt;operand2&gt; ")"`: Represents a single combining action. `&lt;result_var&gt;` is the name given to the output of the action. `&lt;action&gt;` is the combining operation. `&lt;operand1&gt;` is the first item, and `&lt;operand2&gt;` is the second item in the combining action. The order matters.
+8. `"COMBINE"`: The generic action of combining two things into one.
+9. `"ASSERT" &lt;comparison_list&gt;`: States that the listed comparisons always hold true given the preceding procedure and initial variables.
+10. `"QUERY" &lt;comparison_list&gt;`: Asks whether the listed comparisons must always hold true given the preceding procedure and initial variables.
+11. `&lt;variable&gt; "==" &lt;variable&gt;`: A comparison asserting or querying that two items are equivalent (e.g., "always come out the exact same color," "always taste exactly the same," "always sound exactly alike").</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 3 · + graft</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">CUSTOM:
+INPUTS: whistle,hum,chirp
+PROCEDURE:
+Relay1 = hum -&gt; hum;
+Relay2 = Relay1 -&gt; hum;
+Relay3 = Relay2 -&gt; chirp;
+Relay4 = Relay3 -&gt; hum
+ASSERT: whistle == Relay4
+QUESTION:
+INPUTS: whistle,hum,chirp,buzz
+PROCEDURE:
+Relay1 = whistle -&gt; hum;
+Relay2 = buzz -&gt; hum;
+Relay3 = buzz -&gt; Relay2;
+Relay4 = chirp -&gt; Relay3
+ASK: Relay1 == Relay4</pre>
+          <p class="note">All six gemini BNF calls share one CUSTOM/QUESTION skeleton — the free-form arm’s scatter is gone.</p>
+          <details class="grammar"><summary>Grammar spec · 2,226 chars</summary>
+            <pre>&lt;story&gt; ::= &lt;custom&gt; &lt;question&gt;
+&lt;custom&gt; ::= "CUSTOM:" &lt;inputs&gt; &lt;procedure&gt; "ASSERT:" &lt;comparison_list&gt;
+&lt;question&gt; ::= "QUESTION:" &lt;inputs&gt; &lt;procedure&gt; "ASK:" &lt;comparison_list&gt;
+
+&lt;inputs&gt; ::= "INPUTS:" &lt;input_list&gt;
+&lt;input_list&gt; ::= &lt;input_name&gt; | &lt;input_name&gt; "," &lt;input_list&gt;
+&lt;input_name&gt; ::= &lt;identifier&gt;
+
+&lt;procedure&gt; ::= "PROCEDURE:" &lt;step_list&gt;
+&lt;step_list&gt; ::= &lt;step&gt; | &lt;step&gt; ";" &lt;step_list&gt;
+&lt;step&gt; ::= &lt;output_name&gt; "=" &lt;operation&gt;
+&lt;operation&gt; ::= &lt;operand&gt; "-&gt;" &lt;operand&gt;
+&lt;operand&gt; ::= &lt;input_name&gt; | &lt;output_name&gt;
+
+&lt;comparison_list&gt; ::= &lt;comparison&gt; | &lt;comparison&gt; "," &lt;comparison_list&gt;
+&lt;comparison&gt; ::= &lt;operand&gt; "==" &lt;operand&gt;
+
+&lt;identifier&gt; ::= &lt;letter&gt; | &lt;identifier&gt; &lt;letter&gt; | &lt;identifier&gt; &lt;digit&gt;
+&lt;letter&gt; ::= "a" | ... | "z" | "A" | ... | "Z"
+&lt;digit&gt; ::= "0" | ... | "9"
+
+Meaning Notes:
+1. `&lt;story&gt;`: Represents a complete story, consisting of a custom and a question.
+2. `&lt;custom&gt;`: Describes the unbreakable habit, including the initial inputs, the procedure, and the asserted equality.
+3. `&lt;question&gt;`: Describes the scenario for which a regularity is questioned, including the initial inputs, the procedure, and the questioned equality.
+4. `"CUSTOM:"`, `"QUESTION:"`, `"INPUTS:"`, `"PROCEDURE:"`, `"ASSERT:"`, `"ASK:"`: Keywords marking different sections of the story.
+5. `&lt;input_list&gt;`: A comma-separated list of identifiers representing the initial, freely chosen items.
+6. `&lt;input_name&gt;`: An identifier referring to one of the initial inputs.
+7. `&lt;step_list&gt;`: A semicolon-separated list of procedural steps.
+8. `&lt;step&gt;`: A single operation that produces a named result.
+9. `&lt;output_name&gt;`: An identifier referring to the result of a step (e.g., "Batch1", "Relay2").
+10. `&lt;operation&gt;`: Represents the combining action. The `-&gt;` symbol indicates the order of combination. The left operand is the "first" thing, and the right operand is the "second" thing.
+11. `&lt;operand&gt;`: Can be either an initial input or the result of a previous step.
+12. `&lt;comparison_list&gt;`: A comma-separated list of comparisons.
+13. `&lt;comparison&gt;`: Two operands separated by `==` indicates that the two things always come out the same.
+14. `&lt;identifier&gt;`: A sequence of letters and digits used for naming inputs and outputs.</pre>
+          </details>
+        </div>
+      </div>
+    </section>
+
+<footer>Run artifacts: <code>experiments/10-invent-grammar/runs/run-mini/</code> (free-form) and
+<code>runs/run-mini-bnf/</code> (BNF arm) · templates <code>invent_prompt.md</code> / <code>invent_bnf_prompt.md</code></footer>
 </main>
 
 </body>

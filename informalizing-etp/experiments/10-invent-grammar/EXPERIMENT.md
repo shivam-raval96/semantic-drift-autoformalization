@@ -5,7 +5,9 @@
 When a model is asked to *invent its own* rigid notation for a Storyform
 story — instead of being handed `formalize_prompt.md`'s `op(...)` /
 `ASSUME:` / `ASK:` grammar — what does it design, and does showing it more
-example stories (K = 1, 2, 3) change the design?
+example stories (K = 1, 2, 3) change the design? A second arm asks the
+same question with the grammar's *format* pinned down: the specification
+must be given as BNF production rules.
 
 This is qualitative by decision: nothing is graded, and the deliverable is
 the collected grammars and encodings themselves. The existing grader cannot
@@ -30,7 +32,16 @@ deliberately left as a possible follow-up.
     are nested — K=2 shows K=1's story plus one more — and the targets'
     signal theme is never among the examples, so at every K the notation
     must carry to an unseen setting.
-- 2 models × 2 targets × K ∈ {1,2,3} = 12 calls, $0.31 total.
+- Two arms over identical materials (sampling never consults the
+  template, so both runs cover the same targets and examples):
+  - **Free-form** (`runs/run-mini`): notation left entirely open. 12
+    calls, $0.31.
+  - **BNF-constrained** (`runs/run-mini-bnf`): identical prompt except
+    the GRAMMAR section must be BNF production rules (nonterminals in
+    angle brackets, quoted terminals, `|` alternatives) followed by
+    numbered meaning notes. 12 calls, $0.73 — gpt-5.5's reasoning spend
+    rose 2–4× under the constraint (516–1552 → 2069–5178 tokens/call,
+    $0.29 → $0.72 for its six calls; gemini still spent 0).
 
 ## Prompts
 
@@ -45,12 +56,21 @@ sections, `GRAMMAR:` and `ENCODING:`. It deliberately never shows any
 notation — no `op(...)`, no `ASSUME`/`ASK`, no equations. The six exact
 prompts sent are committed under `runs/run-mini/prompts/`.
 
+The BNF arm uses `invent_bnf_prompt.md`
+(sha256 `3f673789da44ab5a95807a948ce14159fb15dd2fc4aa4c8847d8733ac7b8a641`),
+byte-identical except for the GRAMMAR paragraph of the required-output
+section, which prescribes BNF production rules plus meaning notes; its
+prompts are under `runs/run-mini-bnf/prompts/`.
+
 ## Reproduce
 
 ```sh
 set -a; source ../.env; set +a   # OPENROUTER_API_KEY
 python3 experiments/10-invent-grammar/run_experiment.py --dry-run  # prompts only
 python3 experiments/10-invent-grammar/run_experiment.py
+python3 experiments/10-invent-grammar/run_experiment.py \
+    --prompt-template invent_bnf_prompt.md \
+    --out-dir experiments/10-invent-grammar/runs/run-mini-bnf
 ```
 
 Report gallery (self-contained HTML, hand-rolled — charts.py has nothing to
@@ -58,9 +78,12 @@ chart here): `report/gallery.html`.
 
 ## Results
 
-Artifacts: `runs/run-mini/` (`run_meta.json`, `samples.jsonl`,
-`results.jsonl`, `prompts/`), gallery in `report/`. All 12 calls succeeded
-and all 12 responses split cleanly into GRAMMAR/ENCODING.
+Artifacts: `runs/run-mini/` and `runs/run-mini-bnf/` (`run_meta.json`,
+`samples.jsonl`, `results.jsonl`, `prompts/`), combined gallery in
+`report/`. All 24 calls succeeded and all 24 responses split cleanly into
+GRAMMAR/ENCODING.
+
+### Free-form arm
 
 **Every encoding is semantically faithful.** Checked by hand against the
 ground-truth pairs (up to variable renaming and the usual side-swap/dual
@@ -103,6 +126,41 @@ inconsistency that would flip operand order across themes — the K=2 spec
 quietly fixes the gloss — and at K=1 (high) the encoding drops the braces
 its own BNF requires around the statement list.
 
+### BNF-constrained arm
+
+**The format constraint held everywhere.** All 12 responses lead with
+production rules. gpt-5.5's grammars are complete formal artifacts —
+lexical productions down to individual digits — and all six of its
+encodings are single-line strings its own productions derive, taken so
+literally that at K=1 (high) the keywords concatenate (`ASSERTFORALL`)
+because its BNF defines no whitespace. Gemini's "BNF" is looser: at K=1
+(low) it slips into EBNF `(...)*` repetition, and that same grammar
+overfits the target theme (keywords `SIGNALS`, `THROUGH` — the notation
+could not represent a paint or tea story without renaming).
+
+**BNF pushes gpt-5.5 to full abstraction, at 2–4× the reasoning spend.**
+The story's names vanish from every encoding in favor of canonical
+`x1, x2 / r1, r2` (the free-form arm kept `whistle`/`relay1` at K=3), and
+the K-drift toward keyword syntax now shows up as `A`/`Q` at K=1 becoming
+`ASSERT`/`ASK` by K=2–3. At K=3 (high) its `<application>` production is
+literally `"op" "(" <term> "," <term> ")"` — the hidden benchmark
+notation again.
+
+**BNF stabilizes gemini's design but degrades its execution.** Where the
+free-form arm produced six unrelated designs, all six BNF calls share one
+keyword skeleton (`CUSTOM`/`QUESTION`, declared inputs, semicolon steps,
+`ASSERT`/`ASK`-`QUERY` comparisons). But the arm contains the
+experiment's only unfaithful encoding — low target at K=3:
+`hum=hum->hum; Relay1=hum; Relay2=hum->Relay1`, where the middle step is
+not derivable from its own BNF and no consistent reading of the shadowed
+`hum` yields the right law — plus a K=1 (high) encoding that writes every
+step result-last (`hum->hum=Relay1`), reversing its own
+`<Procedure> ::= <Identifier> "=" <Operation>` production, with `Relay1`
+also outside its lowercase-only `<Identifier>` alphabet.
+
+**Faithfulness: 11/12 vs the free-form arm's 12/12** — and notably the
+failure is on the *low*-complexity target.
+
 ## Conclusions
 
 - Given freedom, both models design what the project already built:
@@ -116,9 +174,17 @@ its own BNF requires around the statement list.
   For gemini, K mostly adds an opportunity to redesign; its instability
   across K (and its dual-reading gloss at K=1) is exactly the kind of
   spec looseness a round-trip decoder would be expected to punish.
-- Encoding fidelity was perfect at both complexity extremes, so on this
-  tiny sample the hard part of exp 01–09's task is not "express the story
-  formally" but "express it in *someone else's* fixed notation" — worth a
-  follow-up: a graded round-trip arm (second model decodes the invented
-  grammar + encoding back to `op(...)`) at exp-08 scale, to test whether
-  self-invented notation is *interpretable*, not just faithful.
+- Encoding fidelity was near-perfect at both complexity extremes (23/24),
+  so on this tiny sample the hard part of exp 01–09's task is not
+  "express the story formally" but "express it in *someone else's* fixed
+  notation" — worth a follow-up: a graded round-trip arm (second model
+  decodes the invented grammar + encoding back to `op(...)`) at exp-08
+  scale, to test whether self-invented notation is *interpretable*, not
+  just faithful.
+- Forcing the spec into BNF is not free and not obviously good: it made
+  gpt-5.5's grammars machine-grade (at 2–4× reasoning cost, with the
+  story's vocabulary abstracted away) while for gemini it standardized
+  the *shape* of the design yet produced the experiment's only broken
+  encoding and its worst self-conformance violations — echoing exp 08's
+  lesson that adding formal scaffolding to the prompt can subtract from
+  execution.
