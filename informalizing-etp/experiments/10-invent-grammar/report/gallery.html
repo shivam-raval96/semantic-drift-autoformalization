@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exp 10 — Invent-your-own-grammar</title>
+</head>
+<body>
+<style>
+:root {
+  --bg: #F7F8F5; --panel: #FFFFFF; --ink: #24282C; --muted: #5D6670;
+  --line: #DCE0DA; --code-bg: #F0F2ED; --gpt: #4A61C4; --gem: #A56F2B;
+  --gpt-bg: rgba(74,97,196,.06); --gem-bg: rgba(165,111,43,.06);
+  --ok: #35773F;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1A1E22; --panel: #22272C; --ink: #DFE4E7; --muted: #98A1AA;
+    --line: #343B41; --code-bg: #1D2226; --gpt: #8B9DE8; --gem: #D4A059;
+    --gpt-bg: rgba(139,157,232,.07); --gem-bg: rgba(212,160,89,.07);
+    --ok: #7CBF85;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1A1E22; --panel: #22272C; --ink: #DFE4E7; --muted: #98A1AA;
+  --line: #343B41; --code-bg: #1D2226; --gpt: #8B9DE8; --gem: #D4A059;
+  --gpt-bg: rgba(139,157,232,.07); --gem-bg: rgba(212,160,89,.07);
+  --ok: #7CBF85;
+}
+:root[data-theme="light"] {
+  --bg: #F7F8F5; --panel: #FFFFFF; --ink: #24282C; --muted: #5D6670;
+  --line: #DCE0DA; --code-bg: #F0F2ED; --gpt: #4A61C4; --gem: #A56F2B;
+  --gpt-bg: rgba(74,97,196,.06); --gem-bg: rgba(165,111,43,.06);
+  --ok: #35773F;
+}
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: Charter, "Bitstream Charter", Georgia, serif;
+  line-height: 1.55; margin: 0; padding: 2.5rem 1.25rem 4rem;
+}
+main { max-width: 72rem; margin: 0 auto; }
+h1, h2, h3 { font-family: Charter, "Bitstream Charter", Georgia, serif; text-wrap: balance; }
+h1 { font-size: 1.9rem; margin: 0 0 .35rem; font-weight: 700; }
+h2 { font-size: 1.25rem; margin: 2.6rem 0 .9rem; }
+.sub { color: var(--muted); max-width: 46rem; margin: 0 0 1rem; }
+.meta { display: flex; flex-wrap: wrap; gap: .45rem 1.1rem; color: var(--muted); margin: 0 0 .5rem;
+  font-family: system-ui, -apple-system, sans-serif; font-size: .78rem; letter-spacing: .04em;
+  text-transform: uppercase; }
+.findings { margin: 1.6rem 0 0; padding: 0; list-style: none; max-width: 52rem; }
+.findings li { padding: .55rem 0 .55rem 1.1rem; border-left: 2px solid var(--line); margin: .55rem 0; }
+.findings li strong { font-weight: 700; }
+.tgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); gap: 1rem; }
+.tcard { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1rem 1.1rem; }
+.tcard-head { display: flex; flex-wrap: wrap; gap: .35rem .8rem; align-items: baseline; margin-bottom: .5rem; }
+pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .8rem;
+  line-height: 1.5; background: var(--code-bg); border: 1px solid var(--line); border-radius: 4px;
+  padding: .7rem .85rem; overflow-x: auto; white-space: pre; margin: 0; }
+.laws { font-size: .84rem; }
+.story p { font-size: .92rem; margin: .6rem 0; max-width: 42rem; }
+.block { background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  padding: 1.2rem 1.3rem 1.35rem; margin: 1.1rem 0; }
+.block-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .4rem 1rem; margin-bottom: .95rem; }
+.block-head h3 { margin: 0; font-size: 1.05rem; display: flex; align-items: center; gap: .5rem;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 600; }
+.dot { width: .55rem; height: .55rem; border-radius: 50%; display: inline-block; }
+.m-gpt .dot { background: var(--gpt); }
+.m-gem .dot { background: var(--gem); }
+.encoding { white-space: pre-wrap; }
+.m-gpt .encoding { border-left: 3px solid var(--gpt); background: var(--gpt-bg); }
+.m-gem .encoding { border-left: 3px solid var(--gem); background: var(--gem-bg); }
+.target-tag { color: var(--muted); font-family: system-ui, -apple-system, sans-serif;
+  font-size: .74rem; letter-spacing: .045em; text-transform: uppercase; }
+.kgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+@media (max-width: 880px) { .kgrid { grid-template-columns: 1fr; } }
+.kcell { display: flex; flex-direction: column; gap: .5rem; min-width: 0; }
+.khead { display: flex; justify-content: space-between; align-items: center; }
+.chip { font-family: system-ui, -apple-system, sans-serif; font-size: .72rem; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px;
+  padding: .12rem .6rem; }
+.faithful { color: var(--ok); font-family: system-ui, -apple-system, sans-serif; font-size: .72rem;
+  letter-spacing: .05em; text-transform: uppercase; }
+.faithful::before { content: "✓ "; }
+.cell-label { margin: 0; font-family: system-ui, -apple-system, sans-serif; font-size: .72rem;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.note { margin: 0; font-size: .85rem; color: var(--muted); font-style: italic; }
+details.grammar summary, .tcard summary { cursor: pointer; font-family: system-ui, -apple-system, sans-serif;
+  font-size: .78rem; letter-spacing: .03em; color: var(--muted); }
+details.grammar summary:focus-visible, .tcard summary:focus-visible { outline: 2px solid var(--gpt); outline-offset: 2px; }
+details.grammar pre { max-height: 24rem; overflow: auto; margin-top: .5rem; font-size: .74rem; }
+footer { margin-top: 3rem; color: var(--muted); font-size: .85rem; }
+footer code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .8rem; }
+</style>
+<main>
+<h1>Experiment 10 — Invent-your-own-grammar</h1>
+<p class="sub">Instead of being handed the benchmark’s <code>op(...)</code> / ASSUME / ASK notation, each model
+was asked to <em>design its own</em> rigid notation for a Storyform story and encode the story in it,
+with K = 1, 2, 3 example stories (other themes, no answers) shown as context.</p>
+<div class="meta"><span>gpt-5.5 + gemini-2.5-flash</span><span>2 targets · K ∈ {1,2,3} · 12 calls</span><span>seed 0 · temp 0 · native reasoning</span><span>$0.31 total</span><span>2026-07-22</span></div>
+
+<ul class="findings">
+  <li><strong>All 12 encodings are semantically faithful</strong> — hand-checked against the ground-truth laws
+      (up to renaming, side swap, dualization), including the 8-op, depth-4 target. Fidelity never differentiated.</li>
+  <li><strong>Both models converge on the project’s own design:</strong> declared free choices, named
+      intermediate steps, one final equality, an assert-vs-ask marker. Named intermediaries beat nested
+      expressions 11 : 1, and at K = 3 both models reinvent prefix <code>op(first, second)</code> almost verbatim.</li>
+  <li><strong>gpt-5.5 drifts monotonically with K toward legibility:</strong> sigils (<code>!{…|…|…}</code>) at
+      K = 1, bracketed BNF at K = 2, spelled-out ASSERT/ASK keywords and story names at K = 3; spec length grows
+      with K and every encoding conforms to its own spec.</li>
+  <li><strong>gemini-2.5-flash redesigns from scratch at every K</strong> — six calls, six structurally different
+      notations, specs 2–3× longer, with two latent defects (a mutually-dual operator gloss at K = 1; an encoding
+      that violates its own bracing rule).</li>
+</ul>
+
+<h2>The two target stories</h2>
+<div class="tgrid">
+      <div class="tcard">
+        <div class="tcard-head"><strong>E17-E4</strong><span class="target-tag">low complexity · 3 ops · depth 2 · signal theme</span></div>
+        <pre class="laws">E (custom):   x = y ◇ (y ◇ y)
+F (question): x = x ◇ y</pre>
+        <details><summary>Story as the models saw it</summary><div class="story"><p>At a certain mountaintop relay station, the operator follows one unbreakable habit. Take any two signals at all — call the first whistle and the second hum.</p><p>He feeds hum through hum and sets the result aside as Relay 1; then he feeds hum through Relay 1 and calls the result Relay 2.</p><p>However he chooses his two starting signals, whistle itself and Relay 2 always sound exactly alike. That is simply how this station works, without exception.</p><p>One night his trainee wonders about something. Take any two signals — again call the first whistle and the second hum. Feed whistle through hum and set the result aside as Relay 1.</p><p>At this station, must whistle itself and Relay 1 always sound exactly alike?</p></div></details>
+      </div>
+      <div class="tcard">
+        <div class="tcard-head"><strong>E3156-E3446</strong><span class="target-tag">high complexity · 8 ops · depth 4 · signal theme</span></div>
+        <pre class="laws">E (custom):   x = (((y ◇ y) ◇ y) ◇ z) ◇ y
+F (question): x ◇ y = z ◇ (w ◇ (w ◇ y))</pre>
+        <details><summary>Story as the models saw it</summary><div class="story"><p>At a certain mountaintop relay station, the operator follows one unbreakable habit. Take any three signals at all — call the first whistle, the second hum, and the third chirp.</p><p>He feeds hum through hum and sets the result aside as Relay 1; then he feeds Relay 1 through hum and calls the result Relay 2; then he feeds Relay 2 through chirp and calls that Relay 3; then he feeds Relay 3 through hum and sets the result aside as Relay 4.</p><p>However he chooses his three starting signals, whistle itself and Relay 4 always sound exactly alike. That is simply how this station works, without exception.</p><p>One night his trainee wonders about something. Take any four signals — again call the first whistle, the second hum, the third chirp, and the fourth buzz. Feed whistle through hum and set the result aside as Relay 1. Separately, feed buzz through hum and call the result Relay 2; then feed buzz through Relay 2 and call that Relay 3; then feed chirp through Relay 3 and set the result aside as Relay 4.</p><p>At this station, must Relay 1 and Relay 4 always sound exactly alike?</p></div></details>
+      </div>
+</div>
+
+<h2>Invented grammars and encodings</h2>
+
+    <section class="block m-gpt">
+      <div class="block-head">
+        <h3><span class="dot"></span>gpt-5.5</h3>
+        <span class="target-tag">E17-E4 · low complexity · 3 ops, depth 2</span>
+      </div>
+      <div class="kgrid">
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 1 · paint</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">!{w,h | r1 := (h @ h); r2 := (h @ r1) | w = r2}
+?{w,h | r1 := (w @ h) | w = r1}</pre>
+          
+          <details class="grammar"><summary>Grammar spec · 1,128 chars</summary>
+            <pre>A story encoding is a pair of clauses, first an assertion clause and then a question clause.
+
+Clause forms:
+- `!{VARS | DEFS | EQ}` means the workplace custom asserts `EQ` always holds after `DEFS`, for all freely chosen starting things in `VARS`.
+- `?{VARS | DEFS | EQ}` means the story asks whether `EQ` must always hold after `DEFS`, for all freely chosen starting things in `VARS`.
+
+Syntax:
+- `VARS ::= v1,v2,...,vn`
+- `DEFS ::= DEF` or `DEF;DEF;...;DEF`
+- `DEF ::= r := (x @ y)`
+- `EQ ::= x = y`
+
+Names:
+- Each `vi` in `VARS` is a freely chosen starting thing.
+- Each `r` on the left side of `:=` is a newly named result.
+- Each `x` or `y` on the right side of `:=`, and each side of `=`, must be either a starting thing from `VARS` or a result already defined earlier in the same clause.
+
+Meaning:
+- `(x @ y)` denotes one performance of the workplace combining action with `x` as the first participant and `y` as the second participant. Order is significant.
+- Definitions in `DEFS` are executed from left to right.
+- `!` clauses assert universal regularities.
+- `?` clauses ask universal questions and do not assert them.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 2 · + tea</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">A[w,h; r1:=h*h, r2:=h*r1; w=r2]
+?[w,h; r1:=w*h; w=r1]</pre>
+          
+          <details class="grammar"><summary>Grammar spec · 1,486 chars</summary>
+            <pre>A story is written as exactly two blocks:
+
+A[inputs; steps; equality]
+?[inputs; steps; equality]
+
+Syntax:
+
+inputs   ::= id | id "," inputs
+steps    ::= step | step "," steps | ε
+step     ::= id ":=" term "*" term
+equality ::= term "=" term
+term     ::= id
+id       ::= a nonempty sequence of letters and digits, beginning with a letter
+
+Well-formedness rules:
+
+1. In each block, the `inputs` list contains distinct identifiers.
+2. In each block, the left side of every `:=` is a new identifier not previously introduced in that block.
+3. In each step, each term on the right side must be either an input identifier or the result identifier of an earlier step in the same block.
+4. In the equality, each term must be either an input identifier or the result identifier of a step in the same block.
+5. The two blocks have separate scopes: the same identifier reused in both blocks does not refer to the same chosen object or result.
+
+Meaning:
+
+1. `x*y` means performing the story’s combining action with `x` as the first participant and `y` as the second participant. The order is significant.
+2. `r:=x*y` means the result of combining `x` with `y` is named `r`.
+3. `A[...]` asserts that for every possible choice of the listed inputs, after carrying out the listed steps in order, the displayed equality always holds.
+4. `?[...]` asks whether, for every possible choice of the listed inputs, after carrying out the listed steps in order, the displayed equality must hold.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 3 · + graft</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">A[whistle,hum]{r1:=C(hum,hum);r2:=C(hum,r1);whistle=r2}
+Q[whistle,hum]{r1:=C(whistle,hum);whistle=r1}</pre>
+          <p class="note">Reinvents prefix application: C(first, second) with ASSERT/Q blocks.</p>
+          <details class="grammar"><summary>Grammar spec · 1,508 chars</summary>
+            <pre>A story is encoded as two blocks:
+
+`A[&lt;free-list&gt;]{&lt;steps&gt;;&lt;equality&gt;}`
+`Q[&lt;free-list&gt;]{&lt;steps&gt;;&lt;equality&gt;}`
+
+Meaning:
+- `A` is the asserted custom: for every choice of the names in `&lt;free-list&gt;`, after carrying out `&lt;steps&gt;` in order, `&lt;equality&gt;` always holds.
+- `Q` is the closing question: for every choice of the names in `&lt;free-list&gt;`, after carrying out `&lt;steps&gt;` in order, is `&lt;equality&gt;` forced to hold?
+- Names inside different blocks are local to that block.
+- The only combining action is written `C(x,y)`, where `x` is the first participant and `y` is the second participant. Order is significant.
+- A step has the form `r:=C(x,y)`, assigning the result of combining `x` with `y` to the new name `r`.
+- An equality has the form `x=y`.
+
+Syntax:
+&lt;story&gt;     ::= &lt;assert-block&gt; &lt;question-block&gt;
+&lt;assert-block&gt; ::= "A[" &lt;free-list&gt; "]{" &lt;body&gt; "}"
+&lt;question-block&gt; ::= "Q[" &lt;free-list&gt; "]{" &lt;body&gt; "}"
+
+&lt;free-list&gt; ::= &lt;name&gt; | &lt;name&gt; "," &lt;free-list&gt;
+
+&lt;body&gt;      ::= &lt;equality&gt; | &lt;step&gt; ";" &lt;body&gt;
+
+&lt;step&gt;      ::= &lt;name&gt; ":=C(" &lt;name&gt; "," &lt;name&gt; ")"
+&lt;equality&gt;  ::= &lt;name&gt; "=" &lt;name&gt;
+
+&lt;name&gt;      ::= any nonempty string of letters, digits, or underscores
+                beginning with a letter
+
+Well-formedness rules:
+- Every name in a combining action or equality must either be in the block’s `&lt;free-list&gt;` or have been introduced earlier in that same block by a step.
+- A step may not introduce a name already available in that block.
+- Each block contains exactly one final equality.</pre>
+          </details>
+        </div>
+      </div>
+    </section>
+    <section class="block m-gpt">
+      <div class="block-head">
+        <h3><span class="dot"></span>gpt-5.5</h3>
+        <span class="target-tag">E3156-E3446 · high complexity · 8 ops, depth 4</span>
+      </div>
+      <div class="kgrid">
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 1 · paint</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">A[w,h,c]{
+r1 := (h &gt; h);
+r2 := (r1 &gt; h);
+r3 := (r2 &gt; c);
+r4 := (r3 &gt; h);
+w = r4
+}
+
+Q[w,h,c,b]{
+r1 := (w &gt; h);
+r2 := (b &gt; h);
+r3 := (b &gt; r2);
+r4 := (c &gt; r3);
+r1 = r4?
+}</pre>
+          
+          <details class="grammar"><summary>Grammar spec · 1,097 chars</summary>
+            <pre>A complete encoding has exactly two blocks:
+
+A[free-identifiers]{statements; equality}
+Q[free-identifiers]{statements; equality?}
+
+Meaning:
+
+- `A[...]` is the asserted custom: for every choice of the listed free identifiers, after performing the listed statements in order, the final equality always holds.
+- `Q[...]` is the closing question: for every choice of the listed free identifiers, after performing the listed statements in order, is the final equality forced to hold?
+- Identifiers are nonempty strings of letters and digits beginning with a letter.
+- Free identifiers are comma-separated.
+- A statement has the form `identifier := term`.
+- A term is either an identifier or `(term &gt; term)`.
+- `(x &gt; y)` denotes one performance of the combining action with first participant `x` and second participant `y`; order is significant.
+- Statements are evaluated sequentially. The right side of a statement may use free identifiers and identifiers assigned by earlier statements in the same block.
+- Equality has the form `term = term`.
+- Equality with `?` has the form `term = term?`.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 2 · + tea</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">![w,h,c]{r1:=h▷h;r2:=r1▷h;r3:=r2▷c;r4:=r3▷h;}=&gt;w=r4
+?[w,h,c,b]{r1:=w▷h;r2:=b▷h;r3:=b▷r2;r4:=c▷r3;}=&gt;r1=r4</pre>
+          
+          <details class="grammar"><summary>Grammar spec · 1,352 chars</summary>
+            <pre>&lt;story&gt; ::= &lt;assertion&gt; &lt;question&gt;
+
+&lt;assertion&gt; ::= "!" "[" &lt;id-list&gt; "]" "{" &lt;def-list&gt; "}" "=&gt;" &lt;equality&gt;
+&lt;question&gt;  ::= "?" "[" &lt;id-list&gt; "]" "{" &lt;def-list&gt; "}" "=&gt;" &lt;equality&gt;
+
+&lt;id-list&gt; ::= &lt;id&gt; | &lt;id&gt; "," &lt;id-list&gt;
+
+&lt;def-list&gt; ::= "" | &lt;definition&gt; &lt;def-list&gt;
+&lt;definition&gt; ::= &lt;id&gt; ":=" &lt;id&gt; "▷" &lt;id&gt; ";"
+
+&lt;equality&gt; ::= &lt;id&gt; "=" &lt;id&gt;
+
+&lt;id&gt; ::= a nonempty lowercase letter/digit string beginning with a lowercase letter
+
+Well-formedness rules:
+1. The ids inside one [ ... ] list are distinct.
+2. In each block, every := target is fresh: it is not in the [ ... ] list and has not appeared earlier as a := target in that block.
+3. The two ids on the right side of each ▷ must already be in scope: either listed in [ ... ] or defined earlier in the same block.
+4. The two ids in the final equality must be in scope.
+5. The scopes of ! and ? blocks are separate.
+
+Meaning:
+x ▷ y        = the ordered combining action applied to first x, second y
+z := x ▷ y;  = name the result z
+![...] {...} =&gt; a=b
+              = asserted universal custom: for every choice of the listed starting ids,
+                after the definitions, a and b are always equal
+?[...] {...} =&gt; a=b
+              = closing question: asks whether, for every choice of the listed starting ids,
+                after the definitions, a and b must be equal</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 3 · + graft</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">ASSERT [whistle, hum, chirp] {
+  relay1 := C(hum, hum);
+  relay2 := C(relay1, hum);
+  relay3 := C(relay2, chirp);
+  relay4 := C(relay3, hum);
+} ALWAYS whistle == relay4;
+
+ASK [whistle, hum, chirp, buzz] {
+  relay1 := C(whistle, hum);
+  relay2 := C(buzz, hum);
+  relay3 := C(buzz, relay2);
+  relay4 := C(chirp, relay3);
+} ALWAYS? relay1 == relay4;</pre>
+          <p class="note">Reinvents prefix application: C(first, second) with ASSERT/ASK … ALWAYS keywords.</p>
+          <details class="grammar"><summary>Grammar spec · 1,524 chars</summary>
+            <pre>A document has exactly this form:
+&lt;document&gt; ::= &lt;assertion&gt; &lt;question&gt;
+
+&lt;assertion&gt; ::= "ASSERT" "[" &lt;id-list&gt; "]" "{" &lt;def-list&gt; "}" "ALWAYS" &lt;id&gt; "==" &lt;id&gt; ";"
+
+&lt;question&gt; ::= "ASK" "[" &lt;id-list&gt; "]" "{" &lt;def-list&gt; "}" "ALWAYS?" &lt;id&gt; "==" &lt;id&gt; ";"
+
+&lt;id-list&gt; ::= &lt;id&gt; | &lt;id&gt; "," &lt;id-list&gt;
+
+&lt;def-list&gt; ::= "" | &lt;def&gt; &lt;def-list&gt;
+
+&lt;def&gt; ::= &lt;id&gt; ":=" "C" "(" &lt;id&gt; "," &lt;id&gt; ")" ";"
+
+&lt;id&gt; ::= a nonempty sequence of letters, digits, or underscores, beginning with a letter
+
+Well-formedness rules:
+1. The identifiers inside each `[...]` are distinct and are the freely chosen starting things for that block.
+2. Each definition is read in order.
+3. In a definition `r := C(x,y);`, `r` must be fresh in that block, and `x` and `y` must already be available, either as starting things or as earlier defined results.
+4. The two identifiers in the final equality must already be available in that block.
+5. Identifiers are local to their own `ASSERT` or `ASK` block.
+
+Meaning:
+1. `C(x,y)` means one performance of the workplace’s ordered combining action, with first participant `x` and second participant `y`.
+2. `r := C(x,y);` names the result of that performance `r`.
+3. `ASSERT [...] { ... } ALWAYS a == b;` states that for every choice of the listed starting things, after carrying out the definitions, `a` and `b` always come out the same.
+4. `ASK [...] { ... } ALWAYS? a == b;` asks whether for every choice of the listed starting things, after carrying out the definitions, `a` and `b` must always come out the same.</pre>
+          </details>
+        </div>
+      </div>
+    </section>
+    <section class="block m-gem">
+      <div class="block-head">
+        <h3><span class="dot"></span>gemini-2.5-flash</h3>
+        <span class="target-tag">E17-E4 · low complexity · 3 ops, depth 2</span>
+      </div>
+      <div class="kgrid">
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 1 · paint</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">( ({A, B}, [v_1 = B -&gt; B, v_2 = B -&gt; v_1], A == v_2), ({A, B}, [v_1 = A -&gt; B], A == v_1) )</pre>
+          <p class="note">Spec glosses X → Y with two mutually dual theme readings (“X fed through Y” / “Y poured into X”).</p>
+          <details class="grammar"><summary>Grammar spec · 3,418 chars</summary>
+            <pre>The notation describes a system with a binary operation and a set of named entities (signals, pigments, etc.).
+
+**Core Concepts:**
+
+*   **Entities (E):** Represent the "things" being combined (e.g., signals, pigments). These are denoted by single uppercase letters (A, B, C, ...).
+*   **Operation (Op):** The combining action. This is a binary operation, denoted by `-&gt;`. `X -&gt; Y` means "X is fed through Y" or "Y is poured into X". The order matters.
+*   **Variables (V):** Named placeholders for entities or results of operations. These are denoted by `v_n` where `n` is an integer.
+*   **Equality (Eq):** Denotes that two entities or results are "the same" (e.g., same color, sound alike). Represented by `==`.
+
+**Structure of a Story Representation:**
+
+A story is represented as a tuple: `(Custom, Question)`.
+
+**1. Custom (C):**
+   The custom describes an invariant property of the system. It has the following structure:
+   `C = (FreeVars, Procedure, Assertion)`
+
+   *   **FreeVars (FV):** A set of entities that can be chosen "any way at all". These are the initial inputs to the custom's procedure.
+       `FV = {E_1, E_2, ..., E_k}`
+       Example: `{A, B}` for "Take any two signals at all — call the first A and the second B."
+
+   *   **Procedure (P):** A sequence of steps that define how intermediate and final results are obtained. Each step is an assignment.
+       `P = [Step_1, Step_2, ..., Step_m]`
+       Each `Step` is of the form `v_n = E_x -&gt; E_y` or `v_n = E_x -&gt; v_j` or `v_n = v_i -&gt; E_y` or `v_n = v_i -&gt; v_j`.
+       `E_x`, `E_y` must be elements of `FreeVars`. `v_i`, `v_j` must be variables defined in previous steps of the same procedure.
+       Example: `[v_1 = B -&gt; B, v_2 = B -&gt; v_1]`
+
+   *   **Assertion (A):** A statement of guaranteed equality between two entities or results.
+       `A = E_x == E_y` or `A = E_x == v_n` or `A = v_n == E_y` or `A = v_n == v_m`.
+       `E_x`, `E_y` must be elements of `FreeVars`. `v_n`, `v_m` must be variables defined in the `Procedure`.
+       Example: `A == v_2`
+
+**2. Question (Q):**
+   The question asks whether a certain property *must* hold. It has the following structure:
+   `Q = (FreeVars, Procedure, Query)`
+
+   *   **FreeVars (FV):** A set of entities that can be chosen "any way at all" for the question's procedure.
+       `FV = {E_1, E_2, ..., E_k}`
+       Example: `{A, B}`
+
+   *   **Procedure (P):** A sequence of steps, identical in structure to the custom's procedure.
+       `P = [Step_1, Step_2, ..., Step_m]`
+       Example: `[v_1 = A -&gt; B]`
+
+   *   **Query (Qy):** A statement of potential equality, identical in structure to the custom's assertion.
+       `Qy = E_x == E_y` or `Qy = E_x == v_n` or `Qy = v_n == E_y` or `Qy = v_n == v_m`.
+       Example: `A == v_1`
+
+**Naming Conventions:**
+
+*   Initial chosen entities are named `A`, `B`, `C`, etc., in the order they are introduced in the story (e.g., "first whistle" is `A`, "second hum" is `B`).
+*   Intermediate results are named `v_1`, `v_2`, `v_3`, etc., in the order they are created within their respective `Procedure` (custom or question).
+
+**Example of a full representation (not for the target story):**
+
+If a story said:
+"Custom: Take A, B. Make v1 = A -&gt; B. Make v2 = B -&gt; A. A == v2 always.
+Question: Take C, D. Make v1 = C -&gt; D. Must C == v1?"
+
+It would be represented as:
+`({A, B}, [v_1 = A -&gt; B, v_2 = B -&gt; A], A == v_2), ({C, D}, [v_1 = C -&gt; D], C == v_1)`</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 2 · + tea</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">CUSTOM { whistle, hum : { whistle, (hum -&gt; (hum -&gt; hum)) } }
+QUERY { whistle, hum : { whistle, (whistle -&gt; hum) } }</pre>
+          <p class="note">The only nested-expression encoding of the twelve; equality as an equivalence set.</p>
+          <details class="grammar"><summary>Grammar spec · 2,985 chars</summary>
+            <pre>My notation uses a functional style to represent the combining action and a set-like notation for equivalences.
+
+**1. Basic Elements:**
+    *   **Variables:** Represent starting "things" (e.g., signals, pigments, teas). These are denoted by single lowercase letters (e.g., `a`, `b`, `c`, `d`). The story explicitly names these, and my notation uses these names directly.
+    *   **Combining Action:** The action of combining two things is represented by a binary operator `-&gt;`. The first operand is the "feeder" or "pourer", and the second operand is the "fed" or "poured into".
+        *   `X -&gt; Y` means "X is fed through Y" or "X is poured into Y". The result of this operation is a new thing.
+
+**2. Expressions:**
+    *   **Base Variables:** A variable `v` is an expression.
+    *   **Combined Result:** If `E1` and `E2` are expressions, then `(E1 -&gt; E2)` is an expression representing the result of combining `E1` with `E2`. Parentheses are used to enforce order of operations.
+
+**3. Statements:**
+    *   **Custom (Assertion):** Represents the unbreakable habit.
+        *   Syntax: `CUSTOM { &lt;variables&gt; : &lt;equivalence_set&gt; }`
+        *   `&lt;variables&gt;`: A comma-separated list of variables that are freely chosen for this custom (e.g., `a, b`). These are the "Take any two signals at all — call the first whistle and the second hum" part.
+        *   `&lt;equivalence_set&gt;`: A set of expressions, enclosed in curly braces `{}`, where all expressions within the set are asserted to be equivalent.
+            *   Example: `{ E1, E2 }` means "E1 and E2 always come out the exact same".
+
+    *   **Question (Query):** Represents the closing question.
+        *   Syntax: `QUERY { &lt;variables&gt; : &lt;equivalence_set&gt; }`
+        *   `&lt;variables&gt;`: A comma-separated list of variables that are freely chosen for this question (e.g., `a, b`).
+        *   `&lt;equivalence_set&gt;`: A set of expressions, enclosed in curly braces `{}`, where the question asks if all expressions within the set *must* always be equivalent.
+
+**4. Naming Conventions (for clarity, not part of formal syntax):**
+    *   The first variable mentioned in "Take any two signals at all — call the first whistle and the second hum" will be `whistle`.
+    *   The second variable will be `hum`.
+    *   If more variables are introduced, they will follow alphabetically (e.g., `teal`, `indigo` would be `c`, `d`).
+
+**Example Breakdown:**
+"Take any two pigments at all — call the first crimson and the second ochre." -&gt; `crimson, ochre` (variables for the scope)
+
+"She pours ochre into crimson and sets the result aside as Batch 1;" -&gt; `(ochre -&gt; crimson)`
+"then she pours crimson into Batch 1 and calls the result Batch 2." -&gt; `(crimson -&gt; (ochre -&gt; crimson))`
+
+"However she chooses her two starting pigments, crimson itself and Batch 2 always come out the exact same color." -&gt; `{ crimson, (crimson -&gt; (ochre -&gt; crimson)) }`
+
+Combining for the custom: `CUSTOM { crimson, ochre : { crimson, (crimson -&gt; (ochre -&gt; crimson)) } }`</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 3 · + graft</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">([whistle, hum], [R_1 := op(hum, hum), R_2 := op(hum, R_1)], A(whistle = R_2), [whistle, hum], [R_1 := op(whistle, hum)], Q(whistle = R_1))</pre>
+          <p class="note">Reinvents op(first, second) — the hidden benchmark notation.</p>
+          <details class="grammar"><summary>Grammar spec · 2,808 chars</summary>
+            <pre>This notation represents stories about a binary operation `op` that combines two inputs into one output. The order of inputs matters.
+
+1.  **Variables:**
+    *   `V = {v_1, v_2, ..., v_n}`: A set of variables representing initial, freely chosen "things" (e.g., pigments, teas, signals). These are typically named in the story (e.g., "crimson", "ochre").
+    *   `R = {r_1, r_2, ..., r_m}`: A set of variables representing intermediate or final "results" (e.g., "Batch 1", "Brew 2"). These are always assigned the output of an operation.
+
+2.  **Operation:**
+    *   `op(input_1, input_2)`: Represents the combining action. `input_1` is the first thing, `input_2` is the second.
+    *   `input_1` and `input_2` can be any variable from `V` or `R` that has been previously defined.
+
+3.  **Assignment:**
+    *   `r_i := op(input_1, input_2)`: Assigns the result of an operation to a new result variable `r_i`. Each `r_i` must be unique within a given sequence of operations.
+
+4.  **Equality Assertion:**
+    *   `A(item_1 = item_2)`: Asserts that `item_1` and `item_2` always come out the same.
+    *   `item_1` and `item_2` can be any variable from `V` or `R` that has been previously defined.
+
+5.  **Question:**
+    *   `Q(item_1 = item_2)`: Asks whether `item_1` and `item_2` must always come out the same.
+    *   `item_1` and `item_2` can be any variable from `V` or `R` that has been previously defined.
+
+6.  **Story Structure:**
+    A story is represented as a tuple `(V_custom, S_custom, A_custom, V_question, S_question, Q_question)`.
+
+    *   `V_custom`: A list of initial variables chosen for the custom. Each variable is represented by its name (e.g., `[whistle, hum]`).
+    *   `S_custom`: A sequence of assignments representing the steps of the custom. Each assignment is `r_i := op(input_1, input_2)`.
+    *   `A_custom`: An equality assertion `A(item_1 = item_2)` representing the custom's unbreakable habit.
+    *   `V_question`: A list of initial variables chosen for the question.
+    *   `S_question`: A sequence of assignments representing the steps of the question.
+    *   `Q_question`: A question `Q(item_1 = item_2)` representing what is being asked.
+
+    **Naming Convention for Variables:**
+    *   Initial variables from `V` are represented by their given names (e.g., `whistle`, `hum`).
+    *   Result variables from `R` are represented by `R_n` where `n` is the batch/brew/relay number (e.g., `R_1`, `R_2`).
+
+    **Operation Symbol:**
+    *   The specific combining action (e.g., "pours into", "grafts onto", "feeds through") is represented by a generic `op`. The story implies the nature of `op` but the notation abstracts it. The order `op(first, second)` means "first through second" or "second into first" as described in the story. For "feeds X through Y", it means `op(X, Y)`.</pre>
+          </details>
+        </div>
+      </div>
+    </section>
+    <section class="block m-gem">
+      <div class="block-head">
+        <h3><span class="dot"></span>gemini-2.5-flash</h3>
+        <span class="target-tag">E3156-E3446 · high complexity · 8 ops, depth 4</span>
+      </div>
+      <div class="kgrid">
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 1 · paint</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">ASSERT( {whistle, hum, chirp} :
+    (Relay1 := op(hum, hum)),
+    (Relay2 := op(Relay1, hum)),
+    (Relay3 := op(Relay2, chirp)),
+    (Relay4 := op(Relay3, hum))
+    =&gt; (whistle = Relay4)
+)
+
+QUERY( {whistle, hum, chirp, buzz} :
+    (Relay1 := op(whistle, hum)),
+    (Relay2 := op(buzz, hum)),
+    (Relay3 := op(buzz, Relay2)),
+    (Relay4 := op(chirp, Relay3))
+    =&gt; (Relay1 = Relay4)
+)</pre>
+          <p class="note">Encoding drops the braces its own spec requires around the statement list.</p>
+          <details class="grammar"><summary>Grammar spec · 2,576 chars</summary>
+            <pre>The notation describes a system with a binary operation, `op`, which combines two inputs into one output. The order of inputs matters.
+
+1.  **Variables:**
+    *   `V = {v_1, v_2, ..., v_n}`: A set of named variables representing initial, freely chosen "things" (e.g., pigments, signals). These are the fundamental inputs.
+    *   `R = {r_1, r_2, ..., r_m}`: A set of named variables representing intermediate or final "results" of operations. These are derived values.
+
+2.  **Operations:**
+    *   `r_k := op(v_i, v_j)`: Assigns the result of combining `v_i` (first input) and `v_j` (second input) to the result variable `r_k`.
+    *   `r_k := op(v_i, r_j)`: Assigns the result of combining `v_i` and `r_j` to `r_k`.
+    *   `r_k := op(r_i, v_j)`: Assigns the result of combining `r_i` and `v_j` to `r_k`.
+    *   `r_k := op(r_i, r_j)`: Assigns the result of combining `r_i` and `r_j` to `r_k`.
+    *   Note: The `op` symbol is a placeholder for the specific combining action (e.g., "pour into", "feed through"). Its exact nature is implicit in the story context but formally represented by the `op` function.
+
+3.  **Statements:**
+    *   **Custom (Assertion):** `ASSERT( {v_1, ..., v_n} : { (S_1), ..., (S_k) } =&gt; (E_1 = E_2) )`
+        *   `{v_1, ..., v_n}`: The set of initial variables chosen for this custom. These are the "any N things at all".
+        *   `{ (S_1), ..., (S_k) }`: A sequence of operations, where each `S_i` is an assignment statement (`r_x := op(A, B)`). These operations define how intermediate and final results are produced.
+        *   `E_1 = E_2`: An equality assertion, stating that `E_1` and `E_2` always yield the same outcome. `E_1` and `E_2` can be either an initial variable (`v_i`) or a result variable (`r_j`).
+    *   **Question (Query):** `QUERY( {v_1, ..., v_n} : { (S_1), ..., (S_k) } =&gt; (E_1 = E_2) )`
+        *   Structure is identical to `ASSERT`, but it represents a question about whether the equality `E_1 = E_2` *must* hold, given the custom.
+
+4.  **Naming Conventions:**
+    *   Initial variables are lowercase, descriptive names (e.g., `whistle`, `hum`, `chirp`).
+    *   Result variables are capitalized, descriptive names (e.g., `Relay1`, `Relay2`).
+    *   The `op` symbol is generic.
+
+5.  **Execution Flow:**
+    *   Operations within a sequence `{ (S_1), ..., (S_k) }` are executed in the order they appear.
+    *   "Separately" implies a new sequence of operations, but within the formal notation, it's just part of the overall ordered sequence of operations for that assertion/query. The variables are distinct by name.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 2 · + tea</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">(
+  -&gt;,
+  (
+    (whistle, hum, chirp),
+    R1 = hum -&gt; hum,
+    R2 = R1 -&gt; hum,
+    R3 = R2 -&gt; chirp,
+    R4 = R3 -&gt; hum,
+    [whistle == R4]
+  ),
+  (
+    (whistle, hum, chirp, buzz),
+    R1 = whistle -&gt; hum,
+    R2 = buzz -&gt; hum,
+    R3 = buzz -&gt; R2,
+    R4 = chirp -&gt; R3,
+    ?[R1 == R4]
+  )
+)</pre>
+          <p class="note">The operator symbol itself is embedded as the tuple’s first element.</p>
+          <details class="grammar"><summary>Grammar spec · 2,652 chars</summary>
+            <pre>My notation represents a story as a tuple: `(Action, Custom, Question)`.
+
+**1. Action (A):**
+The combining action is represented by a single infix operator, `-&gt;`.
+`X -&gt; Y` means "perform the action with X as the first participant and Y as the second participant." The result of this action is a new entity.
+
+**2. Variables (V):**
+Variables are represented by alphanumeric strings (e.g., `a`, `b`, `c`, `X1`, `R2`).
+Variables can be either:
+    *   **Input Variables (IV):** These are the initial, freely chosen entities. They are declared at the beginning of a section (Custom or Question) using a comma-separated list enclosed in parentheses, e.g., `(a, b, c)`.
+    *   **Intermediate Variables (MV):** These are the results of `-&gt;` operations. They are assigned using the `=` operator. For example, `R1 = a -&gt; b`.
+
+**3. Custom (C):**
+The Custom section describes the unbreakable habit. It is a tuple: `(InputVars, Operations, Equalities)`.
+    *   **InputVars (IV_C):** A parenthesized, comma-separated list of input variables for the custom.
+    *   **Operations (Ops_C):** A sequence of assignments, each on a new line, defining intermediate variables based on input variables or previously defined intermediate variables. The order of operations matters.
+    *   **Equalities (Eq_C):** A comma-separated list of pairs of variables, enclosed in square brackets, indicating that these variables always yield the same result. Each pair is separated by `==`. For example, `[a == R2]`.
+
+**4. Question (Q):**
+The Question section describes the scenario the trainee wonders about. It is a tuple: `(InputVars, Operations, Query)`.
+    *   **InputVars (IV_Q):** A parenthesized, comma-separated list of input variables for the question.
+    *   **Operations (Ops_Q):** A sequence of assignments, each on a new line, defining intermediate variables based on input variables or previously defined intermediate variables. The order of operations matters.
+    *   **Query (Qry):** A single pair of variables, enclosed in square brackets and prefixed with `?`, indicating what the question asks about. For example, `?[R1 == R4]`.
+
+**Overall Structure:**
+
+(
+  -&gt;,
+  (
+    (IV_C),
+    Ops_C,
+    [Eq_C_1, Eq_C_2, ...]
+  ),
+  (
+    (IV_Q),
+    Ops_Q,
+    ?[Qry_1 == Qry_2]
+  )
+)
+
+**Example of an operation sequence:**
+R1 = a -&gt; b
+R2 = R1 -&gt; c
+This means:
+1.  `R1` is the result of `a -&gt; b`.
+2.  `R2` is the result of `R1 -&gt; c`.
+
+**Example of equalities:**
+`[a == R2, b == R3]`
+This means `a` and `R2` are always the same, AND `b` and `R3` are always the same.
+
+**Example of query:**
+`?[R1 == R4]`
+This asks if `R1` and `R4` must always be the same.</pre>
+          </details>
+        </div>
+        <div class="kcell">
+          <div class="khead"><span class="chip">K = 3 · + graft</span><span class="faithful">faithful</span></div>
+          <p class="cell-label">Encoding</p>
+          <pre class="encoding">(
+    (
+        {W, H, C},
+        [
+            R_1 = (H -&gt; H),
+            R_2 = (R_1 -&gt; H),
+            R_3 = (R_2 -&gt; C),
+            R_4 = (R_3 -&gt; H)
+        ],
+        (W, R_4)
+    ),
+    (
+        {W, H, C, B},
+        [
+            R_1 = (W -&gt; H),
+            R_2 = (B -&gt; H),
+            R_3 = (B -&gt; R_2),
+            R_4 = (C -&gt; R_3)
+        ],
+        (R_1, R_4)
+    )
+)</pre>
+          <p class="note">Assertion vs question carried purely by tuple position; bare pairs mean equality.</p>
+          <details class="grammar"><summary>Grammar spec · 2,728 chars</summary>
+            <pre>The notation uses a functional style to represent the combining action and a set-like notation for assertions and questions.
+
+**1. Basic Elements:**
+*   **Variables:** Represent starting things (e.g., `A`, `B`, `C`, `D`). These are implicitly "any" of their type.
+*   **Combining Action:** Represented by a binary operator `-&gt;`. `X -&gt; Y` means "do the action to X and Y", where X is the first participant and Y is the second. The result of `X -&gt; Y` is a new, unnamed entity.
+*   **Named Results (Batches/Brews/Grafts/Relays):** Represented by `R_n` where `n` is an integer (e.g., `R_1`, `R_2`). These are assigned the result of a combining action.
+
+**2. Expressions:**
+*   **Atomic Expression:** A variable (e.g., `A`).
+*   **Compound Expression:** `(Expr1 -&gt; Expr2)` where `Expr1` and `Expr2` are either atomic or compound expressions. Parentheses are used for grouping to ensure unambiguous order of operations.
+*   **Assignment:** `R_n = Expr` assigns the result of `Expr` to the named result `R_n`.
+
+**3. Custom (Assertion) Structure:**
+The custom is represented as a tuple `(S, C, A)`.
+*   `S`: A set of variables representing the freely chosen starting things for the custom (e.g., `{A, B, C}`).
+*   `C`: A sequence of assignments representing the steps of the custom. Each assignment `R_n = Expr` defines a named intermediate or final result. The expressions in `C` can refer to variables from `S` or previously defined `R_k` (where `k &lt; n`).
+*   `A`: A pair of expressions `(Expr_L, Expr_R)` that are asserted to always be the same. `Expr_L` and `Expr_R` can be variables from `S` or named results from `C`.
+
+**4. Question Structure:**
+The question is represented as a tuple `(S, Q, P)`.
+*   `S`: A set of variables representing the freely chosen starting things for the question (e.g., `{A, B, C, D}`).
+*   `Q`: A sequence of assignments representing the steps of the question. Similar to `C` in the custom, expressions in `Q` can refer to variables from `S` or previously defined `R_k`.
+*   `P`: A pair of expressions `(Expr_L, Expr_R)` that are asked to always be the same. `Expr_L` and `Expr_R` can be variables from `S` or named results from `Q`.
+
+**5. Full Story Representation:**
+A complete story is represented as a pair `(Custom, Question)`.
+
+**Example of how to read `X -&gt; Y`:**
+If the action is "pour X into Y", then `X -&gt; Y` means "pour X into Y".
+If the action is "graft X onto Y", then `X -&gt; Y` means "graft X onto Y".
+If the action is "feed X through Y", then `X -&gt; Y` means "feed X through Y".
+
+**Example of how to read `(Expr_L, Expr_R)` in `A`:**
+`Expr_L` and `Expr_R` always come out the same.
+
+**Example of how to read `(Expr_L, Expr_R)` in `P`:**
+Must `Expr_L` and `Expr_R` always come out the same?</pre>
+          </details>
+        </div>
+      </div>
+    </section>
+
+<footer>Run artifacts: <code>experiments/10-invent-grammar/runs/run-mini/</code> · prompts under
+<code>prompts/</code> · template <code>invent_prompt.md</code> (sha256 d4edcb57eafc…)</footer>
+</main>
+
+</body>
+</html>
