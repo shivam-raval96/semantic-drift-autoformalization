@@ -133,6 +133,8 @@ class PrefixParserTest(unittest.TestCase):
             "op(x, y) = y = x",  # trailing tokens
             "op(, y) = x",  # empty operand
             "",  # empty
+            "op(x, " * 5000 + "x",  # runaway nesting, never closed
+            "op(x, " * 200 + "x" + ")" * 200 + " = x",  # nested past the depth cap
         ]
         for text in bad:
             with self.subTest(text=text):
@@ -247,6 +249,14 @@ class GradingTest(unittest.TestCase):
         self.assertIsNotNone(verdict["error"])
         verdict = grade("ASSUME: x + y = y\nASK: x = y", META_SYMMETRIC_F)
         self.assertEqual(verdict["status"], "unparseable")
+
+    def test_runaway_nesting_is_unparseable(self):
+        # Regression: a degenerate generation that repeats "op(" until the
+        # token budget must grade unparseable, not blow the recursion limit.
+        response = "ASSUME: op(x, y) = op(y, x)\nASK: " + "op(x, " * 5000 + "x"
+        verdict = grade(response, META_SYMMETRIC_F)
+        self.assertEqual(verdict["status"], "unparseable")
+        self.assertIsNotNone(verdict["error"])
 
     def test_grading_is_deterministic(self):
         for response in (PERFECT, "ASSUME: op(x, y) = x\nASK: x = y"):

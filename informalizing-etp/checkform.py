@@ -88,6 +88,12 @@ def _tokenize(text: str) -> List[str]:
     return tokens
 
 
+# ETP laws nest at most 4 operations per side; anything remotely close to
+# this bound is a runaway generation, and rejecting it keeps the recursive
+# parser (and dual/canonical below) clear of Python's recursion limit.
+_MAX_TERM_DEPTH = 50
+
+
 class _PrefixParser:
     """term := variable | 'op' '(' term ',' term ')'  (op is case-insensitive)."""
 
@@ -110,15 +116,17 @@ class _PrefixParser:
         if got != token:
             raise AnswerParseError(f"expected {token!r}, got {got!r}")
 
-    def parse_term(self) -> Term:
+    def parse_term(self, depth: int = 0) -> Term:
+        if depth > _MAX_TERM_DEPTH:
+            raise AnswerParseError(f"term nested deeper than {_MAX_TERM_DEPTH}")
         token = self.take()
         if token is None or token in "(),=":
             raise AnswerParseError(f"expected a variable or 'op(', got {token!r}")
         if token.lower() == "op":
             self.expect("(")
-            left = self.parse_term()
+            left = self.parse_term(depth + 1)
             self.expect(",")
-            right = self.parse_term()
+            right = self.parse_term(depth + 1)
             self.expect(")")
             return Op(left, right)
         return Var(token)
