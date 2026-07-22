@@ -15,6 +15,12 @@ picture hold with real per-bin resolution, and where does a frontier
 model (GPT-5.5, which was at ceiling on experiment 06's 40 stratified
 two-stage pairs) land against the small models when neither can reason?
 
+Extended after the two-stage run: the same 160 pairs were also run
+through both single-shot arms — story → grammar (experiment 02's task)
+and literal → grammar (experiment 04's task) — so that experiment 05's
+no-think ordering claim (literal ≥ two-stage > story) is tested at
+scale on one byte-identical pair set instead of across experiments.
+
 ## Setup
 
 Same pipeline, prompts, grading, and regime machinery as experiment 05;
@@ -31,23 +37,32 @@ the added frontier model.
   - `anthropic/claude-haiku-4.5`
   - `openai/gpt-5-mini`
   - `openai/gpt-5.5`
-- **Form**: `--form two-stage`, unchanged from experiment 05 — stage 1
-  abstracts the themed story via `abstract_prompt.md`, stage 2 feeds the
-  raw stage-1 response into `literal_prompt.md`, and the final answer is
-  graded by checkform. Two API calls per row, both at temperature 0.
+- **Forms** (three runs over the byte-identical pair set — sampling
+  never consults the form):
+  - `--form two-stage`, unchanged from experiment 05 — stage 1
+    abstracts the themed story via `abstract_prompt.md`, stage 2 feeds
+    the raw stage-1 response into `literal_prompt.md`, and the final
+    answer is graded by checkform. Two API calls per row.
+  - `--form story` — single-shot story formalization with
+    `formalize_prompt.md` (experiment 02's task).
+  - `--form literal` — single-shot literal formalization with
+    `literal_prompt.md` (experiment 04's task).
+
+  All calls at temperature 0.
 - **Thinking mode**: `--reasoning off` only (experiment 05 established
   the on-regime ceiling; the no-think regime is where the two-stage
-  effect lives). Native toggles as before: qwen3 gets `/no_think` in
-  both stages; gpt-5-mini floors at `effort: minimal`; gpt-5.5 supports
+  effect lives). Native toggles as before: qwen3 gets `/no_think` on
+  every call; gpt-5-mini floors at `effort: minimal`; gpt-5.5 supports
   a true `{"effort": "none", "exclude": true}` (the arm experiment 06
   validated); llama-3.3, mistral-small, and gpt-4o-mini get the prompt
   wrappers alone. Compliance clean: `max(reasoning_tokens,
   stage1_reasoning_tokens)` is 0 for every row except qwen3's familiar
   1-token think-block artifact.
 - **Sampling** (seed 0, ETP `equations.txt` sha256 `e30e1a67…c8010`,
-  unchanged): one run, `run-strat20-s0-think-off` — 160 pairs
-  stratified 20 per total-operation bin 1–8. Two consequences of
-  `per_bin = 20`:
+  unchanged): 160 pairs stratified 20 per total-operation bin 1–8,
+  identical across the three runs (`run-strat20-s0-think-off`,
+  `run-strat20-s0-story-think-off`, `run-strat20-s0-literal-think-off`;
+  pair-id identity verified). Two consequences of `per_bin = 20`:
   - Bin 1 is *exhaustive*: the ETP list has exactly 2 zero-op and 5
     one-op laws, giving 20 ordered pairs total, and all 20 are in the
     sample (20/bin is the maximum perfectly-even design; 26/bin cannot
@@ -57,29 +72,33 @@ the added frontier model.
     sequence after bin 1 — so comparisons to earlier experiments are
     aggregate-level, not per-pair.
 - **Other**: `max_tokens` 4096 per call, temperature 0,
-  `--concurrency 8`. 160 pairs × 9 models = 1,440 rows (2,880 calls).
-  Results rows keep the standard schema plus `stage1_*` bookkeeping,
-  as in experiment 05. OpenRouter-reported cost for the whole run:
-  $4.63, of which gpt-5.5 is $3.25.
+  `--concurrency 8`. 160 pairs × 9 models = 1,440 rows per arm
+  (4,320 rows; 5,760 calls — two-stage makes two per row). Two-stage
+  rows keep the standard schema plus `stage1_*` bookkeeping, as in
+  experiment 05. OpenRouter-reported cost: two-stage $4.63 (gpt-5.5
+  $3.25 of it), story $1.49, literal $1.63 — $7.75 total.
 
 ## Prompts
 
-Both templates byte-identical to experiment 05's (same sha256s at run
-time):
+All templates byte-identical to their experiment 02/04/05 versions
+(same sha256s at run time):
 
-- Stage 1: `abstract_prompt.md` at sha256
+- Two-stage stage 1: `abstract_prompt.md` at sha256
   `1aa038f2d13dbddcc5c7f803d9166d9e8a82ce9b981a3463fc59a3d44cce8733`.
-- Stage 2: `literal_prompt.md` at sha256
+- Two-stage stage 2 and the literal arm: `literal_prompt.md` at sha256
   `089ffc52bb57c5aa7c2ead0e613ec7e73b11039aa79d729f8c80c63a0852f8b0`.
+- Story arm: `formalize_prompt.md` at sha256
+  `ad33f6de859156b81be0d889abd3c56e4d9275bd855eb6d804d4e8ebcfe4983c`.
 - Regime wrappers (off regime; prefixes empty), from `run_meta.json`:
-  - stage-1 suffix:
+  - two-stage stage-1 suffix:
     > Respond with only the rewritten description, and no other text
     > before it.
-  - stage-2 suffix:
+  - two-stage stage-2 suffix, and the single-shot story and literal
+    runs' suffix:
     > Respond with only the two required lines, and no other text
     > before them.
 
-  plus a trailing `/no_think` line for qwen3 (both stages).
+  plus a trailing `/no_think` line for qwen3 (every call).
 
 ## Reproduce
 
@@ -89,9 +108,23 @@ python3 benchmark.py --seed 0 --stratify-ops 20 --form two-stage --reasoning off
     --models deepseek/deepseek-chat-v3.1,qwen/qwen3-32b,meta-llama/llama-3.3-70b-instruct,mistralai/mistral-small-3.2-24b-instruct,openai/gpt-4o-mini,google/gemini-2.5-flash,anthropic/claude-haiku-4.5,openai/gpt-5-mini,openai/gpt-5.5 \
     --out-dir experiments/07-two-stage-scale/runs/run-strat20-s0-think-off
 
+python3 benchmark.py --seed 0 --stratify-ops 20 --form story --reasoning off \
+    --concurrency 8 \
+    --models deepseek/deepseek-chat-v3.1,qwen/qwen3-32b,meta-llama/llama-3.3-70b-instruct,mistralai/mistral-small-3.2-24b-instruct,openai/gpt-4o-mini,google/gemini-2.5-flash,anthropic/claude-haiku-4.5,openai/gpt-5-mini,openai/gpt-5.5 \
+    --out-dir experiments/07-two-stage-scale/runs/run-strat20-s0-story-think-off
+
+python3 benchmark.py --seed 0 --stratify-ops 20 --form literal --reasoning off \
+    --concurrency 8 \
+    --models deepseek/deepseek-chat-v3.1,qwen/qwen3-32b,meta-llama/llama-3.3-70b-instruct,mistralai/mistral-small-3.2-24b-instruct,openai/gpt-4o-mini,google/gemini-2.5-flash,anthropic/claude-haiku-4.5,openai/gpt-5-mini,openai/gpt-5.5 \
+    --out-dir experiments/07-two-stage-scale/runs/run-strat20-s0-literal-think-off
+
 python3 charts.py experiments/07-two-stage-scale/runs/run-strat20-s0-think-off \
     --title "ETP formalization benchmark · two-stage at scale, no-think, + GPT-5.5" \
     --out experiments/07-two-stage-scale/report/benchmark-report.html --pdf
+
+python3 charts.py experiments/07-two-stage-scale/runs/* \
+    --title "ETP formalization benchmark · story vs literal vs two-stage at scale (no-think)" \
+    --out experiments/07-two-stage-scale/report/comparison-report.html --pdf
 ```
 
 Requires checkform's term-depth cap (`_MAX_TERM_DEPTH`, added during
@@ -99,28 +132,47 @@ this experiment — see run notes).
 
 ## Results
 
-Artifacts: `runs/run-strat20-s0-think-off/` (with `summary.md`) and
-`report/benchmark-report.html` / `.pdf`.
+Artifacts: the three run directories under `runs/` (each with
+`summary.md`), `report/benchmark-report.html` / `.pdf` (the two-stage
+run alone), and `report/comparison-report.html` / `.pdf` (the headline
+cross-arm figures: correct rate by model and form, and
+accuracy-vs-complexity with one line per form, all on the identical
+pair set).
 
-Correct% over the 160 stratified pairs, no-think (experiment 05's
-strat5-off number in parentheses; not per-pair comparable):
+Correct% over the 160 stratified pairs, no-think, per arm (two-stage
+column: experiment 05's strat5-off number in parentheses; not per-pair
+comparable):
 
-| model | correct% | (exp 05, n=40) |
-|---|---|---|
-| openai/gpt-5.5 | **99.4** | — |
-| deepseek/deepseek-chat-v3.1 | 73.8 | (70.0) |
-| google/gemini-2.5-flash | 73.8 | (67.5) |
-| anthropic/claude-haiku-4.5 | 65.0 | (67.5) |
-| meta-llama/llama-3.3-70b-instruct | 58.8 | (60.0) |
-| openai/gpt-5-mini | 56.9 | (57.5) |
-| mistralai/mistral-small-3.2-24b-instruct | 50.0 | (42.5) |
-| qwen/qwen3-32b | 38.8 | (22.5) |
-| openai/gpt-4o-mini | 23.1 | (20.0) |
+| model | story | literal | two-stage |
+|---|---|---|---|
+| openai/gpt-5.5 | 95.0 | **99.4** | **99.4** |
+| deepseek/deepseek-chat-v3.1 | 79.4 | 80.0 | 73.8 (70.0) |
+| google/gemini-2.5-flash | 80.0 | 87.5 | 73.8 (67.5) |
+| anthropic/claude-haiku-4.5 | 54.4 | 86.9 | 65.0 (67.5) |
+| meta-llama/llama-3.3-70b-instruct | 48.1 | 69.4 | 58.8 (60.0) |
+| openai/gpt-5-mini | 53.8 | 65.0 | 56.9 (57.5) |
+| mistralai/mistral-small-3.2-24b-instruct | 38.8 | 66.9 | 50.0 (42.5) |
+| qwen/qwen3-32b | 37.5 | 63.7 | 38.8 (22.5) |
+| openai/gpt-4o-mini | 31.9 | 51.9 | 23.1 (20.0) |
 
-1,440/1,440 rows graded, 0 api-errors; 60 unparseable (4.2%), 27 of
-them gpt-5-mini. Pooled correct% by total-operation bin 1–8:
-55 / 73 / 71 / 49 / 70 / 59 / 51 / 51; by max nesting depth 1–4:
-69 / 68 / 61 / 40.
+All three runs: 1,440/1,440 rows graded, 0 api-errors, regime
+compliance clean (qwen3's 1-token artifact only). Unparseable: story
+64, literal 52, two-stage 60 (27 of the two-stage ones gpt-5-mini).
+
+Pooled correct% by total-operation bin 1–8 and by max nesting depth
+1–4 (story / literal / two-stage):
+
+| bin | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|
+| story | 90 | 82 | 73 | 45 | 63 | 44 | 33 | 32 |
+| literal | 100 | 99 | 96 | 71 | 71 | 62 | 52 | 46 |
+| two-stage | 55 | 73 | 71 | 49 | 70 | 59 | 51 | 51 |
+
+| depth | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| story | 89 | 69 | 49 | 29 |
+| literal | 100 | 95 | 63 | 43 |
+| two-stage | 69 | 68 | 61 | 40 |
 
 Stage attribution (same mechanical procedure as experiment 05: the tail
 of the stage-1 response from its last "Consider a collection …"
@@ -153,9 +205,14 @@ Run notes:
   malformed response, so no depth-cap verdicts appear in the final
   data — the 60 unparseables are all ordinary malformed syntax
   (truncations, stray prose, `op(x, y) = x = y` chains).
-- gpt-5.5's single miss (E1918 ⇒ E350, 7 ops, paint theme) is a wrong
-  abstraction, not a formalization slip: its `ASK:` line encodes a
-  different law than the story's.
+- gpt-5.5's single two-stage miss (E1918 ⇒ E350, 7 ops, paint theme)
+  is a wrong abstraction, not a formalization slip: its `ASK:` line
+  encodes a different law than the story's. Its single literal miss is
+  a different pair (E2878 ⇒ E1690), and its 8 story misses are 8
+  further pairs — no pair is hard for it in more than one arm.
+- The single-shot arms were run after (and because of) the two-stage
+  results, on the identical pair set (`samples.jsonl` pair-id identity
+  verified across the three runs before launching).
 - `correct-swapped` dominates the correct rows of several small models
   (mistral 68 of 80, haiku 64 of 104, deepseek 63 of 118) —
   side-swapping under the no-think regime is the norm, not the
@@ -171,13 +228,14 @@ Run notes:
   are in the direction the small-n noise would predict). The two-stage
   no-think band for the small-model family is 23–74%, exactly where
   experiment 05 put it.
-- **GPT-5.5 is not in the same regime as the rest of the field.**
-  159/160 (99.4%) with reasoning truly off, all exact-convention, zero
-  unparseable — against a 73.8% best for the small models. Experiment
-  06's frontier-saturation reading extends from 40 to 160 stratified
-  pairs and to the two-stage arm: for GPT-5.5 the benchmark measures
-  formatting discipline, not capability, and headroom for studying
-  *drift* now lives entirely in the small-model tier.
+- **GPT-5.5 is not in the same regime as the rest of the field — except
+  on the story.** 159/160 on both the literal and two-stage arms with
+  reasoning truly off (different single misses, zero unparseable) —
+  against an 87.5% best for the small models. But single-shot story
+  formalization costs it 8 pairs (95.0%): the narrative disguise is the
+  one part of the benchmark that still measures capability rather than
+  formatting discipline at the frontier, and notably the two-stage
+  rewrite recovers all of it (95.0 → 99.4 on the same pairs).
 - **Drift is unrepairable, now at 0/61 pooled.** No row with a
   parseable-but-wrong stage-1 abstraction ended correct — 0/36 here,
   0/25 in experiment 05. Meanwhile faithful abstractions fail stage 2
@@ -186,14 +244,28 @@ Run notes:
   unrecoverable in principle. The case for a mechanical fidelity gate
   on the intermediate (CLAUDE.md's round-trip idea) gets stronger, not
   weaker, with sample size.
-- **Complexity is bimodally hard.** With 20 pairs per bin, the pooled
-  complexity curve is not monotone: bins 2–3 are the sweet spot
-  (73/71%), with dips at bin 1 (55% — the degenerate bare-variable laws
-  experiment 05 flagged as the drift hotspot) and from bin 4 onward
-  (49–59%). Depth is the cleaner monotone signal: 69/68/61/40% for
-  depth 1–4. Trivial laws invite embellishment; deep nesting invites
-  bookkeeping errors; the easy middle is where a law has structure but
-  no long chains.
+- **Experiment 05's ordering claim needs a revision at scale: literal
+  dominates, but two-stage > story is model-dependent.** Literal ≥
+  both other arms for all nine models, usually by a wide margin
+  (haiku +21.9 over its next-best arm, qwen +24.9). But three models —
+  deepseek (79.4 vs 73.8), gemini (80.0 vs 73.8), and gpt-4o-mini
+  (31.9 vs 23.1) — formalize the *story* better single-shot than
+  through their own two-stage rewrite; pooled, two-stage beats story by
+  only 2.3 points (59.9 vs 57.6). Decomposition without thinking is
+  not a general win over one-shot narrative reading; it's a win for
+  roughly the models in the middle of the range (haiku +10.6,
+  llama +10.7, mistral +11.2).
+- **Where decomposition pays is complexity-dependent — and inverted.**
+  The two-stage bin-1 dip is unique to that arm: on trivial laws the
+  single-shot arms are at or near ceiling (story 90%, literal 100%)
+  while two-stage sits at 55% — the stage-1 embellishment failure in
+  its purest form. From bin 5 up the picture flips: two-stage tracks
+  or beats story everywhere (bin 8: 51 vs 32) and even edges literal
+  at bin 8 (51 vs 46). Same story by depth: two-stage has the flattest
+  curve (69→40) against story's 89→29 and literal's 100→43. The
+  rewrite is an externalized reasoning pass that costs a flat toll and
+  pays off only once the story is deep enough that one-shot reading
+  breaks down.
 - Methodological: a benchmark whose grader can be crashed by a
   degenerate generation is itself part of the measurement — the
   depth-cap fix belongs in the harness permanently, and the runaway
