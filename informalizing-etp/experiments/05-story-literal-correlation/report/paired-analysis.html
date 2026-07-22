@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Story–Literal Paired Correlation</title>
+<style>
+:root { --ink:#17212b; --muted:#607080; --line:#d6dee6; --bg:#f5f8fb; }
+* { box-sizing:border-box; }
+body { margin:0; color:var(--ink); background:var(--bg); font:15px/1.45 Arial,sans-serif; }
+main { max-width:1180px; margin:0 auto; padding:32px 24px 56px; }
+h1 { margin:0 0 6px; font-size:28px; letter-spacing:0; }
+h2 { margin:0 0 16px; font-size:17px; letter-spacing:0; }
+h3 { margin:0 0 16px; font-size:16px; letter-spacing:0; }
+p { max-width:850px; }
+.lead { color:var(--muted); margin:0 0 28px; }
+.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.panel { background:white; border:1px solid var(--line); border-radius:6px; padding:18px; }
+.bar-row { display:grid; grid-template-columns:190px minmax(120px,1fr) 58px 44px; gap:10px; align-items:center; margin:12px 0; }
+.bar-label { font-weight:600; }
+.track { height:20px; background:#e8edf2; display:block; overflow:hidden; }
+.fill { height:100%; display:block; }
+.bar-row strong { text-align:right; }
+.bar-row small { color:var(--muted); }
+.metric { color:var(--muted); margin:14px 0 0; }
+.section { margin-top:30px; }
+.table-wrap { overflow-x:auto; background:white; border:1px solid var(--line); }
+table { width:100%; border-collapse:collapse; }
+th,td { padding:9px 11px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2) { text-align:left; }
+thead th { background:#edf3f8; font-size:13px; }
+tbody tr:last-child td, tbody tr:last-child th { border-bottom:0; }
+.note { border-left:4px solid #1d63ad; padding:2px 0 2px 14px; max-width:900px; }
+details { margin-top:20px; }
+summary { cursor:pointer; font-weight:700; }
+@media (max-width:760px) { .grid { grid-template-columns:1fr; } .bar-row { grid-template-columns:150px 1fr 52px; } .bar-row small { display:none; } }
+</style>
+</head>
+<body><main>
+<h1>Direct Story vs Oracle Literal</h1>
+<p class="lead">Same ETP pairs and models. Story → RG uses the generated story; Oracle Literal NL → RG uses the program-generated correct Structured Literal. This is not a generated two-hop experiment.</p>
+<section>
+<h2>Task accuracy · reasoning off</h2>
+<div class="grid"><section class="panel"><h3>Complex 30</h3><div class="bar-row"><span class="bar-label">Direct Story → RG</span><span class="track"><span class="fill" style="width:21.7%;background:#1d63ad"></span></span><strong>21.7%</strong><small>n=240</small></div><div class="bar-row"><span class="bar-label">Oracle Literal NL → RG</span><span class="track"><span class="fill" style="width:37.9%;background:#8fb5d9"></span></span><strong>37.9%</strong><small>n=240</small></div><p class="metric">Literal advantage 16.2% · model-level Pearson r 0.903</p></section><section class="panel"><h3>Stratified 40</h3><div class="bar-row"><span class="bar-label">Direct Story → RG</span><span class="track"><span class="fill" style="width:53.1%;background:#1d63ad"></span></span><strong>53.1%</strong><small>n=320</small></div><div class="bar-row"><span class="bar-label">Oracle Literal NL → RG</span><span class="track"><span class="fill" style="width:72.2%;background:#8fb5d9"></span></span><strong>72.2%</strong><small>n=320</small></div><p class="metric">Literal advantage 19.1% · model-level Pearson r 0.945</p></section></div>
+</section>
+<section class="section">
+<h2>Does Literal success predict Story success? · reasoning off</h2>
+<p>The bars below are Story → RG success rates, conditioned on whether the matching Oracle Literal NL → RG attempt succeeded or failed.</p>
+<div class="grid"><section class="panel"><h3>Complex 30</h3><div class="bar-row"><span class="bar-label">Literal → RG succeeded</span><span class="track"><span class="fill" style="width:41.8%;background:#1d63ad"></span></span><strong>41.8%</strong><small>n=91</small></div><div class="bar-row"><span class="bar-label">Literal → RG failed</span><span class="track"><span class="fill" style="width:9.4%;background:#8fb5d9"></span></span><strong>9.4%</strong><small>n=149</small></div><p class="metric">Conditional difference 32.4% · pair-model phi 0.381</p></section><section class="panel"><h3>Stratified 40</h3><div class="bar-row"><span class="bar-label">Literal → RG succeeded</span><span class="track"><span class="fill" style="width:64.9%;background:#1d63ad"></span></span><strong>64.9%</strong><small>n=231</small></div><div class="bar-row"><span class="bar-label">Literal → RG failed</span><span class="track"><span class="fill" style="width:22.5%;background:#8fb5d9"></span></span><strong>22.5%</strong><small>n=89</small></div><p class="metric">Conditional difference 42.5% · pair-model phi 0.381</p></section></div>
+</section>
+<section class="section">
+<h2>Paired outcomes · reasoning off</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Condition</th><th>Both correct</th><th>Literal only</th><th>Story only</th><th>Neither</th></tr></thead>
+<tbody><tr><th>Complex 30 / Reasoning off</th><td>38</td><td>53</td><td>14</td><td>135</td></tr><tr><th>Stratified 40 / Reasoning off</th><td>150</td><td>81</td><td>20</td><td>69</td></tr></tbody></table></div>
+</section>
+<section class="section note">
+<h2>Reading the result</h2>
+<p>With reasoning off, Story success is substantially more likely when the matching Literal item succeeds, and accuracy correlates strongly across the eight models. With reasoning on, both tasks are near ceiling, so both forms of correlation are unstable.</p>
+</section>
+<details><summary>Reasoning-on ceiling results</summary>
+<div class="table-wrap"><table>
+<thead><tr><th>Condition</th><th>Both correct</th><th>Literal only</th><th>Story only</th><th>Neither</th></tr></thead>
+<tbody><tr><th>Complex 30 / Reasoning on</th><td>225</td><td>12</td><td>2</td><td>0</td></tr><tr><th>Stratified 40 / Reasoning on</th><td>302</td><td>15</td><td>2</td><td>1</td></tr></tbody></table></div>
+</details>
+<section class="section">
+<h2>By model</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Condition</th><th>Model</th><th>N</th><th>Story</th><th>Literal</th><th>P(S ✓ | L ✓)</th><th>P(S ✓ | L ✗)</th><th>Phi</th></tr></thead>
+<tbody><tr><td>Complex 30 / Reasoning off</td><td>claude-haiku-4.5</td><td>30</td><td>16.7%</td><td>53.3%</td><td>18.8%</td><td>14.3%</td><td>0.060</td></tr><tr><td>Complex 30 / Reasoning off</td><td>deepseek-chat-v3.1</td><td>30</td><td>56.7%</td><td>60.0%</td><td>66.7%</td><td>41.7%</td><td>0.247</td></tr><tr><td>Complex 30 / Reasoning off</td><td>gemini-2.5-flash</td><td>30</td><td>56.7%</td><td>83.3%</td><td>64.0%</td><td>20.0%</td><td>0.331</td></tr><tr><td>Complex 30 / Reasoning off</td><td>llama-3.3-70b-instruct</td><td>30</td><td>16.7%</td><td>30.0%</td><td>33.3%</td><td>9.5%</td><td>0.293</td></tr><tr><td>Complex 30 / Reasoning off</td><td>mistral-small-3.2-24b-instruct</td><td>30</td><td>6.7%</td><td>23.3%</td><td>14.3%</td><td>4.3%</td><td>0.169</td></tr><tr><td>Complex 30 / Reasoning off</td><td>gpt-4o-mini</td><td>30</td><td>0.0%</td><td>6.7%</td><td>0.0%</td><td>0.0%</td><td>-</td></tr><tr><td>Complex 30 / Reasoning off</td><td>gpt-5-mini</td><td>30</td><td>16.7%</td><td>26.7%</td><td>37.5%</td><td>9.1%</td><td>0.337</td></tr><tr><td>Complex 30 / Reasoning off</td><td>qwen3-32b</td><td>30</td><td>3.3%</td><td>20.0%</td><td>0.0%</td><td>4.2%</td><td>-0.093</td></tr><tr><td>Complex 30 / Reasoning on</td><td>claude-haiku-4.5</td><td>30</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td>-</td><td>-</td></tr><tr><td>Complex 30 / Reasoning on</td><td>deepseek-chat-v3.1</td><td>29</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td>-</td><td>-</td></tr><tr><td>Complex 30 / Reasoning on</td><td>gemini-2.5-flash</td><td>30</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td>-</td><td>-</td></tr><tr><td>Complex 30 / Reasoning on</td><td>llama-3.3-70b-instruct</td><td>30</td><td>96.7%</td><td>93.3%</td><td>96.4%</td><td>100.0%</td><td>-0.050</td></tr><tr><td>Complex 30 / Reasoning on</td><td>mistral-small-3.2-24b-instruct</td><td>30</td><td>93.3%</td><td>100.0%</td><td>93.3%</td><td>-</td><td>-</td></tr><tr><td>Complex 30 / Reasoning on</td><td>gpt-4o-mini</td><td>30</td><td>70.0%</td><td>100.0%</td><td>70.0%</td><td>-</td><td>-</td></tr><tr><td>Complex 30 / Reasoning on</td><td>gpt-5-mini</td><td>30</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td>-</td><td>-</td></tr><tr><td>Complex 30 / Reasoning on</td><td>qwen3-32b</td><td>30</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td>-</td><td>-</td></tr><tr><td>Stratified 40 / Reasoning off</td><td>claude-haiku-4.5</td><td>40</td><td>57.5%</td><td>82.5%</td><td>66.7%</td><td>14.3%</td><td>0.403</td></tr><tr><td>Stratified 40 / Reasoning off</td><td>deepseek-chat-v3.1</td><td>40</td><td>75.0%</td><td>90.0%</td><td>80.6%</td><td>25.0%</td><td>0.385</td></tr><tr><td>Stratified 40 / Reasoning off</td><td>gemini-2.5-flash</td><td>40</td><td>82.5%</td><td>85.0%</td><td>88.2%</td><td>50.0%</td><td>0.359</td></tr><tr><td>Stratified 40 / Reasoning off</td><td>llama-3.3-70b-instruct</td><td>40</td><td>60.0%</td><td>80.0%</td><td>62.5%</td><td>50.0%</td><td>0.102</td></tr><tr><td>Stratified 40 / Reasoning off</td><td>mistral-small-3.2-24b-instruct</td><td>40</td><td>37.5%</td><td>60.0%</td><td>54.2%</td><td>12.5%</td><td>0.422</td></tr><tr><td>Stratified 40 / Reasoning off</td><td>gpt-4o-mini</td><td>40</td><td>37.5%</td><td>57.5%</td><td>52.2%</td><td>17.6%</td><td>0.353</td></tr><tr><td>Stratified 40 / Reasoning off</td><td>gpt-5-mini</td><td>40</td><td>47.5%</td><td>70.0%</td><td>50.0%</td><td>41.7%</td><td>0.076</td></tr><tr><td>Stratified 40 / Reasoning off</td><td>qwen3-32b</td><td>40</td><td>27.5%</td><td>52.5%</td><td>47.6%</td><td>5.3%</td><td>0.474</td></tr><tr><td>Stratified 40 / Reasoning on</td><td>claude-haiku-4.5</td><td>40</td><td>97.5%</td><td>100.0%</td><td>97.5%</td><td>-</td><td>-</td></tr><tr><td>Stratified 40 / Reasoning on</td><td>deepseek-chat-v3.1</td><td>40</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td>-</td><td>-</td></tr><tr><td>Stratified 40 / Reasoning on</td><td>gemini-2.5-flash</td><td>40</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td>-</td><td>-</td></tr><tr><td>Stratified 40 / Reasoning on</td><td>llama-3.3-70b-instruct</td><td>40</td><td>95.0%</td><td>100.0%</td><td>95.0%</td><td>-</td><td>-</td></tr><tr><td>Stratified 40 / Reasoning on</td><td>mistral-small-3.2-24b-instruct</td><td>40</td><td>92.5%</td><td>95.0%</td><td>94.7%</td><td>50.0%</td><td>0.370</td></tr><tr><td>Stratified 40 / Reasoning on</td><td>gpt-4o-mini</td><td>40</td><td>87.5%</td><td>100.0%</td><td>87.5%</td><td>-</td><td>-</td></tr><tr><td>Stratified 40 / Reasoning on</td><td>gpt-5-mini</td><td>40</td><td>100.0%</td><td>100.0%</td><td>100.0%</td><td>-</td><td>-</td></tr><tr><td>Stratified 40 / Reasoning on</td><td>qwen3-32b</td><td>40</td><td>87.5%</td><td>97.5%</td><td>87.2%</td><td>100.0%</td><td>-0.061</td></tr></tbody></table></div>
+</section>
+<h2>Data notes</h2><ul><li>uniform/on: 1 ungraded literal evaluations excluded</li></ul>
+</main></body></html>
