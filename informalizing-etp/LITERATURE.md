@@ -176,6 +176,49 @@ prover, no LLM judge, no annotated equivalence labels. This sidesteps the
 entire metric problem that BEq/BEq+ exist to solve, at the cost of only
 covering statements the grammar can express.
 
+## 5b. Two-stage and decomposed formalization pipelines
+
+The two-stage arm (story → literal description → formal notation) has direct
+relatives in work that decomposes formalization into stages:
+
+- **Rewrite-then-formalize.** "Unspoken Logic" (OpenReview 0IsLjMjD0P, 2025)
+  preprocesses free-form student proofs through layers of NL-to-NL
+  disambiguation (pronoun resolution, step classification,
+  antecedent/consequent decomposition, granularity repair) before a fixed
+  LLM autoformalizer, and shows disambiguated inputs autoformalize better —
+  the closest empirical precedent for the stage-1 abstraction hypothesis.
+  **DSR** ("Decompose, Structure, and Repair," arXiv:2604.19000) includes a
+  semantic-canonicalization stage rewriting the raw statement into refined
+  NL condition/conclusion components before generating operator trees and
+  Lean code.
+- **Intermediate formal-ish languages.** **KELPS** (OpenReview U640PVSSoR)
+  has the LLM translate NL into an intermediate "Knowledge Equation"
+  assertion language, from which deterministic rules emit Lean4 — the
+  mirror image of storyform's pipeline, whose deterministic grammar sits on
+  the *generation* side instead. **Relaxed NFL** (arXiv:2606.24443) targets
+  a relaxed natural formal language close to informal writing, elaborated
+  later into a core formal language with fixed semantics. **GFLean**
+  (arXiv:2404.01234) is fully rule-based: controlled natural language
+  (Simplified ForTheL) → GF parse → AST simplification → Lean.
+- **Decomposition along the library axis.** "A New Approach Towards
+  Autoformalization" (arXiv:2310.07957; arXiv2Formal dataset) splits the
+  task into unlinked formalization → entity linking → type adjustment —
+  staged, but separating Mathlib grounding from translation, the dimension
+  the storyform eval deliberately removes.
+- **Adjacent senses of two-stage.** **Draft, Sketch, and Prove** (ICLR
+  2023, arXiv:2210.12283) stages *proof* generation: informal draft →
+  formal sketch → automated prover. **Logic-LM** (Findings EMNLP 2023) and
+  **LINC** (EMNLP 2023) decompose *reasoning* into formalize-then-solve,
+  with the LLM as semantic parser and a symbolic engine doing inference.
+
+**Gap:** no published stage 1 performs *de-theming* — stripping a
+deliberately non-mathematical narrative register down to a literal
+statement. Published stage-1s start from mathematical or quasi-mathematical
+prose and clean it up. And because storyform's ground-truth intermediate
+(the literalform rendering) exists by construction, both stages are exactly
+gradable — a control that KELPS/DSR-style pipelines lack for their
+intermediates.
+
 ## 6. The substrate: the Equational Theories Project
 
 The ETP (Tao et al.; report arXiv:2512.07087) determined all 22,028,942
@@ -296,3 +339,19 @@ Risks/limitations the literature flags for this approach:
 - Bolan et al. (Equational Theories Project). *The Equational Theories
   Project: Advancing Collaborative Mathematical Research at Scale.*
   arXiv:2512.07087. Repo: github.com/teorth/equational_theories.
+- *Unspoken Logic: Bridging the Gap Between Free-Form and
+  LLM-Autoformalizable Mathematical Proofs.* OpenReview 0IsLjMjD0P, 2025.
+- *Decompose, Structure, and Repair: A Neuro-Symbolic Framework for
+  Autoformalization via Operator Trees (DSR).* arXiv:2604.19000.
+- *KELPS: Knowledge Equations for autoformalization via an intermediate
+  assertion language.* OpenReview U640PVSSoR.
+- *Verifiable Auto-Formalization of Mathematics Using a Relaxed Natural
+  Formal Language.* arXiv:2606.24443.
+- Patel et al. *A New Approach Towards Autoformalization (arXiv2Formal).*
+  arXiv:2310.07957.
+- Pathak. *GFLean: An Autoformalisation Framework for Lean via GF.*
+  arXiv:2404.01234.
+- Jiang, Welleck, Zhou, et al. *Draft, Sketch, and Prove: Guiding Formal
+  Theorem Provers with Informal Proofs.* ICLR 2023. arXiv:2210.12283.
+- Pan et al. *Logic-LM.* Findings of EMNLP 2023. Olausson et al. *LINC.*
+  EMNLP 2023.
