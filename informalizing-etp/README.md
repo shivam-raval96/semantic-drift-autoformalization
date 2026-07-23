@@ -232,9 +232,9 @@ python3 checkform.py grade corpus/E387-E43-paint.json response.txt
 
 ## Files
 
-- [examples.md](examples.md) — one implication (E387 ⇒ E43) rendered
+- [examples.md](examples/examples.md) — one implication (E387 ⇒ E43) rendered
   under every theme, side by side.
-- [examples-tea.md](examples-tea.md) — the complementary cut: one theme
+- [examples-tea.md](examples/examples-tea.md) — the complementary cut: one theme
   (tea) rendering several implications of different shapes.
 - [storyform.py](storyform.py) — parser, theme loader, renderer, and CLI.
 - [themes/](themes/) — one JSON file per theme; schema and authoring
