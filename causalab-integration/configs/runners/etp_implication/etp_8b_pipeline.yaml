@@ -16,7 +16,7 @@
 defaults:
 - /base
 - /task: etp_implication
-- /model: llama31_8b
+- /model: llama31_8b_instruct
 - /analysis/baseline
 - /analysis/subspace
 - /analysis/activation_manifold
