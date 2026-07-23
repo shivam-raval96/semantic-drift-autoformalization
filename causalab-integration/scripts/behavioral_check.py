@@ -20,12 +20,21 @@ import json
 import os
 import random
 import sys
+import ssl
 import urllib.request
 
 URL = "https://openrouter.ai/api/v1/chat/completions"
 
+def _ssl_context():
+    """macOS framework Python ships without root certs; prefer certifi."""
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
 
-def build_items(n_false: int, seed: int):
+
+def build_items(n_per_class: int, seed: int):
     from causalab.tasks.etp_implication.config import (
         CERTIFIED_FALSE,
         CERTIFIED_TRUE,
@@ -35,20 +44,19 @@ def build_items(n_false: int, seed: int):
     from causalab.tasks.etp_implication.templates import fill_template
 
     rng = random.Random(seed)
-    items = []
+    by_label = {True: [], False: []}
     for label, pool in ((True, list(CERTIFIED_TRUE)), (False, list(CERTIFIED_FALSE))):
-        pairs = pool if label else rng.sample(pool, min(n_false // 2 + 4, len(pool)))
-        for p, c in pairs:
+        for p, c in pool:
             for r in DEFAULT_REGISTERS:
                 if r in registers_for(p) and r in registers_for(c):
-                    items.append(
+                    by_label[label].append(
                         {"p": p, "c": c, "register": r, "label": label,
                          "prompt": fill_template(r, p, c)}
                     )
-    true_items = [i for i in items if i["label"]]
-    false_items = [i for i in items if not i["label"]]
-    rng.shuffle(false_items)
-    return true_items + false_items[:n_false]
+    k = min(n_per_class, len(by_label[True]), len(by_label[False]))
+    items = rng.sample(by_label[True], k) + rng.sample(by_label[False], k)
+    rng.shuffle(items)
+    return items
 
 
 def ask(model: str, prompt: str, api_key: str) -> str:
@@ -64,7 +72,7 @@ def ask(model: str, prompt: str, api_key: str) -> str:
         headers={"Authorization": f"Bearer {api_key}",
                  "Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req, timeout=120) as r:
+    with urllib.request.urlopen(req, timeout=120, context=_ssl_context()) as r:
         out = json.load(r)
     return (out["choices"][0]["message"]["content"] or "").strip()
 
@@ -83,13 +91,13 @@ def main():
     ap.add_argument("--causalab", required=True)
     ap.add_argument("--models", nargs="+",
                     default=["openai/gpt-4o-mini", "anthropic/claude-haiku-4.5"])
-    ap.add_argument("--n-false", type=int, default=46)
+    ap.add_argument("--n-per-class", type=int, default=40)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
     sys.path.insert(0, args.causalab)
-    items = build_items(args.n_false, args.seed)
+    items = build_items(args.n_per_class, args.seed)
     n_true = sum(1 for i in items if i["label"])
     print(f"items: {len(items)} ({n_true} True / {len(items) - n_true} False)")
 
