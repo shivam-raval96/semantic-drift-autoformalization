@@ -21,6 +21,9 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Tuple
 
+from checkform import AnswerParseError, dual, extract_answer, parse_prefix_equation
+from storyform import canonical
+
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_STORY_EXPERIMENT = ROOT / "experiments/02-reasoning-and-complexity"
@@ -32,6 +35,22 @@ GROUP_ORDER = {
     ("uniform", "on"): 1,
     ("stratified", "off"): 2,
     ("stratified", "on"): 3,
+}
+ERROR_TAXONOMY_ORDER = {
+    "assume_wrong_only": 0,
+    "ask_wrong_only": 1,
+    "both_wrong": 2,
+    "inconsistent_operation_direction": 3,
+    "unparseable": 4,
+    "grader_mismatch": 5,
+}
+ERROR_TAXONOMY_LABELS = {
+    "assume_wrong_only": "ASSUME wrong only",
+    "ask_wrong_only": "ASK wrong only",
+    "both_wrong": "Both laws wrong",
+    "inconsistent_operation_direction": "Inconsistent operation direction",
+    "unparseable": "Unparseable",
+    "grader_mismatch": "Grader mismatch",
 }
 
 
@@ -87,6 +106,41 @@ def discover_runs(experiment_dir: Path) -> Dict[Tuple[str, str], dict]:
 
 def is_correct(row: dict) -> bool:
     return row["bucket"] in CORRECT_BUCKETS
+
+
+def _matching_dual_options(equation: tuple, truth: str) -> set:
+    lhs, rhs = equation
+    matches = set()
+    for dualize in (False, True):
+        left, right = (dual(lhs), dual(rhs)) if dualize else (lhs, rhs)
+        if canonical(left, right) == truth or canonical(right, left) == truth:
+            matches.add(dualize)
+    return matches
+
+
+def classify_story_error(story_row: dict, sample: dict) -> str:
+    """Classify a failed Story result by which law preserves its meaning."""
+    if story_row["bucket"] == "unparseable":
+        return "unparseable"
+    try:
+        assume_text, ask_text = extract_answer(story_row["response"])
+        assume = parse_prefix_equation(assume_text)
+        ask = parse_prefix_equation(ask_text)
+    except AnswerParseError:
+        return "unparseable"
+
+    metadata = sample["metadata"]
+    assume_options = _matching_dual_options(assume, metadata["canonical_e"])
+    ask_options = _matching_dual_options(ask, metadata["canonical_f"])
+    if assume_options and ask_options:
+        if assume_options & ask_options:
+            return "grader_mismatch"
+        return "inconsistent_operation_direction"
+    if assume_options:
+        return "ask_wrong_only"
+    if ask_options:
+        return "assume_wrong_only"
+    return "both_wrong"
 
 
 def build_observations(
@@ -150,6 +204,8 @@ def build_observations(
             sample = story["samples"][pair_id]
             story_row = story_graded[(pair_id, model)]
             literal_row = literal_graded[(pair_id, model)]
+            story_correct = is_correct(story_row)
+            literal_correct = is_correct(literal_row)
             observations.append(
                 {
                     "sampling": sampling,
@@ -158,10 +214,15 @@ def build_observations(
                     "model": model,
                     "ops_total": sample.get("ops_total"),
                     "theme": story_row.get("theme"),
-                    "story_correct": is_correct(story_row),
-                    "literal_correct": is_correct(literal_row),
+                    "story_correct": story_correct,
+                    "literal_correct": literal_correct,
                     "story_bucket": story_row["bucket"],
                     "literal_bucket": literal_row["bucket"],
+                    "story_error_type": (
+                        classify_story_error(story_row, sample)
+                        if literal_correct and not story_correct
+                        else None
+                    ),
                 }
             )
     return observations, warnings
@@ -230,6 +291,40 @@ def grouped_summaries(observations: List[dict], fields: Tuple[str, ...]) -> List
         record.update(summarize(rows))
         output.append(record)
     return output
+
+
+def error_taxonomy(observations: List[dict]) -> List[dict]:
+    grouped: Dict[Tuple[str, str], List[str]] = defaultdict(list)
+    pair_counts: Dict[Tuple[str, str], set] = defaultdict(set)
+    for row in observations:
+        group = (row["sampling"], row["regime"])
+        pair_counts[group].add(row["pair_id"])
+        if row.get("story_error_type"):
+            grouped[group].append(row["story_error_type"])
+
+    output = []
+    for (sampling, regime), errors in grouped.items():
+        total = len(errors)
+        for error_type in ERROR_TAXONOMY_ORDER:
+            count = errors.count(error_type)
+            if count:
+                output.append(
+                    {
+                        "sampling": sampling,
+                        "regime": regime,
+                        "pair_n": len(pair_counts[(sampling, regime)]),
+                        "error_type": error_type,
+                        "count": count,
+                        "share": count / total,
+                    }
+                )
+    return sorted(
+        output,
+        key=lambda row: (
+            GROUP_ORDER.get((row["sampling"], row["regime"]), 99),
+            ERROR_TAXONOMY_ORDER[row["error_type"]],
+        ),
+    )
 
 
 def pearson(xs: List[float], ys: List[float]) -> Optional[float]:
@@ -303,8 +398,10 @@ def number(value: Optional[float], digits: int = 3) -> str:
 
 def sample_name(row: dict) -> str:
     sample = "Complex" if row["sampling"] == "uniform" else "Stratified"
-    model_n = row.get("model_n")
-    pair_n = row["n"] // model_n if model_n else row["n"]
+    pair_n = row.get("pair_n")
+    if pair_n is None:
+        model_n = row.get("model_n")
+        pair_n = row["n"] // model_n if model_n else row["n"]
     return f"{sample} {pair_n}"
 
 
@@ -313,7 +410,9 @@ def group_name(row: dict) -> str:
     return f"{sample_name(row)} / {reasoning}"
 
 
-def markdown_report(summary_rows: List[dict], warnings: List[str]) -> str:
+def markdown_report(
+    summary_rows: List[dict], warnings: List[str], taxonomy_rows: Optional[List[dict]] = None
+) -> str:
     lines = [
         "# Story–Literal Paired Correlation",
         "",
@@ -344,6 +443,22 @@ def markdown_report(summary_rows: List[dict], warnings: List[str]) -> str:
                 model_r=number(row["model_pearson"]),
             )
         )
+    if taxonomy_rows:
+        lines.extend(
+            [
+                "",
+                "## Literal-correct / Story-wrong error taxonomy",
+                "",
+                "| Sample | Reasoning | Error type | N | Share |",
+                "|---|---:|---|---:|---:|",
+            ]
+        )
+        for row in taxonomy_rows:
+            lines.append(
+                f"| {sample_name(row)} | {row['regime']} | "
+                f"{ERROR_TAXONOMY_LABELS[row['error_type']]} | "
+                f"{row['count']} | {pct(row['share'])} |"
+            )
     lines.extend(["", "## Interpretation", ""])
     off_rows = [row for row in summary_rows if row["regime"] == "off"]
     for row in off_rows:
@@ -395,7 +510,12 @@ def _bar(label: str, value: Optional[float], color: str, denominator: int) -> st
     )
 
 
-def html_report(summary_rows: List[dict], model_rows: List[dict], warnings: List[str]) -> str:
+def html_report(
+    summary_rows: List[dict],
+    model_rows: List[dict],
+    warnings: List[str],
+    taxonomy_rows: Optional[List[dict]] = None,
+) -> str:
     task_panels = []
     conditional_panels = []
     matrices_off = []
@@ -463,6 +583,23 @@ def html_report(summary_rows: List[dict], model_rows: List[dict], warnings: List
         )
     notes = "".join(f"<li>{html.escape(warning)}</li>" for warning in warnings)
     notes_block = f"<h2>Data notes</h2><ul>{notes}</ul>" if notes else ""
+    taxonomy_table = "".join(
+        "<tr>"
+        f"<td>{html.escape(sample_name(row))}</td>"
+        f"<td>{html.escape(row['regime'])}</td>"
+        f"<td>{html.escape(ERROR_TAXONOMY_LABELS[row['error_type']])}</td>"
+        f"<td>{row['count']}</td><td>{pct(row['share'])}</td>"
+        "</tr>"
+        for row in (taxonomy_rows or [])
+    )
+    taxonomy_block = (
+        '<section class="section"><h2>Literal-correct / Story-wrong error taxonomy</h2>'
+        '<div class="table-wrap"><table><thead><tr><th>Condition</th>'
+        '<th>Reasoning</th><th>Error type</th><th>N</th><th>Share</th></tr></thead>'
+        f"<tbody>{taxonomy_table}</tbody></table></div></section>"
+        if taxonomy_table
+        else ""
+    )
 
     return f"""<!doctype html>
 <html lang="en">
@@ -520,6 +657,7 @@ summary {{ cursor:pointer; font-weight:700; }}
 <thead><tr><th>Condition</th><th>Both correct</th><th>Literal only</th><th>Story only</th><th>Neither</th></tr></thead>
 <tbody>{''.join(matrices_off)}</tbody></table></div>
 </section>
+{taxonomy_block}
 <section class="section note">
 <h2>Reading the result</h2>
 <p>With reasoning off, Story success is substantially more likely when the matching Literal item succeeds. Near-ceiling conditions can make both forms of correlation unstable.</p>
@@ -574,6 +712,7 @@ def main() -> int:
         grouped_summaries(observations, ("sampling", "regime", "model")), key=_sort_key
     )
     add_model_correlations(summary_rows, model_rows)
+    taxonomy_rows = error_taxonomy(observations)
     complexity_rows = sorted(
         grouped_summaries(observations, ("sampling", "regime", "ops_total")), key=_sort_key
     )
@@ -609,13 +748,19 @@ def main() -> int:
         [
             "sampling", "regime", "pair_id", "model", "ops_total", "theme",
             "story_correct", "literal_correct", "story_bucket", "literal_bucket",
+            "story_error_type",
         ],
     )
+    write_csv(
+        args.out / "error_taxonomy.csv",
+        taxonomy_rows,
+        ["sampling", "regime", "pair_n", "error_type", "count", "share"],
+    )
     (args.out / "summary.md").write_text(
-        markdown_report(summary_rows, warnings), encoding="utf-8"
+        markdown_report(summary_rows, warnings, taxonomy_rows), encoding="utf-8"
     )
     (args.out / "paired-analysis.html").write_text(
-        html_report(summary_rows, model_rows, warnings), encoding="utf-8"
+        html_report(summary_rows, model_rows, warnings, taxonomy_rows), encoding="utf-8"
     )
 
     print(f"Paired observations: {len(observations)}")
@@ -626,6 +771,14 @@ def main() -> int:
             f"P(S|L wrong)={pct(row['p_story_given_literal_wrong'])}, "
             f"phi={number(row['phi'])}, model-r={number(row['model_pearson'])}"
         )
+    if taxonomy_rows:
+        print("Literal-correct / Story-wrong error taxonomy:")
+        for row in taxonomy_rows:
+            print(
+                f"  {sample_name(row)}/{row['regime']} - "
+                f"{ERROR_TAXONOMY_LABELS[row['error_type']]}: "
+                f"{row['count']} ({pct(row['share'])})"
+            )
     for warning in warnings:
         print(f"WARNING: {warning}")
     print(f"Report: {args.out / 'paired-analysis.html'}")

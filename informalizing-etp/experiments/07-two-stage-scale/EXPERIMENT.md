@@ -273,6 +273,22 @@ Run notes:
 | All 160 pairs | 1,440 | 71.1% | 18.3% | 0.466 | 0.884 |
 | Excluding vacuous laws (105 pairs) | 945 | 66.0% | 17.6% | 0.456 | 0.889 |
 
+### Literal-correct / Story-wrong error taxonomy
+
+**TL;DR:** 281/310 (90.6%) are parseable semantic errors; 29/310
+(9.4%) are unparseable.
+
+| Error type | Count | Share |
+|---|---:|---:|
+| `ASSUME` wrong only | 131 | 42.3% |
+| `ASK` wrong only | 69 | 22.3% |
+| Both laws wrong | 69 | 22.3% |
+| Inconsistent operation direction | 12 | 3.9% |
+| Unparseable | 29 | 9.4% |
+
+GPT-5.5 contributes 8/310 cases; this taxonomy mainly characterizes
+the smaller no-thinking models.
+
 ## Conclusions
 
 - **Experiment 05's no-think picture survives 4× the sample.** Every

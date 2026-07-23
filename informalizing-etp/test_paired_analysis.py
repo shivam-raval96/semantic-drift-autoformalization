@@ -7,6 +7,8 @@ from paired_analysis import (
     add_model_correlations,
     average_ranks,
     build_observations,
+    classify_story_error,
+    error_taxonomy,
     grouped_summaries,
     load_result_rows,
     markdown_report,
@@ -51,6 +53,76 @@ class PairedAnalysisTest(unittest.TestCase):
         self.assertAlmostEqual(pearson([1, 2, 3], [6, 4, 2]), -1.0)
         self.assertEqual(average_ranks([10, 20, 20, 40]), [1.0, 2.5, 2.5, 4.0])
 
+    def test_story_error_taxonomy(self):
+        sample = {
+            "metadata": {
+                "canonical_e": "v1 = (v2 ∘ v2)",
+                "canonical_f": "v1 = v1",
+            }
+        }
+        self.assertEqual(
+            classify_story_error(
+                {
+                    "bucket": "wrong",
+                    "response": "ASSUME: jasmine = op(oolong, op(oolong, oolong))\n"
+                    "ASK: jasmine = jasmine",
+                },
+                sample,
+            ),
+            "assume_wrong_only",
+        )
+        self.assertEqual(
+            classify_story_error(
+                {
+                    "bucket": "wrong",
+                    "response": "ASSUME: jasmine = op(oolong, oolong)\n"
+                    "ASK: op(jasmine, jasmine) = jasmine",
+                },
+                sample,
+            ),
+            "ask_wrong_only",
+        )
+        self.assertEqual(
+            classify_story_error({"bucket": "unparseable"}, sample),
+            "unparseable",
+        )
+
+        inconsistent_sample = {
+            "metadata": {
+                "canonical_e": "(v1 ∘ v2) = v1",
+                "canonical_f": "(v1 ∘ v2) = v2",
+            }
+        }
+        self.assertEqual(
+            classify_story_error(
+                {
+                    "bucket": "wrong",
+                    "response": "ASSUME: op(a, b) = a\nASK: op(a, b) = a",
+                },
+                inconsistent_sample,
+            ),
+            "inconsistent_operation_direction",
+        )
+
+        taxonomy = error_taxonomy(
+            [
+                {
+                    "sampling": "stratified",
+                    "regime": "off",
+                    "pair_id": "E1-E2",
+                    "story_error_type": "assume_wrong_only",
+                },
+                {
+                    "sampling": "stratified",
+                    "regime": "off",
+                    "pair_id": "E3-E4",
+                    "story_error_type": "unparseable",
+                },
+            ]
+        )
+        self.assertEqual([row["count"] for row in taxonomy], [1, 1])
+        self.assertEqual([row["share"] for row in taxonomy], [0.5, 0.5])
+
     def test_direct_run_directories_and_dynamic_report(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -81,9 +153,19 @@ class PairedAnalysisTest(unittest.TestCase):
 
             story_rows = [
                 {"pair_id": "E1-E2", "model": "model/a", "bucket": "exact"},
-                {"pair_id": "E1-E2", "model": "model/b", "bucket": "wrong"},
+                {
+                    "pair_id": "E1-E2",
+                    "model": "model/b",
+                    "bucket": "unparseable",
+                    "response": "",
+                },
                 {"pair_id": "E3-E4", "model": "model/a", "bucket": "exact"},
-                {"pair_id": "E3-E4", "model": "model/b", "bucket": "wrong"},
+                {
+                    "pair_id": "E3-E4",
+                    "model": "model/b",
+                    "bucket": "unparseable",
+                    "response": "",
+                },
             ]
             literal_rows = [
                 {"pair_id": pair, "model": model, "bucket": "exact"}
