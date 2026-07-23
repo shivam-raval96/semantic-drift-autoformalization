@@ -80,9 +80,13 @@ def build_items(n_per_level: int, seed: int):
 def ask(model: str, prompt: str, api_key: str) -> str:
     payload = {
         "model": model,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": [
+            {"role": "system",
+             "content": "Reply with exactly one word: True or False. No other text."},
+            {"role": "user", "content": prompt},
+        ],
         "temperature": 0,
-        "max_tokens": 4,
+        "max_tokens": 16,
     }
     req = urllib.request.Request(
         URL,
@@ -95,12 +99,18 @@ def ask(model: str, prompt: str, api_key: str) -> str:
     return (out["choices"][0]["message"]["content"] or "").strip()
 
 
+import re
+
+
 def parse_answer(text: str):
-    t = text.strip().lower()
+    t = text.strip().strip("*_\"'`# ").lower()
     if t.startswith("true"):
         return True
     if t.startswith("false"):
         return False
+    m = re.search(r"\b(true|false)\b", t)
+    if m:
+        return m.group(1) == "true"
     return None
 
 
@@ -140,8 +150,12 @@ def main():
 
     for model in args.models:
         results = []
+        raw_unparsed = []
         for it in items:
-            ans = parse_answer(ask(model, it["prompt"], api_key))
+            raw = ask(model, it["prompt"], api_key)
+            ans = parse_answer(raw)
+            if ans is None and len(raw_unparsed) < 3:
+                raw_unparsed.append(repr(raw))
             results.append({**it, "answer": ans})
         scored = [r for r in results if r["answer"] is not None]
         acc = sum(r["answer"] == r["label"] for r in scored) / max(len(scored), 1)
@@ -152,6 +166,8 @@ def main():
                / max(sum(1 for r in scored if not r["label"]), 1))
         print(f"\n{model}: acc {acc:.2f} | answers-True share {bias:.2f} | "
               f"TPR {tpr:.2f} TNR {tnr:.2f} | unparsed {len(results) - len(scored)}")
+        if raw_unparsed:
+            print("  unparsed samples:", "; ".join(raw_unparsed))
         for reg in sorted({r['register'] for r in scored}):
             sub = [r for r in scored if r["register"] == reg]
             a = sum(r["answer"] == r["label"] for r in sub) / len(sub)
