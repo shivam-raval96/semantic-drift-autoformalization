@@ -1,0 +1,66 @@
+{
+  "deepseek/deepseek-chat-v3.1": {
+    "counts": {
+      "exact": 54,
+      "correct-swapped": 20,
+      "correct-dualized": 0,
+      "wrong": 88,
+      "unparseable": 38,
+      "api-error": 0
+    },
+    "graded": 200,
+    "correct_rate": 0.37,
+    "exact_rate": 0.27,
+    "median_response_len": 185,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  },
+  "qwen/qwen3-32b": {
+    "counts": {
+      "exact": 30,
+      "correct-swapped": 12,
+      "correct-dualized": 3,
+      "wrong": 141,
+      "unparseable": 14,
+      "api-error": 0
+    },
+    "graded": 200,
+    "correct_rate": 0.225,
+    "exact_rate": 0.15,
+    "median_response_len": 164,
+    "rows_with_reasoning": 180,
+    "median_reasoning_tokens": 1
+  },
+  "meta-llama/llama-3.3-70b-instruct": {
+    "counts": {
+      "exact": 15,
+      "correct-swapped": 36,
+      "correct-dualized": 1,
+      "wrong": 105,
+      "unparseable": 43,
+      "api-error": 0
+    },
+    "graded": 200,
+    "correct_rate": 0.26,
+    "exact_rate": 0.075,
+    "median_response_len": 209,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  },
+  "mistralai/mistral-small-3.2-24b-instruct": {
+    "counts": {
+      "exact": 19,
+      "correct-swapped": 27,
+      "correct-dualized": 1,
+      "wrong": 97,
+      "unparseable": 56,
+      "api-error": 0
+    },
+    "graded": 200,
+    "correct_rate": 0.235,
+    "exact_rate": 0.095,
+    "median_response_len": 209,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  }
+}

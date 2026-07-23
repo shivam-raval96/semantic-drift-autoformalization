@@ -435,13 +435,14 @@ def call_openrouter(
     api_key: str,
     max_tokens: int,
     timeout: float,
+    temperature: float = 0.0,
     reasoning: Optional[dict] = None,
 ) -> dict:
     """One chat completion; never raises. Retries 429/5xx with backoff."""
     payload = {
         "model": model,
         "messages": [{"role": "user", "content": prompt}],
-        "temperature": 0,
+        "temperature": temperature,
         "max_tokens": max_tokens,
         "usage": {"include": True},
     }
@@ -832,6 +833,13 @@ def main(argv: Optional[List[str]] = None) -> int:
         default=None,
         help="default 16384 with --reasoning on, else 4096",
     )
+    cli.add_argument(
+        "--temperature",
+        type=float,
+        default=0.0,
+        help="sampling temperature sent with every call (default 0; "
+        "nonzero enables multi-pass sampling studies)",
+    )
     cli.add_argument("--timeout", type=float, default=120.0)
     cli.add_argument("--equations-path", type=Path, default=EQUATIONS_PATH)
     cli.add_argument(
@@ -855,6 +863,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     form = args.form
     max_tokens = args.max_tokens or (16384 if regime == "on" else 4096)
     form_tag = f"-{form}" if form != "story" else ""
+    temp_tag = f"-t{args.temperature:g}" if args.temperature else ""
     suffix = f"-think-{regime}" if regime else ""
     if args.stratify_eq_ops:
         stem = f"run-eqstrat{args.stratify_eq_ops}-s{args.seed}"
@@ -862,7 +871,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         stem = f"run-strat{args.stratify_ops}-s{args.seed}"
     else:
         stem = f"run-s{args.seed}-n{args.n}"
-    out_dir = args.out_dir or Path(f"results/{stem}{form_tag}{suffix}")
+    out_dir = args.out_dir or Path(f"results/{stem}{form_tag}{temp_tag}{suffix}")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     api_key = os.environ.get("OPENROUTER_API_KEY", "")
@@ -927,6 +936,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         "models": models,
         "dry_run": args.dry_run,
         "max_tokens": max_tokens,
+        "temperature": args.temperature,
         "reasoning_regime": regime,
         "regime_prefix": regime_prefix(regime, wrap_form),
         "regime_suffix": regime_suffix(regime, wrap_form),
@@ -982,6 +992,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         def caller(model: str, prompt: str, sample: dict, stage: int = 2) -> dict:
             return call_openrouter(
                 model, prompt, api_key, max_tokens, args.timeout,
+                temperature=args.temperature,
                 reasoning=native_reasoning[model],
             )
 
@@ -1005,9 +1016,10 @@ def main(argv: Optional[List[str]] = None) -> int:
     notes = compliance_notes(rows, regime)
     notes_text = "".join(f"\n**Compliance:** {note}\n" for note in notes)
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    temp_note = f", temp={args.temperature:g}" if args.temperature else ""
     (out_dir / "summary.md").write_text(
         f"# Benchmark run: seed={args.seed}, n={args.n}, form={form}, "
-        f"reasoning={regime or 'legacy'}\n\n{table}\n{notes_text}",
+        f"reasoning={regime or 'legacy'}{temp_note}\n\n{table}\n{notes_text}",
         encoding="utf-8",
     )
     print()

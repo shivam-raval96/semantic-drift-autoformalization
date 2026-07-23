@@ -62,8 +62,10 @@ def tokenize(text: str) -> List[Tuple[str, str]]:
             tokens.append(("op", c))
             i += 1
         elif c.isalpha():
+            # A letter then letters/digits, so canonical() output (v1, v2,
+            # ...) round-trips through parse_equation.
             j = i
-            while j < len(text) and text[j].isalpha():
+            while j < len(text) and text[j].isalnum():
                 j += 1
             tokens.append(("var", text[i:j]))
             i = j

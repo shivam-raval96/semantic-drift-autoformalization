@@ -16,6 +16,7 @@ from pathlib import Path
 
 from checkform import (
     AnswerParseError,
+    answer_class_key,
     build_prompt,
     dual,
     extract_answer,
@@ -326,6 +327,88 @@ class PromptAndCliTest(unittest.TestCase):
                 with self.subTest(expected_code=expected_code):
                     code = main(["grade", str(record), str(response_path)])
                     self.assertEqual(code, expected_code)
+
+
+class AnswerClassKeyTest(unittest.TestCase):
+    """Experiment 11: the grading-equivalence-class key used for voting."""
+
+    E = "x ∘ y = (y ∘ y) ∘ x"
+    F = "x ∘ y = (x ∘ x) ∘ y"  # not symmetric under dualization
+
+    def orbit(self, e_text, f_text):
+        """All 8 accepted transforms of the pair, as canonical strings."""
+        e = parse_equation(e_text)
+        f = parse_equation(f_text)
+        members = []
+        for dualize in (False, True):
+            te = (dual(e[0]), dual(e[1])) if dualize else e
+            tf = (dual(f[0]), dual(f[1])) if dualize else f
+            for swap_e in (False, True):
+                for swap_f in (False, True):
+                    se = (te[1], te[0]) if swap_e else te
+                    sf = (tf[1], tf[0]) if swap_f else tf
+                    members.append((canonical(*se), canonical(*sf)))
+        return members
+
+    def test_invariant_across_the_full_orbit(self):
+        keys = {
+            answer_class_key(e_text, f_text)
+            for e_text, f_text in self.orbit(self.E, self.F)
+        }
+        self.assertEqual(len(keys), 1)
+
+    def test_idempotent(self):
+        key = answer_class_key(self.E, self.F)
+        self.assertEqual(answer_class_key(*key), key)
+
+    def test_variable_names_and_op_symbol_are_immaterial(self):
+        self.assertEqual(
+            answer_class_key("x ∘ y = y ∘ x", "x ∘ y = (y ∘ y) ∘ x"),
+            answer_class_key("a ◇ b = b ◇ a", "a ◇ b = (b ◇ b) ◇ a"),
+        )
+
+    def test_matches_grade_on_correct_answers(self):
+        truth_key = answer_class_key(
+            META_ASYMMETRIC_F["canonical_e"], META_ASYMMETRIC_F["canonical_f"]
+        )
+        correct_answers = [
+            (self.E, self.F),  # exact
+            ("(y ∘ y) ∘ x = x ∘ y", self.F),  # swapped assume sides
+            ("y ∘ x = x ∘ (y ∘ y)", "y ∘ x = y ∘ (x ∘ x)"),  # dualized both
+        ]
+        for e_text, f_text in correct_answers:
+            with self.subTest(e=e_text):
+                verdict = grade(
+                    answer_from_equations(e_text, f_text), META_ASYMMETRIC_F
+                )
+                self.assertEqual(verdict["status"], "correct")
+                self.assertEqual(
+                    answer_class_key(
+                        verdict["canonical_answer_e"], verdict["canonical_answer_f"]
+                    ),
+                    truth_key,
+                )
+
+    def test_differs_from_grade_rejected_answers(self):
+        truth_key = answer_class_key(
+            META_ASYMMETRIC_F["canonical_e"], META_ASYMMETRIC_F["canonical_f"]
+        )
+        rejected = [
+            (self.F, self.E),  # reversed implication
+            (self.E, "y ∘ x = y ∘ (x ∘ x)"),  # dual applied to ASK only
+        ]
+        for e_text, f_text in rejected:
+            with self.subTest(e=e_text):
+                verdict = grade(
+                    answer_from_equations(e_text, f_text), META_ASYMMETRIC_F
+                )
+                self.assertEqual(verdict["status"], "wrong")
+                self.assertNotEqual(
+                    answer_class_key(
+                        verdict["canonical_answer_e"], verdict["canonical_answer_f"]
+                    ),
+                    truth_key,
+                )
 
 
 if __name__ == "__main__":

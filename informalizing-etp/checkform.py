@@ -27,7 +27,7 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from storyform import Op, Term, Var, canonical
+from storyform import Op, Term, Var, canonical, parse_equation
 
 PROMPT_PATH = Path(__file__).resolve().parent / "formalize_prompt.md"
 
@@ -159,6 +159,38 @@ _TRANSFORMS = sorted(
 )
 
 
+def _transformed(
+    e: Tuple[Term, Term], f: Tuple[Term, Term],
+    swap_e: bool, swap_f: bool, dualize: bool,
+) -> Tuple[Tuple[Term, Term], Tuple[Term, Term]]:
+    if dualize:
+        e = (dual(e[0]), dual(e[1]))
+        f = (dual(f[0]), dual(f[1]))
+    if swap_e:
+        e = (e[1], e[0])
+    if swap_f:
+        f = (f[1], f[0])
+    return e, f
+
+
+def answer_class_key(equation_e: str, equation_f: str) -> Tuple[str, str]:
+    """Grading-equivalence class of an (ASSUME, ASK) pair.
+
+    Returns the lexicographically smallest (canonical_e, canonical_f)
+    over the eight accepted transforms. Two answers grade identically
+    against every record iff their keys are equal, and an answer is
+    correct for a record iff its key equals the key of the record's
+    (canonical_e, canonical_f).
+    """
+    e = parse_equation(equation_e)
+    f = parse_equation(equation_f)
+    return min(
+        (canonical(*te), canonical(*tf))
+        for swap_e, swap_f, dualize in _TRANSFORMS
+        for te, tf in [_transformed(e, f, swap_e, swap_f, dualize)]
+    )
+
+
 def grade(response_text: str, metadata: dict) -> dict:
     """Grade a raw model response against a corpus record's metadata.
 
@@ -187,15 +219,7 @@ def grade(response_text: str, metadata: dict) -> dict:
 
     verdict["status"] = "wrong"
     for swap_e, swap_f, dualize in _TRANSFORMS:
-        e = (e_lhs, e_rhs)
-        f = (f_lhs, f_rhs)
-        if dualize:
-            e = (dual(e[0]), dual(e[1]))
-            f = (dual(f[0]), dual(f[1]))
-        if swap_e:
-            e = (e[1], e[0])
-        if swap_f:
-            f = (f[1], f[0])
+        e, f = _transformed((e_lhs, e_rhs), (f_lhs, f_rhs), swap_e, swap_f, dualize)
         if (canonical(*e), canonical(*f)) == truth:
             verdict["status"] = "correct"
             verdict["transform"] = {

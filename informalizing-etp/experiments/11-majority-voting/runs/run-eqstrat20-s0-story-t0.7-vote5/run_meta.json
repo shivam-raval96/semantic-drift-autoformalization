@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-07-22T17:48:19.420300+00:00",
+  "seed": 0,
+  "n": 30,
+  "stratify_ops": null,
+  "stratify_eq_ops": 20,
+  "eq_bins": "1:10",
+  "label_prefix": "S",
+  "exclude_vacuous": false,
+  "form": "story",
+  "models": [
+    "deepseek/deepseek-chat-v3.1",
+    "qwen/qwen3-32b",
+    "meta-llama/llama-3.3-70b-instruct",
+    "mistralai/mistral-small-3.2-24b-instruct"
+  ],
+  "dry_run": false,
+  "max_tokens": 4096,
+  "temperature": 0.7,
+  "reasoning_regime": "off",
+  "regime_prefix": "",
+  "regime_suffix": "\n\nRespond with only the two required lines, and no other text before them.",
+  "native_reasoning": {
+    "deepseek/deepseek-chat-v3.1": {
+      "enabled": false,
+      "exclude": true
+    },
+    "qwen/qwen3-32b": {
+      "enabled": false,
+      "exclude": true
+    },
+    "meta-llama/llama-3.3-70b-instruct": null,
+    "mistralai/mistral-small-3.2-24b-instruct": null
+  },
+  "equations_sha256": "7f11f36c9d0df69361d47f934887f9bec42c82f4c4271de1b8344e4da1ad9ce0",
+  "prompt_template": "formalize_prompt.md",
+  "prompt_template_sha256": "ad33f6de859156b81be0d889abd3c56e4d9275bd855eb6d804d4e8ebcfe4983c",
+  "condition_label": "vote@5",
+  "vote": {
+    "k": 5,
+    "pass_dirs": [
+      "experiments/11-majority-voting/runs/run-eqstrat20-s0-story-t0.7-pass1",
+      "experiments/11-majority-voting/runs/run-eqstrat20-s0-story-t0.7-pass2",
+      "experiments/11-majority-voting/runs/run-eqstrat20-s0-story-t0.7-pass3",
+      "experiments/11-majority-voting/runs/run-eqstrat20-s0-story-t0.7-pass4",
+      "experiments/11-majority-voting/runs/run-eqstrat20-s0-story-t0.7-pass5"
+    ],
+    "temperature": 0.7,
+    "ballots_exclude": [
+      "unparseable",
+      "api-error"
+    ],
+    "tie_break": "most votes, then earliest pass",
+    "generated_by": "voteform.py",
+    "timestamp": "2026-07-22T17:49:26.343372+00:00"
+  }
+}

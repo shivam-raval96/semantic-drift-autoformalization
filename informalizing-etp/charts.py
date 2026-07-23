@@ -64,7 +64,8 @@ def load_run(run_dir: Path) -> dict:
     return {
         "dir": run_dir,
         "regime": regime,
-        "label": {"off": "no-think", "on": "all-think", None: "legacy"}[regime],
+        "label": meta.get("condition_label")
+        or {"off": "no-think", "on": "all-think", None: "legacy"}[regime],
         "meta": meta,
         "rows": list(rows.values()),
         "samples": samples,
@@ -523,7 +524,46 @@ def render_group(group: List[dict], fig_no: List[int]) -> str:
     sections = [f"<h2>{esc(experiment_title(group))}</h2>"]
     models = group[0]["models"]
 
-    if len(group) >= 2:
+    if len(group) > 2:
+        # More than two same-arm conditions (e.g. a vote@k ladder): one
+        # dot per condition per model, mirroring render_form_group's
+        # headline figure.
+        counts = [by_model_counts(r) for r in group]
+        series = [
+            (r["label"], SERIES_VARS[i % len(SERIES_VARS)])
+            for i, r in enumerate(group)
+        ]
+        rows = []
+        for m in models:
+            values = [correct_pct_counts(c[m]) for c in counts]
+            rows.append(
+                {
+                    "label": short_model(m),
+                    "values": values,
+                    "tips": [
+                        f"{m} · {name}: {v:.1f}% correct"
+                        for (name, _), v in zip(series, values)
+                    ],
+                }
+            )
+        rows.sort(key=lambda r: r["values"][-1], reverse=True)
+        fig_no[0] += 1
+        table = data_table(
+            ["model", *[f"{name} %" for name, _ in series]],
+            [[r["label"], *[f"{v:.1f}" for v in r["values"]]] for r in rows],
+            "Data: correct rate per model and condition",
+        )
+        sections.append(
+            figure(
+                fig_no[0],
+                f"Correct rate by model and condition — {sample_tag(group[0])}",
+                f"The same {len(group[0]['samples'])} stories under each "
+                "condition; each row compares one model across all "
+                "conditions. " + sample_note(group[0]),
+                dot_rows_chart(rows, series) + table,
+            )
+        )
+    elif len(group) == 2:
         a, b = group[0], group[1]
         a_by, b_by = by_model_counts(a), by_model_counts(b)
         rows = []
@@ -602,7 +642,7 @@ def render_group(group: List[dict], fig_no: List[int]) -> str:
         sections.append(
             figure(
                 fig_no[0],
-                f"Verdict composition — {run['label']} regime · {sample_tag(run)}",
+                f"Verdict composition — {run['label']} · {sample_tag(run)}",
                 "How each model's answers grade out; the right-hand figure is the "
                 "correct rate (exact + swapped + dualized). " + sample_note(run),
                 stacked_bars(rows) + table,

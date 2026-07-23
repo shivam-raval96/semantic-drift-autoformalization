@@ -27,7 +27,9 @@ import re
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
+import benchmark
 from benchmark import (
     ABSTRACT_PROMPT_PATH,
     STORY_PROMPT_PATH,
@@ -334,6 +336,30 @@ class HintTemplateTest(unittest.TestCase):
         text = HINT_EXAMPLE_PROMPT_PATH.read_text(encoding="utf-8")
         self.assertIn("ASSUME: op(x, op(x, y)) = y", text)
         self.assertIn("ASK: op(x, y) = op(y, x)", text)
+
+
+class TemperatureTest(unittest.TestCase):
+    """Experiment 11: --temperature must reach the OpenRouter payload."""
+
+    def _call(self, **kwargs):
+        payloads = []
+
+        def fake_post(url, payload, api_key, timeout):
+            payloads.append(payload)
+            return {
+                "choices": [{"message": {"content": "ok"}, "finish_reason": "stop"}],
+                "usage": {},
+            }
+
+        with mock.patch.object(benchmark, "_post_json", fake_post):
+            benchmark.call_openrouter("m", "p", "key", 64, 1.0, **kwargs)
+        return payloads[0]
+
+    def test_temperature_flows_into_payload(self):
+        self.assertEqual(self._call(temperature=0.7)["temperature"], 0.7)
+
+    def test_default_stays_zero(self):
+        self.assertEqual(self._call()["temperature"], 0.0)
 
 
 if __name__ == "__main__":

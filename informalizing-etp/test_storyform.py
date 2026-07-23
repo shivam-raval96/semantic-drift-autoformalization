@@ -174,6 +174,10 @@ class CoverageTest(unittest.TestCase):
             lhs, rhs = parse_equation(f"x {symbol} y = y {symbol} x")
             self.assertEqual(canonical(lhs, rhs), "(v1 ∘ v2) = (v2 ∘ v1)")
 
+    def test_canonical_output_round_trips_through_parser(self):
+        text = "(v1 ∘ v2) = (v2 ∘ v1)"
+        self.assertEqual(canonical(*parse_equation(text)), text)
+
     def test_too_many_variables_rejected(self):
         with self.assertRaises(ValueError):
             render_story("x = y ∘ (z ∘ (w ∘ (u ∘ (v ∘ q))))", "x = y", "paint")
