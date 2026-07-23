@@ -245,6 +245,33 @@ implication, with no LLM judging anywhere:
   claude.ai Artifact or emailed as-is. `charts.py --pdf` additionally
   prints a PDF next to the HTML (uses headless Chrome/Chromium; print
   styles keep figures unbroken across pages).
+- Chart craft — rules learned the hard way (experiment 12's
+  `report/redux.html` is the reference example of a bespoke report):
+  - Design the figure around the finding, not the run layout. If the
+    gap between series is the story, put them on one shared scale
+    rather than separate panels; a panel whose axis is mostly empty
+    air means the form is wrong, not that the data is dull.
+  - Figures fill their container: SVGs are responsive (`viewBox` +
+    `width:100%`), never fixed-width boxes floating in whitespace.
+    Any hover math must divide by the rendered-to-viewBox scale.
+  - Condition labels must be unambiguous in every figure and legend —
+    two arms both labeled "vote@3" is a bug (`voteform.py
+    --condition-prefix` exists for this), and a baseline is labeled by
+    what distinguishes it ("temp0 single-pass"), never by a fallback
+    attribute every arm shares ("no-think").
+  - Encode states honestly: "no answer" (every ballot abstained) is a
+    neutral third state, never lumped in with "wrong".
+  - Check geometry against the data before styling: compute the max
+    stack height / row count / label extent and size panels from it —
+    a clipped dot stack and colliding group headers each shipped once.
+  - Colors: the charts.py tokens (page `#f9f9f7`, surface `#fcfcfb`,
+    series blue/green/red with paired dark-mode steps) are the house
+    palette; color carries at most one dimension per figure, text
+    never wears a data color, and marks stay thin with 2px surface
+    gaps/rings doing the separating.
+  - Never present a chart unseen: screenshot the render — light and
+    dark, full page — fix what you see, and re-screenshot after every
+    edit until nothing jars.
 
 ## Experiments
 
