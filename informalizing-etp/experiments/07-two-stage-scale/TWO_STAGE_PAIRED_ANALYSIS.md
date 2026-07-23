@@ -52,4 +52,26 @@
 | 7 | 43 | 11 | **+32** |
 | 8 | 42 | 8 | **+34** |
 
-**Key result:** Two-Stage hurts on easy problems but helps substantially on complex problems.
+## Table 5. Two-Stage Effect by Complexity, Excluding Vacuous Laws
+
+A pair is excluded when either law contains zero operations.
+
+| Total Operations | Observations | Rescued | Lost | Net Change | Story Accuracy | Two-Stage Accuracy |
+|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 0 | 0 | 0 | N/A | N/A | N/A |
+| 2 | 63 | 12 | 2 | **+10** | 79.4% | 95.2% |
+| 3 | 90 | 16 | 2 | **+14** | 81.1% | 96.7% |
+| 4 | 72 | 21 | 4 | **+17** | 55.6% | 79.2% |
+| 5 | 180 | 33 | 20 | **+13** | 62.8% | 70.0% |
+| 6 | 180 | 39 | 12 | **+27** | 43.9% | 58.9% |
+| 7 | 180 | 43 | 11 | **+32** | 33.3% | 51.1% |
+| 8 | 180 | 42 | 8 | **+34** | 31.7% | 50.6% |
+| **Total** | **945** | **206** | **59** | **+147** | **49.9%** | **65.5%** |
+
+There are no non-vacuous one-operation pairs because distributing one
+operation across two laws necessarily leaves one law with zero operations.
+
+**Key result:** After excluding vacuous laws, Two-Stage has a positive net
+effect at every available complexity level. The negative effect below four
+operations in the full dataset is therefore driven by vacuous laws, not by low
+complexity itself.
