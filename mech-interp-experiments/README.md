@@ -6,7 +6,7 @@ The experiments follow the ideas in [`MARS - mech-interp-experiments.md`](../MAR
 
 1. Contrastive steering vector: story → abstracted NL — [`01-contrastive-steering-story-to-literal.ipynb`](01-contrastive-steering-story-to-literal.ipynb)
 2. Probing and steering with contrastive datasets
-3. PCA / activation-structure visualization
+3. PCA / activation-structure visualization — [`03-pca-activation-structure.ipynb`](03-pca-activation-structure.ipynb)
 4. Attention-pattern analysis: story vs abstracted version
 5. SAE feature identification and boosting
 6. Quick ambiguity-grading pipeline
