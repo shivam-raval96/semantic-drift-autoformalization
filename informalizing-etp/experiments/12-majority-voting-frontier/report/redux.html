@@ -1,0 +1,358 @@
+<title>Majority voting at the frontier · experiment 12</title>
+<style>
+:root {
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e;
+  --muted:#898781; --grid:#e1e0d9; --axis:#c3c2b7;
+  --border:rgba(11,11,11,.10);
+  --blue:#2a78d6; --green:#008300; --red:#e34948; --neutral:#dedcd4;
+  --good-text:#006300;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7;
+    --muted:#898781; --grid:#2c2c2a; --axis:#383835;
+    --border:rgba(255,255,255,.10);
+    --blue:#3987e5; --green:#008300; --red:#e66767; --neutral:#3a3a38;
+    --good-text:#0ca30c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7;
+  --muted:#898781; --grid:#2c2c2a; --axis:#383835;
+  --border:rgba(255,255,255,.10);
+  --blue:#3987e5; --green:#008300; --red:#e66767; --neutral:#3a3a38;
+  --good-text:#0ca30c;
+  color-scheme:dark;
+}
+:root[data-theme="light"] {
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e;
+  --muted:#898781; --grid:#e1e0d9; --axis:#c3c2b7;
+  --border:rgba(11,11,11,.10);
+  --blue:#2a78d6; --green:#008300; --red:#e34948; --neutral:#dedcd4;
+  --good-text:#006300;
+  color-scheme:light;
+}
+* { box-sizing:border-box; }
+body {
+  background:var(--page); color:var(--ink);
+  font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
+  margin:0; padding:40px 20px 72px;
+}
+.wrap { max-width:900px; margin:0 auto; }
+.eyebrow { font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 10px; }
+h1 { font-size:27px; line-height:1.2; font-weight:650; margin:0 0 12px; text-wrap:balance; }
+.standfirst { color:var(--ink2); max-width:64ch; margin:0 0 8px; }
+.note { font-size:13px; color:var(--muted); max-width:70ch; margin:0; }
+.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:28px 0 8px; }
+.kpi { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px 12px; }
+.kpi .lab { font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
+.kpi .val { font-size:29px; font-weight:650; line-height:1.1; }
+.kpi .sub { font-size:12.5px; color:var(--ink2); margin-top:4px; }
+.kpi .sub b { color:var(--good-text); font-weight:600; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:22px 24px 16px; margin:22px 0; }
+.fig-eyebrow { font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 2px; }
+.card h2 { font-size:16.5px; font-weight:650; margin:0 0 6px; }
+.caption { font-size:13.5px; color:var(--ink2); max-width:74ch; margin:0 0 16px; }
+.legend { display:flex; flex-wrap:wrap; gap:16px; font-size:12.5px; color:var(--ink2); margin:0 0 12px; }
+.legend .chip { display:inline-flex; align-items:center; gap:6px; }
+.chip i { width:10px; height:10px; border-radius:3px; display:inline-block; }
+.chip.line i { width:14px; height:0; border-top:2.5px solid; border-radius:0; }
+.panels { display:flex; flex-wrap:wrap; gap:8px 28px; overflow-x:auto; }
+.panel-title { font-size:13px; font-weight:600; color:var(--ink); margin:4px 0 0; }
+svg text { font-family:system-ui,-apple-system,"Segoe UI",sans-serif; }
+.axis-t { font-size:11px; fill:var(--muted); font-variant-numeric:tabular-nums; }
+.grp-t { font-size:10px; letter-spacing:.08em; text-transform:uppercase; fill:var(--muted); }
+.end-t { font-size:11.5px; fill:var(--ink2); }
+.anno-t { font-size:12px; fill:var(--ink2); }
+details { margin:4px 0 2px; }
+summary { font-size:12.5px; color:var(--muted); cursor:pointer; }
+summary:focus-visible, a:focus-visible { outline:2px solid var(--blue); outline-offset:2px; border-radius:3px; }
+table { border-collapse:collapse; font-size:12.5px; margin:10px 0 6px; font-variant-numeric:tabular-nums; }
+th, td { text-align:right; padding:3px 10px; border-bottom:1px solid var(--grid); color:var(--ink2); }
+th { color:var(--muted); font-weight:600; }
+td:first-child, th:first-child { text-align:left; font-family:ui-monospace,Menlo,monospace; font-size:11.5px; }
+.mono td { font-family:ui-monospace,Menlo,monospace; font-size:11px; text-align:center; padding:2px 4px; }
+.footer { font-size:13px; color:var(--muted); max-width:74ch; margin-top:30px; }
+#tip { position:fixed; pointer-events:none; background:var(--ink); color:var(--page);
+  font-size:12px; line-height:1.4; padding:6px 9px; border-radius:6px; opacity:0;
+  transition:opacity .12s; max-width:260px; z-index:10; }
+@media (prefers-reduced-motion: reduce) { * { transition:none !important; } }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Informalizing ETP · Experiment 12</p>
+  <h1>Majority voting at the frontier</h1>
+  <p class="standfirst">The 20 hardest story pairs in the corpus — both laws carrying ten
+  operations each — formalized by Claude Opus 4.8 and GPT-5.5, ten times per temperature
+  arm, with answers pooled by grading-equivalence class and settled by majority vote.
+  Vote@k is measured for every k from 1 to 10, against a temperature-0 single pass.</p>
+  <p class="note">Grok 4.3 ran in the same experiment and is omitted from every figure:
+  0 of 20 correct in all 21 runs — nothing for a vote to amplify.</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="lab">Opus 4.8 · vote@4 and up</div><div class="val">100%</div>
+      <div class="sub"><b>+20 pts</b> vs its temp-0 pass, in both arms</div></div>
+    <div class="kpi"><div class="lab">GPT-5.5 · vote@10, t 0.7</div><div class="val">35%</div>
+      <div class="sub"><b>+10 pts</b> vs its temp-0 pass</div></div>
+    <div class="kpi"><div class="lab">Correct → wrong flips</div><div class="val">0</div>
+      <div class="sub">voting never cost a solved pair, either arm</div></div>
+    <div class="kpi"><div class="lab">Precision at ≥6/10 consensus</div><div class="val">98%</div>
+      <div class="sub">49/50 cells correct · 62% coverage</div></div>
+  </div>
+
+  <div class="card">
+    <p class="fig-eyebrow">Figure 1</p>
+    <h2>Accuracy climbs the vote ladder, then saturates</h2>
+    <p class="caption">Correct rate over the 20 pairs as ballots accrue, one panel per model.
+    The gray rule is the temp-0 single pass. Opus 4.8 reaches 100% by vote@4 in both arms and
+    never leaves it. GPT-5.5 gains slowly at t&thinsp;0.7 and not at all at t&thinsp;1.0 — an
+    expected split: GPT-5.5 ignores the temperature parameter, so its two arms are one
+    distribution sampled twice.</p>
+    <div class="legend">
+      <span class="chip line"><i style="border-color:var(--blue)"></i>temperature 0.7</span>
+      <span class="chip line"><i style="border-color:var(--green)"></i>temperature 1.0</span>
+      <span class="chip line"><i style="border-color:var(--axis)"></i>temp-0 single pass</span>
+    </div>
+    <div class="panels" id="fig1"></div>
+    <details><summary>Data: correct% by vote size</summary><div id="fig1-table"></div></details>
+  </div>
+
+  <div class="card">
+    <p class="fig-eyebrow">Figure 2</p>
+    <h2>Every call in the experiment: noise you can outvote vs. failure you can't</h2>
+    <p class="caption">One row per story pair (easiest first, per model), one column per run;
+    the offset columns are the vote@10 verdicts. Opus rows are blue with scattered slips —
+    sampling noise, erased by the vote column. GPT-5.5 rows are nearly deterministic: the same
+    pairs succeed or fail in almost every pass, so there is little for a majority to flip.</p>
+    <div class="legend">
+      <span class="chip"><i style="background:var(--blue)"></i>correct (exact or accepted symmetry)</span>
+      <span class="chip"><i style="background:var(--red)"></i>wrong</span>
+      <span class="chip"><i style="background:var(--neutral)"></i>unparseable</span>
+    </div>
+    <div class="panels" id="fig2" style="flex-direction:column; gap:4px;"></div>
+    <details><summary>Data: verdict grid (E exact · S swapped · D dualized · W wrong · U unparseable)</summary><div id="fig2-table"></div></details>
+  </div>
+
+  <div class="card">
+    <p class="fig-eyebrow">Figure 3</p>
+    <h2>Agreement is calibration — with one telling exception</h2>
+    <p class="caption">Each dot is one (pair, arm) cell at k = 10, placed by how many of its ten
+    ballots the winning answer received; both arms pooled. Consensus splits the cells almost
+    perfectly: none of the <span id="lo-stat"></span> at 0–1 ballots yields a correct answer
+    (the all-abstain ones yield no answer at all), while the <span id="hi-stat"></span> at
+    ≥6 ballots are all correct but one. The exception is GPT-5.5's S362→S338 at t&thinsp;1.0 —
+    six identical wrong ballots. A model whose samples don't vary can be confidently wrong;
+    consensus is only evidence when the sampling is real.</p>
+    <div class="legend">
+      <span class="chip"><i style="background:var(--blue); border-radius:50%"></i>vote winner correct</span>
+      <span class="chip"><i style="background:var(--red); border-radius:50%"></i>vote winner wrong</span>
+      <span class="chip"><i style="background:var(--neutral); border-radius:50%"></i>no winner — every ballot abstained (all 10 passes unparseable)</span>
+    </div>
+    <div class="panels" id="fig3"></div>
+    <details><summary>Data: cells by ballots-for-winner</summary><div id="fig3-table"></div></details>
+  </div>
+
+  <p class="footer">Experiment 12 of the informalizing-ETP series · 20 bin-10 pairs, seed 0 ·
+  story arm, reasoning fully off, graded syntactically by checkform · 1,260 calls, $17.61.
+  The conventional full report (Grok included) is <code>report/report.html</code> in the
+  experiment directory; raw run directories under <code>runs/</code>.</p>
+</div>
+<div id="tip" role="status"></div>
+
+<script>
+const DATA = {"k": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "models": ["opus", "gpt"], "curves": {"opus": {"t0": 80, "t07": [80, 80, 95, 100, 100, 100, 100, 100, 100, 100], "t10": [80, 85, 95, 100, 100, 100, 100, 100, 100, 100]}, "gpt": {"t0": 25, "t07": [25, 25, 25, 30, 30, 35, 35, 35, 35, 35], "t10": [30, 30, 30, 30, 30, 30, 30, 30, 30, 30]}}, "matrix": {"opus": {"pairs": ["S352-S345", "S355-S347", "S355-S360", "S360-S355", "S362-S338", "S364-S338", "S327-S341", "S357-S356", "S341-S359", "S343-S333", "S344-S331", "S353-S358", "S357-S333", "S329-S346", "S331-S347", "S349-S351", "S331-S364", "S341-S328", "S363-S334", "S350-S344"], "t0": ["s", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "u", "e", "e", "e", "w", "e", "e", "u", "u"], "t07": [["s", "s", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["s", "e", "s", "e", "s", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "u"], ["w", "e", "e", "u", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "u", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "u", "e", "e", "e", "e", "u"], ["e", "u", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "u", "w", "w", "e", "w", "e", "e", "e"], ["u", "w", "s", "e", "e", "e", "e", "w", "e", "e"], ["w", "e", "e", "u", "u", "w", "e", "e", "e", "e"], ["w", "e", "e", "e", "e", "u", "e", "u", "e", "e"], ["e", "u", "u", "e", "e", "e", "e", "e", "e", "u"], ["e", "e", "w", "w", "w", "u", "w", "u", "u", "u"]], "t07v": ["s", "e", "e", "e", "s", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "s", "e", "e", "e", "e"], "t10": [["e", "e", "s", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "s", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "w", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "u"], ["e", "w", "e", "e", "e", "e", "e", "w", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "u", "e", "e", "e", "e"], ["e", "u", "e", "u", "e", "e", "e", "e", "e", "u"], ["e", "e", "e", "e", "e", "e", "w", "e", "e", "e"], ["w", "u", "e", "e", "s", "w", "e", "s", "e", "s"], ["u", "e", "e", "u", "e", "e", "e", "w", "e", "e"], ["e", "e", "u", "u", "w", "e", "e", "e", "e", "w"], ["u", "u", "s", "s", "e", "e", "u", "u", "e", "u"], ["u", "u", "s", "w", "s", "s", "s", "u", "u", "w"]], "t10v": ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "e", "s", "s"]}, "gpt": {"pairs": ["S331-S364", "S355-S360", "S360-S355", "S331-S347", "S355-S347", "S344-S331", "S363-S334", "S350-S344", "S327-S341", "S329-S346", "S341-S328", "S341-S359", "S343-S333", "S349-S351", "S352-S345", "S353-S358", "S357-S333", "S357-S356", "S362-S338", "S364-S338"], "t0": ["e", "e", "e", "e", "w", "e", "u", "u", "u", "u", "u", "w", "u", "w", "u", "u", "u", "w", "u", "u"], "t07": [["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "w", "e", "e", "e", "e", "e", "e", "e", "w"], ["w", "e", "u", "e", "e", "e", "e", "e", "e", "u"], ["e", "e", "u", "e", "e", "e", "e", "u", "u", "e"], ["u", "u", "u", "u", "u", "e", "u", "u", "w", "e"], ["u", "w", "e", "u", "w", "u", "u", "w", "u", "u"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "w", "u", "w", "u", "u", "u", "u", "u", "w"], ["u", "u", "u", "u", "u", "u", "w", "u", "u", "u"], ["w", "u", "u", "u", "w", "w", "w", "u", "w", "w"], ["u", "u", "u", "w", "u", "u", "u", "u", "u", "u"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["w", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "w", "w", "u", "u", "w", "u", "u", "w", "w"], ["u", "u", "u", "u", "u", "u", "u", "u", "w", "u"]], "t07v": ["e", "e", "e", "e", "e", "e", "e", "w", "u", "u", "u", "w", "w", "w", "w", "u", "u", "w", "w", "w"], "t10": [["e", "w", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "w", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "u", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "e", "e", "e"], ["e", "e", "e", "e", "e", "e", "e", "u", "e", "e"], ["e", "e", "u", "u", "e", "e", "e", "e", "e", "e"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "u", "w", "u", "w", "u", "u", "u", "w", "w"], ["u", "u", "u", "w", "w", "w", "u", "u", "u", "u"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "u", "u", "u", "w", "u", "u", "u", "u", "u"], ["u", "w", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "u", "w", "w", "u", "u", "u", "u", "u", "w"], ["w", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"], ["w", "u", "u", "u", "w", "u", "u", "w", "w", "u"], ["w", "w", "u", "u", "w", "u", "w", "w", "w", "w"], ["u", "u", "u", "u", "u", "u", "u", "u", "u", "u"]], "t10v": ["e", "e", "e", "e", "e", "e", "u", "w", "w", "u", "w", "w", "u", "w", "w", "u", "u", "w", "w", "u"]}}, "calib": {"opus": [{"arm": "0.7", "pair": "S349-S351", "votes": 7, "ok": 1}, {"arm": "0.7", "pair": "S327-S341", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S357-S356", "votes": 9, "ok": 1}, {"arm": "0.7", "pair": "S350-S344", "votes": 2, "ok": 1}, {"arm": "0.7", "pair": "S355-S347", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S362-S338", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S357-S333", "votes": 9, "ok": 1}, {"arm": "0.7", "pair": "S343-S333", "votes": 9, "ok": 1}, {"arm": "0.7", "pair": "S331-S364", "votes": 6, "ok": 1}, {"arm": "0.7", "pair": "S341-S359", "votes": 8, "ok": 1}, {"arm": "0.7", "pair": "S363-S334", "votes": 7, "ok": 1}, {"arm": "0.7", "pair": "S344-S331", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S329-S346", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S355-S360", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S331-S347", "votes": 6, "ok": 1}, {"arm": "0.7", "pair": "S352-S345", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S364-S338", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S360-S355", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S353-S358", "votes": 8, "ok": 1}, {"arm": "0.7", "pair": "S341-S328", "votes": 7, "ok": 1}, {"arm": "1.0", "pair": "S349-S351", "votes": 7, "ok": 1}, {"arm": "1.0", "pair": "S327-S341", "votes": 9, "ok": 1}, {"arm": "1.0", "pair": "S357-S356", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S350-S344", "votes": 4, "ok": 1}, {"arm": "1.0", "pair": "S355-S347", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S362-S338", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S357-S333", "votes": 9, "ok": 1}, {"arm": "1.0", "pair": "S343-S333", "votes": 9, "ok": 1}, {"arm": "1.0", "pair": "S331-S364", "votes": 7, "ok": 1}, {"arm": "1.0", "pair": "S341-S359", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S363-S334", "votes": 5, "ok": 1}, {"arm": "1.0", "pair": "S344-S331", "votes": 8, "ok": 1}, {"arm": "1.0", "pair": "S329-S346", "votes": 7, "ok": 1}, {"arm": "1.0", "pair": "S355-S360", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S331-S347", "votes": 9, "ok": 1}, {"arm": "1.0", "pair": "S352-S345", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S364-S338", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S360-S355", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S353-S358", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S341-S328", "votes": 6, "ok": 1}], "gpt": [{"arm": "0.7", "pair": "S349-S351", "votes": 2, "ok": 0}, {"arm": "0.7", "pair": "S327-S341", "votes": 0, "ok": 0}, {"arm": "0.7", "pair": "S357-S356", "votes": 1, "ok": 0}, {"arm": "0.7", "pair": "S350-S344", "votes": 1, "ok": 0}, {"arm": "0.7", "pair": "S355-S347", "votes": 7, "ok": 1}, {"arm": "0.7", "pair": "S362-S338", "votes": 3, "ok": 0}, {"arm": "0.7", "pair": "S357-S333", "votes": 0, "ok": 0}, {"arm": "0.7", "pair": "S343-S333", "votes": 1, "ok": 0}, {"arm": "0.7", "pair": "S331-S364", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S341-S359", "votes": 1, "ok": 0}, {"arm": "0.7", "pair": "S363-S334", "votes": 2, "ok": 1}, {"arm": "0.7", "pair": "S344-S331", "votes": 7, "ok": 1}, {"arm": "0.7", "pair": "S329-S346", "votes": 0, "ok": 0}, {"arm": "0.7", "pair": "S355-S360", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S331-S347", "votes": 8, "ok": 1}, {"arm": "0.7", "pair": "S352-S345", "votes": 1, "ok": 0}, {"arm": "0.7", "pair": "S364-S338", "votes": 1, "ok": 0}, {"arm": "0.7", "pair": "S360-S355", "votes": 10, "ok": 1}, {"arm": "0.7", "pair": "S353-S358", "votes": 0, "ok": 0}, {"arm": "0.7", "pair": "S341-S328", "votes": 0, "ok": 0}, {"arm": "1.0", "pair": "S349-S351", "votes": 1, "ok": 0}, {"arm": "1.0", "pair": "S327-S341", "votes": 3, "ok": 0}, {"arm": "1.0", "pair": "S357-S356", "votes": 4, "ok": 0}, {"arm": "1.0", "pair": "S350-S344", "votes": 1, "ok": 0}, {"arm": "1.0", "pair": "S355-S347", "votes": 9, "ok": 1}, {"arm": "1.0", "pair": "S362-S338", "votes": 6, "ok": 0}, {"arm": "1.0", "pair": "S357-S333", "votes": 0, "ok": 0}, {"arm": "1.0", "pair": "S343-S333", "votes": 0, "ok": 0}, {"arm": "1.0", "pair": "S331-S364", "votes": 9, "ok": 1}, {"arm": "1.0", "pair": "S341-S359", "votes": 1, "ok": 0}, {"arm": "1.0", "pair": "S363-S334", "votes": 0, "ok": 0}, {"arm": "1.0", "pair": "S344-S331", "votes": 8, "ok": 1}, {"arm": "1.0", "pair": "S329-S346", "votes": 0, "ok": 0}, {"arm": "1.0", "pair": "S355-S360", "votes": 9, "ok": 1}, {"arm": "1.0", "pair": "S331-S347", "votes": 10, "ok": 1}, {"arm": "1.0", "pair": "S352-S345", "votes": 1, "ok": 0}, {"arm": "1.0", "pair": "S364-S338", "votes": 0, "ok": 0}, {"arm": "1.0", "pair": "S360-S355", "votes": 9, "ok": 1}, {"arm": "1.0", "pair": "S353-S358", "votes": 0, "ok": 0}, {"arm": "1.0", "pair": "S341-S328", "votes": 1, "ok": 0}]}};
+const NAME = { opus: "Claude Opus 4.8", gpt: "GPT-5.5" };
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const tip = document.getElementById("tip");
+function showTip(ev, html) {
+  tip.innerHTML = html; tip.style.opacity = 1;
+  const pad = 14, w = tip.offsetWidth;
+  let x = ev.clientX + pad; if (x + w > innerWidth - 8) x = ev.clientX - w - pad;
+  tip.style.left = x + "px"; tip.style.top = Math.max(8, ev.clientY - 14) + "px";
+}
+function hideTip() { tip.style.opacity = 0; }
+const SVGNS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) {
+  const n = document.createElementNS(SVGNS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+
+/* ---------- Figure 1: vote-ladder lines ---------- */
+(function () {
+  const box = document.getElementById("fig1");
+  for (const m of DATA.models) {
+    const c = DATA.curves[m];
+    const W = 388, H = 252, L = 38, R = 96, T = 18, B = 32;
+    const pw = W - L - R, ph = H - T - B;
+    const X = k => L + pw * (k - 1) / 9, Y = v => T + ph * (1 - v / 100);
+    const holder = document.createElement("div");
+    holder.innerHTML = `<p class="panel-title">${NAME[m]}</p>`;
+    const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: "img",
+      "aria-label": `${NAME[m]} correct rate by vote size` });
+    for (const v of [0, 25, 50, 75, 100]) {
+      el("line", { x1: L, x2: L + pw, y1: Y(v), y2: Y(v), stroke: "var(--grid)", "stroke-width": 1 }, svg);
+      el("text", { x: L - 7, y: Y(v) + 3.5, "text-anchor": "end", class: "axis-t" }, svg).textContent = v;
+    }
+    el("line", { x1: L, x2: L + pw, y1: Y(0), y2: Y(0), stroke: "var(--axis)", "stroke-width": 1 }, svg);
+    for (const k of DATA.k)
+      el("text", { x: X(k), y: H - 12, "text-anchor": "middle", class: "axis-t" }, svg).textContent = k;
+    el("text", { x: L + pw / 2, y: H - 1, "text-anchor": "middle", class: "axis-t" }, svg)
+      .textContent = "votes per answer (k)";
+    // temp-0 reference
+    el("line", { x1: L, x2: L + pw, y1: Y(c.t0), y2: Y(c.t0), stroke: "var(--axis)", "stroke-width": 1.5 }, svg);
+    const series = [["t10", "var(--green)", "t 1.0"], ["t07", "var(--blue)", "t 0.7"]];
+    for (const [key, col] of series) {
+      const d = c[key].map((v, i) => `${i ? "L" : "M"}${X(i + 1)},${Y(v)}`).join("");
+      el("path", { d, fill: "none", stroke: col, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+    }
+    for (const [key, col] of series)
+      c[key].forEach((v, i) => el("circle", { cx: X(i + 1), cy: Y(v), r: 4, fill: col,
+        stroke: "var(--surface)", "stroke-width": 2 }, svg));
+    // end labels, collision-nudged, each with a colored key dot
+    const ends = series.map(([key, col, lab]) => ({ col, lab, v: c[key][9], y: Y(c[key][9]) }))
+      .concat([{ col: "var(--axis)", lab: "temp 0", v: c.t0, y: Y(c.t0) }])
+      .sort((a, b) => a.y - b.y);
+    for (let i = 1; i < ends.length; i++) ends[i].y = Math.max(ends[i].y, ends[i - 1].y + 15);
+    for (const e of ends) {
+      el("circle", { cx: L + pw + 10, cy: e.y, r: 3, fill: e.col }, svg);
+      el("text", { x: L + pw + 17, y: e.y + 3.5, class: "end-t" }, svg).textContent = `${e.lab} · ${e.v}%`;
+    }
+    // hover: nearest-k crosshair
+    const cross = el("line", { y1: T, y2: T + ph, stroke: "var(--axis)", "stroke-width": 1, opacity: 0 }, svg);
+    svg.addEventListener("mousemove", ev => {
+      const r = svg.getBoundingClientRect();
+      const k = Math.max(1, Math.min(10, Math.round((ev.clientX - r.left - L) / pw * 9 + 1)));
+      cross.setAttribute("x1", X(k)); cross.setAttribute("x2", X(k)); cross.setAttribute("opacity", 1);
+      showTip(ev, `<b>${NAME[m]} · vote@${k}</b><br>t 0.7 → ${c.t07[k - 1]}%<br>t 1.0 → ${c.t10[k - 1]}%<br>temp-0 pass → ${c.t0}%`);
+    });
+    svg.addEventListener("mouseleave", () => { cross.setAttribute("opacity", 0); hideTip(); });
+    holder.appendChild(svg);
+    box.appendChild(holder);
+  }
+  let t = `<table><tr><th>model</th><th>temp0</th>${DATA.k.map(k => `<th>v@${k}</th>`).join("")}</tr>`;
+  for (const m of DATA.models) {
+    const c = DATA.curves[m];
+    t += `<tr><td>${NAME[m]} · t0.7</td><td>${c.t0}</td>${c.t07.map(v => `<td>${v}</td>`).join("")}</tr>`;
+    t += `<tr><td>${NAME[m]} · t1.0</td><td>${c.t0}</td>${c.t10.map(v => `<td>${v}</td>`).join("")}</tr>`;
+  }
+  document.getElementById("fig1-table").innerHTML = t + "</table>";
+})();
+
+/* ---------- Figure 2: outcome matrix ---------- */
+(function () {
+  const box = document.getElementById("fig2");
+  const FILL = { e: "var(--blue)", s: "var(--blue)", d: "var(--blue)", w: "var(--red)", u: "var(--neutral)" };
+  const WORD = { e: "correct — exact", s: "correct — sides swapped", d: "correct — dualized", w: "wrong", u: "unparseable" };
+  const CELL = 15, GAP = 2, PITCH = CELL + GAP, LBL = 88, GRP = 9;
+  for (const m of DATA.models) {
+    const mx = DATA.matrix[m];
+    const cols = [];   // {x, tag, code(pair-index), head}
+    let x = LBL;
+    cols.push({ x, head: "t0", tag: "temp-0 pass", get: i => mx.t0[i] }); x += PITCH + GRP;
+    const g1 = x;
+    for (let p = 0; p < 10; p++) { cols.push({ x, head: p + 1, tag: `t 0.7 · pass ${p + 1}`, get: i => mx.t07[i][p] }); x += PITCH; }
+    x += 4;
+    cols.push({ x, head: "v10", tag: "t 0.7 · vote@10", get: i => mx.t07v[i], vote: 1 }); x += PITCH + GRP;
+    const g2 = x;
+    for (let p = 0; p < 10; p++) { cols.push({ x, head: p + 1, tag: `t 1.0 · pass ${p + 1}`, get: i => mx.t10[i][p] }); x += PITCH; }
+    x += 4;
+    cols.push({ x, head: "v10", tag: "t 1.0 · vote@10", get: i => mx.t10v[i], vote: 1 }); x += PITCH;
+    const W = x + 2, TOPB = 40, H = TOPB + 20 * PITCH + 4;
+    const holder = document.createElement("div");
+    holder.innerHTML = `<p class="panel-title">${NAME[m]}</p>`;
+    const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: "img",
+      "aria-label": `${NAME[m]} per-pair, per-run verdicts` });
+    el("text", { x: g1, y: 12, class: "grp-t" }, svg).textContent = "temperature 0.7";
+    el("text", { x: g2, y: 12, class: "grp-t" }, svg).textContent = "temperature 1.0";
+    for (const cdef of cols)
+      el("text", { x: cdef.x + CELL / 2, y: TOPB - 8, "text-anchor": "middle", class: "axis-t",
+        "font-weight": cdef.vote || cdef.head === "t0" ? 600 : 400 }, svg).textContent = cdef.head;
+    mx.pairs.forEach((pid, i) => {
+      const y = TOPB + i * PITCH;
+      el("text", { x: LBL - 8, y: y + CELL - 3.5, "text-anchor": "end", class: "axis-t",
+        "font-size": 10 }, svg).textContent = pid.replace("-", "→");
+      for (const cdef of cols) {
+        const code = cdef.get(i);
+        const r = el("rect", { x: cdef.x, y, width: CELL, height: CELL, rx: 3, fill: FILL[code] }, svg);
+        r.addEventListener("mousemove", ev =>
+          showTip(ev, `<b>${pid.replace("-", " → ")}</b><br>${NAME[m]} · ${cdef.tag}<br>${WORD[code]}`));
+        r.addEventListener("mouseleave", hideTip);
+      }
+    });
+    holder.appendChild(svg);
+    box.appendChild(holder);
+  }
+  let t = "";
+  for (const m of DATA.models) {
+    const mx = DATA.matrix[m];
+    t += `<table class="mono"><tr><th>${NAME[m]}</th><th>t0</th><th colspan="10">t 0.7 passes 1–10</th><th>v10</th><th colspan="10">t 1.0 passes 1–10</th><th>v10</th></tr>`;
+    mx.pairs.forEach((pid, i) => {
+      const u = a => a.map(c => c.toUpperCase()).join("</td><td>");
+      t += `<tr><td style="text-align:left">${pid}</td><td>${mx.t0[i].toUpperCase()}</td><td>${u(mx.t07[i])}</td><td><b>${mx.t07v[i].toUpperCase()}</b></td><td>${u(mx.t10[i])}</td><td><b>${mx.t10v[i].toUpperCase()}</b></td></tr>`;
+    });
+    t += "</table>";
+  }
+  document.getElementById("fig2-table").innerHTML = t;
+})();
+
+/* ---------- Figure 3: consensus calibration dots ---------- */
+(function () {
+  const box = document.getElementById("fig3");
+  let lo = 0, loN = 0, hi = 0, hiN = 0;
+  for (const m of DATA.models) for (const c of DATA.calib[m]) {
+    if (c.votes <= 1) { loN++; lo += c.ok; }
+    if (c.votes >= 6) { hiN++; hi += c.ok; }
+  }
+  document.getElementById("lo-stat").textContent = `${loN} cells`;
+  document.getElementById("hi-stat").textContent = `${hiN} cells`;
+  for (const m of DATA.models) {
+    const cells = DATA.calib[m];
+    const W = 388, H = 300, L = 30, R = 12, T = 30, B = 32;
+    const pw = W - L - R, ph = H - T - B;
+    const maxStack = Math.max(...Object.values(cells.reduce((a, c) => (a[c.votes] = (a[c.votes] || 0) + 1, a), {})));
+    const X = v => L + pw * (v + .5) / 11, RAD = 5,
+      PITCH = Math.min(12.5, (ph - 2 * RAD - 4) / Math.max(1, maxStack - 1));
+    const holder = document.createElement("div");
+    holder.innerHTML = `<p class="panel-title">${NAME[m]}</p>`;
+    const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: "img",
+      "aria-label": `${NAME[m]} cells by ballots for the winning answer` });
+    el("line", { x1: L, x2: L + pw, y1: T + ph, y2: T + ph, stroke: "var(--axis)", "stroke-width": 1 }, svg);
+    for (let v = 0; v <= 10; v++)
+      el("text", { x: X(v), y: H - 18, "text-anchor": "middle", class: "axis-t" }, svg).textContent = v;
+    el("text", { x: L + pw / 2, y: H - 3, "text-anchor": "middle", class: "axis-t" }, svg)
+      .textContent = "ballots for the winning answer (of 10)";
+    // consensus bracket over 6..10
+    const bx1 = X(6) - RAD - 3, bx2 = X(10) + RAD + 3;
+    el("path", { d: `M${bx1},${T - 8}v-5h${bx2 - bx1}v5`, fill: "none", stroke: "var(--axis)", "stroke-width": 1 }, svg);
+    const hiHere = cells.filter(c => c.votes >= 6);
+    el("text", { x: (bx1 + bx2) / 2, y: T - 17, "text-anchor": "middle", class: "anno-t" }, svg)
+      .textContent = `≥6 ballots: ${hiHere.filter(c => c.ok).length}/${hiHere.length} correct`;
+    const stacks = {};
+    for (const c of cells) {
+      const s = stacks[c.votes] = (stacks[c.votes] || 0) + 1;
+      const cy = T + ph - RAD - 1 - (s - 1) * PITCH;
+      const dot = el("circle", { cx: X(c.votes), cy, r: RAD,
+        fill: c.votes === 0 ? "var(--neutral)" : c.ok ? "var(--blue)" : "var(--red)",
+        stroke: "var(--surface)", "stroke-width": 2 }, svg);
+      dot.addEventListener("mousemove", ev =>
+        showTip(ev, `<b>${c.pair.replace("-", " → ")}</b><br>${NAME[m]} · t ${c.arm} · ${c.votes}/10 ballots<br>${c.votes === 0 ? "no parseable answer in any pass" : `vote winner ${c.ok ? "correct" : "wrong"}`}`));
+      dot.addEventListener("mouseleave", hideTip);
+    }
+    holder.appendChild(svg);
+    box.appendChild(holder);
+  }
+  let t = `<table><tr><th>ballots</th>${[0,1,2,3,4,5,6,7,8,9,10].map(v => `<th>${v}</th>`).join("")}</tr>`;
+  const CLASSES = [["correct", c => c.ok === 1], ["wrong", c => c.ok === 0 && c.votes > 0], ["no answer", c => c.votes === 0]];
+  for (const m of DATA.models) for (const [lab, test] of CLASSES) {
+    t += `<tr><td>${NAME[m]} · ${lab}</td>`;
+    for (let v = 0; v <= 10; v++)
+      t += `<td>${DATA.calib[m].filter(c => c.votes === v && test(c)).length || ""}</td>`;
+    t += "</tr>";
+  }
+  document.getElementById("fig3-table").innerHTML = t + "</table>";
+})();
+</script>
