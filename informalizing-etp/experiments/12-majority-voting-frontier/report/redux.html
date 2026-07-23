@@ -4,7 +4,7 @@
   --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e;
   --muted:#898781; --grid:#e1e0d9; --axis:#c3c2b7;
   --border:rgba(11,11,11,.10);
-  --blue:#2a78d6; --green:#008300; --red:#e34948; --neutral:#dedcd4;
+  --blue:#2a78d6; --green:#008300; --red:#e34948; --neutral:#d9d6cb;
   --good-text:#006300;
   color-scheme:light;
 }
@@ -13,7 +13,7 @@
     --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7;
     --muted:#898781; --grid:#2c2c2a; --axis:#383835;
     --border:rgba(255,255,255,.10);
-    --blue:#3987e5; --green:#008300; --red:#e66767; --neutral:#3a3a38;
+    --blue:#3987e5; --green:#008300; --red:#e66767; --neutral:#42403c;
     --good-text:#0ca30c;
     color-scheme:dark;
   }
@@ -22,7 +22,7 @@
   --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7;
   --muted:#898781; --grid:#2c2c2a; --axis:#383835;
   --border:rgba(255,255,255,.10);
-  --blue:#3987e5; --green:#008300; --red:#e66767; --neutral:#3a3a38;
+  --blue:#3987e5; --green:#008300; --red:#e66767; --neutral:#42403c;
   --good-text:#0ca30c;
   color-scheme:dark;
 }
@@ -30,7 +30,7 @@
   --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e;
   --muted:#898781; --grid:#e1e0d9; --axis:#c3c2b7;
   --border:rgba(11,11,11,.10);
-  --blue:#2a78d6; --green:#008300; --red:#e34948; --neutral:#dedcd4;
+  --blue:#2a78d6; --green:#008300; --red:#e34948; --neutral:#d9d6cb;
   --good-text:#006300;
   color-scheme:light;
 }
@@ -40,27 +40,31 @@ body {
   font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;
   margin:0; padding:40px 20px 72px;
 }
-.wrap { max-width:900px; margin:0 auto; }
-.eyebrow { font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 10px; }
-h1 { font-size:27px; line-height:1.2; font-weight:650; margin:0 0 12px; text-wrap:balance; }
-.standfirst { color:var(--ink2); max-width:64ch; margin:0 0 8px; }
+.wrap { max-width:920px; margin:0 auto; }
+.eyebrow { font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--blue); font-weight:600; margin:0 0 12px; }
+h1 { font-size:31px; line-height:1.18; font-weight:680; margin:0 0 14px; text-wrap:balance; letter-spacing:-.01em; }
+.standfirst { color:var(--ink2); font-size:15.5px; max-width:66ch; margin:0 0 10px; }
 .note { font-size:13px; color:var(--muted); max-width:70ch; margin:0; }
-.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:28px 0 8px; }
-.kpi { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:14px 16px 12px; }
-.kpi .lab { font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:6px; }
-.kpi .val { font-size:29px; font-weight:650; line-height:1.1; }
-.kpi .sub { font-size:12.5px; color:var(--ink2); margin-top:4px; }
+.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; margin:30px 0 8px; }
+.kpi { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px 14px; display:flex; flex-direction:column; }
+.kpi .lab { font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; min-height:2.4em; }
+.kpi .val { font-size:32px; font-weight:670; line-height:1.05; letter-spacing:-.01em; }
+.kpi .sub { font-size:12.5px; color:var(--ink2); margin-top:6px; }
 .kpi .sub b { color:var(--good-text); font-weight:600; }
-.card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:22px 24px 16px; margin:22px 0; }
-.fig-eyebrow { font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 2px; }
-.card h2 { font-size:16.5px; font-weight:650; margin:0 0 6px; }
-.caption { font-size:13.5px; color:var(--ink2); max-width:74ch; margin:0 0 16px; }
-.legend { display:flex; flex-wrap:wrap; gap:16px; font-size:12.5px; color:var(--ink2); margin:0 0 12px; }
-.legend .chip { display:inline-flex; align-items:center; gap:6px; }
-.chip i { width:10px; height:10px; border-radius:3px; display:inline-block; }
-.chip.line i { width:14px; height:0; border-top:2.5px solid; border-radius:0; }
-.panels { display:flex; flex-wrap:wrap; gap:8px 28px; overflow-x:auto; }
-.panel-title { font-size:13px; font-weight:600; color:var(--ink); margin:4px 0 0; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:26px 30px 18px; margin:26px 0; }
+.fig-eyebrow { font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin:0 0 3px; }
+.card h2 { font-size:18px; font-weight:660; margin:0 0 7px; text-wrap:balance; }
+.caption { font-size:13.5px; color:var(--ink2); max-width:76ch; margin:0 0 18px; }
+.legend { display:flex; flex-wrap:wrap; gap:8px 18px; font-size:12.5px; color:var(--ink2); margin:0 0 14px; }
+.legend .chip { display:inline-flex; align-items:center; gap:7px; }
+.chip i { width:11px; height:11px; border-radius:3.5px; display:inline-block; flex:none; }
+.chip.line i { width:16px; height:0; border-top:2.5px solid; border-radius:0; }
+.panels { display:flex; flex-wrap:wrap; gap:12px 32px; }
+.panels svg { width:100%; height:auto; display:block; }
+#fig1 svg { max-width:860px; }
+#fig3 > div { flex:1 1 340px; min-width:280px; }
+#fig2 > div { width:100%; max-width:780px; margin:0 auto; }
+.panel-title { font-size:13.5px; font-weight:620; color:var(--ink); margin:10px 0 2px; }
 svg text { font-family:system-ui,-apple-system,"Segoe UI",sans-serif; }
 .axis-t { font-size:11px; fill:var(--muted); font-variant-numeric:tabular-nums; }
 .grp-t { font-size:10px; letter-spacing:.08em; text-transform:uppercase; fill:var(--muted); }
@@ -105,11 +109,12 @@ td:first-child, th:first-child { text-align:left; font-family:ui-monospace,Menlo
   <div class="card">
     <p class="fig-eyebrow">Figure 1</p>
     <h2>Accuracy climbs the vote ladder, then saturates</h2>
-    <p class="caption">Correct rate over the 20 pairs as ballots accrue, one panel per model.
-    The gray rule is the temp-0 single pass. Opus 4.8 reaches 100% by vote@4 in both arms and
-    never leaves it. GPT-5.5 gains slowly at t&thinsp;0.7 and not at all at t&thinsp;1.0 — an
-    expected split: GPT-5.5 ignores the temperature parameter, so its two arms are one
-    distribution sampled twice.</p>
+    <p class="caption">Correct rate over the 20 pairs as ballots accrue, both models on one
+    scale; each gray rule is that model's temp-0 single pass. Opus 4.8 reaches 100% by vote@4
+    in both arms and never leaves it. GPT-5.5 gains slowly at t&thinsp;0.7 and not at all at
+    t&thinsp;1.0 — an expected split: GPT-5.5 ignores the temperature parameter, so its two
+    arms are one distribution sampled twice. The 65-point gulf between the clusters is the
+    same capability cliff the open-weight models sat below.</p>
     <div class="legend">
       <span class="chip line"><i style="border-color:var(--blue)"></i>temperature 0.7</span>
       <span class="chip line"><i style="border-color:var(--green)"></i>temperature 1.0</span>
@@ -181,58 +186,65 @@ function el(tag, attrs, parent) {
   return n;
 }
 
-/* ---------- Figure 1: vote-ladder lines ---------- */
+/* ---------- Figure 1: vote-ladder, both models on one canvas ---------- */
 (function () {
   const box = document.getElementById("fig1");
+  const W = 840, H = 396, L = 48, R = 122, T = 26, B = 48;
+  const pw = W - L - R, ph = H - T - B;
+  const X = k => L + pw * (k - 1) / 9, Y = v => T + ph * (1 - v / 100);
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}`, role: "img",
+    "aria-label": "Correct rate by vote size, both models and temperatures" });
+  for (const v of [0, 25, 50, 75, 100]) {
+    el("line", { x1: L, x2: L + pw, y1: Y(v), y2: Y(v), stroke: "var(--grid)", "stroke-width": 1 }, svg);
+    el("text", { x: L - 8, y: Y(v) + 3.5, "text-anchor": "end", class: "axis-t" }, svg).textContent = v;
+  }
+  el("line", { x1: L, x2: L + pw, y1: Y(0), y2: Y(0), stroke: "var(--axis)", "stroke-width": 1 }, svg);
+  for (const k of DATA.k)
+    el("text", { x: X(k), y: H - 26, "text-anchor": "middle", class: "axis-t" }, svg).textContent = k;
+  el("text", { x: L + pw / 2, y: H - 8, "text-anchor": "middle", class: "axis-t" }, svg)
+    .textContent = "votes per answer (k)";
+  el("text", { x: 13, y: T + ph / 2, "text-anchor": "middle", class: "axis-t",
+    transform: `rotate(-90 13 ${T + ph / 2})` }, svg).textContent = "correct %";
+  const series = [["t10", "var(--green)", "t 1.0"], ["t07", "var(--blue)", "t 0.7"]];
+  const ends = [];
   for (const m of DATA.models) {
     const c = DATA.curves[m];
-    const W = 388, H = 252, L = 38, R = 96, T = 18, B = 32;
-    const pw = W - L - R, ph = H - T - B;
-    const X = k => L + pw * (k - 1) / 9, Y = v => T + ph * (1 - v / 100);
-    const holder = document.createElement("div");
-    holder.innerHTML = `<p class="panel-title">${NAME[m]}</p>`;
-    const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: "img",
-      "aria-label": `${NAME[m]} correct rate by vote size` });
-    for (const v of [0, 25, 50, 75, 100]) {
-      el("line", { x1: L, x2: L + pw, y1: Y(v), y2: Y(v), stroke: "var(--grid)", "stroke-width": 1 }, svg);
-      el("text", { x: L - 7, y: Y(v) + 3.5, "text-anchor": "end", class: "axis-t" }, svg).textContent = v;
-    }
-    el("line", { x1: L, x2: L + pw, y1: Y(0), y2: Y(0), stroke: "var(--axis)", "stroke-width": 1 }, svg);
-    for (const k of DATA.k)
-      el("text", { x: X(k), y: H - 12, "text-anchor": "middle", class: "axis-t" }, svg).textContent = k;
-    el("text", { x: L + pw / 2, y: H - 1, "text-anchor": "middle", class: "axis-t" }, svg)
-      .textContent = "votes per answer (k)";
-    // temp-0 reference
     el("line", { x1: L, x2: L + pw, y1: Y(c.t0), y2: Y(c.t0), stroke: "var(--axis)", "stroke-width": 1.5 }, svg);
-    const series = [["t10", "var(--green)", "t 1.0"], ["t07", "var(--blue)", "t 0.7"]];
-    for (const [key, col] of series) {
+    ends.push({ col: "var(--axis)", lab: "temp 0", v: c.t0, y: Y(c.t0) });
+    for (const [key, col, lab] of series) {
       const d = c[key].map((v, i) => `${i ? "L" : "M"}${X(i + 1)},${Y(v)}`).join("");
-      el("path", { d, fill: "none", stroke: col, "stroke-width": 2, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+      el("path", { d, fill: "none", stroke: col, "stroke-width": 2.25, "stroke-linejoin": "round", "stroke-linecap": "round" }, svg);
+      ends.push({ col, lab, v: c[key][9], y: Y(c[key][9]) });
     }
     for (const [key, col] of series)
       c[key].forEach((v, i) => el("circle", { cx: X(i + 1), cy: Y(v), r: 4, fill: col,
         stroke: "var(--surface)", "stroke-width": 2 }, svg));
-    // end labels, collision-nudged, each with a colored key dot
-    const ends = series.map(([key, col, lab]) => ({ col, lab, v: c[key][9], y: Y(c[key][9]) }))
-      .concat([{ col: "var(--axis)", lab: "temp 0", v: c.t0, y: Y(c.t0) }])
-      .sort((a, b) => a.y - b.y);
-    for (let i = 1; i < ends.length; i++) ends[i].y = Math.max(ends[i].y, ends[i - 1].y + 15);
-    for (const e of ends) {
-      el("circle", { cx: L + pw + 10, cy: e.y, r: 3, fill: e.col }, svg);
-      el("text", { x: L + pw + 17, y: e.y + 3.5, class: "end-t" }, svg).textContent = `${e.lab} · ${e.v}%`;
-    }
-    // hover: nearest-k crosshair
-    const cross = el("line", { y1: T, y2: T + ph, stroke: "var(--axis)", "stroke-width": 1, opacity: 0 }, svg);
-    svg.addEventListener("mousemove", ev => {
-      const r = svg.getBoundingClientRect();
-      const k = Math.max(1, Math.min(10, Math.round((ev.clientX - r.left - L) / pw * 9 + 1)));
-      cross.setAttribute("x1", X(k)); cross.setAttribute("x2", X(k)); cross.setAttribute("opacity", 1);
-      showTip(ev, `<b>${NAME[m]} · vote@${k}</b><br>t 0.7 → ${c.t07[k - 1]}%<br>t 1.0 → ${c.t10[k - 1]}%<br>temp-0 pass → ${c.t0}%`);
-    });
-    svg.addEventListener("mouseleave", () => { cross.setAttribute("opacity", 0); hideTip(); });
-    holder.appendChild(svg);
-    box.appendChild(holder);
   }
+  // cluster labels: model identity by position
+  const clab = el("text", { x: X(1) + 2, y: Y(DATA.curves[DATA.models[0]].t0) + 22,
+    "font-size": 13.5, "font-weight": 650, fill: "var(--ink)" }, svg);
+  clab.textContent = NAME[DATA.models[0]];
+  const clab2 = el("text", { x: X(1) + 2, y: Y(DATA.curves[DATA.models[1]].t07[9]) - 14,
+    "font-size": 13.5, "font-weight": 650, fill: "var(--ink)" }, svg);
+  clab2.textContent = NAME[DATA.models[1]];
+  // end labels, collision-nudged, each with a colored key dot
+  ends.sort((a, b) => a.y - b.y);
+  for (let i = 1; i < ends.length; i++) ends[i].y = Math.max(ends[i].y, ends[i - 1].y + 17);
+  for (const e of ends) {
+    el("circle", { cx: L + pw + 12, cy: e.y, r: 3.5, fill: e.col }, svg);
+    el("text", { x: L + pw + 20, y: e.y + 4, class: "end-t" }, svg).textContent = `${e.lab} · ${e.v}%`;
+  }
+  // hover: nearest-k crosshair (viewBox-scale aware)
+  const cross = el("line", { y1: T, y2: T + ph, stroke: "var(--axis)", "stroke-width": 1, opacity: 0 }, svg);
+  svg.addEventListener("mousemove", ev => {
+    const r = svg.getBoundingClientRect(), sc = r.width / W;
+    const k = Math.max(1, Math.min(10, Math.round(((ev.clientX - r.left) / sc - L) / pw * 9 + 1)));
+    cross.setAttribute("x1", X(k)); cross.setAttribute("x2", X(k)); cross.setAttribute("opacity", 1);
+    const row = m => `${NAME[m]} — t 0.7: ${DATA.curves[m].t07[k - 1]}% · t 1.0: ${DATA.curves[m].t10[k - 1]}% · temp 0: ${DATA.curves[m].t0}%`;
+    showTip(ev, `<b>vote@${k}</b><br>${row(DATA.models[0])}<br>${row(DATA.models[1])}`);
+  });
+  svg.addEventListener("mouseleave", () => { cross.setAttribute("opacity", 0); hideTip(); });
+  box.appendChild(svg);
   let t = `<table><tr><th>model</th><th>temp0</th>${DATA.k.map(k => `<th>v@${k}</th>`).join("")}</tr>`;
   for (const m of DATA.models) {
     const c = DATA.curves[m];
@@ -247,7 +259,7 @@ function el(tag, attrs, parent) {
   const box = document.getElementById("fig2");
   const FILL = { e: "var(--blue)", s: "var(--blue)", d: "var(--blue)", w: "var(--red)", u: "var(--neutral)" };
   const WORD = { e: "correct — exact", s: "correct — sides swapped", d: "correct — dualized", w: "wrong", u: "unparseable" };
-  const CELL = 15, GAP = 2, PITCH = CELL + GAP, LBL = 88, GRP = 9;
+  const CELL = 18, GAP = 2, PITCH = CELL + GAP, LBL = 102, GRP = 12;
   for (const m of DATA.models) {
     const mx = DATA.matrix[m];
     const cols = [];   // {x, tag, code(pair-index), head}
@@ -261,13 +273,13 @@ function el(tag, attrs, parent) {
     for (let p = 0; p < 10; p++) { cols.push({ x, head: p + 1, tag: `t 1.0 · pass ${p + 1}`, get: i => mx.t10[i][p] }); x += PITCH; }
     x += 4;
     cols.push({ x, head: "v10", tag: "t 1.0 · vote@10", get: i => mx.t10v[i], vote: 1 }); x += PITCH;
-    const W = x + 2, TOPB = 40, H = TOPB + 20 * PITCH + 4;
+    const W = x + 2, TOPB = 46, H = TOPB + 20 * PITCH + 4;
     const holder = document.createElement("div");
     holder.innerHTML = `<p class="panel-title">${NAME[m]}</p>`;
     const svg = el("svg", { width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: "img",
       "aria-label": `${NAME[m]} per-pair, per-run verdicts` });
-    el("text", { x: g1, y: 12, class: "grp-t" }, svg).textContent = "temperature 0.7";
-    el("text", { x: g2, y: 12, class: "grp-t" }, svg).textContent = "temperature 1.0";
+    el("text", { x: g1, y: 15, class: "grp-t" }, svg).textContent = "temperature 0.7";
+    el("text", { x: g2, y: 15, class: "grp-t" }, svg).textContent = "temperature 1.0";
     for (const cdef of cols)
       el("text", { x: cdef.x + CELL / 2, y: TOPB - 8, "text-anchor": "middle", class: "axis-t",
         "font-weight": cdef.vote || cdef.head === "t0" ? 600 : 400 }, svg).textContent = cdef.head;
@@ -277,7 +289,7 @@ function el(tag, attrs, parent) {
         "font-size": 10 }, svg).textContent = pid.replace("-", "→");
       for (const cdef of cols) {
         const code = cdef.get(i);
-        const r = el("rect", { x: cdef.x, y, width: CELL, height: CELL, rx: 3, fill: FILL[code] }, svg);
+        const r = el("rect", { x: cdef.x, y, width: CELL, height: CELL, rx: 4, fill: FILL[code] }, svg);
         r.addEventListener("mousemove", ev =>
           showTip(ev, `<b>${pid.replace("-", " → ")}</b><br>${NAME[m]} · ${cdef.tag}<br>${WORD[code]}`));
         r.addEventListener("mouseleave", hideTip);
@@ -311,7 +323,7 @@ function el(tag, attrs, parent) {
   document.getElementById("hi-stat").textContent = `${hiN} cells`;
   for (const m of DATA.models) {
     const cells = DATA.calib[m];
-    const W = 388, H = 300, L = 30, R = 12, T = 30, B = 32;
+    const W = 420, H = 320, L = 34, R = 14, T = 36, B = 46;
     const pw = W - L - R, ph = H - T - B;
     const maxStack = Math.max(...Object.values(cells.reduce((a, c) => (a[c.votes] = (a[c.votes] || 0) + 1, a), {})));
     const X = v => L + pw * (v + .5) / 11, RAD = 5,
@@ -322,8 +334,8 @@ function el(tag, attrs, parent) {
       "aria-label": `${NAME[m]} cells by ballots for the winning answer` });
     el("line", { x1: L, x2: L + pw, y1: T + ph, y2: T + ph, stroke: "var(--axis)", "stroke-width": 1 }, svg);
     for (let v = 0; v <= 10; v++)
-      el("text", { x: X(v), y: H - 18, "text-anchor": "middle", class: "axis-t" }, svg).textContent = v;
-    el("text", { x: L + pw / 2, y: H - 3, "text-anchor": "middle", class: "axis-t" }, svg)
+      el("text", { x: X(v), y: H - 30, "text-anchor": "middle", class: "axis-t" }, svg).textContent = v;
+    el("text", { x: L + pw / 2, y: H - 11, "text-anchor": "middle", class: "axis-t" }, svg)
       .textContent = "ballots for the winning answer (of 10)";
     // consensus bracket over 6..10
     const bx1 = X(6) - RAD - 3, bx2 = X(10) + RAD + 3;
