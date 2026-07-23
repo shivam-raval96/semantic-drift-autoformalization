@@ -1,0 +1,32 @@
+# @package _global_
+# ETP implication task on Llama-3.1-8B: does the model represent law identity
+# in a register-invariant way, and what geometry does the law ontology have?
+#
+# Chain: baseline (does the model do the task? are the certified generators
+# well-formed?) -> subspace (linear structure of the law representation at the
+# premise span) -> activation_manifold (geometry of the law ontology, to be
+# compared against the certified implication metric).
+#
+# NOTE: task.resample_variable must stay "all". Single-variable resampling
+# (needed by locate's pairwise mode) bypasses the task's generators and can
+# produce UNCERTIFIED law pairs, which the implication mechanism rejects by
+# design (certify or exclude — fail loud, never guess). Locate integration
+# needs either a runner hook to use the task's flip_premise generator, or a
+# certified-aware resampler; see the task README.
+defaults:
+- /base
+- /task: etp_implication
+- /model: llama31_8b
+- /analysis/baseline
+- /analysis/subspace
+- /analysis/activation_manifold
+- _self_
+
+task:
+  target_variable: implication
+
+subspace:
+  token_positions: [premise_law]
+
+activation_manifold:
+  token_positions: [premise_law]
