@@ -39,4 +39,17 @@
 | High complexity: 4-8 | 188 | 74 | **+114** |
 | **All problems** | **235** | **202** | **+33** |
 
+## Table 4. Two-Stage Effect by Exact Operation Count
+
+| Total Operations | Rescued | Lost | Net Change |
+|---:|---:|---:|---:|
+| 1 | 5 | 68 | **-63** |
+| 2 | 19 | 34 | **-15** |
+| 3 | 23 | 26 | **-3** |
+| 4 | 31 | 23 | **+8** |
+| 5 | 33 | 20 | **+13** |
+| 6 | 39 | 12 | **+27** |
+| 7 | 43 | 11 | **+32** |
+| 8 | 42 | 8 | **+34** |
+
 **Key result:** Two-Stage hurts on easy problems but helps substantially on complex problems.
