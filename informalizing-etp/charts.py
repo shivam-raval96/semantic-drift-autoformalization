@@ -411,6 +411,116 @@ def correct_pct_counts(counts: Dict[str, int]) -> float:
     return 100 * sum(counts.get(b, 0) for b in CORRECT_BUCKETS) / total
 
 
+# ------------------- valid x faithful decomposition (syntax vs semantics)
+
+AXES_COMPOSITION = (
+    ("correct", "var(--c-exact)"),
+    ("wrong: parses, different law", "var(--c-wrong)"),
+    ("unparseable", "var(--c-unp)"),
+)
+
+
+def axes_bucket(bucket: str) -> str:
+    if bucket in CORRECT_BUCKETS:
+        return AXES_COMPOSITION[0][0]
+    if bucket == "unparseable":
+        return AXES_COMPOSITION[2][0]
+    return AXES_COMPOSITION[1][0]
+
+
+def axes_counts_by_metric(run: dict, key: str) -> Dict[int, Dict[str, int]]:
+    out: Dict[int, Dict[str, int]] = {}
+    for r in run["rows"]:
+        b = r.get(key)
+        if not b:
+            continue
+        c = out.setdefault(b, {})
+        k = axes_bucket(r["bucket"])
+        c[k] = c.get(k, 0) + 1
+    return out
+
+
+def axes_chart(bins: List[int], counts: Dict[int, Dict[str, int]]) -> str:
+    """One horizontal 100% bar per operation-count bin, split into the merged
+    correct bucket, wrong (silent semantic failure: the output parses in the
+    grammar but names a different law), and unparseable (loud syntactic
+    failure). The right-hand value is the silent share of that bin's failures."""
+    left, right, top, row_h, bar_h = 250, 90, 8, 30, 18
+    plot_w = VB_W - left - right
+    height = top + row_h * len(bins) + 8
+    parts = []
+    for i, b in enumerate(bins):
+        c = counts.get(b, {})
+        total = sum(c.values()) or 1
+        y = top + row_h * i + (row_h - bar_h) / 2
+        cy = y + bar_h / 2
+        parts.append(
+            f'<text x="{left - 14}" y="{cy + 4:.1f}" class="row-label" '
+            f'text-anchor="end">ops {b}</text>'
+        )
+        x = float(left)
+        for name, color in AXES_COMPOSITION:
+            n = c.get(name, 0)
+            if not n:
+                continue
+            w = plot_w * n / total
+            tip = _tip(f"ops {b} · {name}: {n}/{total}")
+            parts.append(
+                f'<rect x="{x + 1:.1f}" y="{y:.1f}" width="{max(0.5, w - 2):.1f}" '
+                f'height="{bar_h}" rx="2" fill="{color}" {tip}/>'
+            )
+            x += w
+        fails = total - c.get(AXES_COMPOSITION[0][0], 0)
+        silent = c.get(AXES_COMPOSITION[1][0], 0)
+        label = f"{100 * silent / fails:.0f}% silent" if fails else "no failures"
+        parts.append(
+            f'<text x="{left + plot_w + 12}" y="{cy + 4:.1f}" class="value">'
+            f"{esc(label)}</text>"
+        )
+    svg = "".join(parts)
+    return (
+        legend_chips(list(AXES_COMPOSITION))
+        + f'<svg viewBox="0 0 {VB_W} {height}" role="img">{svg}</svg>'
+    )
+
+
+def axes_figure(run: dict, title_prefix: str, fig_no: List[int]) -> Optional[str]:
+    """The failure-axes figure for one run, or None below 3 ops bins."""
+    counts = axes_counts_by_metric(run, "ops_total")
+    bins = sorted(counts)
+    if len(bins) < 3:
+        return None
+    fig_no[0] += 1
+    table = data_table(
+        ["total operations", *[name for name, _ in AXES_COMPOSITION],
+         "silent share of failures %"],
+        [
+            [
+                b,
+                *[counts[b].get(name, 0) for name, _ in AXES_COMPOSITION],
+                (
+                    f"{100 * counts[b].get(AXES_COMPOSITION[1][0], 0) / f:.0f}"
+                    if (f := sum(counts[b].values())
+                        - counts[b].get(AXES_COMPOSITION[0][0], 0))
+                    else "-"
+                ),
+            ]
+            for b in bins
+        ],
+        "Data: valid x faithful decomposition per operation-count bin",
+    )
+    return figure(
+        fig_no[0],
+        f"Failure axes vs operation count — {title_prefix}",
+        "The valid x faithful decomposition, pooled over all models. "
+        "'Wrong' parses in the grammar but names a different law — a silent, "
+        "semantic failure (valid-but-unfaithful). 'Unparseable' is loud "
+        "grammar collapse — a syntactic failure. The right-hand value is the "
+        "silent share of each bin's failures. " + sample_note(run),
+        axes_chart(bins, counts) + table,
+    )
+
+
 # ------------------------------------------------------------ Aggregation
 
 
@@ -624,6 +734,13 @@ def render_group(group: List[dict], fig_no: List[int]) -> str:
         )
 
     for run in group:
+        axes_fig = axes_figure(
+            run, f"{run['label']} · {sample_tag(run)}", fig_no
+        )
+        if axes_fig:
+            sections.append(axes_fig)
+
+    for run in group:
         counts_by = by_model_counts(run)
         rows = [
             {"label": short_model(m), "counts": counts_by[m]} for m in models
@@ -728,6 +845,13 @@ def render_form_group(group: List[dict], fig_no: List[int]) -> str:
                     + table,
                 )
             )
+
+    for run in group:
+        axes_fig = axes_figure(
+            run, f"{run_arm(run)} · {run['label']} · {sample_tag(run)}", fig_no
+        )
+        if axes_fig:
+            sections.append(axes_fig)
 
     for run in group:
         counts_by = by_model_counts(run)
