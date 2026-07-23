@@ -1,0 +1,16 @@
+# @package _global_
+# CPU dry run: validates the etp_implication task end-to-end on gpt2 before
+# any GPU spend — prompts tokenize, token positions resolve, counterfactual
+# datasets build, baseline scoring runs. gpt2's accuracy is expected to be
+# chance; this run validates the pipeline, not the model.
+defaults:
+- /base
+- /task: etp_implication
+- /model: gpt2
+- /analysis/baseline
+- _self_
+
+task:
+  target_variable: implication
+  n_train: 40
+  n_test: 20
