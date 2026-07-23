@@ -82,11 +82,12 @@ def ask(model: str, prompt: str, api_key: str) -> str:
         "model": model,
         "messages": [
             {"role": "system",
-             "content": "Reply with exactly one word: True or False. No other text."},
+             "content": "Think briefly if needed, then END your reply with a "
+                        "final line containing exactly one word: True or False."},
             {"role": "user", "content": prompt},
         ],
         "temperature": 0,
-        "max_tokens": 16,
+        "max_tokens": 400,
     }
     req = urllib.request.Request(
         URL,
@@ -104,13 +105,10 @@ import re
 
 def parse_answer(text: str):
     t = text.strip().strip("*_\"'`# ").lower()
-    if t.startswith("true"):
-        return True
-    if t.startswith("false"):
-        return False
-    m = re.search(r"\b(true|false)\b", t)
-    if m:
-        return m.group(1) == "true"
+    # the verdict is the LAST standalone true/false (reasoning may restate both)
+    hits = re.findall(r"\b(true|false)\b", t)
+    if hits:
+        return hits[-1] == "true"
     return None
 
 
