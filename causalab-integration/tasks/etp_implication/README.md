@@ -28,11 +28,20 @@ lookup, never a judge.
 
 ## Data
 
-`data/etp_pairs.json` — 369 certified ordered pairs (7 implies, 362
-non-implications; ~51 uncertified pairs excluded, never guessed). The True
-side is thin by construction: certified implications among non-degenerate
-distinct laws are rare (substitution instances and construction-known
-routes). Balance is enforced at sampling time. Provenance and regeneration:
+`data/etp_pairs.json` (v2) — 47 laws (21 base + 26 derived instance laws,
+each a single-variable identification of a base law, so parent -> child
+implications certify via the substitution route) and 1,966 certified
+ordered pairs (47 implies, 1,919 non-implications; 196 uncertified pairs
+excluded, never guessed). Balance is enforced at sampling time.
+
+**Known surface floor (measure before trusting any probe):** because
+derived children textually resemble their parents, lexical overlap
+between premise and conclusion partially predicts the label — a
+bag-of-words classifier reaches AUROC ~0.61-0.64 under stratified,
+leave-pair-out, and leave-premise-out splits (v1 data without derived
+laws was at chance). This is the NLI lexical-overlap confound in
+miniature. Any claim that a probe reads *implication* must therefore
+beat this surface baseline under a leave-pair-out split, not 0.5. Provenance and regeneration:
 see the JSON's `provenance` field and `config.py`'s docstring; source of
 truth is the semantic-drift-autoformalization repo, branch
 `certificate-pipeline` (`pipeline/laws.py`, `pipeline/magma.py`).
