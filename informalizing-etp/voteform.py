@@ -210,10 +210,12 @@ def write_run_dir(
     )
 
 
-def write_vote_dir(passes: List[dict], k: int, out_dir: Path) -> None:
+def write_vote_dir(
+    passes: List[dict], k: int, out_dir: Path, label_prefix: str = ""
+) -> None:
     rows = voted_rows(passes, k)
     meta = copy.deepcopy(passes[0]["meta"])
-    meta["condition_label"] = f"vote@{k}"
+    meta["condition_label"] = f"{label_prefix}vote@{k}"
     meta["vote"] = {
         "k": k,
         "pass_dirs": [str(one["dir"]) for one in passes[:k]],
@@ -286,6 +288,9 @@ def main(argv=None) -> int:
                      help="reference run over the same pairs; copied restricted "
                      "to the passes' models as <stem>-t0-baseline")
     cli.add_argument("--baseline-label", default="temp0 single-pass")
+    cli.add_argument("--condition-prefix", default="", metavar="PREFIX",
+                     help="prefix for the vote dirs' condition_label, e.g. "
+                     "'t0.7 ' when several vote ladders share one report")
     args = cli.parse_args(argv)
 
     ks = sorted({int(k) for k in args.ks.split(",") if k.strip()})
@@ -300,7 +305,9 @@ def main(argv=None) -> int:
 
     stem = args.name or default_stem(args.pass_dirs[0])
     for k in ks:
-        write_vote_dir(passes, k, args.out_root / f"{stem}-vote{k}")
+        write_vote_dir(
+            passes, k, args.out_root / f"{stem}-vote{k}", args.condition_prefix
+        )
     if args.baseline:
         write_baseline_subset(
             args.baseline, passes, args.out_root / f"{stem}-t0-baseline",
