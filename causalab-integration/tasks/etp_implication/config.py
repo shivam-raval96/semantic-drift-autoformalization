@@ -43,7 +43,8 @@ CERTIFIED_TRUE = [tuple(k.split("|")) for k, v in PAIRS.items() if v]
 CERTIFIED_FALSE = [tuple(k.split("|")) for k, v in PAIRS.items() if not v]
 
 # ---- complexity strata (total operation count of the pair) ----
-OPS_BINS = ((0, 3), (4, 7), (8, 11), (12, 999))
+# eight width-2 levels over the pair's total op count (experiment-07 style)
+OPS_BINS = ((2, 3), (4, 5), (6, 7), (8, 9), (10, 11), (12, 13), (14, 15), (16, 999))
 
 
 def law_ops(lid: str) -> int:

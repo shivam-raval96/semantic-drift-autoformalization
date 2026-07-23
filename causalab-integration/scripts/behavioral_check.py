@@ -11,7 +11,7 @@ law-identity analyses are unaffected.
 Usage:
     export OPENROUTER_API_KEY=...
     python3 behavioral_check.py --causalab /path/to/causalab \
-        [--models openai/gpt-4o-mini anthropic/claude-haiku-4.5] [--n-false 46]
+        [--models openai/gpt-4o-mini anthropic/claude-haiku-4.5] [--n-per-level 20]
     python3 behavioral_check.py --causalab /path/to/causalab --dry-run
 """
 
@@ -41,7 +41,7 @@ def _ssl_context():
         return ctx
 
 
-def build_items(n_per_class: int, seed: int):
+def build_items(n_per_level: int, seed: int):
     from causalab.tasks.etp_implication.config import (
         CERTIFIED_FALSE,
         CERTIFIED_TRUE,
@@ -68,7 +68,7 @@ def build_items(n_per_class: int, seed: int):
         for it in by_label[label]:
             cells.setdefault((it["bin"], label), []).append(it)
     bins = sorted({b for b, _ in cells})
-    per_cell = max(1, n_per_class // len(bins))
+    per_cell = max(1, n_per_level // 2)
     items = []
     for b in bins:
         k = min(per_cell, len(cells.get((b, True), [])), len(cells.get((b, False), [])))
@@ -109,13 +109,14 @@ def main():
     ap.add_argument("--causalab", required=True)
     ap.add_argument("--models", nargs="+",
                     default=["openai/gpt-4o-mini", "anthropic/claude-haiku-4.5"])
-    ap.add_argument("--n-per-class", type=int, default=40)
+    ap.add_argument("--n-per-level", type=int, default=20,
+                    help="items per complexity level, half True half False")
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
     sys.path.insert(0, args.causalab)
-    items = build_items(args.n_per_class, args.seed)
+    items = build_items(args.n_per_level, args.seed)
     n_true = sum(1 for i in items if i["label"])
     print(f"items: {len(items)} ({n_true} True / {len(items) - n_true} False)")
 

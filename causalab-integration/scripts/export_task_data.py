@@ -140,11 +140,51 @@ def derive_instance_laws(base):
     return out
 
 
+def derive_compound_instances(parents, seen, max_children=2, max_ops=8):
+    """Substitution instances where one variable becomes a compound term
+    (v := a*b over the parent's own variables). Changes the op count, so the
+    resulting parent -> child True pairs land on odd/high total-op levels the
+    variable-identification route cannot reach. Deterministic order, at most
+    max_children novel children per parent."""
+    from laws import Law
+    out = []
+    for l in parents:
+        vs = sorted(variables_of(l.lhs) | variables_of(l.rhs))
+        made = 0
+        for v in vs:
+            if made >= max_children:
+                break
+            for a in vs:
+                if made >= max_children:
+                    break
+                for b in vs:
+                    sig = {v: ('op', ('var', a), ('var', b))}
+                    lhs = apply_substitution(l.lhs, sig)
+                    rhs = apply_substitution(l.rhs, sig)
+                    from laws import count_ops
+                    if count_ops(lhs) + count_ops(rhs) > max_ops:
+                        continue
+                    if lhs == rhs:
+                        continue
+                    key = _canon(lhs, rhs)
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    out.append(Law(f"{l.lid}_c_{v}{a}{b}",
+                                   f"{l.name} compound instance ({v}:={a}*{b})",
+                                   lhs, rhs, None, l.tclass))
+                    made += 1
+                    break
+    return out
+
+
 BASE = [l for l in LAWS.values() if l.tclass != 'degenerate']
 _canon_seen = {_canon(l.lhs, l.rhs) for l in BASE}
 SYNTH = synth_laws(_canon_seen, bins=range(1, 9), per_bin=4, seed=2026)
 DERIVED = derive_instance_laws(BASE + SYNTH)
-pool = BASE + SYNTH + DERIVED
+_canon_seen |= {_canon(l.lhs, l.rhs) for l in DERIVED}
+COMPOUND = derive_compound_instances(BASE + SYNTH, _canon_seen)
+pool = BASE + SYNTH + DERIVED + COMPOUND
 NL = laws_mod.NL_TEMPLATES
 
 laws_out = {}
@@ -180,7 +220,7 @@ n = len(pool)
 print(f"laws: {n}; certified pairs: {len(pairs)} (implies: {true_n}, non: {len(pairs)-true_n}, excluded: {n*(n-1)-len(pairs)})")
 data = {"registers": ["formal", "instance", "paraphrase", "named"],
         "laws": laws_out, "pairs": pairs,
-        "provenance": "v3 (adds per-op-bin synthetic laws bins 1-8, depth metadata, n4_samples=4000; v2 added single-variable-identification instance laws); certificate-pipeline pipeline/{laws,magma}.py + etp_items.law_nl; certify_all exhaustive<=3 sampled n=4; degenerate excluded; self-pairs excluded; uncertified excluded"}
+        "provenance": "v4 (adds compound-term substitution instances filling odd op levels; v3 added per-op-bin synthetic laws bins 1-8, depth metadata, n4_samples=4000; v2 added single-variable-identification instance laws); certificate-pipeline pipeline/{laws,magma}.py + etp_items.law_nl; certify_all exhaustive<=3 sampled n=4; degenerate excluded; self-pairs excluded; uncertified excluded"}
 blob = json.dumps(data, sort_keys=True, indent=1)
 print("sha256:", hashlib.sha256(blob.encode()).hexdigest()[:16])
 open("etp_pairs.json", "w").write(blob)

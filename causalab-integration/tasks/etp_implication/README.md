@@ -28,15 +28,18 @@ lookup, never a judge.
 
 ## Data
 
-`data/etp_pairs.json` (v3) — 157 laws (21 base + 32 synthetic laws
-generated per op-count bin 1-8, genform-style + 104 derived instance
-laws, each a single-variable identification whose parent -> child
-implication certifies via the substitution route) and 20,563 certified
-ordered pairs (398 implies, 20,165 non-implications; 3,929 uncertified
-pairs excluded, never guessed). Every law carries `n_ops` and `depth`;
-pairs stratify into four complexity bins by total op count (OPS_BINS:
-0-3 / 4-7 / 8-11 / 12+), each bin containing both labels
-(True capacity per bin: 31 / 189 / 117 / 61 pairs).
+`data/etp_pairs.json` (v4) — 247 laws (21 base + 32 synthetic laws per
+op-count bin 1-8, genform-style + 104 single-variable-identification
+instances + 90 compound-term substitution instances, the latter filling
+the odd/high op levels the identification route cannot reach) and
+51,381 certified ordered pairs (799 implies, 50,582 non-implications;
+9,381 uncertified pairs excluded, never guessed). Every law carries
+`n_ops` and `depth`; pairs stratify into EIGHT width-2 complexity
+levels by total op count (2-3 ... 16+, experiment-07 style), every
+level holding >= 15 True pairs (capacity: 41/143/201/193/108/61/37/15),
+so 20 items per level with exact label balance is supported everywhere
+(generate_dataset n=320 yields exactly 20 True + 20 False per level,
+all prompts unique).
 
 **Balance and stratification:** `generate_dataset` samples without
 replacement over unique prompts, exactly label-balanced within every
@@ -50,13 +53,12 @@ which also covers this.
 
 **Known surface floor (measure before trusting any probe):** because
 derived children textually resemble their parents, lexical overlap
-between premise and conclusion partially predicts the label — on v3 a
-bag-of-words classifier reaches leave-pair-out AUROC ~0.70 overall,
-but per complexity bin 0.53 / 0.66 / 0.66 / 0.55 (the overall number is
-inflated by bin composition: True concentrates at low complexity and
-bin is visible via prompt length). This is the NLI lexical-overlap
-confound in miniature. Any claim that a probe reads *implication* must
-beat the per-bin surface floor under a leave-pair-out split, within
+between premise and conclusion partially predicts the label — on v4 a
+bag-of-words classifier reaches leave-pair-out AUROC ~0.71 pooled, and
+per level 0.55/0.62/0.67/0.69/0.65/0.52/0.59/0.50 (pooled is inflated
+by level composition). This is the NLI lexical-overlap confound in
+miniature. Any claim that a probe reads *implication* must beat the
+per-level surface floor under a leave-pair-out split, within
 complexity strata — never the pooled 0.5. Provenance and regeneration:
 see the JSON's `provenance` field and `config.py`'s docstring; source of
 truth is the semantic-drift-autoformalization repo, branch
