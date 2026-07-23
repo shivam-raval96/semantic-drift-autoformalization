@@ -5,8 +5,8 @@ colormap: seismic
 colormap2: null
 intervention_metric: kl
 reference_source: empirical
-n_train: 140           # per class k = min(n/2, unique prompts); True side has ~94
-n_test: 40             # unique prompts on v2, so n_train > 188 caps at 188
+n_train: 320           # stratified: n/(2*4 bins) per (complexity bin, label) cell,
+n_test: 80             # capped by per-cell capacity (v3: True side ~796 unique prompts)
 enumerate_all: false
 balanced: false        # generate_dataset balances exactly (50/50 without replacement)
 resample_variable: all # MUST stay "all" — see task README (certified sampling only)

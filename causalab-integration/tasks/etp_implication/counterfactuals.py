@@ -26,7 +26,9 @@ from .config import (
     CERTIFIED_FALSE,
     CERTIFIED_TRUE,
     DEFAULT_REGISTERS,
+    OPS_BINS,
     PAIRS,
+    ops_bin,
     pair_key,
     registers_for,
 )
@@ -152,17 +154,27 @@ def _unique_certified_items(registers=None):
 def generate_dataset(model, n: int, seed: int = 42) -> list[CounterfactualExample]:
     """Exactly balanced True/False, sampled WITHOUT replacement over unique
     prompts, so the set that survives causalab's dedup is still balanced.
-    Per class k = min(n // 2, unique prompts in that class); the returned
-    dataset has 2k examples — balance wins over requested size (with the v2
-    data the True side has ~94 unique prompts, so n > 188 caps at 188).
+    Stratified by complexity bin (OPS_BINS over the pair's total op count)
+    and exactly label-balanced within every bin; per-cell capacity caps the
+    size, so balance and stratification win over requested n.
     Counterfactuals rotate within the same balanced set, so they are
     balanced and duplicate-free too."""
     rng = random.Random(seed)
     items = _unique_certified_items()
-    true_items = [i for i in items if i[3]]
-    false_items = [i for i in items if not i[3]]
-    k = min(n // 2, len(true_items), len(false_items))
-    chosen = rng.sample(true_items, k) + rng.sample(false_items, k)
+    # stratify by complexity bin (total ops of the pair), balanced within
+    # each bin: per (bin, label) k = min(n / (2*bins), available). The
+    # returned set is exactly label-balanced within every complexity bin.
+    groups: dict = {}
+    for it in items:
+        groups.setdefault((ops_bin(it[0], it[1]), it[3]), []).append(it)
+    bins = sorted({b for b, _ in groups})
+    per_cell = max(1, n // (2 * len(bins)))
+    chosen = []
+    for b in bins:
+        t = groups.get((b, True), [])
+        f = groups.get((b, False), [])
+        k = min(per_cell, len(t), len(f))
+        chosen += rng.sample(t, k) + rng.sample(f, k)
     rng.shuffle(chosen)
     examples: list[CounterfactualExample] = []
     m = len(chosen)

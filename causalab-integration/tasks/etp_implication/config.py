@@ -42,5 +42,24 @@ def pair_key(premise: str, conclusion: str) -> str:
 CERTIFIED_TRUE = [tuple(k.split("|")) for k, v in PAIRS.items() if v]
 CERTIFIED_FALSE = [tuple(k.split("|")) for k, v in PAIRS.items() if not v]
 
+# ---- complexity strata (total operation count of the pair) ----
+OPS_BINS = ((0, 3), (4, 7), (8, 11), (12, 999))
+
+
+def law_ops(lid: str) -> int:
+    return LAWS[lid]["n_ops"]
+
+
+def pair_ops(premise: str, conclusion: str) -> int:
+    return law_ops(premise) + law_ops(conclusion)
+
+
+def ops_bin(premise: str, conclusion: str) -> int:
+    ops = pair_ops(premise, conclusion)
+    for i, (lo, hi) in enumerate(OPS_BINS):
+        if lo <= ops <= hi:
+            return i
+    return len(OPS_BINS) - 1
+
 MAX_TASK_TOKENS = 512
 MAX_NEW_TOKENS = 1

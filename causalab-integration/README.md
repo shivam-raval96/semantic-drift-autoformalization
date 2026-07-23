@@ -20,10 +20,11 @@ cd /path/to/causalab && uv sync         # once; installs torch etc.
 A premise law and a conclusion law over a magma are rendered in one of
 several registers (`formal` equation, explicit `instance` prose,
 `paraphrase`, `named`); the model answers True/False whether the premise
-implies the conclusion. Ground truth is a certificate lookup — 1,966
-certified ordered pairs over 47 laws (21 base + 26 derived substitution
-instances; 47 implies, 1,919 non-implications via finite countermodels;
-uncertified pairs excluded, never guessed). The `template`
+implies the conclusion. Ground truth is a certificate lookup — 20,563
+certified ordered pairs over 157 laws (21 base + 32 per-op-bin synthetic
++ 104 derived substitution instances; 398 implies, 20,165
+non-implications via finite countermodels; uncertified pairs excluded,
+never guessed), stratified into four complexity bins by op count. The `template`
 causal variable IS the register, so cross-register interventions are
 native template interventions. Counterfactual generators map to the
 project's research questions: `flip_premise`/`flip_conclusion` (does the
@@ -67,9 +68,10 @@ versions are different experiments.
   This is why the runner chain omits `locate` for now — integrating it
   needs a runner hook that consumes `flip_premise` (already yields
   certified single-variable pairs) or a certified-aware resampler.
-- The True side is enriched via derived instance laws (v2), which buys
-  47 True pairs at the cost of a measurable lexical-overlap floor
-  (BoW AUROC ~0.64 leave-pair-out; see the task README). Probes must be
-  scored against that floor, under leave-pair-out splits.
+- The True side is enriched via derived instance laws, which buys 398
+  True pairs at the cost of a measurable lexical-overlap floor (v3: BoW
+  AUROC ~0.70 pooled, 0.53-0.66 per complexity bin; see the task
+  README). Probes must beat the per-bin floor under leave-pair-out
+  splits, within complexity strata.
 - Pin the causalab commit you run against and record it next to results
   (the framework is under active development).

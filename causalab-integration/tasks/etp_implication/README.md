@@ -28,16 +28,21 @@ lookup, never a judge.
 
 ## Data
 
-`data/etp_pairs.json` (v2) — 47 laws (21 base + 26 derived instance laws,
-each a single-variable identification of a base law, so parent -> child
-implications certify via the substitution route) and 1,966 certified
-ordered pairs (47 implies, 1,919 non-implications; 196 uncertified pairs
-excluded, never guessed). Balance is enforced at sampling time.
+`data/etp_pairs.json` (v3) — 157 laws (21 base + 32 synthetic laws
+generated per op-count bin 1-8, genform-style + 104 derived instance
+laws, each a single-variable identification whose parent -> child
+implication certifies via the substitution route) and 20,563 certified
+ordered pairs (398 implies, 20,165 non-implications; 3,929 uncertified
+pairs excluded, never guessed). Every law carries `n_ops` and `depth`;
+pairs stratify into four complexity bins by total op count (OPS_BINS:
+0-3 / 4-7 / 8-11 / 12+), each bin containing both labels
+(True capacity per bin: 31 / 189 / 117 / 61 pairs).
 
-**Balance:** `generate_dataset` samples without replacement over unique
-prompts, exactly 50/50 True/False for both inputs and counterfactuals —
-the set that survives causalab's dedup stays balanced. Requested n above
-2 x (unique True prompts) is capped; balance wins over size. Caveat:
+**Balance and stratification:** `generate_dataset` samples without
+replacement over unique prompts, exactly label-balanced within every
+complexity bin (per-cell k = min(n / (2 x bins), capacity)) — the set
+that survives causalab's dedup stays balanced and stratified. Capacity
+caps requested n; balance wins over size. Caveat:
 causalab draws train (seed) and test (seed+1) independently from the
 same pool, so prompt overlap across train/test is possible — grouped
 (leave-pair-out) evaluation splits are mandatory for any probe claim,
@@ -45,12 +50,14 @@ which also covers this.
 
 **Known surface floor (measure before trusting any probe):** because
 derived children textually resemble their parents, lexical overlap
-between premise and conclusion partially predicts the label — a
-bag-of-words classifier reaches AUROC ~0.61-0.64 under stratified,
-leave-pair-out, and leave-premise-out splits (v1 data without derived
-laws was at chance). This is the NLI lexical-overlap confound in
-miniature. Any claim that a probe reads *implication* must therefore
-beat this surface baseline under a leave-pair-out split, not 0.5. Provenance and regeneration:
+between premise and conclusion partially predicts the label — on v3 a
+bag-of-words classifier reaches leave-pair-out AUROC ~0.70 overall,
+but per complexity bin 0.53 / 0.66 / 0.66 / 0.55 (the overall number is
+inflated by bin composition: True concentrates at low complexity and
+bin is visible via prompt length). This is the NLI lexical-overlap
+confound in miniature. Any claim that a probe reads *implication* must
+beat the per-bin surface floor under a leave-pair-out split, within
+complexity strata — never the pooled 0.5. Provenance and regeneration:
 see the JSON's `provenance` field and `config.py`'s docstring; source of
 truth is the semantic-drift-autoformalization repo, branch
 `certificate-pipeline` (`pipeline/laws.py`, `pipeline/magma.py`).

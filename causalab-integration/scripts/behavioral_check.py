@@ -46,6 +46,7 @@ def build_items(n_per_class: int, seed: int):
         CERTIFIED_FALSE,
         CERTIFIED_TRUE,
         DEFAULT_REGISTERS,
+        ops_bin,
         registers_for,
     )
     from causalab.tasks.etp_implication.templates import fill_template
@@ -58,10 +59,20 @@ def build_items(n_per_class: int, seed: int):
                 if r in registers_for(p) and r in registers_for(c):
                     by_label[label].append(
                         {"p": p, "c": c, "register": r, "label": label,
+                         "bin": ops_bin(p, c),
                          "prompt": fill_template(r, p, c)}
                     )
-    k = min(n_per_class, len(by_label[True]), len(by_label[False]))
-    items = rng.sample(by_label[True], k) + rng.sample(by_label[False], k)
+    # stratified: balanced per (complexity bin, label) cell
+    cells: dict = {}
+    for label in (True, False):
+        for it in by_label[label]:
+            cells.setdefault((it["bin"], label), []).append(it)
+    bins = sorted({b for b, _ in cells})
+    per_cell = max(1, n_per_class // len(bins))
+    items = []
+    for b in bins:
+        k = min(per_cell, len(cells.get((b, True), [])), len(cells.get((b, False), [])))
+        items += rng.sample(cells[(b, True)], k) + rng.sample(cells[(b, False)], k)
     rng.shuffle(items)
     return items
 
@@ -144,6 +155,10 @@ def main():
             sub = [r for r in scored if r["register"] == reg]
             a = sum(r["answer"] == r["label"] for r in sub) / len(sub)
             print(f"  {reg}: acc {a:.2f} (n={len(sub)})")
+        for b in sorted({r['bin'] for r in scored}):
+            sub = [r for r in scored if r["bin"] == b]
+            a = sum(r["answer"] == r["label"] for r in sub) / len(sub)
+            print(f"  ops-bin {b}: acc {a:.2f} (n={len(sub)})")
 
 
 if __name__ == "__main__":
