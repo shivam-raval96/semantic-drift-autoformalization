@@ -26,12 +26,19 @@ import urllib.request
 URL = "https://openrouter.ai/api/v1/chat/completions"
 
 def _ssl_context():
-    """macOS framework Python ships without root certs; prefer certifi."""
+    """macOS framework Python ships without root certs; require certifi there."""
     try:
         import certifi
         return ssl.create_default_context(cafile=certifi.where())
     except ImportError:
-        return ssl.create_default_context()
+        ctx = ssl.create_default_context()
+        if not ctx.cert_store_stats().get("x509_ca", 0):
+            raise SystemExit(
+                "No CA certificates available in this Python. Fix with ONE of:\n"
+                "  python3 -m pip install certifi     (same interpreter as this script)\n"
+                "  open '/Applications/Python 3.12/Install Certificates.command'"
+            )
+        return ctx
 
 
 def build_items(n_per_class: int, seed: int):
@@ -107,7 +114,17 @@ def main():
 
     api_key = os.environ.get("OPENROUTER_API_KEY", "")
     if not api_key:
-        raise SystemExit("OPENROUTER_API_KEY is not set (use --dry-run to test offline)")
+        # fall back to a .env next to the repo root (gitignored)
+        for env_path in (".env", os.path.join(os.path.dirname(__file__), "../../.env")):
+            if os.path.exists(env_path):
+                for line in open(env_path):
+                    if line.strip().startswith("OPENROUTER_API_KEY="):
+                        api_key = line.strip().split("=", 1)[1].strip().strip('"')
+                        break
+            if api_key:
+                break
+    if not api_key:
+        raise SystemExit("OPENROUTER_API_KEY not set and no .env found (use --dry-run to test offline)")
 
     for model in args.models:
         results = []
