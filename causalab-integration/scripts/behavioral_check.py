@@ -77,38 +77,49 @@ def build_items(n_per_level: int, seed: int):
     return items
 
 
-def ask(model: str, prompt: str, api_key: str) -> str:
-    payload = {
-        "model": model,
-        "messages": [
-            {"role": "system",
-             "content": "Think briefly if needed, then END your reply with a "
-                        "final line containing exactly one word: True or False."},
-            {"role": "user", "content": prompt},
-        ],
-        "temperature": 0,
-        "max_tokens": 400,
-    }
+SYSTEM = ("Think step by step if needed, then END your reply with a final "
+          "line containing exactly one word: True or False.")
+
+
+def _call(model: str, messages: list, api_key: str, max_tokens: int) -> str:
+    payload = {"model": model, "messages": messages,
+               "temperature": 0, "max_tokens": max_tokens}
     req = urllib.request.Request(
         URL,
         data=json.dumps(payload).encode(),
         headers={"Authorization": f"Bearer {api_key}",
                  "Content-Type": "application/json"},
     )
-    with urllib.request.urlopen(req, timeout=120, context=_ssl_context()) as r:
+    with urllib.request.urlopen(req, timeout=180, context=_ssl_context()) as r:
         out = json.load(r)
     return (out["choices"][0]["message"]["content"] or "").strip()
+
+
+def ask(model: str, prompt: str, api_key: str) -> str:
+    messages = [{"role": "system", "content": SYSTEM},
+                {"role": "user", "content": prompt}]
+    text = _call(model, messages, api_key, max_tokens=3000)
+    if parse_answer(text) is None:
+        # did not conclude: nudge once for the bare verdict
+        messages += [{"role": "assistant", "content": text},
+                     {"role": "user", "content": "Final answer, one word: True or False?"}]
+        text = _call(model, messages, api_key, max_tokens=8)
+    return text
 
 
 import re
 
 
 def parse_answer(text: str):
-    t = text.strip().strip("*_\"'`# ").lower()
-    # the verdict is the LAST standalone true/false (reasoning may restate both)
-    hits = re.findall(r"\b(true|false)\b", t)
-    if hits:
-        return hits[-1] == "true"
+    # verdict = the last NON-EMPTY LINE, which must be exactly true/false
+    # (mid-reasoning mentions of the words never count)
+    for line in reversed(text.strip().splitlines()):
+        line = line.strip().strip("*_\"'`#. ").lower()
+        if not line:
+            continue
+        if line in ("true", "false"):
+            return line == "true"
+        return None
     return None
 
 
