@@ -40,7 +40,7 @@ sys.path.insert(0, str(ROOT))
 from benchmark import _complexity, _term_ops, call_openrouter, load_equations, validate_models  # noqa: E402
 from storyform import ParseError, parse_equation, render_story  # noqa: E402
 
-PROMPT_PATH = ROOT / "invent_prompt.md"
+PROMPT_PATH = ROOT / "prompts" / "invent_prompt.md"
 DEFAULT_OUT_DIR = ROOT / "experiments" / "10-invent-grammar" / "runs" / "run-mini"
 DEFAULT_MODELS = ("openai/gpt-5.5", "google/gemini-2.5-flash")
 K_VALUES = (1, 2, 3)

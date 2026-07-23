@@ -26,7 +26,7 @@ from checkform import (
 )
 from storyform import Op, Var, canonical, parse_equation, render_story
 
-CORPUS_DIR = Path(__file__).resolve().parent / "corpus"
+CORPUS_DIR = Path(__file__).resolve().parents[1] / "corpus"
 
 # Ground truth: the CLAUDE.md worked example E387 => E43 (F symmetric),
 # and a second pair whose questioned law is NOT symmetric under

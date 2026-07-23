@@ -153,7 +153,7 @@ schema, so `checkform.py` grades answers to either style unchanged.
 a words-only prefix grammar; the definition-step grammar replaced it for
 experiment 04.)
 
-[literal_prompt.md](literal_prompt.md) is the companion system prompt:
+[literal_prompt.md](prompts/literal_prompt.md) is the companion system prompt:
 same self-contained `op(first, second)` / `ASSUME:` / `ASK:` contract as
 `formalize_prompt.md`, but teaching the mapping from the literal grammar
 ("first input" → first argument of `op`, Value names unfolded into nested
@@ -179,7 +179,7 @@ score the identical pair set and differ only in the rendering.
 
 `benchmark.py --form two-stage` decomposes the story arm into two model
 calls: stage 1 sends the themed story with
-[abstract_prompt.md](abstract_prompt.md), asking the model to rewrite it
+[abstract_prompt.md](prompts/abstract_prompt.md), asking the model to rewrite it
 as a literalform-style description, and stage 2 feeds that raw output —
 verbatim, no extraction — into `literal_prompt.md` to produce the two
 `ASSUME:`/`ASK:` lines, graded as usual. Comparing this pipeline against
@@ -191,7 +191,7 @@ isolates how much fidelity stage 1 loses.
 
 The corpus exists to test whether models can formalize the stories back.
 [checkform.py](checkform.py) closes that loop without assuming the model
-knows Lean or any ETP convention: [formalize_prompt.md](formalize_prompt.md)
+knows Lean or any ETP convention: [formalize_prompt.md](prompts/formalize_prompt.md)
 teaches a tiny self-contained answer syntax inside the prompt itself, and
 grading is pure syntactic comparison — no LLM judging.
 
@@ -243,19 +243,19 @@ python3 checkform.py grade corpus/E387-E43-paint.json response.txt
 - [literalform.py](literalform.py) — the direct arm: literal
   natural-language descriptions of the same implications, with its own
   back-parser.
-- [formalize_prompt.md](formalize_prompt.md) — self-contained prompt
+- [formalize_prompt.md](prompts/formalize_prompt.md) — self-contained prompt
   teaching the answer syntax; `{story}` placeholder filled per record.
-- [literal_prompt.md](literal_prompt.md) — companion prompt for literal
+- [literal_prompt.md](prompts/literal_prompt.md) — companion prompt for literal
   descriptions; same answer syntax, graded by the same checker.
-- [abstract_prompt.md](abstract_prompt.md) — stage-1 prompt of the
+- [abstract_prompt.md](prompts/abstract_prompt.md) — stage-1 prompt of the
   two-stage arm: rewrite a themed story as a literalform-style
   description.
 - [checkform.py](checkform.py) — answer extraction, prefix parser, and
   syntactic grader with CLI.
-- [test_storyform.py](test_storyform.py) — renderer test suite.
-- [test_literalform.py](test_literalform.py) — literal-renderer test suite.
-- [test_checkform.py](test_checkform.py) — grader test suite.
-- [test_benchmark.py](test_benchmark.py) — benchmark test suite
+- [test_storyform.py](tests/test_storyform.py) — renderer test suite.
+- [test_literalform.py](tests/test_literalform.py) — literal-renderer test suite.
+- [test_checkform.py](tests/test_checkform.py) — grader test suite.
+- [test_benchmark.py](tests/test_benchmark.py) — benchmark test suite
   (two-stage arm, regime wrappers).
 - [experiments/](experiments/) — the committed lab notebook: each
   benchmark experiment with its write-up, run data, and chart report

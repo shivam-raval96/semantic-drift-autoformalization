@@ -264,11 +264,11 @@ implication, with no LLM judging anywhere:
 
 ## Testing
 
-Renderer tests live in `test_storyform.py`, literal-renderer tests in
-`test_literalform.py`, grader tests in `test_checkform.py`, benchmark
-(two-stage arm and regime wrappers) tests in `test_benchmark.py`; run all
-with `python3 -m unittest test_storyform test_literalform test_checkform
-test_benchmark`.
+Tests live in `tests/`: renderer tests in `tests/test_storyform.py`,
+literal-renderer tests in `tests/test_literalform.py`, grader tests in
+`tests/test_checkform.py`, benchmark (two-stage arm and regime wrappers)
+tests in `tests/test_benchmark.py`; run all from the repo root with
+`python3 -m unittest discover -s tests`.
 Renderer priority order:
 1. Round-trip test — a back-parser recovers both term trees from the story
    text alone, matching the original pair of ASTs.

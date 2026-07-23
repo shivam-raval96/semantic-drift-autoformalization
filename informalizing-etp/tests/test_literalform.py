@@ -22,7 +22,7 @@ from literalform import (
 )
 from storyform import THEMES, canonical, write_record
 
-LITERAL_PROMPT_PATH = Path(__file__).resolve().parent / "literal_prompt.md"
+LITERAL_PROMPT_PATH = Path(__file__).resolve().parents[1] / "prompts" / "literal_prompt.md"
 
 # Same shape probes as test_storyform: the worked pair, bare-variable
 # sides, repeated variables, deep 4-operation nesting, and the

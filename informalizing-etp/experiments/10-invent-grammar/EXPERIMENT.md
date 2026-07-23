@@ -69,7 +69,7 @@ set -a; source ../.env; set +a   # OPENROUTER_API_KEY
 python3 experiments/10-invent-grammar/run_experiment.py --dry-run  # prompts only
 python3 experiments/10-invent-grammar/run_experiment.py
 python3 experiments/10-invent-grammar/run_experiment.py \
-    --prompt-template invent_bnf_prompt.md \
+    --prompt-template prompts/invent_bnf_prompt.md \
     --out-dir experiments/10-invent-grammar/runs/run-mini-bnf
 ```
 

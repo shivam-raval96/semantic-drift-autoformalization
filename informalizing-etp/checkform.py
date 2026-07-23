@@ -29,7 +29,7 @@ from typing import Dict, List, Optional, Tuple
 
 from storyform import Op, Term, Var, canonical, parse_equation
 
-PROMPT_PATH = Path(__file__).resolve().parent / "formalize_prompt.md"
+PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "formalize_prompt.md"
 
 
 class AnswerParseError(ValueError):

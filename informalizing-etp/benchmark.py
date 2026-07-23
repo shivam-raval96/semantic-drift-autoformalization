@@ -52,8 +52,8 @@ from genform import parse_bins
 from literalform import render_description
 from storyform import Op, ParseError, Term, Var, parse_equation, render_story
 
-LITERAL_PROMPT_PATH = Path(__file__).resolve().parent / "literal_prompt.md"
-ABSTRACT_PROMPT_PATH = Path(__file__).resolve().parent / "abstract_prompt.md"
+LITERAL_PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "literal_prompt.md"
+ABSTRACT_PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "abstract_prompt.md"
 
 # Each form is a (renderer, prompt template) arm over the same record
 # schema; checkform grades all of them unchanged. The two-stage arm

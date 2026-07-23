@@ -51,9 +51,9 @@ LIBRARIAN_E = "x ∘ (x ∘ y) = y"
 LIBRARIAN_F = "x ∘ y = y ∘ x"
 
 # Experiment 08's hint templates and the paragraph they share.
-HINT_PROMPT_PATH = Path(__file__).resolve().parent / "formalize_hint_prompt.md"
+HINT_PROMPT_PATH = Path(__file__).resolve().parents[1] / "prompts" / "formalize_hint_prompt.md"
 HINT_EXAMPLE_PROMPT_PATH = (
-    Path(__file__).resolve().parent / "formalize_hint_example_prompt.md"
+    Path(__file__).resolve().parents[1] / "prompts" / "formalize_hint_example_prompt.md"
 )
 HINT_PARAGRAPH = (
     "The approach you should take to finding a formalization is first\n"

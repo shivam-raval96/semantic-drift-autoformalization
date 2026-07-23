@@ -100,13 +100,13 @@ paragraph:
 
 ```sh
 python3 benchmark.py --seed 0 --stratify-ops 20 --exclude-vacuous \
-    --form story --prompt-template formalize_hint_prompt.md --reasoning off \
+    --form story --prompt-template prompts/formalize_hint_prompt.md --reasoning off \
     --concurrency 8 \
     --models deepseek/deepseek-chat-v3.1,qwen/qwen3-32b,meta-llama/llama-3.3-70b-instruct,mistralai/mistral-small-3.2-24b-instruct,openai/gpt-4o-mini,google/gemini-2.5-flash,anthropic/claude-haiku-4.5,openai/gpt-5-mini,openai/gpt-5.5 \
     --out-dir experiments/08-abstraction-hint/runs/run-strat20-s0-story-hint-think-off
 
 python3 benchmark.py --seed 0 --stratify-ops 20 --exclude-vacuous \
-    --form story --prompt-template formalize_hint_example_prompt.md --reasoning off \
+    --form story --prompt-template prompts/formalize_hint_example_prompt.md --reasoning off \
     --concurrency 8 \
     --models deepseek/deepseek-chat-v3.1,qwen/qwen3-32b,meta-llama/llama-3.3-70b-instruct,mistralai/mistral-small-3.2-24b-instruct,openai/gpt-4o-mini,google/gemini-2.5-flash,anthropic/claude-haiku-4.5,openai/gpt-5-mini,openai/gpt-5.5 \
     --out-dir experiments/08-abstraction-hint/runs/run-strat20-s0-story-hint-example-think-off
