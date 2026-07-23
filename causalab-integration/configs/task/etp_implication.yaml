@@ -5,10 +5,10 @@ colormap: seismic
 colormap2: null
 intervention_metric: kl
 reference_source: empirical
-n_train: 400
-n_test: 50
+n_train: 140           # per class k = min(n/2, unique prompts); True side has ~94
+n_test: 40             # unique prompts on v2, so n_train > 188 caps at 188
 enumerate_all: false
-balanced: false        # the task's generate_dataset already balances True/False 50/50
+balanced: false        # generate_dataset balances exactly (50/50 without replacement)
 resample_variable: all # MUST stay "all" — see task README (certified sampling only)
 target_variables:
   - implication

@@ -34,6 +34,15 @@ implications certify via the substitution route) and 1,966 certified
 ordered pairs (47 implies, 1,919 non-implications; 196 uncertified pairs
 excluded, never guessed). Balance is enforced at sampling time.
 
+**Balance:** `generate_dataset` samples without replacement over unique
+prompts, exactly 50/50 True/False for both inputs and counterfactuals —
+the set that survives causalab's dedup stays balanced. Requested n above
+2 x (unique True prompts) is capped; balance wins over size. Caveat:
+causalab draws train (seed) and test (seed+1) independently from the
+same pool, so prompt overlap across train/test is possible — grouped
+(leave-pair-out) evaluation splits are mandatory for any probe claim,
+which also covers this.
+
 **Known surface floor (measure before trusting any probe):** because
 derived children textually resemble their parents, lexical overlap
 between premise and conclusion partially predicts the label — a

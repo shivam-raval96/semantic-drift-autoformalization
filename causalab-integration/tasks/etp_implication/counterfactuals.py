@@ -139,15 +139,39 @@ COUNTERFACTUAL_GENERATORS = {
 }
 
 
+def _unique_certified_items(registers=None):
+    """All unique (premise, conclusion, register, label) combinations."""
+    items = []
+    for label, pool in ((True, CERTIFIED_TRUE), (False, CERTIFIED_FALSE)):
+        for p, c in pool:
+            for r in _common_registers(p, c, registers):
+                items.append((p, c, r, label))
+    return items
+
+
 def generate_dataset(model, n: int, seed: int = 42) -> list[CounterfactualExample]:
-    state = random.getstate()
-    random.seed(seed)
-    examples = [
-        {
-            "input": sample_balanced_input(),
-            "counterfactual_inputs": [sample_balanced_input()],
-        }
-        for _ in range(n)
-    ]
-    random.setstate(state)
+    """Exactly balanced True/False, sampled WITHOUT replacement over unique
+    prompts, so the set that survives causalab's dedup is still balanced.
+    Per class k = min(n // 2, unique prompts in that class); the returned
+    dataset has 2k examples — balance wins over requested size (with the v2
+    data the True side has ~94 unique prompts, so n > 188 caps at 188).
+    Counterfactuals rotate within the same balanced set, so they are
+    balanced and duplicate-free too."""
+    rng = random.Random(seed)
+    items = _unique_certified_items()
+    true_items = [i for i in items if i[3]]
+    false_items = [i for i in items if not i[3]]
+    k = min(n // 2, len(true_items), len(false_items))
+    chosen = rng.sample(true_items, k) + rng.sample(false_items, k)
+    rng.shuffle(chosen)
+    examples: list[CounterfactualExample] = []
+    m = len(chosen)
+    for idx, (p, c, r, label) in enumerate(chosen):
+        p2, c2, r2, _ = chosen[(idx + m // 2) % m]  # opposite-half partner
+        examples.append(
+            {
+                "input": _trace(p, c, r),
+                "counterfactual_inputs": [_trace(p2, c2, r2)],
+            }
+        )
     return examples
