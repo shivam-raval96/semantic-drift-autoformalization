@@ -1,0 +1,1837 @@
+# State of the art: the isometry result vs prior work
+
+Deep-research sweep 2026-07-24 (5 search angles, adversarial 3-vote
+verification per claim; full JSON in the session workflow journal).
+Summary: The literature check supports a genuine novelty core with clearly demarcated adjacent work. Prior art exists for every COMPONENT of the result — RSA/probing of LLM geometry against external reference structures (CIELAB color space, geographic space-time), cross-model representational convergence (Platonic Representation Hypothesis and the vec2vec/relative-representations line), and representation-without-competence dissociations (Burns et al.'s CCS probes staying accurate while behavior is wrong; 2026 'epiphenomenal correctness' subspaces) — but no verified source uses a machine-verified, theorem-prover-derived relational structure (e.g., a Lean-verified implication graph) as the ground-truth metric for activation geometry, and no cross-model convergence work measures two model families' agreement with the same external formal metric rather than with each other. The specific conjunction — formally verified decidable ground truth + permutation-null-validated geometric agreement + replication across two families + a geometry-without-competence dissociation on the same structure — appears unclaimed. The must-cite-and-differentiate list is: Huh et al. 2024 (PRH) plus its 2026 critiques (Back into Plato's Cave; Convergence Without Understanding), vec2vec/mini-vec2vec, Abdou et al. 2021 and Gurnee & Tegmark for external-structure RSA precedent, Burns et al. 2022 (with the Farquhar et al. critique) for the dissociation precedent, Goodfire's 2026 manifold-steering work for geometry-behavior links, and Williams 2025/2026 for the philosophical objection that unexploited structural correspondence may not count as representation — which directly targets the interpretation of the Llama-1B dissociation and should be addressed head-on.
+
+## Finding 1 [high confidence]
+Area 1 precedent: Comparing LLM activation geometry to EXTERNAL reference structures via RSA/probing is established prior art — but none of the verified examples uses a machine-verified mathematical relation as the reference metric. Williams (arXiv:2506.16370, Jun 2025; Mind & Language 2026) surveys exactly this class: Abdou et al. 2021 (CoNLL) found statistically significant RSA correspondences between BERT/RoBERTa/ELECTRA color-term geometry and CIELAB perceptual space; Gurnee & Tegmark (arXiv:2310.02207, ICLR 2024) linearly decoded spatial and temporal coordinates. Full-text verification found zero occurrences of 'theorem', 'formally verified', or Lean-prover references in this line. Our contribution is therefore methodologically continuous with this literature (external-referent RSA) but novel in the referent: a decidable, Lean-verified implication graph rather than human-perceptual or geographic labels.
+
+*Evidence:* Verified verbatim: 'Tools such as Representational Similarity Analysis... and probing methods, have revealed structural correspondences between... the various internal state spaces of LLMs and... relational structures outside the network.' Negative check: no theorem-prover/formally-verified reference metric anywhere in the surveyed line.
+Sources: https://arxiv.org/abs/2506.16370 · https://aclanthology.org/2021.conll-1.9 · https://arxiv.org/abs/2310.02207
+
+## Finding 2 [high confidence]
+Area 1, geometry-of-concepts line: The 'geometry of concepts' and neural-manifold literature characterizes internal structure against INTERNALLY DERIVED or TASK-INTRINSIC references, never a formally verified external metric. Li/Michaud/Tegmark et al. (arXiv:2410.19750, Oct 2024) analyze SAE feature dictionaries at three scales (atomic/brain/galaxy) using co-occurrence clusters and eigenvalue spectra — all internal. Goodfire's manifold-steering paper (arXiv:2605.05115, May 2026) goes further than our work in one dimension — it demonstrates a causal, bidirectional link between activation-manifold geometry and behavior via interventions (manifold steering follows the behavior manifold; Euclidean linear steering goes off-manifold) — but its reference geometries are task-intrinsic (cyclic/sequential reasoning, ICL graphs, physical dynamics in a video world model), not theorem-prover output. Adversarial searches through mid-2026 found no SAE/activation-geometry work validated against Lean-verified ground truth.
+
+*Evidence:* Verified verbatim from 2605.05115: 'steering along M_h... yields behavioral trajectories that follow M_y, while linear steering -- which assumes a Euclidean geometry -- cuts through off-manifold regions'; and its geometries are 'reasoning tasks with cyclic and sequential geometries... in-context learning tasks with more complex graph geometries... physical dynamics.' Note 2605.05115 is a preprint (~2 months old). Its causal evidence also highlights what our result lacks: we show correlational geometric agreement, not intervention-based causality.
+Sources: https://arxiv.org/abs/2410.19750 · https://arxiv.org/abs/2605.05115
+
+## Finding 3 [high confidence]
+Area 2, PRH core: The Platonic Representation Hypothesis (Huh et al., arXiv:2405.07987, ICML 2024) establishes that deep-network representations converge across models and modalities (mutual-nearest-neighbor kernel alignment increasing with scale), and hypothesizes convergence toward a 'shared statistical model of reality' — but all its measurements are MODEL-TO-MODEL, and its conjectured referent is a statistical world model never operationalized as a decidable or theorem-prover-verified structure. Searches of the PRH lineage found no work operationalizing the referent formally. It therefore does not preempt 'two model families agree with the same external formal metric'; our result can be framed as a small-scale, formally grounded instantiation of the PRH's external-referent conjecture.
+
+*Evidence:* Three unanimous verifications of the abstract's verbatim claims; independent confirmation that the only external-reference experiment in the paper compares color geometry to CIELAB (empirical human perception, not a formal structure), and that alignment metrics are mutual-kNN between models.
+Sources: https://arxiv.org/abs/2405.07987
+
+## Finding 4 [high confidence]
+Area 2, alignment-methods line: vec2vec (Jha, Zhang, Shmatikov, Morris; arXiv:2505.12540, May 2025, NeurIPS 2025), mini-vec2vec (Dar; arXiv:2510.02348, Oct 2025), and relative representations (Moschella et al.; arXiv:2209.15430, ICLR 2023 oral) constitute the strongest quantitative cross-model convergence evidence: unsupervised translation between text-embedding spaces with no paired data (0.80-0.92 cosine across architectures/training data), with mini-vec2vec showing the cross-model map is LINEAR, and relative representations enabling zero-shot stitching via anchor-similarity invariants. All three explicitly ground themselves in the PRH/'universal geometry'. But in every case the reference for agreement is another learned model's embedding space, and the shared structure is attributed to the data domain — full-text checks confirm no mention of theorem provers, formal verification, knowledge graphs, or ontologies as reference metrics. These works also concern text-embedding encoders, not LLM internal activations on formal-math content.
+
+*Evidence:* Verbatim quotes verified in all three abstracts/bodies; full-text negative search of mini-vec2vec confirmed 'ground truth' means paired embeddings in another model's space. mini-vec2vec independently reproduces vec2vec, corroborating robustness. One related claim about seed-level angle invariance was REFUTED (0-3) and is excluded — do not cite relative representations for exact invariance across seeds.
+Sources: https://arxiv.org/abs/2505.12540 · https://arxiv.org/pdf/2510.02348 · https://arxiv.org/abs/2209.15430
+
+## Finding 5 [medium confidence]
+Area 2, convergence critiques (must-cite qualifiers): The PRH evidence base is contested in 2026 and any convergence framing must cite the critiques. (a) 'Back into Plato's Cave' (Koepke, Zverev, Ginosar, Efros; arXiv:2604.18572, Apr 2026, BAIR): mutual-kNN alignment measured on ~1K samples degrades substantially at millions of samples, and surviving cross-modal alignment reflects only coarse semantic overlap, not fine-grained structure. (b) 'Convergence Without Understanding' (Usama & Chang; arXiv:2605.23315, May 2026): across 16 LLMs/8 families on 800 reasoning problems, a 'difficulty inversion' — models are MORE similar on problems they collectively fail (CKA=0.897) than solve (CKA=0.830) — and convergence is primarily an input-encoding property (pre-decision CKA=0.875 vs post-decision 0.274). (c) An 'Aristotelian' calibration critique (arXiv:2602.14486) shows width/depth confounds inflate global spectral metrics, though local mutual-kNN trends survive. These strengthen our differentiation (convergence to each other is not convergence to verified truth) but also warn that CKA/kNN-style agreement metrics need careful null models — which our permutation-null design addresses.
+
+*Evidence:* All quotes verified verbatim against abstracts/PDFs; code released for 2604.18572. Confidence is medium rather than high because both are non-peer-reviewed preprints 2-3 months old, two constituent claims passed 2-1, and the 'contradicts PRH' framing slightly overstates the authors' own hedged position ('constrains scope', 'primarily').
+Sources: https://arxiv.org/abs/2604.18572 · https://arxiv.org/pdf/2605.23315 · https://arxiv.org/abs/2602.14486
+
+## Finding 6 [high confidence]
+Area 3, representation-without-competence precedent: The dissociation itself is well-precedented, but never with decidable/formally verified ground truth. Burns et al. (CCS, arXiv:2212.03827, ICLR 2023) found truth directions unsupervised in activation space that 'maintain high accuracy even when models are prompted to generate incorrect answers' (probe 82-84% while zero-shot behavior drops ~9.5%) — direct precedent for internals containing information behavior does not use. Usama & Chang 2026 sharpen this causally: correctness information transfers across models (66% probe accuracy vs 55% permutation baseline) yet ablating the shared correctness subspace flips predictions only 1.5-5.5% of the time ('epiphenomenal correctness'). In all verified cases the ground truth is human-labeled QA/task correctness, not a machine-verified mathematical relation. Our Llama-1B case (ETP-aligned geometry at chance-level judgment performance) is a new instance class: the dissociation target is a DECIDABLE, Lean-verified relation, and the representational content is geometric/relational rather than a single truth direction.
+
+*Evidence:* CCS abstract quote verified verbatim plus misleading-prefix numbers (probe 82.1%->83.8% while behavior degrades). Epiphenomenal-correctness numbers verified in the PDF body, including per-model flip rates. Must also cite Farquhar et al. 2023 (arXiv:2312.10029), which shows arbitrary prominent features satisfy CCS's consistency conditions — soften any 'establishes' language about CCS finding knowledge per se.
+Sources: https://arxiv.org/abs/2212.03827 · https://arxiv.org/pdf/2605.23315
+
+## Finding 7 [high confidence]
+Interpretive frame we must engage: Williams (arXiv:2506.16370; Mind & Language 2026) argues that mere structural correspondence between LLM internals and worldly structures is insufficient to ground representation — the correspondence must be EXPLOITED in a way that explains successful task performance. Applied to our result, this is the strongest ready-made objection to calling the Llama-1B finding 'representation of the implication order': at chance performance there is no success for the geometry to explain, so on Williams' account the ETP-aligned geometry would be unexploited structure, not representation. The paper should either adopt deflationary language ('structural correspondence' / 'geometric alignment') for the dissociation case or argue against the exploitation criterion; Qwen (if above chance) and Llama can then be positioned on opposite sides of Williams' line, which is itself a novel empirical use of his distinction.
+
+*Evidence:* Abstract quote verified verbatim: 'the mere existence of structural correspondences between LLMs and worldly entities is insufficient to ground representation... if these structural correspondences... are exploited in a way that explains successful task performance -- then they could ground real world contents.' Peer-reviewed (Mind & Language, doi 10.1111/mila.70018).
+Sources: https://arxiv.org/abs/2506.16370
+
+## Finding 8 [low confidence]
+Areas 4 and 5 — no verified prior work found: The adversarial verification pass produced ZERO surviving claims on (4) mechanistic interpretability of autoformalization/formal-math LLMs (probing internals of models doing NL-to-Lean translation or entailment over miniF2F/ProofNet-style corpora) and (5) order embeddings/entailment cones/KG embeddings (TransE etc.) repurposed as ANALYSIS tools for trained LM activations. Multiple targeted searches (Goodfire+Lean, SAE+theorem prover, LeanDojo-adjacent interp) found provers used only as correctness oracles for model OUTPUTS, never as reference metrics for activation geometry. This is consistent with these being open gaps — and our PCA-of-implication-fingerprints embedding is itself a lightweight order-embedding-as-analysis-tool move with no verified precedent — but absence of surviving claims is weaker evidence than a verified negative result.
+
+*Evidence:* Verifier notes on claims [2] and [4] record explicit adversarial searches for activation geometry validated against theorem-prover ground truth returning no results through mid-2026 (LeanDojo/LeanMarathon/SorryDB show no such integration). No dedicated search claims for areas 4-5 survived to confirmation, so this is an argument from verified absence, not a verified claim.
+Sources: https://arxiv.org/abs/2605.05115 · https://arxiv.org/abs/2410.19750
+
+## Finding 9 [medium confidence]
+Novelty assessment: NEW — (i) using a machine-verified, decidable mathematical relation (Lean-verified ETP implication graph) as the external reference metric for LLM activation geometry; (ii) two model families independently agreeing with that same external formal metric (all prior convergence work measures model-to-model agreement); (iii) a representation-competence dissociation whose ground truth is formally verified rather than human-labeled. INCREMENTAL — (iv) external-referent RSA methodology itself (Abdou 2021, Gurnee & Tegmark precede us; we change the referent, not the method); (v) permutation-null validation (standard practice, though the convergence-critique literature shows it is a needed improvement over raw CKA/kNN reporting); (vi) the bare existence of representation-behavior dissociations (Burns et al., epiphenomenal correctness). NOT OURS / must differentiate — causal geometry-behavior links (Goodfire manifold steering shows causal, bidirectional evidence we lack; our claim must stay correlational), and universal-geometry translation results (vec2vec line, which is about model-to-model alignability). Must-cite list: Huh et al. 2024; Koepke et al. 2026; Usama & Chang 2026; arXiv:2602.14486; vec2vec + mini-vec2vec; Moschella et al. 2023; Abdou et al. 2021; Gurnee & Tegmark 2023; Burns et al. 2022 + Farquhar et al. 2023; Li et al. 2024 (geometry of concepts); Wurgaft et al. 2026 (manifold steering); Williams 2026.
+
+*Evidence:* Synthesis over all 23 confirmed claims: every adjacent line was verified to lack the theorem-prover-as-reference-metric component (explicit negative full-text checks on 2410.19750, 2510.02348, 2605.05115, 2506.16370), while each component of our result individually has precedent. Confidence medium because novelty is only as strong as search coverage, and areas 4-5 lacked dedicated surviving claims.
+Sources: https://arxiv.org/abs/2405.07987 · https://arxiv.org/abs/2506.16370 · https://arxiv.org/abs/2212.03827 · https://arxiv.org/abs/2605.05115 · https://arxiv.org/abs/2604.18572 · https://arxiv.org/pdf/2605.23315 · https://arxiv.org/abs/2505.12540 · https://arxiv.org/abs/2209.15430 · https://arxiv.org/abs/2410.19750
+
+## Caveats
+- T
+- i
+- m
+- e
+- -
+- s
+- e
+- n
+- s
+- i
+- t
+- i
+- v
+- i
+- t
+- y
+-  
+- a
+- n
+- d
+-  
+- s
+- o
+- u
+- r
+- c
+- e
+-  
+- q
+- u
+- a
+- l
+- i
+- t
+- y
+- :
+-  
+- s
+- e
+- v
+- e
+- r
+- a
+- l
+-  
+- l
+- o
+- a
+- d
+- -
+- b
+- e
+- a
+- r
+- i
+- n
+- g
+-  
+- s
+- o
+- u
+- r
+- c
+- e
+- s
+-  
+- a
+- r
+- e
+-  
+- n
+- o
+- n
+- -
+- p
+- e
+- e
+- r
+- -
+- r
+- e
+- v
+- i
+- e
+- w
+- e
+- d
+-  
+- p
+- r
+- e
+- p
+- r
+- i
+- n
+- t
+- s
+-  
+- f
+- r
+- o
+- m
+-  
+- 2
+- 0
+- 2
+- 6
+- ,
+-  
+- s
+- o
+- m
+- e
+-  
+- o
+- n
+- l
+- y
+-  
+- ~
+- 2
+-  
+- m
+- o
+- n
+- t
+- h
+- s
+-  
+- o
+- l
+- d
+-  
+- (
+- m
+- a
+- n
+- i
+- f
+- o
+- l
+- d
+-  
+- s
+- t
+- e
+- e
+- r
+- i
+- n
+- g
+-  
+- a
+- r
+- X
+- i
+- v
+- :
+- 2
+- 6
+- 0
+- 5
+- .
+- 0
+- 5
+- 1
+- 1
+- 5
+- ;
+-  
+- C
+- o
+- n
+- v
+- e
+- r
+- g
+- e
+- n
+- c
+- e
+-  
+- W
+- i
+- t
+- h
+- o
+- u
+- t
+-  
+- U
+- n
+- d
+- e
+- r
+- s
+- t
+- a
+- n
+- d
+- i
+- n
+- g
+-  
+- a
+- r
+- X
+- i
+- v
+- :
+- 2
+- 6
+- 0
+- 5
+- .
+- 2
+- 3
+- 3
+- 1
+- 5
+- ;
+-  
+- B
+- a
+- c
+- k
+-  
+- i
+- n
+- t
+- o
+-  
+- P
+- l
+- a
+- t
+- o
+- '
+- s
+-  
+- C
+- a
+- v
+- e
+-  
+- a
+- r
+- X
+- i
+- v
+- :
+- 2
+- 6
+- 0
+- 4
+- .
+- 1
+- 8
+- 5
+- 7
+- 2
+- )
+-  
+- —
+-  
+- t
+- h
+- e
+- i
+- r
+-  
+- f
+- i
+- n
+- d
+- i
+- n
+- g
+- s
+-  
+- c
+- o
+- u
+- l
+- d
+-  
+- s
+- h
+- i
+- f
+- t
+-  
+- u
+- n
+- d
+- e
+- r
+-  
+- r
+- e
+- v
+- i
+- e
+- w
+- ,
+-  
+- a
+- n
+- d
+-  
+- t
+- h
+- i
+- s
+-  
+- f
+- a
+- s
+- t
+- -
+- m
+- o
+- v
+- i
+- n
+- g
+-  
+- s
+- p
+- a
+- c
+- e
+-  
+- m
+- e
+- a
+- n
+- s
+-  
+- t
+- h
+- e
+-  
+- n
+- o
+- v
+- e
+- l
+- t
+- y
+-  
+- w
+- i
+- n
+- d
+- o
+- w
+-  
+- s
+- h
+- o
+- u
+- l
+- d
+-  
+- b
+- e
+-  
+- r
+- e
+- -
+- c
+- h
+- e
+- c
+- k
+- e
+- d
+-  
+- i
+- m
+- m
+- e
+- d
+- i
+- a
+- t
+- e
+- l
+- y
+-  
+- b
+- e
+- f
+- o
+- r
+- e
+-  
+- s
+- u
+- b
+- m
+- i
+- s
+- s
+- i
+- o
+- n
+- .
+-  
+- C
+- o
+- v
+- e
+- r
+- a
+- g
+- e
+-  
+- g
+- a
+- p
+- s
+- :
+-  
+- a
+- r
+- e
+- a
+- s
+-  
+- 4
+-  
+- (
+- i
+- n
+- t
+- e
+- r
+- p
+-  
+- o
+- f
+-  
+- a
+- u
+- t
+- o
+- f
+- o
+- r
+- m
+- a
+- l
+- i
+- z
+- a
+- t
+- i
+- o
+- n
+- /
+- f
+- o
+- r
+- m
+- a
+- l
+- -
+- m
+- a
+- t
+- h
+-  
+- L
+- L
+- M
+- s
+- )
+-  
+- a
+- n
+- d
+-  
+- 5
+-  
+- (
+- o
+- r
+- d
+- e
+- r
+-  
+- e
+- m
+- b
+- e
+- d
+- d
+- i
+- n
+- g
+- s
+-  
+- a
+- s
+-  
+- a
+- n
+- a
+- l
+- y
+- s
+- i
+- s
+-  
+- t
+- o
+- o
+- l
+- s
+- )
+-  
+- p
+- r
+- o
+- d
+- u
+- c
+- e
+- d
+-  
+- n
+- o
+-  
+- s
+- u
+- r
+- v
+- i
+- v
+- i
+- n
+- g
+-  
+- v
+- e
+- r
+- i
+- f
+- i
+- e
+- d
+-  
+- c
+- l
+- a
+- i
+- m
+- s
+-  
+- e
+- i
+- t
+- h
+- e
+- r
+-  
+- w
+- a
+- y
+- ,
+-  
+- s
+- o
+-  
+- '
+- n
+- o
+-  
+- p
+- r
+- i
+- o
+- r
+-  
+- w
+- o
+- r
+- k
+-  
+- f
+- o
+- u
+- n
+- d
+- '
+-  
+- t
+- h
+- e
+- r
+- e
+-  
+- r
+- e
+- s
+- t
+- s
+-  
+- o
+- n
+-  
+- i
+- n
+- c
+- i
+- d
+- e
+- n
+- t
+- a
+- l
+-  
+- a
+- d
+- v
+- e
+- r
+- s
+- a
+- r
+- i
+- a
+- l
+-  
+- s
+- e
+- a
+- r
+- c
+- h
+- e
+- s
+-  
+- i
+- n
+- s
+- i
+- d
+- e
+-  
+- o
+- t
+- h
+- e
+- r
+-  
+- v
+- e
+- r
+- i
+- f
+- i
+- c
+- a
+- t
+- i
+- o
+- n
+- s
+- ,
+-  
+- n
+- o
+- t
+-  
+- a
+-  
+- d
+- e
+- d
+- i
+- c
+- a
+- t
+- e
+- d
+-  
+- v
+- e
+- r
+- i
+- f
+- i
+- e
+- d
+-  
+- s
+- w
+- e
+- e
+- p
+-  
+- —
+-  
+- t
+- r
+- e
+- a
+- t
+-  
+- a
+- s
+-  
+- p
+- r
+- o
+- b
+- a
+- b
+- l
+- e
+-  
+- g
+- a
+- p
+- ,
+-  
+- n
+- o
+- t
+-  
+- e
+- s
+- t
+- a
+- b
+- l
+- i
+- s
+- h
+- e
+- d
+-  
+- a
+- b
+- s
+- e
+- n
+- c
+- e
+- .
+-  
+- T
+- h
+- e
+-  
+- O
+- t
+- h
+- e
+- l
+- l
+- o
+- -
+- G
+- P
+- T
+-  
+- w
+- o
+- r
+- l
+- d
+- -
+- m
+- o
+- d
+- e
+- l
+-  
+- c
+- l
+- a
+- i
+- m
+-  
+- w
+- a
+- s
+-  
+- R
+- E
+- F
+- U
+- T
+- E
+- D
+-  
+- i
+- n
+-  
+- v
+- e
+- r
+- i
+- f
+- i
+- c
+- a
+- t
+- i
+- o
+- n
+-  
+- (
+- 0
+- -
+- 3
+- ,
+-  
+- a
+- s
+-  
+- s
+- t
+- a
+- t
+- e
+- d
+-  
+- —
+-  
+- t
+- h
+- e
+-  
+- '
+- n
+- o
+- n
+- l
+- i
+- n
+- e
+- a
+- r
+-  
+- r
+- e
+- p
+- r
+- e
+- s
+- e
+- n
+- t
+- a
+- t
+- i
+- o
+- n
+- '
+-  
+- p
+- h
+- r
+- a
+- s
+- i
+- n
+- g
+-  
+- c
+- o
+- n
+- f
+- l
+- i
+- c
+- t
+- s
+-  
+- w
+- i
+- t
+- h
+-  
+- N
+- a
+- n
+- d
+- a
+-  
+- e
+- t
+-  
+- a
+- l
+- .
+- '
+- s
+-  
+- l
+- i
+- n
+- e
+- a
+- r
+- -
+- p
+- r
+- o
+- b
+- e
+-  
+- f
+- o
+- l
+- l
+- o
+- w
+- -
+- u
+- p
+- )
+- ,
+-  
+- s
+- o
+-  
+- i
+- f
+-  
+- c
+- i
+- t
+- i
+- n
+- g
+-  
+- t
+- h
+- e
+-  
+- O
+- t
+- h
+- e
+- l
+- l
+- o
+-  
+- l
+- i
+- n
+- e
+-  
+- f
+- o
+- r
+-  
+- a
+- r
+- e
+- a
+-  
+- 3
+- ,
+-  
+- v
+- e
+- r
+- i
+- f
+- y
+-  
+- t
+- h
+- e
+-  
+- e
+- x
+- a
+- c
+- t
+-  
+- f
+- r
+- a
+- m
+- i
+- n
+- g
+-  
+- i
+- n
+- d
+- e
+- p
+- e
+- n
+- d
+- e
+- n
+- t
+- l
+- y
+-  
+- b
+- e
+- f
+- o
+- r
+- e
+-  
+- u
+- s
+- e
+- ;
+-  
+- i
+- t
+-  
+- i
+- s
+-  
+- a
+- b
+- s
+- e
+- n
+- t
+-  
+- f
+- r
+- o
+- m
+-  
+- t
+- h
+- e
+- s
+- e
+-  
+- f
+- i
+- n
+- d
+- i
+- n
+- g
+- s
+-  
+- f
+- o
+- r
+-  
+- t
+- h
+- a
+- t
+-  
+- r
+- e
+- a
+- s
+- o
+- n
+- .
+-  
+- B
+- u
+- r
+- n
+- s
+-  
+- e
+- t
+-  
+- a
+- l
+- .
+- /
+- C
+- C
+- S
+-  
+- m
+- u
+- s
+- t
+-  
+- b
+- e
+-  
+- c
+- i
+- t
+- e
+- d
+-  
+- a
+- l
+- o
+- n
+- g
+- s
+- i
+- d
+- e
+-  
+- F
+- a
+- r
+- q
+- u
+- h
+- a
+- r
+-  
+- e
+- t
+-  
+- a
+- l
+- .
+-  
+- 2
+- 0
+- 2
+- 3
+- '
+- s
+-  
+- c
+- r
+- i
+- t
+- i
+- q
+- u
+- e
+-  
+- t
+- h
+- a
+- t
+-  
+- a
+- r
+- b
+- i
+- t
+- r
+- a
+- r
+- y
+-  
+- p
+- r
+- o
+- m
+- i
+- n
+- e
+- n
+- t
+-  
+- f
+- e
+- a
+- t
+- u
+- r
+- e
+- s
+-  
+- s
+- a
+- t
+- i
+- s
+- f
+- y
+-  
+- C
+- C
+- S
+- '
+- s
+-  
+- c
+- o
+- n
+- s
+- i
+- s
+- t
+- e
+- n
+- c
+- y
+-  
+- c
+- o
+- n
+- d
+- i
+- t
+- i
+- o
+- n
+- s
+- .
+-  
+- T
+- h
+- e
+-  
+- P
+- R
+- H
+-  
+- i
+- s
+-  
+- c
+- o
+- n
+- t
+- e
+- s
+- t
+- e
+- d
+-  
+- l
+- i
+- t
+- e
+- r
+- a
+- t
+- u
+- r
+- e
+- :
+-  
+- c
+- i
+- t
+- e
+-  
+- i
+- t
+-  
+- o
+- n
+- l
+- y
+-  
+- t
+- o
+- g
+- e
+- t
+- h
+- e
+- r
+-  
+- w
+- i
+- t
+- h
+-  
+- i
+- t
+- s
+-  
+- 2
+- 0
+- 2
+- 6
+-  
+- c
+- a
+- l
+- i
+- b
+- r
+- a
+- t
+- i
+- o
+- n
+-  
+- a
+- n
+- d
+-  
+- s
+- c
+- a
+- l
+- e
+-  
+- c
+- r
+- i
+- t
+- i
+- q
+- u
+- e
+- s
+- .
+-  
+- T
+- w
+- o
+-  
+- c
+- l
+- a
+- i
+- m
+- s
+-  
+- p
+- a
+- s
+- s
+- e
+- d
+-  
+- v
+- e
+- r
+- i
+- f
+- i
+- c
+- a
+- t
+- i
+- o
+- n
+-  
+- o
+- n
+- l
+- y
+-  
+- 2
+- -
+- 1
+-  
+- (
+- d
+- i
+- f
+- f
+- i
+- c
+- u
+- l
+- t
+- y
+-  
+- i
+- n
+- v
+- e
+- r
+- s
+- i
+- o
+- n
+- ;
+-  
+- c
+- o
+- a
+- r
+- s
+- e
+- -
+- o
+- v
+- e
+- r
+- l
+- a
+- p
+- -
+- o
+- n
+- l
+- y
+-  
+- a
+- l
+- i
+- g
+- n
+- m
+- e
+- n
+- t
+- )
+-  
+- a
+- n
+- d
+-  
+- c
+- a
+- r
+- r
+- y
+-  
+- a
+- u
+- t
+- h
+- o
+- r
+- s
+- '
+- -
+- i
+- n
+- t
+- e
+- r
+- p
+- r
+- e
+- t
+- a
+- t
+- i
+- o
+- n
+-  
+- g
+- l
+- o
+- s
+- s
+- e
+- s
+-  
+- (
+- e
+- .
+- g
+- .
+- ,
+-  
+- i
+- n
+- p
+- u
+- t
+- -
+- e
+- n
+- c
+- o
+- d
+- i
+- n
+- g
+-  
+- c
+- a
+- u
+- s
+- a
+- l
+- i
+- t
+- y
+- )
+-  
+- t
+- h
+- a
+- t
+-  
+- s
+- h
+- o
+- u
+- l
+- d
+-  
+- b
+- e
+-  
+- a
+- t
+- t
+- r
+- i
+- b
+- u
+- t
+- e
+- d
+- ,
+-  
+- n
+- o
+- t
+-  
+- a
+- s
+- s
+- e
+- r
+- t
+- e
+- d
+- .
+-  
+- F
+- i
+- n
+- a
+- l
+- l
+- y
+- ,
+-  
+- t
+- h
+- e
+-  
+- v
+- e
+- r
+- i
+- f
+- i
+- e
+- d
+-  
+- c
+- o
+- r
+- p
+- u
+- s
+-  
+- e
+- s
+- t
+- a
+- b
+- l
+- i
+- s
+- h
+- e
+- s
+-  
+- w
+- h
+- a
+- t
+-  
+- p
+- a
+- p
+- e
+- r
+- s
+-  
+- C
+- L
+- A
+- I
+- M
+-  
+- a
+- n
+- d
+-  
+- t
+- h
+- a
+- t
+-  
+- n
+- e
+- g
+- a
+- t
+- i
+- v
+- e
+-  
+- f
+- u
+- l
+- l
+- -
+- t
+- e
+- x
+- t
+-  
+- c
+- h
+- e
+- c
+- k
+- s
+-  
+- f
+- o
+- u
+- n
+- d
+-  
+- n
+- o
+-  
+- f
+- o
+- r
+- m
+- a
+- l
+- -
+- m
+- e
+- t
+- r
+- i
+- c
+-  
+- r
+- e
+- f
+- e
+- r
+- e
+- n
+- c
+- e
+- s
+-  
+- —
+-  
+- i
+- t
+-  
+- c
+- a
+- n
+- n
+- o
+- t
+-  
+- r
+- u
+- l
+- e
+-  
+- o
+- u
+- t
+-  
+- u
+- n
+- p
+- u
+- b
+- l
+- i
+- s
+- h
+- e
+- d
+-  
+- o
+- r
+-  
+- u
+- n
+- i
+- n
+- d
+- e
+- x
+- e
+- d
+-  
+- c
+- o
+- n
+- c
+- u
+- r
+- r
+- e
+- n
+- t
+-  
+- w
+- o
+- r
+- k
+-  
+- u
+- s
+- i
+- n
+- g
+-  
+- L
+- e
+- a
+- n
+- -
+- v
+- e
+- r
+- i
+- f
+- i
+- e
+- d
+-  
+- s
+- t
+- r
+- u
+- c
+- t
+- u
+- r
+- e
+- s
+-  
+- a
+- s
+-  
+- g
+- e
+- o
+- m
+- e
+- t
+- r
+- i
+- c
+-  
+- g
+- r
+- o
+- u
+- n
+- d
+-  
+- t
+- r
+- u
+- t
+- h
+- .
