@@ -265,7 +265,9 @@ def main(
         result = generate_a10g.remote(model_id, conversations, MAX_TOKENS, lora=lora)
     wall_s = time.monotonic() - t0
 
-    out_dir = ftc.PATHS["runs"] / out_tag / f"{model}-{arm}"
+    # Limited runs must never clobber a full run directory.
+    dir_name = f"{model}-{arm}" + (f"-limit{limit}" if limit else "")
+    out_dir = ftc.PATHS["runs"] / out_tag / dir_name
     out_dir.mkdir(parents=True, exist_ok=True)
     results_rows = []
     stage1_rows = result.get("stage1_rows") or [None] * len(rows)
