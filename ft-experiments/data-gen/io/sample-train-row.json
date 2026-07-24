@@ -1,0 +1,15 @@
+{
+  "text": "ASSUME: x = op(y, x)\nASK: x = op(x, y)",
+  "e_label": "E5",
+  "f_label": "E4",
+  "ops_e": 1,
+  "ops_f": 1,
+  "ops_total": 2,
+  "max_depth": 1,
+  "tier": "easy",
+  "source": "etp",
+  "pair_hash": "53f4df15ae1637d2",
+  "law_hash_e": "362397bb0b382780",
+  "law_hash_f": "362397bb0b382780",
+  "split": "train"
+}

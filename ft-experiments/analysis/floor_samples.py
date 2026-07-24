@@ -6,12 +6,18 @@ paired with the reference RG, and write runs/base-v1/floor_samples.md.
 
 from __future__ import annotations
 
+import importlib.util
 import json
 import random
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-ROOT = HERE / "runs" / "base-v1"
+_spec = importlib.util.spec_from_file_location(
+    "ft_root_config", Path(__file__).resolve().parents[1] / "config.py"
+)
+ftc = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(ftc)
+
+ROOT = ftc.PATHS["runs"] / "base-v1"
 
 
 def load(name):
@@ -21,7 +27,7 @@ def load(name):
 def main() -> int:
     refs = {}
     for tier in ("normal", "hard", "extra_hard", "order5"):
-        for line in (HERE / "eval_v1" / f"eval_{tier}.jsonl").read_text().splitlines():
+        for line in (ftc.PATHS["eval_v1"] / f"eval_{tier}.jsonl").read_text().splitlines():
             r = json.loads(line)
             refs[r["problem_id"]] = r
 

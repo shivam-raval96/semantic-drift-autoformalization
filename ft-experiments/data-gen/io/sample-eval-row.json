@@ -1,0 +1,38 @@
+{
+  "problem_id": "evaluation_normal_0001",
+  "tier": "normal",
+  "sair_subset": "evaluation_normal",
+  "sair_index": 1,
+  "sair_difficulty": "normal",
+  "eq1_id": 16,
+  "eq2_id": 1098,
+  "equation_e": "x = y * (y * x)",
+  "equation_f": "x = y * ((x * (z * y)) * z)",
+  "canonical_e": "v1 = (v2 ∘ (v2 ∘ v1))",
+  "canonical_f": "v1 = (v2 ∘ ((v1 ∘ (v3 ∘ v2)) ∘ v3))",
+  "theme": "graft",
+  "palette_e": {
+    "x": "quince",
+    "y": "medlar"
+  },
+  "palette_f": {
+    "x": "quince",
+    "y": "medlar",
+    "z": "damson"
+  },
+  "story": "In a certain hillside orchard, the gardener follows one unbreakable habit. Take any two cuttings at all — call the first quince and the second medlar.\n\nShe grafts medlar onto quince and sets the result aside as Graft 1; then she grafts medlar onto Graft 1 and calls the result Graft 2.\n\nHowever she chooses her two starting cuttings, quince itself and Graft 2 always grow into exactly the same plant. That is simply how this orchard works, without exception.\n\nOne spring her neighbor wonders about something. Take any three cuttings — again call the first quince, the second medlar, and the third damson. Graft damson onto medlar and set the result aside as Graft 1; then graft quince onto Graft 1 and call the result Graft 2; then graft Graft 2 onto damson and call that Graft 3; then graft medlar onto Graft 3 and set the result aside as Graft 4.\n\nIn this orchard, must quince itself and Graft 4 always grow into the same plant?",
+  "literal": "Consider a collection of objects together with an operation that combines two objects into one. The operation takes a first input and a second input, and the order of the inputs matters.\n\nSuppose the following always holds. For every choice of objects x and y, apply the operation to y as its first input and x as its second input, and call the result Value 1; then apply the operation to y as its first input and Value 1 as its second input, and call the result Value 2. Then x is always equal to Value 2.\n\nNow consider the following question. For every choice of objects x, y, and z, apply the operation to z as its first input and y as its second input, and call the result Value 1; then apply the operation to x as its first input and Value 1 as its second input, and call the result Value 2; then apply the operation to Value 2 as its first input and z as its second input, and call the result Value 3; then apply the operation to y as its first input and Value 3 as its second input, and call the result Value 4. Does it follow that x is always equal to Value 4?",
+  "reference_rg": "ASSUME: x = op(y, op(y, x))\nASK: x = op(y, op(op(x, op(z, y)), z))",
+  "answer": false,
+  "ops_e": 2,
+  "ops_f": 4,
+  "ops_total": 6,
+  "max_depth": 4,
+  "n_vars_e": 2,
+  "n_vars_f": 3,
+  "pair_hash": "ce11f409070cd016",
+  "law_hash_e": "3f5cd69e8b1b8fe5",
+  "law_hash_f": "7f8442c7895a47d6",
+  "split": "eval",
+  "eval_version": "v1"
+}
