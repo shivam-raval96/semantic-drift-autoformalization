@@ -19,8 +19,9 @@ TEST SET (frozen, identical for every model, never trained on):
       = eval_v1  →  graded by checkform  →  correct / wrong / unparseable
 
 TRAIN SET (grammar food only, never tested on):
-  DIFFERENT equations (repo ETP pool + genform synthetics,
-  law-disjoint from every SAIR problem — enforced by canonical pair-hash audit)
+  DIFFERENT equations (repo ETP pool + genform synthetics; pair-disjoint from
+  all 2,669 SAIR rows, law-disjoint from every eval_v1 problem — enforced by
+  canonical pair/law-hash audit)
       │  same serializer → RG text only
       ▼
   ~3,000 samples of pure grammar text, e.g.:
@@ -135,11 +136,17 @@ equations — and (stage 2) can the improvement be obtained in a maximally const
 
 ### Train corpus (train_v1)
 - Source: repo ETP equations + `genform.py` synthetics. NOT SAIR.
-- **Disjointness (hard gate):** canonical pair-hash every implication (canonicalize both laws;
-  hash ordered pair; also collide under consistent dualization/side-swap). Drop any training pair
-  whose pair-hash or individual-law hash appears in eval_v1. Log the drop count.
-- Volume: 1,000 per complexity tier (easy/medium/hard by total op count, repo binning) ≈ 3,000.
-  Plus a small deepest-depth holdout (~100 pairs) kept OUT of training as an extrapolation probe.
+- **Disjointness (hard gate, signed off 2026-07-24):** hashes collide under variable renaming,
+  side swap, and consistent dualization (the grader's symmetry group). PAIR-hash gate vs ALL nine
+  SAIR subsets (no training pair is any SAIR implication); individual-LAW-hash gate vs eval_v1
+  only — laws appearing solely in the never-evaluated subsets may feed training (they leak nothing
+  into eval_v1; a strict all-SAIR law gate would cap the easy tier at ~16 pairs, since SAIR
+  references 2,707 of the 4,694 ETP laws). Log all exclusion/drop counts.
+- Tiers (signed off 2026-07-24; training depth covers order5): easy = ops_total 2–4 (ETP pool;
+  capped by the surviving shallow-law class space at ~772), medium = 5–8 (ETP), hard = 10–12
+  (genform synthetics, 5–6 ops/equation) — 1,000 per tier where the space allows. Plus a ~100-pair
+  deepest-depth holdout (genform, 7–8 ops/equation, ops_total 14–16) kept OUT of training as the
+  beyond-trained-depth extrapolation probe; order5 (ops_total 10) evaluates trained-depth grammar.
 - JSONL rows — model sees `text` only:
   `{"text": "ASSUME: ...\nASK: ...", "e_label": ..., "f_label": ..., "ops_total": n, "max_depth": n,
     "tier": ..., "source": "etp|genform", "pair_hash": ..., "split": "train"}`

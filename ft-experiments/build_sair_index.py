@@ -35,7 +35,7 @@ SUBSETS = (
 
 
 def main() -> int:
-    pair_hashes, law_hashes = set(), set()
+    pair_hashes, law_hashes, eval_law_hashes = set(), set(), set()
     rows_seen = 0
     per_subset = {}
     for subset in SUBSETS:
@@ -51,6 +51,9 @@ def main() -> int:
             pair_hashes.add(pair_hash(e, f))
             law_hashes.add(law_hash(*e))
             law_hashes.add(law_hash(*f))
+            if subset.startswith("evaluation_"):
+                eval_law_hashes.add(law_hash(*e))
+                eval_law_hashes.add(law_hash(*f))
             n += 1
         rows_seen += n
         per_subset[subset] = {
@@ -68,9 +71,11 @@ def main() -> int:
         "rows_indexed": rows_seen,
         "distinct_pair_classes": len(pair_hashes),
         "distinct_law_classes": len(law_hashes),
+        "distinct_eval_law_classes": len(eval_law_hashes),
         "per_subset": per_subset,
         "pair_hashes": sorted(pair_hashes),
         "law_hashes": sorted(law_hashes),
+        "eval_law_hashes": sorted(eval_law_hashes),
     }
     out = HERE / "data" / "sair_index.json"
     out.write_text(json.dumps(index, indent=1) + "\n", encoding="utf-8")

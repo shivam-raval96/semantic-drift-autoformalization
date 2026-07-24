@@ -1,0 +1,114 @@
+{
+  "corpus_version": "train_v1",
+  "generator": "ft-experiments/build_train.py",
+  "repo_commit": "6a540f010f0b1bc819c0c6d064b2321936a62ae3",
+  "sampler_seed": 0,
+  "genform": {
+    "seed": 5,
+    "bins": [
+      5,
+      8
+    ],
+    "per_bin": 60,
+    "laws": 240
+  },
+  "etp_equations_sha256": "e30e1a6735011ff36fdb228d37b232eb7cda9d4a836cbbefc69c07e6871c8010",
+  "disjointness_gate": {
+    "pair_hashes_vs": "all 9 SAIR subsets (2,669 rows)",
+    "law_hashes_vs": "eval_v1 evaluation subsets only (decision 2026-07-24)"
+  },
+  "sair_index": {
+    "rows_indexed": 2669,
+    "pair_classes": 2449,
+    "eval_law_classes": 1094
+  },
+  "pool_sizes": {
+    "etp": {
+      "1": 3,
+      "2": 13,
+      "3": 212,
+      "4": 3091
+    },
+    "genform": {
+      "5": 60,
+      "6": 60,
+      "7": 60,
+      "8": 60
+    }
+  },
+  "pool_exclusions": {
+    "etp_laws_eval_colliding": 1373,
+    "etp_laws_vacuous": 2,
+    "genform_laws_eval_colliding": 0
+  },
+  "sampled_pair_drops": {
+    "sair_pair_collision": 0
+  },
+  "tiers": {
+    "easy": {
+      "source": "etp",
+      "quotas": {
+        "2": 334,
+        "3": 333,
+        "4": 333
+      },
+      "achieved_per_ops_total": {
+        "2": 3,
+        "3": 42,
+        "4": 727
+      },
+      "n": 772
+    },
+    "medium": {
+      "source": "etp",
+      "quotas": {
+        "5": 250,
+        "6": 250,
+        "7": 250,
+        "8": 250
+      },
+      "achieved_per_ops_total": {
+        "5": 250,
+        "6": 250,
+        "7": 250,
+        "8": 250
+      },
+      "n": 1000
+    },
+    "hard": {
+      "source": "genform",
+      "quotas": {
+        "10": 334,
+        "11": 333,
+        "12": 333
+      },
+      "achieved_per_ops_total": {
+        "10": 334,
+        "11": 333,
+        "12": 333
+      },
+      "n": 1000
+    },
+    "holdout": {
+      "source": "genform",
+      "quotas": {
+        "14": 34,
+        "15": 33,
+        "16": 33
+      },
+      "achieved_per_ops_total": {
+        "14": 34,
+        "15": 33,
+        "16": 33
+      },
+      "n": 100
+    }
+  },
+  "n_train": 2772,
+  "n_holdout": 100,
+  "files": {
+    "train.jsonl": "2bf10222898b45398d9f304a8484601cf2caacfeee49b61f88c47e6c0f79e94d",
+    "holdout.jsonl": "20567e13e69de9c1ed6229089b1ad49d6f09560f1a16a9796a61662184c2750c",
+    "synthetic-laws.txt": "729734b1bfa7fceff467390747dd53171b17a00cbe760fdf851fe111284c690a"
+  }
+}

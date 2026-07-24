@@ -1,0 +1,7 @@
+# Bulk corpus data is regenerated deterministically by build_train.py;
+# the committed generator + synthetic-laws.txt + manifest (with sha256s)
+# pin it exactly (repo convention: commit generator + hash manifest,
+# not bulk data).
+train_v1/train.jsonl
+train_v1/holdout.jsonl
+__pycache__/
