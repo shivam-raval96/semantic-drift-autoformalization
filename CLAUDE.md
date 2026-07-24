@@ -94,8 +94,10 @@ equations — and (stage 2) can the improvement be obtained in a maximally const
   `Llama-3.1-70B-Instruct` (3B swapped out for 70B by decision; note Llama **3.1** has no 1B —
   the small one is **3.2**). Training starts from `Llama-3.1-8B-Instruct` (Unsloth 4-bit) unless
   the base table says otherwise. Mentor rule: pick the sweep model for SIGNAL — mid-to-low base
-  performance (25%→75% is a result; 70%→75% is noise). Phase 3 runs on Modal: vLLM bf16 greedy,
-  A10G (1B), A100-40GB (8B), A100-80GB×4 TP4 (70B), staged smallest-first.
+  performance (25%→75% is a result; 70%→75% is noise). Phase 3+ runs on Modal: vLLM bf16 greedy on a SINGLE GPU class — A10G for
+  everything (base evals and FT-checkpoint evals; decision 2026-07-24), guardrails
+  min_containers=0 / scaledown ≤120s / retries=0 / 15-min timeout / 1 container per run.
+  70B parked until an explicit go (won't fit A10G; config decided then).
 - **Simple comparison first (Phase 5a):** one reasonable LoRA config (e.g. r=16, standard target
   modules, all layers), base vs FT on eval_v1. This is the headline "does it work at all" result.
 - **Constrained stage after (Phase 5b, from mentor feedback):**
