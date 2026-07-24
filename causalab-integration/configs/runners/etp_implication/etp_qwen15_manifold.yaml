@@ -16,11 +16,11 @@ task:
   target_variable: implication
   n_train: 320
   n_test: 80
-  # geometry targets: verdict + law identity, the latter parameterized by
-  # certified-fingerprint PCA coordinates (EMBEDDINGS in causal_models.py)
+  # verdict geometry here; law-identity manifold lives in
+  # etp_qwen15_lawmanifold.yaml (needs intrinsic_dim matched to the 3D
+  # fingerprint embedding, which is a per-target setting)
   target_variables:
     - implication
-    - premise_law
 
 subspace:
   layers: [7, 14, 21]   # explicit: locate is deferred (certified-resampling constraint)

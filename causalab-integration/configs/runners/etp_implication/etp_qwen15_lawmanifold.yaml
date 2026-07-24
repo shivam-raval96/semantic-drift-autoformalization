@@ -1,0 +1,24 @@
+# @package _global_
+# Law-identity manifold: activation geometry over 157 laws at the premise
+# span, parameterized by certified-fingerprint PCA coordinates (3D chart of
+# Lean's implication metric, ~61% of table variance). A good fit here IS the
+# fingerprint-isometry result. intrinsic_dim matches the embedding dimension.
+defaults:
+- /base
+- /task: etp_implication
+- /model: qwen25_15b_instruct
+- /analysis/activation_manifold
+- _self_
+
+task:
+  target_variable: premise_law
+  n_train: 320
+  n_test: 80
+  target_variables:
+    - premise_law
+
+activation_manifold:
+  layers: [7, 14, 21]
+  token_positions: [premise_last]
+  intrinsic_dim: 3
+  intrinsic_mode: parameter
