@@ -159,6 +159,9 @@ def main() -> int:
             "input_rows": len(rows_in),
             "dropped_vacuous": dropped_vacuous,
             "n": len(kept),
+            # SAIR ships some grading-equivalent duplicates within a tier;
+            # report per-tier results against distinct classes, not raw n.
+            "distinct_pair_classes": len({row["pair_hash"] for row in kept}),
             "answer_true": sum(answers),
             "answer_false": len(answers) - sum(answers),
             "themes": sorted({row["theme"] for row in kept}),

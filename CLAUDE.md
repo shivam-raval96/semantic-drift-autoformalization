@@ -144,9 +144,11 @@ equations — and (stage 2) can the improvement be obtained in a maximally const
   references 2,707 of the 4,694 ETP laws). Log all exclusion/drop counts.
 - Tiers (signed off 2026-07-24; training depth covers order5): easy = ops_total 2–4 (ETP pool;
   capped by the surviving shallow-law class space at ~772), medium = 5–8 (ETP), hard = 10–12
-  (genform synthetics, 5–6 ops/equation) — 1,000 per tier where the space allows. Plus a ~100-pair
-  deepest-depth holdout (genform, 7–8 ops/equation, ops_total 14–16) kept OUT of training as the
-  beyond-trained-depth extrapolation probe; order5 (ops_total 10) evaluates trained-depth grammar.
+  (genform synthetics, splits draw 5–7 ops/equation) — 1,000 per tier where the space allows.
+  Plus a ~100-pair holdout (genform, 6–8 ops/equation, ops_total 14–16) kept OUT of training as a
+  beyond-trained-LENGTH extrapolation probe (ops_total exceeds the trained max 12; tree depth
+  overlaps training and individual law classes may recur from train — pair classes never do);
+  order5 (ops_total 10) evaluates trained-depth grammar.
 - JSONL rows — model sees `text` only:
   `{"text": "ASSUME: ...\nASK: ...", "e_label": ..., "f_label": ..., "ops_total": n, "max_depth": n,
     "tier": ..., "source": "etp|genform", "pair_hash": ..., "split": "train"}`
@@ -223,8 +225,9 @@ notes. Commit configs before launching sweeps.
 2. R5: never use checkform verdicts on model outputs to filter/select/weight training data.
 3. eval_v1 is frozen; changes create eval_v2 and rerun everything downstream.
 4. Translation and implication numbers never share a table (R7).
-5. Eval tiers are 200 items each — ±3–4 points is noise; don't narrate small deltas;
-   report N everywhere.
+5. Eval tiers are 180–200 items — ±3–4 points is noise; don't narrate small deltas; report N
+   everywhere. SAIR ships some grading-equivalent duplicate problems within tiers (extra_hard has
+   181 distinct pair classes in 200 rows); manifests record distinct-class N — report against it.
 6. Kill criterion (stated upfront): if grammar-only FT (Phase 5a) moves neither the unparseable rate
    nor correct% beyond noise on any tier — and the sanity probes confirm learning happened — the
    grammar-bottleneck hypothesis is rejected; write it up and stop rather than tuning until something

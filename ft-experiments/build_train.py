@@ -6,9 +6,13 @@ x,y,z,w,u,v by first appearance), no stories, no instructions. Sources:
 
   easy    ops_total 2-4    ETP equation list (repo pipeline's source)
   medium  ops_total 5-8    ETP equation list
-  hard    ops_total 10-12  genform synthetics, 5-6 ops per equation
-  holdout ops_total 14-16  genform synthetics, 7-8 ops per equation
-                           (~100 pairs, NEVER trained on - extrapolation probe)
+  hard    ops_total 10-12  genform synthetics (splits draw 5-7 ops/equation)
+  holdout ops_total 14-16  genform synthetics (splits draw 6-8 ops/equation)
+                           (~100 pairs, NEVER trained on - a beyond-trained-
+                           LENGTH extrapolation probe: ops_total exceeds the
+                           trained max 12, though tree depth overlaps training
+                           and individual law classes may recur from train;
+                           pair classes are always disjoint)
 
 Disjointness (hard gate, signed off 2026-07-24): individual laws are
 gated against eval_v1's law classes (any law appearing in any evaluated

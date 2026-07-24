@@ -2,7 +2,7 @@
   "eval_version": "v1",
   "source_dataset": "SAIRfoundation/equational-theories-selected-problems",
   "generator": "ft-experiments/build_eval.py",
-  "repo_commit": "667fd3e54931bb17d6d440e535414d40b83b3ec7",
+  "repo_commit": "b42bc8510c3db08ff4392c2be5b1efe489189fa4",
   "tiers": {
     "normal": {
       "sair_subset": "evaluation_normal",
@@ -30,6 +30,7 @@
         "evaluation_normal_0133"
       ],
       "n": 180,
+      "distinct_pair_classes": 180,
       "answer_true": 100,
       "answer_false": 80,
       "themes": [
@@ -48,6 +49,7 @@
         "evaluation_hard_0034"
       ],
       "n": 197,
+      "distinct_pair_classes": 196,
       "answer_true": 97,
       "answer_false": 100,
       "themes": [
@@ -62,6 +64,7 @@
       "input_rows": 200,
       "dropped_vacuous": [],
       "n": 200,
+      "distinct_pair_classes": 181,
       "answer_true": 100,
       "answer_false": 100,
       "themes": [
@@ -76,6 +79,7 @@
       "input_rows": 200,
       "dropped_vacuous": [],
       "n": 200,
+      "distinct_pair_classes": 200,
       "answer_true": 100,
       "answer_false": 100,
       "themes": [
