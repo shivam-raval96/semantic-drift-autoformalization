@@ -35,7 +35,12 @@ partial agreement with Lean's implication metric, beyond what spline
 capacity explains. Effect is modest (true beats the best null by ~5%,
 the mean by ~12%); p = 0.0196 with a 50-seed null (true chart beat every shuffle).
 
-Scope caveats: one model (1.5B), one layer/cell, ~2.4 samples per
+Layer profile (raw fits; per-layer nulls pending — cross-layer MSE
+comparison is suggestive only): L7 0.2563, L14 0.2404, L21 0.2468 —
+agreement with the certified chart peaks mid-network, consistent with
+mid-depth abstraction.
+
+Scope caveats: one model (1.5B), one layer/cell for the null, ~2.4 samples per
 centroid, 3D chart carrying 61% of table variance, formal+instance
 registers only. Strengthening moves, in order: more null seeds (cheap),
 larger n_train (unique-prompt pool supports ~6x), remaining layers,
