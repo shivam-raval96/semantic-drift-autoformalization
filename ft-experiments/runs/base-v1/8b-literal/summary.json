@@ -1,0 +1,50 @@
+{
+  "extra_hard": {
+    "n": 200,
+    "exact": 0,
+    "correct-swapped": 0,
+    "correct-dualized": 0,
+    "wrong": 167,
+    "unparseable": 33,
+    "correct": 0,
+    "correct_pct": 0.0,
+    "unparseable_pct": 16.5,
+    "length_finishes": 4
+  },
+  "hard": {
+    "n": 197,
+    "exact": 1,
+    "correct-swapped": 0,
+    "correct-dualized": 0,
+    "wrong": 166,
+    "unparseable": 30,
+    "correct": 1,
+    "correct_pct": 0.5,
+    "unparseable_pct": 15.2,
+    "length_finishes": 3
+  },
+  "normal": {
+    "n": 180,
+    "exact": 2,
+    "correct-swapped": 0,
+    "correct-dualized": 0,
+    "wrong": 154,
+    "unparseable": 24,
+    "correct": 2,
+    "correct_pct": 1.1,
+    "unparseable_pct": 13.3,
+    "length_finishes": 1
+  },
+  "order5": {
+    "n": 200,
+    "exact": 0,
+    "correct-swapped": 0,
+    "correct-dualized": 0,
+    "wrong": 110,
+    "unparseable": 90,
+    "correct": 0,
+    "correct_pct": 0.0,
+    "unparseable_pct": 45.0,
+    "length_finishes": 9
+  }
+}
