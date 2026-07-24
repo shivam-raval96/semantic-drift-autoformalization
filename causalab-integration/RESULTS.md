@@ -27,13 +27,13 @@ parameterized by the certified-fingerprint 3D chart (fp3; 60.7% of
 implication-table variance):
 
 - TRUE chart:  recon_mse 0.2563, residual 3.064
-- 20 embedding-shuffle nulls: mse min 0.2694, mean 0.2916, max 0.3367
-- Nulls beating the true chart: 0/20 -> empirical p = 0.048
+- 50 embedding-shuffle nulls: mse min 0.2658, mean 0.2919, max 0.3367
+- Nulls beating the true chart: 0/50 -> empirical p = 0.0196
 
 Reading: Qwen2.5-1.5B's premise-law representations are organized in
 partial agreement with Lean's implication metric, beyond what spline
 capacity explains. Effect is modest (true beats the best null by ~5%,
-the mean by ~12%); p = 0.048 is the resolution limit of a 20-seed null.
+the mean by ~12%); p = 0.0196 with a 50-seed null (true chart beat every shuffle).
 
 Scope caveats: one model (1.5B), one layer/cell, ~2.4 samples per
 centroid, 3D chart carrying 61% of table variance, formal+instance
