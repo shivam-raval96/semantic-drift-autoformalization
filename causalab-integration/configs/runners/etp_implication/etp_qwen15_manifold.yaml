@@ -24,7 +24,9 @@ task:
     - premise_law
 
 subspace:
+  layers: [7, 14, 21]   # explicit: locate is deferred (certified-resampling constraint)
   token_positions: [premise_law]
 
 activation_manifold:
+  layers: [7, 14, 21]
   token_positions: [premise_law]
