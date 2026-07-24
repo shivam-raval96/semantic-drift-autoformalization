@@ -1,0 +1,23 @@
+# @package _global_
+# Local Llama manifold run (Llama-3.2-1B-Instruct, fits a 16GB MacBook on MPS).
+# Requires HF token + accepted Llama license. Same chain as the Qwen shakeout;
+# the 8B runner (etp_8b_pipeline) is the GPU-box version.
+defaults:
+- /base
+- /task: etp_implication
+- /model: llama32_1b_instruct
+- /analysis/baseline
+- /analysis/subspace
+- /analysis/activation_manifold
+- _self_
+
+task:
+  target_variable: implication
+  n_train: 320
+  n_test: 80
+
+subspace:
+  token_positions: [premise_law]
+
+activation_manifold:
+  token_positions: [premise_law]

@@ -1,0 +1,6 @@
+id: qwen25_15b_instruct
+name: Qwen/Qwen2.5-1.5B-Instruct
+device: auto
+dtype: bfloat16
+slurm:
+  gpus: 1

@@ -1,0 +1,30 @@
+# @package _global_
+# Manifold shakeout on an UNGATED model (Qwen2.5-1.5B-Instruct): exercises the
+# full semantic-content geometry chain locally (MPS/CPU) with no HF token.
+# Same analyses as the Llama runners; results are for pipeline validation and
+# early geometry hypotheses, not headline claims.
+defaults:
+- /base
+- /task: etp_implication
+- /model: qwen25_15b_instruct
+- /analysis/baseline
+- /analysis/subspace
+- /analysis/activation_manifold
+- _self_
+
+task:
+  target_variable: implication
+  n_train: 320
+  n_test: 80
+  # geometry targets: the verdict AND law identity (the semantic-content
+  # manifold proper — 157 classes whose certified implication metric the
+  # activation geometry can be compared against)
+  target_variables:
+    - implication
+    - premise_law
+
+subspace:
+  token_positions: [premise_law]
+
+activation_manifold:
+  token_positions: [premise_law]
