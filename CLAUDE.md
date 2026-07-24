@@ -11,7 +11,8 @@ do not assume. Ask before launching training runs or large downloads.
 
 ```
 TEST SET (frozen, identical for every model, never trained on):
-  SAIR Stage-1 equations (normal + hard1 + hard2 + hard3, 1,669 implication problems)
+  SAIR selected-problems evaluation subsets (evaluation_normal + evaluation_hard
+  + evaluation_extra_hard + evaluation_order5, 800 implication problems)
       │  rendered through the repo's existing deterministic pipeline (Oren's)
       ▼
   story form + literal-NL form + reference rigid-grammar (RG) per problem
@@ -83,7 +84,7 @@ equations — and (stage 2) can the improvement be obtained in a maximally const
   text field only. Packing on (samples are ~30 tokens). No chat template on training text.
 - **Eval protocol (frozen):** no-think, fixed prompt templates from `prompts/` (unchanged), greedy
   decoding (`do_sample=False`), fixed max_new_tokens. Report three-way verdicts separately —
-  correct / wrong-but-well-formed / unparseable — per tier (normal/hard1/hard2/hard3) and per arm
+  correct / wrong-but-well-formed / unparseable — per tier (normal/hard/extra_hard/order5) and per arm
   (story→RG, literal→RG). Pooled accuracy is never the headline.
   - Rationale for no-think: thinking saturates this task (>95% in repo exp 01/02); CoT can internally
     rewrite the story (confound); Llama has no native thinking switch, so "thinking on" would be a
@@ -111,16 +112,25 @@ equations — and (stage 2) can the improvement be obtained in a maximally const
 
 ## DATA SPEC
 
-### Eval set (eval_v1)
-- Source: the four SAIR Stage-1 public subsets linked from
-  https://competition.sair.foundation/competitions/mathematics-distillation-challenge-equational-theories-stage1/data
-  — `normal` (1000; 500 TRUE/500 FALSE), `hard1` (69; 24/45), `hard2` (200; 100/100),
-  `hard3` (400; 195/205). Fetch exact HF dataset IDs from that page; if access requires login, ask me
-  to download and provide the files.
-- Render every problem through the repo pipeline into story / literal / reference-RG. One seeded theme
-  assignment per problem (record it). Problems that fail to render: log, drop, report final N per tier.
-- TRUE/FALSE labels are kept as metadata (optional secondary implication eval, reported separately
-  per R7) — they are irrelevant to translation grading.
+### Eval set (eval_v1) — FINAL, no alternatives
+- Source: HF dataset `SAIRfoundation/equational-theories-selected-problems`.
+  Download ALL 9 subsets (tiny), but eval_v1 = ONLY the four evaluation subsets:
+  `evaluation_normal`, `evaluation_hard`, `evaluation_extra_hard`, `evaluation_order5`
+  (200 each, all balanced 100 TRUE / 100 FALSE → 800 problems, 4 difficulty tiers).
+  The other 5 subsets (`normal`, `hard`, `hard1`, `hard2`, `hard3`) are NOT evaluated on;
+  they exist only so the training-corpus disjointness audit covers all 2,669 SAIR rows.
+- Gotchas (enforce):
+  1. Key everything on the `equation1`/`equation2` STRINGS, never `eq1_id`/`eq2_id`
+     (`evaluation_order5` uses a different equation-ID space than the 4,694-law list).
+  2. The HF split is named "train" for every subset — HF convention only; nothing from
+     this dataset is ever trained on.
+  3. `evaluation_order5` equations are one op deeper than the standard ETP list — treat
+     it as the built-in complexity-extrapolation tier; the repo parser handles the depth.
+- Render each of the 800 problems through the repo pipeline into story / literal /
+  reference-RG (seeded theme per problem, recorded). Failures to render: log, drop,
+  report final N per tier. Keep the TRUE/FALSE `answer` as metadata only (optional
+  secondary implication eval, reported separately per R7) — irrelevant to translation
+  grading.
 - Freeze as `eval_v1/`, version it, never modify. Any change = eval_v2 + rerun everything.
 
 ### Train corpus (train_v1)
@@ -206,7 +216,7 @@ notes. Commit configs before launching sweeps.
 2. R5: never use checkform verdicts on model outputs to filter/select/weight training data.
 3. eval_v1 is frozen; changes create eval_v2 and rerun everything downstream.
 4. Translation and implication numbers never share a table (R7).
-5. Eval tiers are ~69–1000 items — ±3–4 points is noise on the small tiers; don't narrate small deltas;
+5. Eval tiers are 200 items each — ±3–4 points is noise; don't narrate small deltas;
    report N everywhere.
 6. Kill criterion (stated upfront): if grammar-only FT (Phase 5a) moves neither the unparseable rate
    nor correct% beyond noise on any tier — and the sanity probes confirm learning happened — the
