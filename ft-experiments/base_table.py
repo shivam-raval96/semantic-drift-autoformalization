@@ -15,7 +15,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE / "runs" / "base-v1"
 TIERS = ("normal", "hard", "extra_hard", "order5")
 MODEL_ORDER = ("1b", "8b", "70b")
-ARMS = ("story", "literal")
+ARMS = ("story", "literal", "two-stage")
 
 
 def main() -> int:

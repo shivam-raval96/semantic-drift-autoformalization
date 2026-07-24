@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 """Phase 3 base evals on Modal: vLLM batch generation + local grading.
 
-Remote side (Modal): one batch-generation function per GPU tier — A10G
-for Llama-3.2-1B/3B, a single A100-40GB for Llama-3.1-8B — vLLM engine,
-bf16, greedy (temperature 0, fixed max_tokens), HF weights cached on a
-Volume, fast scaledown. The container never sees repo code; it maps
+Remote side (Modal): ONE GPU class (A10G), one image, one config for
+every eval from here on — base and future FT-checkpoint evals alike
+(decision 2026-07-24). vLLM engine, bf16, greedy (temperature 0, fixed
+max_tokens), HF weights cached on a Volume. Guardrails: min_containers=0,
+scaledown_window 60s, retries=0, 15-min hard timeout, max 1 container
+per run. 70B is parked until an explicit go (it cannot fit A10G; its
+config gets decided then). The container never sees repo code; it maps
 prompts to raw completions and reports backend versions.
 
 Local side (this file's entrypoint, run via `modal run`): builds the
@@ -32,18 +35,29 @@ image = (
 weights = modal.Volume.from_name("harsh-ft-grammar-weights", create_if_missing=True)
 hf_secret = modal.Secret.from_name("huggingface-secret")
 
+IMAGE_TAG = "nvidia/cuda:12.8.1-devel-ubuntu22.04 + python3.12 + uv:vllm"
+
 MODELS = {
     "1b": ("meta-llama/Llama-3.2-1B-Instruct", "a10g"),
-    "8b": ("meta-llama/Llama-3.1-8B-Instruct", "a100"),
-    "70b": ("meta-llama/Llama-3.1-70B-Instruct", "a100_80_x4"),
+    "8b": ("meta-llama/Llama-3.1-8B-Instruct", "a10g"),
+    "70b": ("meta-llama/Llama-3.1-70B-Instruct", "parked"),
 }
 MAX_TOKENS = 4096  # repo convention for the reasoning-off regime
 MAX_MODEL_LEN = 8192  # prompts are ~2k tokens; caps KV allocation
 
 
 def _generate(
-    model_id: str, conversations: list, max_tokens: int, tensor_parallel: int = 1
+    model_id: str,
+    conversations: list,
+    max_tokens: int,
+    tensor_parallel: int = 1,
+    max_model_len: int = MAX_MODEL_LEN,
+    two_stage: dict | None = None,
 ) -> dict:
+    """Batch-generate; with two_stage, feed each raw stage-1 response
+    verbatim into the stage-2 template (mechanical {story} replacement,
+    exactly checkform.build_prompt's semantics) and grade-relevant
+    output is the second pass. Engine loads once for both passes."""
     import os
     import time
 
@@ -62,65 +76,95 @@ def _generate(
     llm = LLM(
         model=model_id,
         dtype="bfloat16",
-        max_model_len=MAX_MODEL_LEN,
+        max_model_len=max_model_len,
         tensor_parallel_size=tensor_parallel,
         enforce_eager=False,
     )
     load_s = time.monotonic() - t0
     weights.commit()  # persist freshly downloaded weights promptly
 
-    params = SamplingParams(temperature=0.0, max_tokens=max_tokens)
+    def run_pass(convs: list) -> list:
+        outputs = llm.chat(convs, SamplingParams(temperature=0.0, max_tokens=max_tokens))
+        return [
+            {
+                "text": out.outputs[0].text,
+                "finish_reason": out.outputs[0].finish_reason,
+                "completion_tokens": len(out.outputs[0].token_ids),
+                "prompt_tokens": len(out.prompt_token_ids),
+            }
+            for out in outputs
+        ]
+
     t1 = time.monotonic()
-    outputs = llm.chat(conversations, params)
+    rows = run_pass(conversations)
+    stage1_rows = None
+    if two_stage is not None:
+        stage1_rows = rows
+        stage2_convs = [
+            [{
+                "role": "user",
+                "content": two_stage["template"].replace("{story}", r["text"])
+                + two_stage["suffix"],
+            }]
+            for r in stage1_rows
+        ]
+        rows = run_pass(stage2_convs)
     generate_s = time.monotonic() - t1
 
-    rows = [
-        {
-            "text": out.outputs[0].text,
-            "finish_reason": out.outputs[0].finish_reason,
-            "completion_tokens": len(out.outputs[0].token_ids),
-            "prompt_tokens": len(out.prompt_token_ids),
-        }
-        for out in outputs
-    ]
     return {
         "rows": rows,
+        "stage1_rows": stage1_rows,
         "backend": {
             "engine": "vllm",
             "vllm_version": str(vllm.__version__),
             "torch_version": str(torch.__version__),
             "gpu": torch.cuda.get_device_name(0),
             "dtype": "bfloat16",
-            "max_model_len": MAX_MODEL_LEN,
+            "max_model_len": max_model_len,
             "chat_template": "model default via llm.chat, add_generation_prompt",
         },
         "timing": {"model_load_s": round(load_s, 1), "generate_s": round(generate_s, 1)},
     }
 
 
-common = dict(
-    image=image,
-    volumes={"/models": weights},
-    secrets=[hf_secret],
-    timeout=3600,
-    scaledown_window=60,
+GUARDRAILS = dict(
+    min_containers=0,
+    max_containers=1,
+    scaledown_window=60,  # user cap: <= 120s
+    retries=0,
+    timeout=900,  # 15-minute hard cap per run
 )
 
 
-@app.function(gpu="A10G", **common)
+_fn_common = dict(
+    gpu="A10G", image=image, volumes={"/models": weights}, secrets=[hf_secret]
+)
+
+
+@app.function(**_fn_common, **GUARDRAILS)
 def generate_a10g(model_id: str, conversations: list, max_tokens: int) -> dict:
     return _generate(model_id, conversations, max_tokens)
 
 
-@app.function(gpu="A100-40GB", **common)
-def generate_a100(model_id: str, conversations: list, max_tokens: int) -> dict:
-    return _generate(model_id, conversations, max_tokens)
+# Two-stage runs two full generation passes (8B: ~7 min each), which
+# cannot fit the 15-min single-pass cap; 30-min timeout here, disclosed
+# and stamped in run_meta. Stage-2 prompts embed a whole stage-1
+# response, so the sequence cap is raised to 12288.
+TWO_STAGE_MAX_MODEL_LEN = 12288
+TWO_STAGE_GUARDRAILS = {**GUARDRAILS, "timeout": 1800}
 
 
-# 70B bf16 is ~140GB of weights: tensor-parallel over 4x A100-80GB.
-@app.function(gpu="A100-80GB:4", **{**common, "timeout": 7200})
-def generate_a100_80_x4(model_id: str, conversations: list, max_tokens: int) -> dict:
-    return _generate(model_id, conversations, max_tokens, tensor_parallel=4)
+@app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)
+def generate_a10g_two_stage(
+    model_id: str, conversations: list, max_tokens: int, two_stage: dict
+) -> dict:
+    return _generate(
+        model_id,
+        conversations,
+        max_tokens,
+        max_model_len=TWO_STAGE_MAX_MODEL_LEN,
+        two_stage=two_stage,
+    )
 
 
 @app.local_entrypoint()
@@ -140,9 +184,17 @@ def main(model: str = "1b", arm: str = "story", limit: int = 0):
     from checkform import build_prompt, grade
 
     LITERAL_TEMPLATE = REPO / "prompts" / "literal_prompt.md"
-    assert arm in ("story", "literal"), f"unknown arm {arm!r}"
+    ABSTRACT_TEMPLATE = REPO / "prompts" / "abstract_prompt.md"
+    assert arm in ("story", "literal", "two-stage"), f"unknown arm {arm!r}"
     model_id, gpu_tier = MODELS[model]
-    template = STORY_TEMPLATE if arm == "story" else LITERAL_TEMPLATE
+    # exp-07 plumbing: two-stage sends the STORY under abstract_prompt.md
+    # (stage 1); stage 2 is literal_prompt.md filled with the raw stage-1
+    # response, wrapped with the literal two-lines suffix.
+    template = {
+        "story": STORY_TEMPLATE, "literal": LITERAL_TEMPLATE, "two-stage": ABSTRACT_TEMPLATE,
+    }[arm]
+    wrap_form = "abstract" if arm == "two-stage" else arm
+    source_field = "literal" if arm == "literal" else "story"
 
     rows = []
     for tier in ("normal", "hard", "extra_hard", "order5"):
@@ -154,23 +206,29 @@ def main(model: str = "1b", arm: str = "story", limit: int = 0):
 
     prompts = []
     for r in rows:
-        base = build_prompt({"story": r[arm]}, template_path=template)
-        prompts.append(wrap_prompt(base, "off", model_id, arm))
+        base = build_prompt({"story": r[source_field]}, template_path=template)
+        prompts.append(wrap_prompt(base, "off", model_id, wrap_form))
     conversations = [[{"role": "user", "content": p}] for p in prompts]
 
-    fn = {
-        "a10g": generate_a10g,
-        "a100": generate_a100,
-        "a100_80_x4": generate_a100_80_x4,
-    }[gpu_tier]
+    if gpu_tier == "parked":
+        raise SystemExit(f"{model_id} is parked pending an explicit go — not runnable")
+    stage2_template_text = LITERAL_TEMPLATE.read_text(encoding="utf-8")
+    stage2_suffix = wrap_prompt("", "off", model_id, "literal")
     t0 = time.monotonic()
-    result = fn.remote(model_id, conversations, MAX_TOKENS)
+    if arm == "two-stage":
+        result = generate_a10g_two_stage.remote(
+            model_id, conversations, MAX_TOKENS,
+            {"template": stage2_template_text, "suffix": stage2_suffix},
+        )
+    else:
+        result = generate_a10g.remote(model_id, conversations, MAX_TOKENS)
     wall_s = time.monotonic() - t0
 
     out_dir = here / "runs" / "base-v1" / f"{model}-{arm}"
     out_dir.mkdir(parents=True, exist_ok=True)
     results_rows = []
-    for r, prompt, gen in zip(rows, prompts, result["rows"]):
+    stage1_rows = result.get("stage1_rows") or [None] * len(rows)
+    for r, prompt, gen, s1 in zip(rows, prompts, result["rows"], stage1_rows):
         verdict = grade(gen["text"], {"canonical_e": r["canonical_e"], "canonical_f": r["canonical_f"]})
         row = {
             "pair_id": r["problem_id"],
@@ -189,6 +247,15 @@ def main(model: str = "1b", arm: str = "story", limit: int = 0):
             "prompt_tokens": gen["prompt_tokens"],
             "api_error": None,
         }
+        if s1 is not None:
+            stage2_prompt = stage2_template_text.replace("{story}", s1["text"]) + stage2_suffix
+            row["sent_prompt_hash"] = hashlib.sha256(stage2_prompt.encode()).hexdigest()[:12]
+            row.update(
+                stage1_sent_prompt_hash=hashlib.sha256(prompt.encode()).hexdigest()[:12],
+                stage1_response=s1["text"],
+                stage1_finish_reason=s1["finish_reason"],
+                stage1_completion_tokens=s1["completion_tokens"],
+            )
         row["bucket"] = bucket_of(row)
         results_rows.append(row)
 
@@ -223,14 +290,24 @@ def main(model: str = "1b", arm: str = "story", limit: int = 0):
         "limit": limit or None,
         "sampling": {"temperature": 0.0, "max_tokens": MAX_TOKENS, "greedy": True},
         "backend": result["backend"],
-        "gpu_requested": {
-            "a10g": "A10G",
-            "a100": "A100-40GB",
-            "a100_80_x4": "A100-80GB:4 (TP=4)",
-        }[gpu_tier],
+        "gpu_requested": "A10G",
+        "image": IMAGE_TAG,
+        "guardrails": TWO_STAGE_GUARDRAILS if arm == "two-stage" else GUARDRAILS,
+        "max_model_len": TWO_STAGE_MAX_MODEL_LEN if arm == "two-stage" else MAX_MODEL_LEN,
         "prompt_template": template.name,
         "prompt_template_sha256": hashlib.sha256(template.read_bytes()).hexdigest(),
-        "regime_suffix": wrap_prompt("", "off", model_id, arm),
+        "regime_suffix": wrap_prompt("", "off", model_id, wrap_form),
+        **(
+            {
+                "stage2_template": LITERAL_TEMPLATE.name,
+                "stage2_template_sha256": hashlib.sha256(
+                    LITERAL_TEMPLATE.read_bytes()
+                ).hexdigest(),
+                "stage2_regime_suffix": stage2_suffix,
+            }
+            if arm == "two-stage"
+            else {}
+        ),
         "timing": {**result["timing"], "wall_s": round(wall_s, 1)},
     }
     (out_dir / "run_meta.json").write_text(json.dumps(meta, indent=2) + "\n")

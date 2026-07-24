@@ -12,6 +12,11 @@
 | Llama-3.2-1B-Instruct | literal | extra_hard | 200 | 0.0 | 0 | 0 | 0 | 200 | 0 | 0.0 | 0 |
 | Llama-3.2-1B-Instruct | literal | order5 | 200 | 0.0 | 0 | 0 | 0 | 185 | 15 | 7.5 | 0 |
 | _Llama-3.2-1B-Instruct · literal: wall 174.0s, gen 15.2s, NVIDIA A10_ | | | | | | | | | | | |
+| Llama-3.2-1B-Instruct | two-stage | normal | 180 | 0.0 | 0 | 0 | 0 | 180 | 0 | 0.0 | 0 |
+| Llama-3.2-1B-Instruct | two-stage | hard | 197 | 0.0 | 0 | 0 | 0 | 197 | 0 | 0.0 | 0 |
+| Llama-3.2-1B-Instruct | two-stage | extra_hard | 200 | 0.0 | 0 | 0 | 0 | 200 | 0 | 0.0 | 0 |
+| Llama-3.2-1B-Instruct | two-stage | order5 | 200 | 0.0 | 0 | 0 | 0 | 200 | 0 | 0.0 | 0 |
+| _Llama-3.2-1B-Instruct · two-stage: wall 200.5s, gen 35.9s, NVIDIA A10_ | | | | | | | | | | | |
 | Llama-3.1-8B-Instruct | story | normal | 180 | 0.0 | 0 | 0 | 0 | 164 | 16 | 8.9 | 1 |
 | Llama-3.1-8B-Instruct | story | hard | 197 | 0.0 | 0 | 0 | 0 | 177 | 20 | 10.2 | 5 |
 | Llama-3.1-8B-Instruct | story | extra_hard | 200 | 0.5 | 0 | 1 | 0 | 187 | 12 | 6.0 | 3 |
@@ -22,3 +27,8 @@
 | Llama-3.1-8B-Instruct | literal | extra_hard | 200 | 0.0 | 0 | 0 | 0 | 167 | 33 | 16.5 | 4 |
 | Llama-3.1-8B-Instruct | literal | order5 | 200 | 0.0 | 0 | 0 | 0 | 110 | 90 | 45.0 | 9 |
 | _Llama-3.1-8B-Instruct · literal: wall 570.6s, gen 390.1s, NVIDIA A10_ | | | | | | | | | | | |
+| Llama-3.1-8B-Instruct | two-stage | normal | 180 | 0.0 | 0 | 0 | 0 | 155 | 25 | 13.9 | 2 |
+| Llama-3.1-8B-Instruct | two-stage | hard | 197 | 0.0 | 0 | 0 | 0 | 167 | 30 | 15.2 | 9 |
+| Llama-3.1-8B-Instruct | two-stage | extra_hard | 200 | 0.0 | 0 | 0 | 0 | 184 | 16 | 8.0 | 2 |
+| Llama-3.1-8B-Instruct | two-stage | order5 | 200 | 0.0 | 0 | 0 | 0 | 122 | 78 | 39.0 | 8 |
+| _Llama-3.1-8B-Instruct · two-stage: wall 1070.0s, gen 890.4s, NVIDIA A10_ | | | | | | | | | | | |
