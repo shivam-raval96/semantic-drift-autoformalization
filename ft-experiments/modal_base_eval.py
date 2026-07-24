@@ -53,6 +53,7 @@ def _generate(
     tensor_parallel: int = 1,
     max_model_len: int = MAX_MODEL_LEN,
     two_stage: dict | None = None,
+    lora: dict | None = None,
 ) -> dict:
     """Batch-generate; with two_stage, feed each raw stage-1 response
     verbatim into the stage-2 template (mechanical {story} replacement,
@@ -72,6 +73,14 @@ def _generate(
     import vllm
     from vllm import LLM, SamplingParams
 
+    lora_request = None
+    lora_kwargs = {}
+    if lora is not None:
+        from vllm.lora.request import LoRARequest
+
+        lora_kwargs = {"enable_lora": True, "max_lora_rank": lora["rank"]}
+        lora_request = LoRARequest("ft-adapter", 1, lora["path"])
+
     t0 = time.monotonic()
     llm = LLM(
         model=model_id,
@@ -79,12 +88,17 @@ def _generate(
         max_model_len=max_model_len,
         tensor_parallel_size=tensor_parallel,
         enforce_eager=False,
+        **lora_kwargs,
     )
     load_s = time.monotonic() - t0
     weights.commit()  # persist freshly downloaded weights promptly
 
     def run_pass(convs: list) -> list:
-        outputs = llm.chat(convs, SamplingParams(temperature=0.0, max_tokens=max_tokens))
+        outputs = llm.chat(
+            convs,
+            SamplingParams(temperature=0.0, max_tokens=max_tokens),
+            lora_request=lora_request,
+        )
         return [
             {
                 "text": out.outputs[0].text,
@@ -142,8 +156,10 @@ _fn_common = dict(
 
 
 @app.function(**_fn_common, **GUARDRAILS)
-def generate_a10g(model_id: str, conversations: list, max_tokens: int) -> dict:
-    return _generate(model_id, conversations, max_tokens)
+def generate_a10g(
+    model_id: str, conversations: list, max_tokens: int, lora: dict | None = None
+) -> dict:
+    return _generate(model_id, conversations, max_tokens, lora=lora)
 
 
 # Two-stage runs two full generation passes (8B: ~7 min each), which
@@ -156,7 +172,11 @@ TWO_STAGE_GUARDRAILS = {**GUARDRAILS, "timeout": 1800}
 
 @app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)
 def generate_a10g_two_stage(
-    model_id: str, conversations: list, max_tokens: int, two_stage: dict
+    model_id: str,
+    conversations: list,
+    max_tokens: int,
+    two_stage: dict,
+    lora: dict | None = None,
 ) -> dict:
     return _generate(
         model_id,
@@ -164,11 +184,19 @@ def generate_a10g_two_stage(
         max_tokens,
         max_model_len=TWO_STAGE_MAX_MODEL_LEN,
         two_stage=two_stage,
+        lora=lora,
     )
 
 
 @app.local_entrypoint()
-def main(model: str = "1b", arm: str = "story", limit: int = 0):
+def main(
+    model: str = "1b",
+    arm: str = "story",
+    limit: int = 0,
+    adapter: str = "",
+    adapter_rank: int = 16,
+    out_tag: str = "base-v1",
+):
     import hashlib
     import json
     import sys
@@ -214,17 +242,19 @@ def main(model: str = "1b", arm: str = "story", limit: int = 0):
         raise SystemExit(f"{model_id} is parked pending an explicit go — not runnable")
     stage2_template_text = LITERAL_TEMPLATE.read_text(encoding="utf-8")
     stage2_suffix = wrap_prompt("", "off", model_id, "literal")
+    lora = {"path": adapter, "rank": adapter_rank} if adapter else None
     t0 = time.monotonic()
     if arm == "two-stage":
         result = generate_a10g_two_stage.remote(
             model_id, conversations, MAX_TOKENS,
             {"template": stage2_template_text, "suffix": stage2_suffix},
+            lora=lora,
         )
     else:
-        result = generate_a10g.remote(model_id, conversations, MAX_TOKENS)
+        result = generate_a10g.remote(model_id, conversations, MAX_TOKENS, lora=lora)
     wall_s = time.monotonic() - t0
 
-    out_dir = here / "runs" / "base-v1" / f"{model}-{arm}"
+    out_dir = here / "runs" / out_tag / f"{model}-{arm}"
     out_dir.mkdir(parents=True, exist_ok=True)
     results_rows = []
     stage1_rows = result.get("stage1_rows") or [None] * len(rows)
@@ -291,6 +321,7 @@ def main(model: str = "1b", arm: str = "story", limit: int = 0):
         "sampling": {"temperature": 0.0, "max_tokens": MAX_TOKENS, "greedy": True},
         "backend": result["backend"],
         "gpu_requested": "A10G",
+        "adapter": ({"path": adapter, "rank": adapter_rank} if adapter else None),
         "image": IMAGE_TAG,
         "guardrails": TWO_STAGE_GUARDRAILS if arm == "two-stage" else GUARDRAILS,
         "max_model_len": TWO_STAGE_MAX_MODEL_LEN if arm == "two-stage" else MAX_MODEL_LEN,
