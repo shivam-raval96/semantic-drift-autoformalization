@@ -1,0 +1,24 @@
+# @package _global_
+# Llama-3.1-8B law-identity manifold: the GPU-tier entry in the cross-model
+# isometry ledger. Same task, same frozen fingerprint chart, same null
+# protocol as the Qwen-1.5B and Llama-1B runs; L8 of 32 is the quarter-depth
+# cell analogous to Qwen L7/28 and Llama-1B L4/16.
+defaults:
+- /base
+- /task: etp_implication
+- /model: llama31_8b_instruct
+- /analysis/activation_manifold
+- _self_
+
+task:
+  target_variable: premise_law
+  n_train: 320
+  n_test: 80
+  target_variables:
+    - premise_law
+
+activation_manifold:
+  layers: [8, 16, 24]
+  token_positions: [premise_last]
+  intrinsic_dim: 3
+  intrinsic_mode: parameter
