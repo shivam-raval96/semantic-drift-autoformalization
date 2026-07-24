@@ -90,10 +90,12 @@ equations — and (stage 2) can the improvement be obtained in a maximally const
   - Rationale for no-think: thinking saturates this task (>95% in repo exp 01/02); CoT can internally
     rewrite the story (confound); Llama has no native thinking switch, so "thinking on" would be a
     prompt change — and then the prompt becomes the experiment.
-- **Models:** start `Llama-3.1-8B-Instruct` (Unsloth 4-bit). Also base-eval `Llama-3.2-1B/3B-Instruct`
-  as fast-iteration candidates (note: Llama **3.1** has no 1B — small ones are **3.2**). Mentor rule:
-  pick the sweep model for SIGNAL — mid-to-low base performance (25%→75% is a result; 70%→75% is
-  noise). 70B is a late expansion stage only.
+- **Models** (amended 2026-07-24): base-eval `Llama-3.2-1B-Instruct`, `Llama-3.1-8B-Instruct`, and
+  `Llama-3.1-70B-Instruct` (3B swapped out for 70B by decision; note Llama **3.1** has no 1B —
+  the small one is **3.2**). Training starts from `Llama-3.1-8B-Instruct` (Unsloth 4-bit) unless
+  the base table says otherwise. Mentor rule: pick the sweep model for SIGNAL — mid-to-low base
+  performance (25%→75% is a result; 70%→75% is noise). Phase 3 runs on Modal: vLLM bf16 greedy,
+  A10G (1B), A100-40GB (8B), A100-80GB×4 TP4 (70B), staged smallest-first.
 - **Simple comparison first (Phase 5a):** one reasonable LoRA config (e.g. r=16, standard target
   modules, all layers), base vs FT on eval_v1. This is the headline "does it work at all" result.
 - **Constrained stage after (Phase 5b, from mentor feedback):**
