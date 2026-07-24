@@ -239,8 +239,61 @@ def train(texts: list, holdout_texts: list, config: dict) -> dict:
     }
 
 
+def build_config(
+    preset: str, rank: int, layer: int, seed: int, samples: int,
+    epochs: int, max_steps: int, cfg,
+) -> tuple:
+    """Resolve a training config: preset defaults, explicit args override.
+
+    layer == -1 means all layers (broad run); otherwise LoRA is restricted
+    to that single block's o_proj. alpha == rank always (sweep convention).
+    """
+    base: dict = dict(cfg.PRESETS.get(preset, {}))
+    unset = {"rank": 0, "layer": -2, "seed": -1, "samples": -1, "epochs": 0, "max_steps": 0}
+    for key, val in (("rank", rank), ("layer", layer), ("seed", seed),
+                     ("samples", samples), ("epochs", epochs), ("max_steps", max_steps)):
+        if val != unset[key]:
+            base[key] = val
+    assert base.get("rank"), "give --rank or a --preset"
+    base.setdefault("layer", cfg.LAYER)
+    base.setdefault("seed", 0)
+    base.setdefault("samples", 0)
+    base.setdefault("batch_size", cfg.BATCH_SIZE)
+    base.setdefault("save_steps", cfg.SAVE_STEPS)
+    single = base["layer"] >= 0
+    base.setdefault(
+        "run_name",
+        f"r{base['rank']}-l{base['layer'] if single else 'all'}-s{base['seed']}",
+    )
+    config = {
+        "run_name": base["run_name"],
+        "seed": base["seed"],
+        "rank": base["rank"],
+        "lora_alpha": base["rank"],  # alpha=r convention
+        "target_modules": cfg.SINGLE_LAYER_MODULES if single else cfg.ALL_LAYER_MODULES,
+        "layers_to_transform": [base["layer"]] if single else None,
+        "batch_size": base["batch_size"],
+        "lr": cfg.LR,
+        "save_steps": base["save_steps"],
+    }
+    if base.get("max_steps"):
+        config["max_steps"] = base["max_steps"]
+    else:
+        config["epochs"] = base.get("epochs", cfg.EPOCHS)
+    return config, base["samples"]
+
+
 @app.local_entrypoint()
-def main(mode: str = "smoke"):
+def main(
+    preset: str = "",
+    rank: int = 0,        # 0 = unset (use preset)
+    layer: int = -2,      # -2 = unset; -1 = all layers; >=0 = that single block
+    seed: int = -1,       # -1 = unset
+    samples: int = -1,    # -1 = unset; 0 = full corpus
+    epochs: int = 0,      # 0 = unset
+    max_steps: int = 0,   # 0 = unset (use epochs)
+):
+    import importlib.util
     import json
     import random
     import sys
@@ -249,59 +302,36 @@ def main(mode: str = "smoke"):
     from pathlib import Path
 
     here = Path(__file__).resolve().parent
-    sys.path.insert(0, str(here))
-    from ftlib import REPO  # noqa: F401
+    spec = importlib.util.spec_from_file_location("ft_training_config", here / "config.py")
+    cfg = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cfg)
+    sys.path.insert(0, str(cfg.ftc.REPO))
     from checkform import parse_prefix_equation
 
+    config, n_samples = build_config(preset, rank, layer, seed, samples, epochs, max_steps, cfg)
+    print(f"= resolved training config: {json.dumps(config)}  samples={n_samples or 'all'}")
+
     train_rows = [
-        json.loads(l) for l in (here / "train_v1" / "train.jsonl").read_text().splitlines()
+        json.loads(l)
+        for l in (cfg.PATHS["train_v1"] / "train.jsonl").read_text().splitlines()
     ]
     holdout_rows = [
-        json.loads(l) for l in (here / "train_v1" / "holdout.jsonl").read_text().splitlines()
+        json.loads(l)
+        for l in (cfg.PATHS["train_v1"] / "holdout.jsonl").read_text().splitlines()
     ]
     holdout_texts = [r["text"] for r in holdout_rows]
-
-    if mode == "smoke":
-        rng = random.Random(0)
-        texts = [r["text"] for r in rng.sample(train_rows, 200)]
-        config = {
-            "run_name": "smoke-r1-L16-oproj",
-            "seed": 0,
-            "rank": 1,
-            "lora_alpha": 1,
-            "target_modules": ["o_proj"],
-            "layers_to_transform": [16],
-            "batch_size": 1,
-            "lr": 2e-4,
-            "max_steps": 50,
-            "save_steps": 25,
-        }
-    elif mode == "full":
-        texts = [r["text"] for r in train_rows]
-        config = {
-            "run_name": "phase5a-r16-all",
-            "seed": 0,
-            "rank": 16,
-            "lora_alpha": 16,
-            "target_modules": [
-                "q_proj", "k_proj", "v_proj", "o_proj",
-                "gate_proj", "up_proj", "down_proj",
-            ],
-            "layers_to_transform": None,
-            "batch_size": 4,
-            "lr": 2e-4,
-            "epochs": 3,
-            "save_steps": 10,
-        }
+    if n_samples:
+        rng = random.Random(config["seed"])
+        texts = [r["text"] for r in rng.sample(train_rows, n_samples)]
     else:
-        raise SystemExit(f"unknown mode {mode!r}")
+        texts = [r["text"] for r in train_rows]
 
     t0 = time.monotonic()
     result = train.remote(texts, holdout_texts, config)
     result["wall_seconds"] = round(time.monotonic() - t0, 1)
     result["timestamp"] = datetime.now(timezone.utc).isoformat()
 
-    out = here / "runs" / "ft-v1" / f"train-{config['run_name']}.json"
+    out = cfg.PATHS["runs"] / "ft-v1" / f"train-{config['run_name']}.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(result, indent=2) + "\n")
 
