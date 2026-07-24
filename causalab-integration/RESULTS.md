@@ -46,6 +46,26 @@ registers only. Strengthening moves, in order: more null seeds (cheap),
 larger n_train (unique-prompt pool supports ~6x), remaining layers,
 Llama-1B/8B for cross-model comparison, story register via Storyform.
 
+## Cross-model comparison (Llama-3.2-1B, same protocol)
+
+Llama-1B baseline: 51.2% - AT CHANCE on the judgment task (vs Qwen
+59.7%). Yet its law-identity geometry shows the same isometry: TRUE
+chart recon_mse 0.2522 vs 20-seed null min 0.2692 / mean 0.2882 -
+0/20 nulls beat it, p = 0.048. Effect size matches Qwen almost exactly.
+
+Two readings, both important:
+1. Cross-architecture replication: two model families agree with the
+   same frozen certified chart - the first evidence the geometry is
+   world-shaped rather than representer-shaped.
+2. Dissociation: Llama-1B REPRESENTS the certified ontology while
+   unable to USE it for the task - the represented-but-unread pattern
+   (ELK's central object) observed behaviorally+geometrically at 1B.
+
+Protocol notes: L4/16 quarter-depth cell (analogous to Qwen L7/28);
+the law-manifold stage requires a premise_law subspace artifact as
+prerequisite (etp_1b_lawsubspace runner; scoring crash on string
+labels after metadata write is tolerated).
+
 ## Ops lessons (encoded so they are not relearned)
 
 1. Verify a run ran: causalab skips completed output dirs, and

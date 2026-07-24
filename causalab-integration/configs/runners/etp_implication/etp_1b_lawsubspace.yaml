@@ -1,0 +1,22 @@
+# @package _global_
+# Prerequisite for etp_1b_lawmanifold: the PCA subspace artifact for the
+# premise_law target (the manifold stage reads it). Scoring may crash on the
+# 157-class string labels after metadata is written; that is tolerated by the
+# caller - the manifold only needs the metadata + featurizers.
+defaults:
+- /base
+- /task: etp_implication
+- /model: llama32_1b_instruct
+- /analysis/subspace
+- _self_
+
+task:
+  target_variable: premise_law
+  n_train: 320
+  n_test: 80
+  target_variables:
+    - premise_law
+
+subspace:
+  layers: [4, 8, 12]
+  token_positions: [premise_last]
