@@ -8,16 +8,22 @@ runs/ft-v1/comparison.md and prints it.
 
 from __future__ import annotations
 
+import importlib.util
 import json
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-TIERS = ("normal", "hard", "extra_hard", "order5")
-ARMS = ("story", "literal", "two-stage")
+_spec = importlib.util.spec_from_file_location(
+    "ft_root_config", Path(__file__).resolve().parents[1] / "config.py"
+)
+ftc = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(ftc)
+
+TIERS = ftc.EVAL["tiers"]
+ARMS = ftc.EVAL["arms"]
 
 
 def load(tag: str, arm: str):
-    path = HERE / "runs" / tag / f"8b-{arm}" / "summary.json"
+    path = ftc.PATHS["runs"] / tag / f"8b-{arm}" / "summary.json"
     return json.loads(path.read_text()) if path.exists() else None
 
 
@@ -44,7 +50,7 @@ def main() -> int:
                 f"| {b['wrong']} → {f['wrong']} |"
             )
     text = "\n".join(lines) + "\n"
-    out = HERE / "runs" / "ft-v1" / "comparison.md"
+    out = ftc.PATHS["runs"] / "ft-v1" / "comparison.md"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(text)
     print(text)

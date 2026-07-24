@@ -35,13 +35,11 @@ image = (
 weights = modal.Volume.from_name("harsh-ft-grammar-weights", create_if_missing=True)
 hf_secret = modal.Secret.from_name("huggingface-secret")
 
+# Container-side literals; they mirror ft-experiments/config.py (MODAL,
+# GUARDRAILS, EVAL) — kept literal here because this module is imported
+# inside containers where the registry file does not exist. The local
+# entrypoint asserts against the registry at launch.
 IMAGE_TAG = "nvidia/cuda:12.8.1-devel-ubuntu22.04 + python3.12 + uv:vllm"
-
-MODELS = {
-    "1b": ("meta-llama/Llama-3.2-1B-Instruct", "a10g"),
-    "8b": ("meta-llama/Llama-3.1-8B-Instruct", "a10g"),
-    "70b": ("meta-llama/Llama-3.1-70B-Instruct", "parked"),
-}
 MAX_TOKENS = 4096  # repo convention for the reasoning-off regime
 MAX_MODEL_LEN = 8192  # prompts are ~2k tokens; caps KV allocation
 
@@ -204,17 +202,32 @@ def main(
     from datetime import datetime, timezone
     from pathlib import Path
 
+    import importlib.util
+
     here = Path(__file__).resolve().parent
-    sys.path.insert(0, str(here))
-    from ftlib import REPO  # noqa: F401  (puts informalizing-etp on sys.path)
+    spec = importlib.util.spec_from_file_location("ft_root_config", here.parent / "config.py")
+    ftc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ftc)
+    sys.path.insert(0, str(ftc.REPO))
     from benchmark import bucket_of, wrap_prompt
     from checkform import PROMPT_PATH as STORY_TEMPLATE
     from checkform import build_prompt, grade
 
-    LITERAL_TEMPLATE = REPO / "prompts" / "literal_prompt.md"
-    ABSTRACT_TEMPLATE = REPO / "prompts" / "abstract_prompt.md"
-    assert arm in ("story", "literal", "two-stage"), f"unknown arm {arm!r}"
-    model_id, gpu_tier = MODELS[model]
+    # Frozen-protocol gate: the templates on disk must match the pinned SHAs.
+    for name, want in ftc.EVAL["template_shas"].items():
+        got = hashlib.sha256((ftc.PATHS["prompts"] / name).read_bytes()).hexdigest()
+        assert got == want, f"frozen template changed on disk: {name}"
+
+    LITERAL_TEMPLATE = ftc.PATHS["prompts"] / "literal_prompt.md"
+    ABSTRACT_TEMPLATE = ftc.PATHS["prompts"] / "abstract_prompt.md"
+    arm = {"twostage": "two-stage"}.get(arm, arm)
+    assert arm in ftc.EVAL["arms"], f"unknown arm {arm!r}"
+    entry = ftc.MODELS[model]
+    if entry.get("parked"):
+        raise SystemExit(f"{entry['hf_id']} is parked pending an explicit go — not runnable")
+    model_id = entry["hf_id"]
+    print(f"= resolved: model={model_id} arm={arm} adapter={adapter or 'NONE (base)'} "
+          f"out={out_tag} limit={limit or 'full'}")
     # exp-07 plumbing: two-stage sends the STORY under abstract_prompt.md
     # (stage 1); stage 2 is literal_prompt.md filled with the raw stage-1
     # response, wrapped with the literal two-lines suffix.
@@ -225,8 +238,8 @@ def main(
     source_field = "literal" if arm == "literal" else "story"
 
     rows = []
-    for tier in ("normal", "hard", "extra_hard", "order5"):
-        for line in (here / "eval_v1" / f"eval_{tier}.jsonl").read_text().splitlines():
+    for tier in ftc.EVAL["tiers"]:
+        for line in (ftc.PATHS["eval_v1"] / f"eval_{tier}.jsonl").read_text().splitlines():
             if line.strip():
                 rows.append(json.loads(line))
     if limit:
@@ -238,8 +251,6 @@ def main(
         prompts.append(wrap_prompt(base, "off", model_id, wrap_form))
     conversations = [[{"role": "user", "content": p}] for p in prompts]
 
-    if gpu_tier == "parked":
-        raise SystemExit(f"{model_id} is parked pending an explicit go — not runnable")
     stage2_template_text = LITERAL_TEMPLATE.read_text(encoding="utf-8")
     stage2_suffix = wrap_prompt("", "off", model_id, "literal")
     lora = {"path": adapter, "rank": adapter_rank} if adapter else None
@@ -254,7 +265,7 @@ def main(
         result = generate_a10g.remote(model_id, conversations, MAX_TOKENS, lora=lora)
     wall_s = time.monotonic() - t0
 
-    out_dir = here / "runs" / out_tag / f"{model}-{arm}"
+    out_dir = ftc.PATHS["runs"] / out_tag / f"{model}-{arm}"
     out_dir.mkdir(parents=True, exist_ok=True)
     results_rows = []
     stage1_rows = result.get("stage1_rows") or [None] * len(rows)
