@@ -16,17 +16,17 @@ task:
   target_variable: implication
   n_train: 320
   n_test: 80
-  # geometry targets: the verdict AND law identity (the semantic-content
-  # manifold proper — 157 classes whose certified implication metric the
-  # activation geometry can be compared against)
+  # verdict target only for now. Law-identity geometry (157 classes) needs
+  # an EMBEDDINGS export first — string values crash the numeric label path;
+  # the planned embedding is the certified implication-row fingerprint, which
+  # makes the ground-truth metric the reference frame. See task README.
   target_variables:
     - implication
-    - premise_law
 
 subspace:
   layers: [7, 14, 21]   # explicit: locate is deferred (certified-resampling constraint)
-  token_positions: [premise_law]
+  token_positions: [premise_last]
 
 activation_manifold:
   layers: [7, 14, 21]
-  token_positions: [premise_law]
+  token_positions: [premise_last]

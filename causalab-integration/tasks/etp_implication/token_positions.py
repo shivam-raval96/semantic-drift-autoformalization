@@ -50,6 +50,11 @@ def _span_token_indices(input_sample, pipeline, which: str):
 def create_token_positions(
     pipeline: LMPipeline, template: str | None = None
 ) -> Dict[str, TokenPosition]:
+    # Span positions vary in token count across laws, which interchange
+    # interventions cannot align (fixed-arity gather). The *_last positions
+    # (final token of each span, the summary position by the entity_binding
+    # convention) are the intervention-safe variants; full spans remain for
+    # analyses that pool over tokens.
     return {
         "last": TokenPosition(
             lambda x, p=pipeline: get_last_token_index(x, p), pipeline, id="last"
@@ -63,5 +68,15 @@ def create_token_positions(
             lambda x, p=pipeline: _span_token_indices(x, p, "conclusion"),
             pipeline,
             id="conclusion_law",
+        ),
+        "premise_last": TokenPosition(
+            lambda x, p=pipeline: _span_token_indices(x, p, "premise")[-1:],
+            pipeline,
+            id="premise_last",
+        ),
+        "conclusion_last": TokenPosition(
+            lambda x, p=pipeline: _span_token_indices(x, p, "conclusion")[-1:],
+            pipeline,
+            id="conclusion_last",
         ),
     }

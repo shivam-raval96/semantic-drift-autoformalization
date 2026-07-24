@@ -27,8 +27,8 @@ task:
 
 subspace:
   layers: [8, 16, 24]   # explicit: locate is deferred (certified-resampling constraint)
-  token_positions: [premise_law]
+  token_positions: [premise_last]
 
 activation_manifold:
   layers: [8, 16, 24]
-  token_positions: [premise_law]
+  token_positions: [premise_last]
