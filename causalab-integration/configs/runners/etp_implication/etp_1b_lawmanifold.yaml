@@ -1,0 +1,23 @@
+# @package _global_
+# Llama-3.2-1B law-identity manifold: the cross-model comparison against the
+# Qwen-1.5B result. Same task, same frozen fingerprint chart (fp3), same null
+# protocol; layer 4 of 16 is the quarter-depth cell analogous to Qwen's L7/28.
+defaults:
+- /base
+- /task: etp_implication
+- /model: llama32_1b_instruct
+- /analysis/activation_manifold
+- _self_
+
+task:
+  target_variable: premise_law
+  n_train: 320
+  n_test: 80
+  target_variables:
+    - premise_law
+
+activation_manifold:
+  layers: [4, 8, 12]
+  token_positions: [premise_last]
+  intrinsic_dim: 3
+  intrinsic_mode: parameter
