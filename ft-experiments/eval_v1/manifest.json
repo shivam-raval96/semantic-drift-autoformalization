@@ -1,0 +1,95 @@
+{
+  "eval_version": "v1",
+  "source_dataset": "SAIRfoundation/equational-theories-selected-problems",
+  "generator": "ft-experiments/build_eval.py",
+  "repo_commit": "667fd3e54931bb17d6d440e535414d40b83b3ec7",
+  "tiers": {
+    "normal": {
+      "sair_subset": "evaluation_normal",
+      "input_rows": 200,
+      "dropped_vacuous": [
+        "evaluation_normal_0019",
+        "evaluation_normal_0021",
+        "evaluation_normal_0023",
+        "evaluation_normal_0025",
+        "evaluation_normal_0027",
+        "evaluation_normal_0029",
+        "evaluation_normal_0031",
+        "evaluation_normal_0033",
+        "evaluation_normal_0035",
+        "evaluation_normal_0037",
+        "evaluation_normal_0039",
+        "evaluation_normal_0041",
+        "evaluation_normal_0043",
+        "evaluation_normal_0045",
+        "evaluation_normal_0047",
+        "evaluation_normal_0049",
+        "evaluation_normal_0051",
+        "evaluation_normal_0053",
+        "evaluation_normal_0055",
+        "evaluation_normal_0133"
+      ],
+      "n": 180,
+      "answer_true": 100,
+      "answer_false": 80,
+      "themes": [
+        "graft",
+        "paint",
+        "signal",
+        "tea"
+      ]
+    },
+    "hard": {
+      "sair_subset": "evaluation_hard",
+      "input_rows": 200,
+      "dropped_vacuous": [
+        "evaluation_hard_0030",
+        "evaluation_hard_0032",
+        "evaluation_hard_0034"
+      ],
+      "n": 197,
+      "answer_true": 97,
+      "answer_false": 100,
+      "themes": [
+        "graft",
+        "paint",
+        "signal",
+        "tea"
+      ]
+    },
+    "extra_hard": {
+      "sair_subset": "evaluation_extra_hard",
+      "input_rows": 200,
+      "dropped_vacuous": [],
+      "n": 200,
+      "answer_true": 100,
+      "answer_false": 100,
+      "themes": [
+        "graft",
+        "paint",
+        "signal",
+        "tea"
+      ]
+    },
+    "order5": {
+      "sair_subset": "evaluation_order5",
+      "input_rows": 200,
+      "dropped_vacuous": [],
+      "n": 200,
+      "answer_true": 100,
+      "answer_false": 100,
+      "themes": [
+        "graft",
+        "paint",
+        "signal",
+        "tea"
+      ]
+    }
+  },
+  "files": {
+    "eval_normal.jsonl": "a1600e911c86a04c7723668a53b3a46affcf16017ef6db109a7c2af96c9aa252",
+    "eval_hard.jsonl": "93208602d7105a04b0e5c745e058ef43160b097ab9701b3709a0a42372516243",
+    "eval_extra_hard.jsonl": "4fb6d6970ab3c608480d11ae9fdd2544bd7720f26b27ce3727351048688a417e",
+    "eval_order5.jsonl": "d12d3db085d58de58815d66fc0920a2fd2db433d8332139c81bc7249538cd8d0"
+  }
+}
