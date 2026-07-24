@@ -39,9 +39,12 @@ PRESETS = {
         "rank": 1, "layer": LAYER, "seed": 0, "samples": 200,
         "batch_size": 1, "max_steps": 50, "save_steps": 25,
     },
+    # batch 1 x grad_accum 4 = the same 4x1024 tokens per optimizer step;
+    # micro-batch 4 OOMs the A10G on the 128K-vocab CE logits (~2GB fp32
+    # per buffer in backward).
     "phase5a": {
         "run_name": "phase5a-r16-all",
         "rank": 16, "layer": -1, "seed": 0, "samples": 0,
-        "batch_size": BATCH_SIZE, "epochs": EPOCHS, "save_steps": SAVE_STEPS,
+        "batch_size": 1, "grad_accum": 4, "epochs": EPOCHS, "save_steps": SAVE_STEPS,
     },
 }

@@ -67,6 +67,9 @@ def train(texts: list, holdout_texts: list, config: dict) -> dict:
         if os.environ.get(key):
             os.environ.setdefault("HF_TOKEN", os.environ[key])
             break
+    # The 128K-vocab CE loss allocates ~2GB logits buffers; expandable
+    # segments avoids fragmentation-driven OOM on the 24GB A10G.
+    os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 
     import torch
     import transformers
@@ -143,6 +146,7 @@ def train(texts: list, holdout_texts: list, config: dict) -> dict:
     args = TrainingArguments(
         output_dir=f"{run_dir}/trainer",
         per_device_train_batch_size=config["batch_size"],
+        gradient_accumulation_steps=config.get("grad_accum", 1),
         learning_rate=config["lr"],
         lr_scheduler_type="cosine",
         warmup_ratio=0.03,
@@ -273,6 +277,7 @@ def build_config(
         "target_modules": cfg.SINGLE_LAYER_MODULES if single else cfg.ALL_LAYER_MODULES,
         "layers_to_transform": [base["layer"]] if single else None,
         "batch_size": base["batch_size"],
+        "grad_accum": base.get("grad_accum", 1),
         "lr": cfg.LR,
         "save_steps": base["save_steps"],
     }
