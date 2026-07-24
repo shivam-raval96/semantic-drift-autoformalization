@@ -7,8 +7,7 @@ Every subset's only HF split is named "train" — an HF convention; nothing
 from this dataset is ever trained on.
 """
 
-from pathlib import Path
-
+from config import PATHS
 from datasets import load_dataset
 
 DATASET = "SAIRfoundation/equational-theories-selected-problems"
@@ -23,7 +22,7 @@ SUBSETS = (
     "hard2",
     "hard3",
 )
-OUT_DIR = Path(__file__).resolve().parent / "data" / "sair"
+OUT_DIR = PATHS["sair"]
 
 
 def main() -> int:

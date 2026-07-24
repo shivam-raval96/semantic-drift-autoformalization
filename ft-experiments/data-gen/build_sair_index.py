@@ -16,10 +16,10 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from config import PATHS
 from ftlib import file_sha256, law_hash, pair_hash, parse_equation
 
-HERE = Path(__file__).resolve().parent
-SAIR_DIR = HERE / "data" / "sair"
+SAIR_DIR = PATHS["sair"]
 
 SUBSETS = (
     "evaluation_normal",
@@ -77,7 +77,7 @@ def main() -> int:
         "law_hashes": sorted(law_hashes),
         "eval_law_hashes": sorted(eval_law_hashes),
     }
-    out = HERE / "data" / "sair_index.json"
+    out = PATHS["sair_index"]
     out.write_text(json.dumps(index, indent=1) + "\n", encoding="utf-8")
     print(f"\n{rows_seen} rows -> {len(pair_hashes)} pair classes, "
           f"{len(law_hashes)} law classes -> {out}")

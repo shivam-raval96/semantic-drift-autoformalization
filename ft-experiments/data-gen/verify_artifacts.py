@@ -54,10 +54,12 @@ from checkform import grade, parse_prefix_equation  # noqa: E402
 from literalform import backparse_literal, render_description  # noqa: E402
 from storyform import render_story, select_theme  # noqa: E402
 
+from config import PATHS  # noqa: E402  (stage config; paths from root registry)
+
 HERE = Path(__file__).resolve().parent
-SAIR_DIR = HERE / "data" / "sair"
-EVAL_DIR = HERE / "eval_v1"
-TRAIN_DIR = HERE / "train_v1"
+SAIR_DIR = PATHS["sair"]
+EVAL_DIR = PATHS["eval_v1"]
+TRAIN_DIR = PATHS["train_v1"]
 
 EVAL_SUBSETS = {
     "normal": "evaluation_normal",

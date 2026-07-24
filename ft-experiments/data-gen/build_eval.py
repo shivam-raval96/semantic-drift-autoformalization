@@ -47,9 +47,11 @@ from backparse import backparse  # noqa: E402  (repo module, via ftlib's path)
 from literalform import backparse_literal, render_description  # noqa: E402
 from storyform import render_story  # noqa: E402
 
+from config import PATHS  # noqa: E402  (stage config; paths from root registry)
+
 HERE = Path(__file__).resolve().parent
-SAIR_DIR = HERE / "data" / "sair"
-OUT_DIR = HERE / "eval_v1"
+SAIR_DIR = PATHS["sair"]
+OUT_DIR = PATHS["eval_v1"]
 
 TIERS = {
     "evaluation_normal": "normal",

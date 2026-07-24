@@ -53,23 +53,17 @@ from ftlib import (
 from benchmark import load_equations  # noqa: E402  (repo module via ftlib path)
 from genform import check_corpus, generate_corpus  # noqa: E402
 
+from config import (  # noqa: E402  (stage config: frozen generation knobs)
+    GENFORM_BINS,
+    GENFORM_PER_BIN,
+    GENFORM_SEED,
+    MAX_ATTEMPTS_PER_PAIR,
+    PATHS,
+    SAMPLER_SEED,
+    TIER_QUOTAS,
+)
+
 HERE = Path(__file__).resolve().parent
-
-SAMPLER_SEED = 0
-GENFORM_SEED = 5
-GENFORM_BINS = range(5, 9)  # 5-8 ops per equation
-GENFORM_PER_BIN = 60
-
-# tier -> (source, {ops_total: quota}); ETP tiers draw per-law ops 1-4,
-# genform tiers 5-8. Quotas that a bin cannot fill (tiny 1-op pool after
-# the SAIR exclusion) are redistributed within the tier and logged.
-TIER_QUOTAS = {
-    "easy": ("etp", {2: 334, 3: 333, 4: 333}),
-    "medium": ("etp", {5: 250, 6: 250, 7: 250, 8: 250}),
-    "hard": ("genform", {10: 334, 11: 333, 12: 333}),
-    "holdout": ("genform", {14: 34, 15: 33, 16: 33}),
-}
-MAX_ATTEMPTS_PER_PAIR = 500
 
 Law = Tuple[str, Term, Term]  # (label, lhs, rhs)
 
@@ -190,12 +184,12 @@ def sample_tier(
 
 def main(argv=None) -> int:
     cli = argparse.ArgumentParser(description="Generate the grammar-only FT corpus.")
-    cli.add_argument("--out-dir", type=Path, default=HERE / "train_v1")
+    cli.add_argument("--out-dir", type=Path, default=PATHS["train_v1"])
     args = cli.parse_args(argv)
     out_dir = args.out_dir
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    sair_index = json.loads((HERE / "data" / "sair_index.json").read_text())
+    sair_index = json.loads(PATHS["sair_index"].read_text())
     eval_laws = set(sair_index["eval_law_hashes"])
     sair_pairs = set(sair_index["pair_hashes"])
 

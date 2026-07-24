@@ -10,11 +10,24 @@ collide and grade exactly as the benchmark does.
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import sys
 from pathlib import Path
 from typing import List, Tuple
 
-REPO = Path(__file__).resolve().parent.parent / "informalizing-etp"
+
+def load_root_config():
+    """Load ft-experiments/config.py under a unique module name so stage
+    config.py files can never shadow it."""
+    path = Path(__file__).resolve().parents[1] / "config.py"
+    spec = importlib.util.spec_from_file_location("ft_root_config", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+ftc = load_root_config()
+REPO = ftc.REPO
 sys.path.insert(0, str(REPO))
 
 from checkform import answer_class_key, dual, grade  # noqa: E402
