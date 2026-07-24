@@ -215,12 +215,39 @@ for (p, c), (label, cert) in status.items():
     elif label == 'non-implication':
         pairs[f"{p}|{c}"] = False
 
+# --- certified fingerprint coordinates (v5): each law's row+column in the
+# certified implication table (+1 implies / -1 non / 0 unknown), reduced to
+# 3 PCA coordinates. These are the EMBEDDINGS for causalab's manifold
+# analyses: the coordinate chart is Lean's own metric, so a good manifold
+# fit means activations organize along the certified ontology.
+import numpy as np
+lids = sorted(laws_out)
+idx = {l: i for i, l in enumerate(lids)}
+n = len(lids)
+F = np.zeros((n, 2 * n))
+for k, v in pairs.items():
+    a, b = k.split("|")
+    val = 1.0 if v else -1.0
+    F[idx[a], idx[b]] = val          # out-edges (as premise)
+    F[idx[b], n + idx[a]] = val      # in-edges (as conclusion)
+F -= F.mean(axis=0, keepdims=True)
+U, S, Vt = np.linalg.svd(F, full_matrices=False)
+coords = U[:, :3] * S[:3]
+coords /= np.abs(coords).max(axis=0, keepdims=True)
+for j in range(3):                   # deterministic sign convention
+    if coords[np.abs(coords[:, j]).argmax(), j] < 0:
+        coords[:, j] = -coords[:, j]
+var_explained = float((S[:3] ** 2).sum() / (S ** 2).sum())
+print(f"fingerprint PCA: 3 coords explain {var_explained:.1%} of certified-table variance")
+for l in lids:
+    laws_out[l]["fp3"] = [round(float(x), 6) for x in coords[idx[l]]]
+
 true_n = sum(1 for v in pairs.values() if v)
 n = len(pool)
 print(f"laws: {n}; certified pairs: {len(pairs)} (implies: {true_n}, non: {len(pairs)-true_n}, excluded: {n*(n-1)-len(pairs)})")
 data = {"registers": ["formal", "instance", "paraphrase", "named"],
         "laws": laws_out, "pairs": pairs,
-        "provenance": "v4 (adds compound-term substitution instances filling odd op levels; v3 added per-op-bin synthetic laws bins 1-8, depth metadata, n4_samples=4000; v2 added single-variable-identification instance laws); certificate-pipeline pipeline/{laws,magma}.py + etp_items.law_nl; certify_all exhaustive<=3 sampled n=4; degenerate excluded; self-pairs excluded; uncertified excluded"}
+        "provenance": "v5 (adds fp3 certified-fingerprint PCA coordinates per law; v4 added compound-term substitution instances filling odd op levels; v3 added per-op-bin synthetic laws bins 1-8, depth metadata, n4_samples=4000; v2 added single-variable-identification instance laws); certificate-pipeline pipeline/{laws,magma}.py + etp_items.law_nl; certify_all exhaustive<=3 sampled n=4; degenerate excluded; self-pairs excluded; uncertified excluded"}
 blob = json.dumps(data, sort_keys=True, indent=1)
 print("sha256:", hashlib.sha256(blob.encode()).hexdigest()[:16])
 open("etp_pairs.json", "w").write(blob)

@@ -6,6 +6,11 @@
    "eq": "(x * (y * z)) = ((x * y) * z)",
    "etp": "Eq4512",
    "formal": "(x * (y * z)) = ((x * y) * z)",
+   "fp3": [
+    -0.04833,
+    0.20104,
+    0.016144
+   ],
    "instance": "for any a, b and c, a combined with (b combined with c) equals (a combined with b) combined with c",
    "instance_source": "handwritten",
    "n_ops": 4,
@@ -20,6 +25,11 @@
    "eq": "((x * x) * (y * z)) = (((x * x) * y) * z)",
    "etp": null,
    "formal": "((x * x) * (y * z)) = (((x * x) * y) * z)",
+   "fp3": [
+    -0.097399,
+    0.112426,
+    0.349128
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with (b combined with c) equals ((a combined with a) combined with b) combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -32,6 +42,11 @@
    "eq": "((y * x) * (y * z)) = (((y * x) * y) * z)",
    "etp": null,
    "formal": "((y * x) * (y * z)) = (((y * x) * y) * z)",
+   "fp3": [
+    -0.091366,
+    0.049425,
+    0.123432
+   ],
    "instance": "for any a, b and c, (b combined with a) combined with (b combined with c) equals ((b combined with a) combined with b) combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -44,6 +59,11 @@
    "eq": "(x * (y * z)) = ((x * z) * y)",
    "etp": "Eq4515",
    "formal": "(x * (y * z)) = ((x * z) * y)",
+   "fp3": [
+    -0.052164,
+    0.102143,
+    -0.128372
+   ],
    "instance": "for any a, b and c, a combined with (b combined with c) equals (a combined with c) combined with b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -56,6 +76,11 @@
    "eq": "((x * x) * (y * z)) = (((x * x) * z) * y)",
    "etp": null,
    "formal": "((x * x) * (y * z)) = (((x * x) * z) * y)",
+   "fp3": [
+    -0.099483,
+    0.052623,
+    0.117871
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with (b combined with c) equals ((a combined with a) combined with c) combined with b",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -68,6 +93,11 @@
    "eq": "((y * x) * (y * z)) = (((y * x) * z) * y)",
    "etp": null,
    "formal": "((y * x) * (y * z)) = (((y * x) * z) * y)",
+   "fp3": [
+    -0.098077,
+    0.052907,
+    0.049659
+   ],
    "instance": "for any a, b and c, (b combined with a) combined with (b combined with c) equals ((b combined with a) combined with c) combined with b",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -80,6 +110,11 @@
    "eq": "(y * (y * z)) = ((y * z) * y)",
    "etp": null,
    "formal": "(y * (y * z)) = ((y * z) * y)",
+   "fp3": [
+    -0.095233,
+    -0.037216,
+    -0.078667
+   ],
    "instance": "for any b and c, b combined with (b combined with c) equals (b combined with c) combined with b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -92,6 +127,11 @@
    "eq": "(z * (y * z)) = ((z * z) * y)",
    "etp": null,
    "formal": "(z * (y * z)) = ((z * z) * y)",
+   "fp3": [
+    -0.092225,
+    -0.015636,
+    -0.104809
+   ],
    "instance": "for any b and c, c combined with (b combined with c) equals (c combined with c) combined with b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -104,6 +144,11 @@
    "eq": "((x * y) * (y * z)) = y",
    "etp": "Eq168",
    "formal": "((x * y) * (y * z)) = y",
+   "fp3": [
+    0.468519,
+    -0.363218,
+    0.242441
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with (b combined with c) equals b",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -116,6 +161,11 @@
    "eq": "(((x * x) * y) * (y * z)) = y",
    "etp": null,
    "formal": "(((x * x) * y) * (y * z)) = y",
+   "fp3": [
+    0.459055,
+    -0.292535,
+    0.191266
+   ],
    "instance": "for any a, b and c, ((a combined with a) combined with b) combined with (b combined with c) equals b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -128,6 +178,11 @@
    "eq": "(((y * x) * y) * (y * z)) = y",
    "etp": null,
    "formal": "(((y * x) * y) * (y * z)) = y",
+   "fp3": [
+    -0.071917,
+    -0.314685,
+    -0.412053
+   ],
    "instance": "for any a, b and c, ((b combined with a) combined with b) combined with (b combined with c) equals b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -140,6 +195,11 @@
    "eq": "((y * y) * (y * z)) = y",
    "etp": null,
    "formal": "((y * y) * (y * z)) = y",
+   "fp3": [
+    -0.083482,
+    -0.37136,
+    -0.360383
+   ],
    "instance": "for any b and c, (b combined with b) combined with (b combined with c) equals b",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -152,6 +212,11 @@
    "eq": "((z * y) * (y * z)) = y",
    "etp": null,
    "formal": "((z * y) * (y * z)) = y",
+   "fp3": [
+    0.459055,
+    -0.292535,
+    0.191266
+   ],
    "instance": "for any b and c, (c combined with b) combined with (b combined with c) equals b",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -164,6 +229,11 @@
    "eq": "((x * z) * (z * z)) = z",
    "etp": null,
    "formal": "((x * z) * (z * z)) = z",
+   "fp3": [
+    -0.086359,
+    -0.418132,
+    -0.311098
+   ],
    "instance": "for any a and c, (a combined with c) combined with (c combined with c) equals c",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -176,6 +246,11 @@
    "eq": "(x * y) = (y * x)",
    "etp": "Eq43",
    "formal": "(x * y) = (y * x)",
+   "fp3": [
+    -0.062236,
+    0.042926,
+    -0.242572
+   ],
    "instance": "for any a and b, a combined with b equals b combined with a",
    "instance_source": "handwritten",
    "n_ops": 2,
@@ -190,6 +265,11 @@
    "eq": "((x * x) * y) = (y * (x * x))",
    "etp": null,
    "formal": "((x * x) * y) = (y * (x * x))",
+   "fp3": [
+    -0.090096,
+    -0.014926,
+    -0.194661
+   ],
    "instance": "for any a and b, (a combined with a) combined with b equals b combined with (a combined with a)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -202,6 +282,11 @@
    "eq": "(x * (y * x)) = ((y * x) * x)",
    "etp": null,
    "formal": "(x * (y * x)) = ((y * x) * x)",
+   "fp3": [
+    -0.097722,
+    0.007518,
+    0.031029
+   ],
    "instance": "for any a and b, a combined with (b combined with a) equals (b combined with a) combined with a",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -214,6 +299,11 @@
    "eq": "(x * (y * x)) = ((x * y) * x)",
    "etp": "Eq4435",
    "formal": "(x * (y * x)) = ((x * y) * x)",
+   "fp3": [
+    -0.094205,
+    0.0228,
+    0.114971
+   ],
    "instance": "for any a and b, a combined with (b combined with a) equals (a combined with b) combined with a",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -226,6 +316,11 @@
    "eq": "((x * x) * (y * (x * x))) = (((x * x) * y) * (x * x))",
    "etp": null,
    "formal": "((x * x) * (y * (x * x))) = (((x * x) * y) * (x * x))",
+   "fp3": [
+    -0.118698,
+    0.056021,
+    0.624058
+   ],
    "instance": "for any a and b, (a combined with a) combined with (b combined with (a combined with a)) equals ((a combined with a) combined with b) combined with (a combined with a)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -238,6 +333,11 @@
    "eq": "((y * x) * (y * (y * x))) = (((y * x) * y) * (y * x))",
    "etp": null,
    "formal": "((y * x) * (y * (y * x))) = (((y * x) * y) * (y * x))",
+   "fp3": [
+    -0.110792,
+    -0.026021,
+    0.290671
+   ],
    "instance": "for any a and b, (b combined with a) combined with (b combined with (b combined with a)) equals ((b combined with a) combined with b) combined with (b combined with a)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -250,6 +350,11 @@
    "eq": "(y * (y * y)) = ((y * y) * y)",
    "etp": null,
    "formal": "(y * (y * y)) = ((y * y) * y)",
+   "fp3": [
+    -0.114507,
+    -0.056351,
+    0.387973
+   ],
    "instance": "for any b, b combined with (b combined with b) equals (b combined with b) combined with b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -262,6 +367,11 @@
    "eq": "(x * x) = x",
    "etp": "Eq3",
    "formal": "(x * x) = x",
+   "fp3": [
+    -0.054473,
+    -0.474293,
+    -0.456964
+   ],
    "instance": "for any a, a combined with a equals a",
    "instance_source": "handwritten",
    "n_ops": 1,
@@ -276,6 +386,11 @@
    "eq": "((x * x) * (x * x)) = (x * x)",
    "etp": null,
    "formal": "((x * x) * (x * x)) = (x * x)",
+   "fp3": [
+    -0.115791,
+    -0.134552,
+    0.475898
+   ],
    "instance": "for any a, (a combined with a) combined with (a combined with a) equals a combined with a",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -288,6 +403,11 @@
    "eq": "(x * (x * y)) = y",
    "etp": "Eq16",
    "formal": "(x * (x * y)) = y",
+   "fp3": [
+    -0.072785,
+    -0.58665,
+    -0.382799
+   ],
    "instance": "for any a and b, a combined with (a combined with b) equals b",
    "instance_source": "handwritten",
    "n_ops": 2,
@@ -302,6 +422,11 @@
    "eq": "((x * x) * ((x * x) * y)) = y",
    "etp": null,
    "formal": "((x * x) * ((x * x) * y)) = y",
+   "fp3": [
+    -0.088667,
+    -0.452322,
+    -0.300483
+   ],
    "instance": "for any a and b, (a combined with a) combined with ((a combined with a) combined with b) equals b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -314,6 +439,11 @@
    "eq": "((y * x) * ((y * x) * y)) = y",
    "etp": null,
    "formal": "((y * x) * ((y * x) * y)) = y",
+   "fp3": [
+    -0.091527,
+    -0.479473,
+    -0.260684
+   ],
    "instance": "for any a and b, (b combined with a) combined with ((b combined with a) combined with b) equals b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -326,6 +456,11 @@
    "eq": "(y * (y * y)) = y",
    "etp": null,
    "formal": "(y * (y * y)) = y",
+   "fp3": [
+    -0.097532,
+    -0.579771,
+    -0.166695
+   ],
    "instance": "for any b, b combined with (b combined with b) equals b",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -338,6 +473,11 @@
    "eq": "(x * (y * x)) = y",
    "etp": "Eq14",
    "formal": "(x * (y * x)) = y",
+   "fp3": [
+    0.02919,
+    -0.376019,
+    -0.534095
+   ],
    "instance": "for any a and b, a combined with (b combined with a) equals b",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -350,6 +490,11 @@
    "eq": "((x * x) * (y * (x * x))) = y",
    "etp": null,
    "formal": "((x * x) * (y * (x * x))) = y",
+   "fp3": [
+    -0.073278,
+    -0.363743,
+    -0.401413
+   ],
    "instance": "for any a and b, (a combined with a) combined with (b combined with (a combined with a)) equals b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -362,6 +507,11 @@
    "eq": "((y * x) * (y * (y * x))) = y",
    "etp": null,
    "formal": "((y * x) * (y * (y * x))) = y",
+   "fp3": [
+    -0.084773,
+    -0.380164,
+    -0.374787
+   ],
    "instance": "for any a and b, (b combined with a) combined with (b combined with (b combined with a)) equals b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -374,6 +524,11 @@
    "eq": "(x * (x * y)) = ((x * x) * y)",
    "etp": "Eq4396",
    "formal": "(x * (x * y)) = ((x * x) * y)",
+   "fp3": [
+    -0.092152,
+    0.00393,
+    0.160896
+   ],
    "instance": "for any a and b, a combined with (a combined with b) equals (a combined with a) combined with b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -386,6 +541,11 @@
    "eq": "((x * x) * ((x * x) * y)) = (((x * x) * (x * x)) * y)",
    "etp": null,
    "formal": "((x * x) * ((x * x) * y)) = (((x * x) * (x * x)) * y)",
+   "fp3": [
+    -0.113072,
+    0.017851,
+    0.475062
+   ],
    "instance": "for any a and b, (a combined with a) combined with ((a combined with a) combined with b) equals ((a combined with a) combined with (a combined with a)) combined with b",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -398,6 +558,11 @@
    "eq": "((y * x) * ((y * x) * y)) = (((y * x) * (y * x)) * y)",
    "etp": null,
    "formal": "((y * x) * ((y * x) * y)) = (((y * x) * (y * x)) * y)",
+   "fp3": [
+    -0.108268,
+    -0.039137,
+    0.238871
+   ],
    "instance": "for any a and b, (b combined with a) combined with ((b combined with a) combined with b) equals ((b combined with a) combined with (b combined with a)) combined with b",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -410,6 +575,11 @@
    "eq": "(x * y) = (x * (x * y))",
    "etp": "Eq323",
    "formal": "(x * y) = (x * (x * y))",
+   "fp3": [
+    -0.088966,
+    0.068897,
+    0.224172
+   ],
    "instance": "for any a and b, a combined with b equals a combined with (a combined with b)",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -422,6 +592,11 @@
    "eq": "((x * x) * y) = ((x * x) * ((x * x) * y))",
    "etp": null,
    "formal": "((x * x) * y) = ((x * x) * ((x * x) * y))",
+   "fp3": [
+    -0.113242,
+    0.037123,
+    0.625983
+   ],
    "instance": "for any a and b, (a combined with a) combined with b equals (a combined with a) combined with ((a combined with a) combined with b)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -434,6 +609,11 @@
    "eq": "((y * x) * y) = ((y * x) * ((y * x) * y))",
    "etp": null,
    "formal": "((y * x) * y) = ((y * x) * ((y * x) * y))",
+   "fp3": [
+    -0.114197,
+    0.039476,
+    0.531543
+   ],
    "instance": "for any a and b, (b combined with a) combined with b equals (b combined with a) combined with ((b combined with a) combined with b)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -446,6 +626,11 @@
    "eq": "(x * (y * z)) = (y * (x * z))",
    "etp": "Eq4362",
    "formal": "(x * (y * z)) = (y * (x * z))",
+   "fp3": [
+    -0.091346,
+    -0.055427,
+    0.101598
+   ],
    "instance": "for any a, b and c, a combined with (b combined with c) equals b combined with (a combined with c)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -458,6 +643,11 @@
    "eq": "((x * x) * (y * z)) = (y * ((x * x) * z))",
    "etp": null,
    "formal": "((x * x) * (y * z)) = (y * ((x * x) * z))",
+   "fp3": [
+    -0.106587,
+    -0.08501,
+    0.201497
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with (b combined with c) equals b combined with ((a combined with a) combined with c)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -470,6 +660,11 @@
    "eq": "((y * x) * (y * z)) = (y * ((y * x) * z))",
    "etp": null,
    "formal": "((y * x) * (y * z)) = (y * ((y * x) * z))",
+   "fp3": [
+    -0.1109,
+    -0.098598,
+    0.278609
+   ],
    "instance": "for any a, b and c, (b combined with a) combined with (b combined with c) equals b combined with ((b combined with a) combined with c)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -482,6 +677,11 @@
    "eq": "(z * (y * z)) = (y * (z * z))",
    "etp": null,
    "formal": "(z * (y * z)) = (y * (z * z))",
+   "fp3": [
+    -0.105601,
+    -0.068787,
+    0.181752
+   ],
    "instance": "for any b and c, c combined with (b combined with c) equals b combined with (c combined with c)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -494,6 +694,11 @@
    "eq": "(x * y) = x",
    "etp": "Eq4",
    "formal": "(x * y) = x",
+   "fp3": [
+    0.248662,
+    -0.130971,
+    -0.806821
+   ],
    "instance": "for any a and b, a combined with b equals a",
    "instance_source": "handwritten",
    "n_ops": 1,
@@ -508,6 +713,11 @@
    "eq": "((x * x) * y) = (x * x)",
    "etp": null,
    "formal": "((x * x) * y) = (x * x)",
+   "fp3": [
+    -0.051976,
+    0.111137,
+    -0.22225
+   ],
    "instance": "for any a and b, (a combined with a) combined with b equals a combined with a",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -520,6 +730,11 @@
    "eq": "((y * y) * y) = (y * y)",
    "etp": null,
    "formal": "((y * y) * y) = (y * y)",
+   "fp3": [
+    -0.118397,
+    -0.069285,
+    0.518448
+   ],
    "instance": "for any b, (b combined with b) combined with b equals b combined with b",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -532,6 +747,11 @@
    "eq": "(x * (y * z)) = ((x * y) * (x * z))",
    "etp": null,
    "formal": "(x * (y * z)) = ((x * y) * (x * z))",
+   "fp3": [
+    -0.084009,
+    -0.036422,
+    0.077985
+   ],
    "instance": "for any a, b and c, a combined with (b combined with c) equals (a combined with b) combined with (a combined with c)",
    "instance_source": "handwritten",
    "n_ops": 5,
@@ -546,6 +766,11 @@
    "eq": "((x * x) * (y * z)) = (((x * x) * y) * ((x * x) * z))",
    "etp": null,
    "formal": "((x * x) * (y * z)) = (((x * x) * y) * ((x * x) * z))",
+   "fp3": [
+    -0.114741,
+    -0.02923,
+    0.495067
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with (b combined with c) equals ((a combined with a) combined with b) combined with ((a combined with a) combined with c)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -558,6 +783,11 @@
    "eq": "((y * x) * (y * z)) = (((y * x) * y) * ((y * x) * z))",
    "etp": null,
    "formal": "((y * x) * (y * z)) = (((y * x) * y) * ((y * x) * z))",
+   "fp3": [
+    -0.111645,
+    -0.026119,
+    0.380586
+   ],
    "instance": "for any a, b and c, (b combined with a) combined with (b combined with c) equals ((b combined with a) combined with b) combined with ((b combined with a) combined with c)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -570,6 +800,11 @@
    "eq": "(y * (y * z)) = ((y * y) * (y * z))",
    "etp": null,
    "formal": "(y * (y * z)) = ((y * y) * (y * z))",
+   "fp3": [
+    -0.110367,
+    -0.12978,
+    0.27397
+   ],
    "instance": "for any b and c, b combined with (b combined with c) equals (b combined with b) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -582,6 +817,11 @@
    "eq": "(z * (y * z)) = ((z * y) * (z * z))",
    "etp": null,
    "formal": "(z * (y * z)) = ((z * y) * (z * z))",
+   "fp3": [
+    -0.107864,
+    -0.07796,
+    0.204798
+   ],
    "instance": "for any b and c, c combined with (b combined with c) equals (c combined with b) combined with (c combined with c)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -594,6 +834,11 @@
    "eq": "(x * (z * z)) = ((x * z) * (x * z))",
    "etp": null,
    "formal": "(x * (z * z)) = ((x * z) * (x * z))",
+   "fp3": [
+    -0.110507,
+    -0.119248,
+    0.285783
+   ],
    "instance": "for any a and c, a combined with (c combined with c) equals (a combined with c) combined with (a combined with c)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -606,6 +851,11 @@
    "eq": "((x * y) * (z * w)) = ((x * z) * (y * w))",
    "etp": null,
    "formal": "((x * y) * (z * w)) = ((x * z) * (y * w))",
+   "fp3": [
+    -0.096416,
+    0.173068,
+    0.49532
+   ],
    "instance": "for any a, b, c and d, (a combined with b) combined with (c combined with d) equals (a combined with c) combined with (b combined with d)",
    "instance_source": "handwritten",
    "n_ops": 6,
@@ -620,6 +870,11 @@
    "eq": "((x * y) * (z * (w * w))) = ((x * z) * (y * (w * w)))",
    "etp": null,
    "formal": "((x * y) * (z * (w * w))) = ((x * z) * (y * (w * w)))",
+   "fp3": [
+    -0.119891,
+    0.023817,
+    0.733124
+   ],
    "instance": "for any d, a, b and c, (a combined with b) combined with (c combined with (d combined with d)) equals (a combined with c) combined with (b combined with (d combined with d))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -632,6 +887,11 @@
    "eq": "((x * y) * (z * (x * w))) = ((x * z) * (y * (x * w)))",
    "etp": null,
    "formal": "((x * y) * (z * (x * w))) = ((x * z) * (y * (x * w)))",
+   "fp3": [
+    -0.11917,
+    0.022099,
+    0.695354
+   ],
    "instance": "for any d, a, b and c, (a combined with b) combined with (c combined with (a combined with d)) equals (a combined with c) combined with (b combined with (a combined with d))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -644,6 +904,11 @@
    "eq": "((x * y) * (z * x)) = ((x * z) * (y * x))",
    "etp": null,
    "formal": "((x * y) * (z * x)) = ((x * z) * (y * x))",
+   "fp3": [
+    -0.120824,
+    0.012274,
+    0.703134
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with (c combined with a) equals (a combined with c) combined with (b combined with a)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -656,6 +921,11 @@
    "eq": "((x * y) * (z * y)) = ((x * z) * (y * y))",
    "etp": null,
    "formal": "((x * y) * (z * y)) = ((x * z) * (y * y))",
+   "fp3": [
+    -0.119272,
+    0.023547,
+    0.694391
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with (c combined with b) equals (a combined with c) combined with (b combined with b)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -668,6 +938,11 @@
    "eq": "((y * y) * (z * w)) = ((y * z) * (y * w))",
    "etp": null,
    "formal": "((y * y) * (z * w)) = ((y * z) * (y * w))",
+   "fp3": [
+    -0.119438,
+    0.017345,
+    0.697582
+   ],
    "instance": "for any d, b and c, (b combined with b) combined with (c combined with d) equals (b combined with c) combined with (b combined with d)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -680,6 +955,11 @@
    "eq": "((x * y) * (z * w)) = ((x * w) * (y * z))",
    "etp": null,
    "formal": "((x * y) * (z * w)) = ((x * w) * (y * z))",
+   "fp3": [
+    -0.057247,
+    0.207434,
+    -0.042052
+   ],
    "instance": "for any d, a, b and c, (a combined with b) combined with (c combined with d) equals (a combined with d) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -692,6 +972,11 @@
    "eq": "((x * y) * (z * (w * w))) = ((x * (w * w)) * (y * z))",
    "etp": null,
    "formal": "((x * y) * (z * (w * w))) = ((x * (w * w)) * (y * z))",
+   "fp3": [
+    -0.106741,
+    0.087058,
+    0.307185
+   ],
    "instance": "for any d, a, b and c, (a combined with b) combined with (c combined with (d combined with d)) equals (a combined with (d combined with d)) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -704,6 +989,11 @@
    "eq": "((x * y) * (z * (x * w))) = ((x * (x * w)) * (y * z))",
    "etp": null,
    "formal": "((x * y) * (z * (x * w))) = ((x * (x * w)) * (y * z))",
+   "fp3": [
+    -0.075341,
+    0.140032,
+    0.002582
+   ],
    "instance": "for any d, a, b and c, (a combined with b) combined with (c combined with (a combined with d)) equals (a combined with (a combined with d)) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -716,6 +1006,11 @@
    "eq": "((x * y) * (z * x)) = ((x * x) * (y * z))",
    "etp": null,
    "formal": "((x * y) * (z * x)) = ((x * x) * (y * z))",
+   "fp3": [
+    -0.100334,
+    0.011761,
+    0.116727
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with (c combined with a) equals (a combined with a) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -728,6 +1023,11 @@
    "eq": "((x * y) * (z * y)) = ((x * y) * (y * z))",
    "etp": null,
    "formal": "((x * y) * (z * y)) = ((x * y) * (y * z))",
+   "fp3": [
+    -0.106244,
+    -0.013753,
+    0.141626
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with (c combined with b) equals (a combined with b) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -740,6 +1040,11 @@
    "eq": "((y * y) * (z * w)) = ((y * w) * (y * z))",
    "etp": null,
    "formal": "((y * y) * (z * w)) = ((y * w) * (y * z))",
+   "fp3": [
+    -0.095986,
+    0.159049,
+    0.243553
+   ],
    "instance": "for any d, b and c, (b combined with b) combined with (c combined with d) equals (b combined with d) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -752,6 +1057,11 @@
    "eq": "((z * y) * (z * w)) = ((z * w) * (y * z))",
    "etp": null,
    "formal": "((z * y) * (z * w)) = ((z * w) * (y * z))",
+   "fp3": [
+    -0.103998,
+    0.001172,
+    0.121753
+   ],
    "instance": "for any d, b and c, (c combined with b) combined with (c combined with d) equals (c combined with d) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -764,6 +1074,11 @@
    "eq": "((x * z) * (z * w)) = ((x * w) * (z * z))",
    "etp": null,
    "formal": "((x * z) * (z * w)) = ((x * w) * (z * z))",
+   "fp3": [
+    -0.104661,
+    -0.004256,
+    0.126178
+   ],
    "instance": "for any d, a and c, (a combined with c) combined with (c combined with d) equals (a combined with d) combined with (c combined with c)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -776,6 +1091,11 @@
    "eq": "((x * y) * y) = x",
    "etp": "Eq26",
    "formal": "((x * y) * y) = x",
+   "fp3": [
+    -0.065887,
+    -0.400881,
+    -0.410998
+   ],
    "instance": "for any a and b, (a combined with b) combined with b equals a",
    "instance_source": "handwritten",
    "n_ops": 2,
@@ -790,6 +1110,11 @@
    "eq": "(((x * y) * y) * y) = (x * y)",
    "etp": null,
    "formal": "(((x * y) * y) * y) = (x * y)",
+   "fp3": [
+    -0.110707,
+    -0.066501,
+    0.248914
+   ],
    "instance": "for any a and b, ((a combined with b) combined with b) combined with b equals a combined with b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -802,6 +1127,11 @@
    "eq": "(((y * x) * y) * y) = (y * x)",
    "etp": null,
    "formal": "(((y * x) * y) * y) = (y * x)",
+   "fp3": [
+    -0.102369,
+    -0.041942,
+    -0.045648
+   ],
    "instance": "for any a and b, ((b combined with a) combined with b) combined with b equals b combined with a",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -814,6 +1144,11 @@
    "eq": "((y * y) * y) = y",
    "etp": null,
    "formal": "((y * y) * y) = y",
+   "fp3": [
+    -0.091634,
+    -0.467177,
+    -0.179866
+   ],
    "instance": "for any b, (b combined with b) combined with b equals b",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -826,6 +1161,11 @@
    "eq": "(x * (y * y)) = ((x * y) * y)",
    "etp": "Eq4473",
    "formal": "(x * (y * y)) = ((x * y) * y)",
+   "fp3": [
+    -0.093016,
+    0.07309,
+    0.182741
+   ],
    "instance": "for any a and b, a combined with (b combined with b) equals (a combined with b) combined with b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -838,6 +1178,11 @@
    "eq": "((x * x) * (y * y)) = (((x * x) * y) * y)",
    "etp": null,
    "formal": "((x * x) * (y * y)) = (((x * x) * y) * y)",
+   "fp3": [
+    -0.113839,
+    0.059904,
+    0.491893
+   ],
    "instance": "for any a and b, (a combined with a) combined with (b combined with b) equals ((a combined with a) combined with b) combined with b",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -850,6 +1195,11 @@
    "eq": "((y * x) * (y * y)) = (((y * x) * y) * y)",
    "etp": null,
    "formal": "((y * x) * (y * y)) = (((y * x) * y) * y)",
+   "fp3": [
+    -0.113038,
+    0.0745,
+    0.455221
+   ],
    "instance": "for any a and b, (b combined with a) combined with (b combined with b) equals ((b combined with a) combined with b) combined with b",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -862,6 +1212,11 @@
    "eq": "(x * (y * z)) = (z * (x * y))",
    "etp": "Eq4364",
    "formal": "(x * (y * z)) = (z * (x * y))",
+   "fp3": [
+    -0.029571,
+    0.197372,
+    -0.327107
+   ],
    "instance": "for any a, b and c, a combined with (b combined with c) equals c combined with (a combined with b)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -874,6 +1229,11 @@
    "eq": "((x * x) * (y * z)) = (z * ((x * x) * y))",
    "etp": null,
    "formal": "((x * x) * (y * z)) = (z * ((x * x) * y))",
+   "fp3": [
+    -0.091454,
+    0.000923,
+    -0.181224
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with (b combined with c) equals c combined with ((a combined with a) combined with b)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -886,6 +1246,11 @@
    "eq": "((y * x) * (y * z)) = (z * ((y * x) * y))",
    "etp": null,
    "formal": "((y * x) * (y * z)) = (z * ((y * x) * y))",
+   "fp3": [
+    -0.06562,
+    0.140355,
+    -0.321802
+   ],
    "instance": "for any a, b and c, (b combined with a) combined with (b combined with c) equals c combined with ((b combined with a) combined with b)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -898,6 +1263,11 @@
    "eq": "(y * (y * z)) = (z * (y * y))",
    "etp": null,
    "formal": "(y * (y * z)) = (z * (y * y))",
+   "fp3": [
+    -0.093,
+    0.005632,
+    -0.185856
+   ],
    "instance": "for any b and c, b combined with (b combined with c) equals c combined with (b combined with b)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -910,6 +1280,11 @@
    "eq": "(z * (y * z)) = (z * (z * y))",
    "etp": null,
    "formal": "(z * (y * z)) = (z * (z * y))",
+   "fp3": [
+    -0.106297,
+    -0.020682,
+    0.138409
+   ],
    "instance": "for any b and c, c combined with (b combined with c) equals c combined with (c combined with b)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -922,6 +1297,11 @@
    "eq": "(x * y) = y",
    "etp": "Eq5",
    "formal": "(x * y) = y",
+   "fp3": [
+    0.186368,
+    -0.16959,
+    -0.99683
+   ],
    "instance": "for any a and b, a combined with b equals b",
    "instance_source": "handwritten",
    "n_ops": 1,
@@ -936,6 +1316,11 @@
    "eq": "((x * x) * y) = y",
    "etp": null,
    "formal": "((x * x) * y) = y",
+   "fp3": [
+    -0.050294,
+    -0.344672,
+    -0.510386
+   ],
    "instance": "for any a and b, (a combined with a) combined with b equals b",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -948,6 +1333,11 @@
    "eq": "((y * x) * y) = y",
    "etp": null,
    "formal": "((y * x) * y) = y",
+   "fp3": [
+    -0.042878,
+    -0.381386,
+    -0.505745
+   ],
    "instance": "for any a and b, (b combined with a) combined with b equals b",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -960,6 +1350,11 @@
    "eq": "((x * y) * z) = ((x * z) * (y * z))",
    "etp": null,
    "formal": "((x * y) * z) = ((x * z) * (y * z))",
+   "fp3": [
+    -0.081121,
+    0.121646,
+    0.156541
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with c equals (a combined with c) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -972,6 +1367,11 @@
    "eq": "(((x * x) * y) * z) = (((x * x) * z) * (y * z))",
    "etp": null,
    "formal": "(((x * x) * y) * z) = (((x * x) * z) * (y * z))",
+   "fp3": [
+    -0.111377,
+    0.070825,
+    0.449554
+   ],
    "instance": "for any a, b and c, ((a combined with a) combined with b) combined with c equals ((a combined with a) combined with c) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -984,6 +1384,11 @@
    "eq": "(((y * x) * y) * z) = (((y * x) * z) * (y * z))",
    "etp": null,
    "formal": "(((y * x) * y) * z) = (((y * x) * z) * (y * z))",
+   "fp3": [
+    -0.108349,
+    -0.004813,
+    0.27773
+   ],
    "instance": "for any a, b and c, ((b combined with a) combined with b) combined with c equals ((b combined with a) combined with c) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -996,6 +1401,11 @@
    "eq": "((y * y) * z) = ((y * z) * (y * z))",
    "etp": null,
    "formal": "((y * y) * z) = ((y * z) * (y * z))",
+   "fp3": [
+    -0.113799,
+    0.024921,
+    0.516959
+   ],
    "instance": "for any b and c, (b combined with b) combined with c equals (b combined with c) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1008,6 +1418,11 @@
    "eq": "((z * y) * z) = ((z * z) * (y * z))",
    "etp": null,
    "formal": "((z * y) * z) = ((z * z) * (y * z))",
+   "fp3": [
+    -0.107859,
+    0.007448,
+    0.26577
+   ],
    "instance": "for any b and c, (c combined with b) combined with c equals (c combined with c) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1020,6 +1435,11 @@
    "eq": "((x * z) * z) = ((x * z) * (z * z))",
    "etp": null,
    "formal": "((x * z) * z) = ((x * z) * (z * z))",
+   "fp3": [
+    -0.112139,
+    0.039242,
+    0.450077
+   ],
    "instance": "for any a and c, (a combined with c) combined with c equals (a combined with c) combined with (c combined with c)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1032,6 +1452,11 @@
    "eq": "(x * y) = z",
    "etp": null,
    "formal": "(x * y) = z",
+   "fp3": [
+    1.0,
+    -0.257678,
+    0.79741
+   ],
    "instance": "for any a, b and c, a combined with b equals c",
    "instance_source": "mechanical",
    "n_ops": 1,
@@ -1044,6 +1469,11 @@
    "eq": "((x * x) * y) = z",
    "etp": null,
    "formal": "((x * x) * y) = z",
+   "fp3": [
+    0.573051,
+    -0.161124,
+    0.142459
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with b equals c",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1056,6 +1486,11 @@
    "eq": "((y * x) * y) = z",
    "etp": null,
    "formal": "((y * x) * y) = z",
+   "fp3": [
+    0.542261,
+    -0.196844,
+    0.309429
+   ],
    "instance": "for any a, b and c, (b combined with a) combined with b equals c",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1068,6 +1503,11 @@
    "eq": "x = (y * y)",
    "etp": null,
    "formal": "x = (y * y)",
+   "fp3": [
+    0.533903,
+    -0.172951,
+    0.107869
+   ],
    "instance": "for any a and b, a equals b combined with b",
    "instance_source": "mechanical",
    "n_ops": 1,
@@ -1080,6 +1520,11 @@
    "eq": "(x * y) = (y * y)",
    "etp": null,
    "formal": "(x * y) = (y * y)",
+   "fp3": [
+    -0.014875,
+    0.202324,
+    -0.329696
+   ],
    "instance": "for any a and b, a combined with b equals b combined with b",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1092,6 +1537,11 @@
    "eq": "(y * x) = (y * y)",
    "etp": null,
    "formal": "(y * x) = (y * y)",
+   "fp3": [
+    0.011551,
+    0.442557,
+    -0.302666
+   ],
    "instance": "for any a and b, b combined with a equals b combined with b",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1104,6 +1554,11 @@
    "eq": "(x * (y * y)) = x",
    "etp": null,
    "formal": "(x * (y * y)) = x",
+   "fp3": [
+    -0.062259,
+    -0.420699,
+    -0.437381
+   ],
    "instance": "for any a and b, a combined with (b combined with b) equals a",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1116,6 +1571,11 @@
    "eq": "((x * x) * (y * y)) = (x * x)",
    "etp": null,
    "formal": "((x * x) * (y * y)) = (x * x)",
+   "fp3": [
+    -0.097217,
+    -0.066748,
+    0.003987
+   ],
    "instance": "for any a and b, (a combined with a) combined with (b combined with b) equals a combined with a",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1128,6 +1588,11 @@
    "eq": "((y * x) * (y * y)) = (y * x)",
    "etp": null,
    "formal": "((y * x) * (y * y)) = (y * x)",
+   "fp3": [
+    -0.096377,
+    -0.070018,
+    -0.106536
+   ],
    "instance": "for any a and b, (b combined with a) combined with (b combined with b) equals b combined with a",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1140,6 +1605,11 @@
    "eq": "x = (y * (y * z))",
    "etp": null,
    "formal": "x = (y * (y * z))",
+   "fp3": [
+    0.543265,
+    -0.276372,
+    0.166554
+   ],
    "instance": "for any a, b and c, a equals b combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1152,6 +1622,11 @@
    "eq": "(x * x) = (y * (y * z))",
    "etp": null,
    "formal": "(x * x) = (y * (y * z))",
+   "fp3": [
+    -0.044325,
+    0.134954,
+    -0.297239
+   ],
    "instance": "for any a, b and c, a combined with a equals b combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1164,6 +1639,11 @@
    "eq": "(y * x) = (y * (y * z))",
    "etp": null,
    "formal": "(y * x) = (y * (y * z))",
+   "fp3": [
+    0.016495,
+    0.449443,
+    -0.332033
+   ],
    "instance": "for any a, b and c, b combined with a equals b combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1176,6 +1656,11 @@
    "eq": "y = (y * (y * z))",
    "etp": null,
    "formal": "y = (y * (y * z))",
+   "fp3": [
+    -0.020931,
+    -0.509012,
+    -0.62424
+   ],
    "instance": "for any b and c, b equals b combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1188,6 +1673,11 @@
    "eq": "x = (z * (z * z))",
    "etp": null,
    "formal": "x = (z * (z * z))",
+   "fp3": [
+    0.48682,
+    -0.28968,
+    0.185013
+   ],
    "instance": "for any a and c, a equals c combined with (c combined with c)",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1200,6 +1690,11 @@
    "eq": "x = (x * (y * z))",
    "etp": null,
    "formal": "x = (x * (y * z))",
+   "fp3": [
+    0.23559,
+    -0.122432,
+    -0.782935
+   ],
    "instance": "for any a, b and c, a equals a combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1212,6 +1707,11 @@
    "eq": "(x * x) = ((x * x) * (y * z))",
    "etp": null,
    "formal": "(x * x) = ((x * x) * (y * z))",
+   "fp3": [
+    -0.085318,
+    -0.008864,
+    -0.08332
+   ],
    "instance": "for any a, b and c, a combined with a equals (a combined with a) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1224,6 +1724,11 @@
    "eq": "(y * x) = ((y * x) * (y * z))",
    "etp": null,
    "formal": "(y * x) = ((y * x) * (y * z))",
+   "fp3": [
+    -0.085919,
+    -0.027944,
+    -0.133862
+   ],
    "instance": "for any a, b and c, b combined with a equals (b combined with a) combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1236,6 +1741,11 @@
    "eq": "z = (z * (y * z))",
    "etp": null,
    "formal": "z = (z * (y * z))",
+   "fp3": [
+    -0.075097,
+    -0.510945,
+    -0.381059
+   ],
    "instance": "for any b and c, c equals c combined with (b combined with c)",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1248,6 +1758,11 @@
    "eq": "x = ((y * z) * z)",
    "etp": null,
    "formal": "x = ((y * z) * z)",
+   "fp3": [
+    0.575066,
+    -0.130455,
+    0.37832
+   ],
    "instance": "for any a, b and c, a equals (b combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1260,6 +1775,11 @@
    "eq": "(x * x) = ((y * z) * z)",
    "etp": null,
    "formal": "(x * x) = ((y * z) * z)",
+   "fp3": [
+    0.004425,
+    0.3009,
+    -0.379942
+   ],
    "instance": "for any a, b and c, a combined with a equals (b combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1272,6 +1792,11 @@
    "eq": "(y * x) = ((y * z) * z)",
    "etp": null,
    "formal": "(y * x) = ((y * z) * z)",
+   "fp3": [
+    0.182142,
+    0.740942,
+    -0.61921
+   ],
    "instance": "for any a, b and c, b combined with a equals (b combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1284,6 +1809,11 @@
    "eq": "z = ((y * z) * z)",
    "etp": null,
    "formal": "z = ((y * z) * z)",
+   "fp3": [
+    -0.02797,
+    -0.411427,
+    -0.601899
+   ],
    "instance": "for any b and c, c equals (b combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1296,6 +1826,11 @@
    "eq": "x = ((z * z) * z)",
    "etp": null,
    "formal": "x = ((z * z) * z)",
+   "fp3": [
+    0.470659,
+    -0.277115,
+    0.177552
+   ],
    "instance": "for any a and c, a equals (c combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 2,
@@ -1308,6 +1843,11 @@
    "eq": "(x * (x * x)) = (x * x)",
    "etp": null,
    "formal": "(x * (x * x)) = (x * x)",
+   "fp3": [
+    -0.109935,
+    -0.031094,
+    0.477709
+   ],
    "instance": "for any a, a combined with (a combined with a) equals a combined with a",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1320,6 +1860,11 @@
    "eq": "((x * x) * ((x * x) * (x * x))) = ((x * x) * (x * x))",
    "etp": null,
    "formal": "((x * x) * ((x * x) * (x * x))) = ((x * x) * (x * x))",
+   "fp3": [
+    -0.125144,
+    -0.004031,
+    1.0
+   ],
    "instance": "for any a, (a combined with a) combined with ((a combined with a) combined with (a combined with a)) equals (a combined with a) combined with (a combined with a)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -1332,6 +1877,11 @@
    "eq": "(x * (y * x)) = (x * x)",
    "etp": null,
    "formal": "(x * (y * x)) = (x * x)",
+   "fp3": [
+    -0.082969,
+    0.112691,
+    0.136292
+   ],
    "instance": "for any a and b, a combined with (b combined with a) equals a combined with a",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1344,6 +1894,11 @@
    "eq": "((x * x) * (y * (x * x))) = ((x * x) * (x * x))",
    "etp": null,
    "formal": "((x * x) * (y * (x * x))) = ((x * x) * (x * x))",
+   "fp3": [
+    -0.111046,
+    0.112175,
+    0.598399
+   ],
    "instance": "for any a and b, (a combined with a) combined with (b combined with (a combined with a)) equals (a combined with a) combined with (a combined with a)",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1356,6 +1911,11 @@
    "eq": "((y * x) * (y * (y * x))) = ((y * x) * (y * x))",
    "etp": null,
    "formal": "((y * x) * (y * (y * x))) = ((y * x) * (y * x))",
+   "fp3": [
+    -0.114884,
+    0.06537,
+    0.614669
+   ],
    "instance": "for any a and b, (b combined with a) combined with (b combined with (b combined with a)) equals (b combined with a) combined with (b combined with a)",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1368,6 +1928,11 @@
    "eq": "((x * y) * x) = (z * y)",
    "etp": null,
    "formal": "((x * y) * x) = (z * y)",
+   "fp3": [
+    0.346053,
+    0.969833,
+    -0.109127
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with a equals c combined with b",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1380,6 +1945,11 @@
    "eq": "(((x * x) * y) * (x * x)) = (z * y)",
    "etp": null,
    "formal": "(((x * x) * y) * (x * x)) = (z * y)",
+   "fp3": [
+    0.327567,
+    0.985251,
+    -0.116049
+   ],
    "instance": "for any a, b and c, ((a combined with a) combined with b) combined with (a combined with a) equals c combined with b",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1392,6 +1962,11 @@
    "eq": "(((y * x) * y) * (y * x)) = (z * y)",
    "etp": null,
    "formal": "(((y * x) * y) * (y * x)) = (z * y)",
+   "fp3": [
+    0.327567,
+    0.985251,
+    -0.116049
+   ],
    "instance": "for any a, b and c, ((b combined with a) combined with b) combined with (b combined with a) equals c combined with b",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1404,6 +1979,11 @@
    "eq": "((y * y) * y) = (z * y)",
    "etp": null,
    "formal": "((y * y) * y) = (z * y)",
+   "fp3": [
+    -0.021732,
+    0.254113,
+    -0.27687
+   ],
    "instance": "for any b and c, (b combined with b) combined with b equals c combined with b",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1416,6 +1996,11 @@
    "eq": "((z * y) * z) = (z * y)",
    "etp": null,
    "formal": "((z * y) * z) = (z * y)",
+   "fp3": [
+    -0.082568,
+    0.037974,
+    -0.165934
+   ],
    "instance": "for any b and c, (c combined with b) combined with c equals c combined with b",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1428,6 +2013,11 @@
    "eq": "((x * z) * x) = (z * z)",
    "etp": null,
    "formal": "((x * z) * x) = (z * z)",
+   "fp3": [
+    -0.064816,
+    0.137228,
+    -0.289432
+   ],
    "instance": "for any a and c, (a combined with c) combined with a equals c combined with c",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1440,6 +2030,11 @@
    "eq": "x = (y * (x * (x * y)))",
    "etp": null,
    "formal": "x = (y * (x * (x * y)))",
+   "fp3": [
+    0.018149,
+    -0.245993,
+    -0.637869
+   ],
    "instance": "for any a and b, a equals b combined with (a combined with (a combined with b))",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1452,6 +2047,11 @@
    "eq": "(x * x) = (y * ((x * x) * ((x * x) * y)))",
    "etp": null,
    "formal": "(x * x) = (y * ((x * x) * ((x * x) * y)))",
+   "fp3": [
+    -0.096266,
+    -0.028585,
+    -0.157291
+   ],
    "instance": "for any a and b, a combined with a equals b combined with ((a combined with a) combined with ((a combined with a) combined with b))",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -1464,6 +2064,11 @@
    "eq": "(y * x) = (y * ((y * x) * ((y * x) * y)))",
    "etp": null,
    "formal": "(y * x) = (y * ((y * x) * ((y * x) * y)))",
+   "fp3": [
+    -0.102605,
+    -0.025956,
+    0.050444
+   ],
    "instance": "for any a and b, b combined with a equals b combined with ((b combined with a) combined with ((b combined with a) combined with b))",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -1476,6 +2081,11 @@
    "eq": "y = (y * (y * (y * y)))",
    "etp": null,
    "formal": "y = (y * (y * (y * y)))",
+   "fp3": [
+    -0.093528,
+    -0.469968,
+    -0.188729
+   ],
    "instance": "for any b, b equals b combined with (b combined with (b combined with b))",
    "instance_source": "mechanical",
    "n_ops": 3,
@@ -1488,6 +2098,11 @@
    "eq": "(x * (x * x)) = (y * (x * y))",
    "etp": null,
    "formal": "(x * (x * x)) = (y * (x * y))",
+   "fp3": [
+    -0.086055,
+    -0.034264,
+    -0.16649
+   ],
    "instance": "for any a and b, a combined with (a combined with a) equals b combined with (a combined with b)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1500,6 +2115,11 @@
    "eq": "((x * x) * ((x * x) * (x * x))) = (y * ((x * x) * y))",
    "etp": null,
    "formal": "((x * x) * ((x * x) * (x * x))) = (y * ((x * x) * y))",
+   "fp3": [
+    -0.098535,
+    -0.029981,
+    -0.118033
+   ],
    "instance": "for any a and b, (a combined with a) combined with ((a combined with a) combined with (a combined with a)) equals b combined with ((a combined with a) combined with b)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -1512,6 +2132,11 @@
    "eq": "((y * x) * ((y * x) * (y * x))) = (y * ((y * x) * y))",
    "etp": null,
    "formal": "((y * x) * ((y * x) * (y * x))) = (y * ((y * x) * y))",
+   "fp3": [
+    -0.101373,
+    -0.063095,
+    -0.082211
+   ],
    "instance": "for any a and b, (b combined with a) combined with ((b combined with a) combined with (b combined with a)) equals b combined with ((b combined with a) combined with b)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -1524,6 +2149,11 @@
    "eq": "(x * y) = (y * ((x * x) * x))",
    "etp": null,
    "formal": "(x * y) = (y * ((x * x) * x))",
+   "fp3": [
+    -0.054693,
+    0.036223,
+    -0.272345
+   ],
    "instance": "for any a and b, a combined with b equals b combined with ((a combined with a) combined with a)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1536,6 +2166,11 @@
    "eq": "((x * x) * y) = (y * (((x * x) * (x * x)) * (x * x)))",
    "etp": null,
    "formal": "((x * x) * y) = (y * (((x * x) * (x * x)) * (x * x)))",
+   "fp3": [
+    -0.096485,
+    -0.032995,
+    -0.179218
+   ],
    "instance": "for any a and b, (a combined with a) combined with b equals b combined with (((a combined with a) combined with (a combined with a)) combined with (a combined with a))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -1548,6 +2183,11 @@
    "eq": "((y * x) * y) = (y * (((y * x) * (y * x)) * (y * x)))",
    "etp": null,
    "formal": "((y * x) * y) = (y * (((y * x) * (y * x)) * (y * x)))",
+   "fp3": [
+    -0.10082,
+    -0.043313,
+    -0.094601
+   ],
    "instance": "for any a and b, (b combined with a) combined with b equals b combined with (((b combined with a) combined with (b combined with a)) combined with (b combined with a))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -1560,6 +2200,11 @@
    "eq": "(y * y) = (y * ((y * y) * y))",
    "etp": null,
    "formal": "(y * y) = (y * ((y * y) * y))",
+   "fp3": [
+    -0.115547,
+    -0.085145,
+    0.458572
+   ],
    "instance": "for any b, b combined with b equals b combined with ((b combined with b) combined with b)",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1572,6 +2217,11 @@
    "eq": "(x * ((x * (y * x)) * z)) = z",
    "etp": null,
    "formal": "(x * ((x * (y * x)) * z)) = z",
+   "fp3": [
+    0.012281,
+    -0.518755,
+    -0.696266
+   ],
    "instance": "for any a, b and c, a combined with ((a combined with (b combined with a)) combined with c) equals c",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1584,6 +2234,11 @@
    "eq": "((x * x) * (((x * x) * (y * (x * x))) * z)) = z",
    "etp": null,
    "formal": "((x * x) * (((x * x) * (y * (x * x))) * z)) = z",
+   "fp3": [
+    -0.084457,
+    -0.438743,
+    -0.322638
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with (((a combined with a) combined with (b combined with (a combined with a))) combined with c) equals c",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1596,6 +2251,11 @@
    "eq": "((y * x) * (((y * x) * (y * (y * x))) * z)) = z",
    "etp": null,
    "formal": "((y * x) * (((y * x) * (y * (y * x))) * z)) = z",
+   "fp3": [
+    0.002363,
+    -0.443507,
+    -0.694563
+   ],
    "instance": "for any a, b and c, (b combined with a) combined with (((b combined with a) combined with (b combined with (b combined with a))) combined with c) equals c",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1608,6 +2268,11 @@
    "eq": "(y * ((y * (y * y)) * z)) = z",
    "etp": null,
    "formal": "(y * ((y * (y * y)) * z)) = z",
+   "fp3": [
+    -0.087315,
+    -0.435858,
+    -0.32436
+   ],
    "instance": "for any b and c, b combined with ((b combined with (b combined with b)) combined with c) equals c",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1620,6 +2285,11 @@
    "eq": "(z * ((z * (y * z)) * z)) = z",
    "etp": null,
    "formal": "(z * ((z * (y * z)) * z)) = z",
+   "fp3": [
+    -0.091372,
+    -0.524715,
+    -0.241183
+   ],
    "instance": "for any b and c, c combined with ((c combined with (b combined with c)) combined with c) equals c",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1632,6 +2302,11 @@
    "eq": "(x * ((x * (z * x)) * z)) = z",
    "etp": null,
    "formal": "(x * ((x * (z * x)) * z)) = z",
+   "fp3": [
+    0.002363,
+    -0.443507,
+    -0.694563
+   ],
    "instance": "for any a and c, a combined with ((a combined with (c combined with a)) combined with c) equals c",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1644,6 +2319,11 @@
    "eq": "(x * y) = (((y * x) * z) * z)",
    "etp": null,
    "formal": "(x * y) = (((y * x) * z) * z)",
+   "fp3": [
+    -0.02846,
+    0.088021,
+    -0.228712
+   ],
    "instance": "for any a, b and c, a combined with b equals ((b combined with a) combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1656,6 +2336,11 @@
    "eq": "((x * x) * y) = (((y * (x * x)) * z) * z)",
    "etp": null,
    "formal": "((x * x) * y) = (((y * (x * x)) * z) * z)",
+   "fp3": [
+    -0.097157,
+    0.074143,
+    -0.021145
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with b equals ((b combined with (a combined with a)) combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -1668,6 +2353,11 @@
    "eq": "((y * x) * y) = (((y * (y * x)) * z) * z)",
    "etp": null,
    "formal": "((y * x) * y) = (((y * (y * x)) * z) * z)",
+   "fp3": [
+    -0.100019,
+    -0.018399,
+    -0.106259
+   ],
    "instance": "for any a, b and c, (b combined with a) combined with b equals ((b combined with (b combined with a)) combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -1680,6 +2370,11 @@
    "eq": "(y * y) = (((y * y) * z) * z)",
    "etp": null,
    "formal": "(y * y) = (((y * y) * z) * z)",
+   "fp3": [
+    -0.104356,
+    -0.034688,
+    0.022588
+   ],
    "instance": "for any b and c, b combined with b equals ((b combined with b) combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1692,6 +2387,11 @@
    "eq": "(z * y) = (((y * z) * z) * z)",
    "etp": null,
    "formal": "(z * y) = (((y * z) * z) * z)",
+   "fp3": [
+    -0.059826,
+    0.059453,
+    -0.280711
+   ],
    "instance": "for any b and c, c combined with b equals ((b combined with c) combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1704,6 +2404,11 @@
    "eq": "(x * z) = (((z * x) * z) * z)",
    "etp": null,
    "formal": "(x * z) = (((z * x) * z) * z)",
+   "fp3": [
+    -0.101441,
+    -0.01026,
+    0.077595
+   ],
    "instance": "for any a and c, a combined with c equals ((c combined with a) combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -1716,6 +2421,11 @@
    "eq": "((x * y) * y) = ((y * z) * (w * w))",
    "etp": null,
    "formal": "((x * y) * y) = ((y * z) * (w * w))",
+   "fp3": [
+    0.024751,
+    0.638865,
+    -0.137047
+   ],
    "instance": "for any d, a, b and c, (a combined with b) combined with b equals (b combined with c) combined with (d combined with d)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1728,6 +2438,11 @@
    "eq": "((x * y) * y) = ((y * z) * ((w * w) * (w * w)))",
    "etp": null,
    "formal": "((x * y) * y) = ((y * z) * ((w * w) * (w * w)))",
+   "fp3": [
+    0.003465,
+    0.576578,
+    -0.175632
+   ],
    "instance": "for any d, a, b and c, (a combined with b) combined with b equals (b combined with c) combined with ((d combined with d) combined with (d combined with d))",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1740,6 +2455,11 @@
    "eq": "((x * y) * y) = ((y * z) * ((x * w) * (x * w)))",
    "etp": null,
    "formal": "((x * y) * y) = ((y * z) * ((x * w) * (x * w)))",
+   "fp3": [
+    0.003465,
+    0.576578,
+    -0.175632
+   ],
    "instance": "for any d, a, b and c, (a combined with b) combined with b equals (b combined with c) combined with ((a combined with d) combined with (a combined with d))",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1752,6 +2472,11 @@
    "eq": "((x * y) * y) = ((y * z) * (x * x))",
    "etp": null,
    "formal": "((x * y) * y) = ((y * z) * (x * x))",
+   "fp3": [
+    0.003465,
+    0.576578,
+    -0.175632
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with b equals (b combined with c) combined with (a combined with a)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1764,6 +2489,11 @@
    "eq": "((x * y) * y) = ((y * z) * (y * y))",
    "etp": null,
    "formal": "((x * y) * y) = ((y * z) * (y * y))",
+   "fp3": [
+    -0.096694,
+    0.132886,
+    0.171382
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with b equals (b combined with c) combined with (b combined with b)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1776,6 +2506,11 @@
    "eq": "((x * y) * y) = ((y * z) * (z * z))",
    "etp": null,
    "formal": "((x * y) * y) = ((y * z) * (z * z))",
+   "fp3": [
+    -0.085696,
+    0.146021,
+    -0.061286
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with b equals (b combined with c) combined with (c combined with c)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1788,6 +2523,11 @@
    "eq": "((y * y) * y) = ((y * z) * (w * w))",
    "etp": null,
    "formal": "((y * y) * y) = ((y * z) * (w * w))",
+   "fp3": [
+    -0.094118,
+    0.160915,
+    0.153987
+   ],
    "instance": "for any d, b and c, (b combined with b) combined with b equals (b combined with c) combined with (d combined with d)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1800,6 +2540,11 @@
    "eq": "((z * y) * y) = ((y * z) * (w * w))",
    "etp": null,
    "formal": "((z * y) * y) = ((y * z) * (w * w))",
+   "fp3": [
+    0.003465,
+    0.576578,
+    -0.175632
+   ],
    "instance": "for any d, b and c, (c combined with b) combined with b equals (b combined with c) combined with (d combined with d)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1812,6 +2557,11 @@
    "eq": "((x * z) * z) = ((z * z) * (w * w))",
    "etp": null,
    "formal": "((x * z) * z) = ((z * z) * (w * w))",
+   "fp3": [
+    -0.054592,
+    0.307047,
+    -0.072488
+   ],
    "instance": "for any d, a and c, (a combined with c) combined with c equals (c combined with c) combined with (d combined with d)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1824,6 +2574,11 @@
    "eq": "(x * x) = ((x * (y * y)) * (y * y))",
    "etp": null,
    "formal": "(x * x) = ((x * (y * y)) * (y * y))",
+   "fp3": [
+    -0.08322,
+    0.056403,
+    -0.059636
+   ],
    "instance": "for any a and b, a combined with a equals (a combined with (b combined with b)) combined with (b combined with b)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1836,6 +2591,11 @@
    "eq": "((x * x) * (x * x)) = (((x * x) * (y * y)) * (y * y))",
    "etp": null,
    "formal": "((x * x) * (x * x)) = (((x * x) * (y * y)) * (y * y))",
+   "fp3": [
+    -0.109606,
+    0.051582,
+    0.308283
+   ],
    "instance": "for any a and b, (a combined with a) combined with (a combined with a) equals ((a combined with a) combined with (b combined with b)) combined with (b combined with b)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -1848,6 +2608,11 @@
    "eq": "((y * x) * (y * x)) = (((y * x) * (y * y)) * (y * y))",
    "etp": null,
    "formal": "((y * x) * (y * x)) = (((y * x) * (y * y)) * (y * y))",
+   "fp3": [
+    -0.103676,
+    0.077118,
+    0.189811
+   ],
    "instance": "for any a and b, (b combined with a) combined with (b combined with a) equals ((b combined with a) combined with (b combined with b)) combined with (b combined with b)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -1860,6 +2625,11 @@
    "eq": "(y * y) = ((y * (y * y)) * (y * y))",
    "etp": null,
    "formal": "(y * y) = ((y * (y * y)) * (y * y))",
+   "fp3": [
+    -0.111491,
+    -0.052825,
+    0.324231
+   ],
    "instance": "for any b, b combined with b equals (b combined with (b combined with b)) combined with (b combined with b)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1872,6 +2642,11 @@
    "eq": "(((x * y) * x) * y) = (x * (z * x))",
    "etp": null,
    "formal": "(((x * y) * x) * y) = (x * (z * x))",
+   "fp3": [
+    -0.021615,
+    0.252686,
+    -0.191671
+   ],
    "instance": "for any a, b and c, ((a combined with b) combined with a) combined with b equals a combined with (c combined with a)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1884,6 +2659,11 @@
    "eq": "(((x * (x * x)) * x) * (x * x)) = (x * (z * x))",
    "etp": null,
    "formal": "(((x * (x * x)) * x) * (x * x)) = (x * (z * x))",
+   "fp3": [
+    -0.107839,
+    -0.02486,
+    0.229341
+   ],
    "instance": "for any a and c, ((a combined with (a combined with a)) combined with a) combined with (a combined with a) equals a combined with (c combined with a)",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1896,6 +2676,11 @@
    "eq": "(((x * (y * x)) * x) * (y * x)) = (x * (z * x))",
    "etp": null,
    "formal": "(((x * (y * x)) * x) * (y * x)) = (x * (z * x))",
+   "fp3": [
+    -0.10294,
+    -0.00884,
+    0.207266
+   ],
    "instance": "for any a, b and c, ((a combined with (b combined with a)) combined with a) combined with (b combined with a) equals a combined with (c combined with a)",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1908,6 +2693,11 @@
    "eq": "(((y * y) * y) * y) = (y * (z * y))",
    "etp": null,
    "formal": "(((y * y) * y) * y) = (y * (z * y))",
+   "fp3": [
+    -0.103551,
+    0.011587,
+    0.132601
+   ],
    "instance": "for any b and c, ((b combined with b) combined with b) combined with b equals b combined with (c combined with b)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1920,6 +2710,11 @@
    "eq": "(((z * y) * z) * y) = (z * (z * z))",
    "etp": null,
    "formal": "(((z * y) * z) * y) = (z * (z * z))",
+   "fp3": [
+    -0.100699,
+    -0.028837,
+    -0.03608
+   ],
    "instance": "for any b and c, ((c combined with b) combined with c) combined with b equals c combined with (c combined with c)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1932,6 +2727,11 @@
    "eq": "(((x * z) * x) * z) = (x * (z * x))",
    "etp": null,
    "formal": "(((x * z) * x) * z) = (x * (z * x))",
+   "fp3": [
+    -0.100287,
+    -0.021621,
+    -0.046648
+   ],
    "instance": "for any a and c, ((a combined with c) combined with a) combined with c equals a combined with (c combined with a)",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1944,6 +2744,11 @@
    "eq": "(x * ((x * (y * (y * y))) * y)) = z",
    "etp": null,
    "formal": "(x * ((x * (y * (y * y))) * y)) = z",
+   "fp3": [
+    0.468538,
+    -0.358468,
+    0.252156
+   ],
    "instance": "for any a, b and c, a combined with ((a combined with (b combined with (b combined with b))) combined with b) equals c",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1956,6 +2761,11 @@
    "eq": "((x * x) * (((x * x) * (y * (y * y))) * y)) = z",
    "etp": null,
    "formal": "((x * x) * (((x * x) * (y * (y * y))) * y)) = z",
+   "fp3": [
+    0.458653,
+    -0.296,
+    0.206079
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with (((a combined with a) combined with (b combined with (b combined with b))) combined with b) equals c",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1968,6 +2778,11 @@
    "eq": "((y * x) * (((y * x) * (y * (y * y))) * y)) = z",
    "etp": null,
    "formal": "((y * x) * (((y * x) * (y * (y * y))) * y)) = z",
+   "fp3": [
+    0.459146,
+    -0.292549,
+    0.191331
+   ],
    "instance": "for any a, b and c, (b combined with a) combined with (((b combined with a) combined with (b combined with (b combined with b))) combined with b) equals c",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -1980,6 +2795,11 @@
    "eq": "(y * ((y * (y * (y * y))) * y)) = z",
    "etp": null,
    "formal": "(y * ((y * (y * (y * y))) * y)) = z",
+   "fp3": [
+    0.459146,
+    -0.292549,
+    0.191331
+   ],
    "instance": "for any b and c, b combined with ((b combined with (b combined with (b combined with b))) combined with b) equals c",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -1992,6 +2812,11 @@
    "eq": "(z * ((z * (y * (y * y))) * y)) = z",
    "etp": null,
    "formal": "(z * ((z * (y * (y * y))) * y)) = z",
+   "fp3": [
+    -0.049526,
+    -0.44971,
+    -0.52065
+   ],
    "instance": "for any b and c, c combined with ((c combined with (b combined with (b combined with b))) combined with b) equals c",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -2004,6 +2829,11 @@
    "eq": "(x * ((x * (z * (z * z))) * z)) = z",
    "etp": null,
    "formal": "(x * ((x * (z * (z * z))) * z)) = z",
+   "fp3": [
+    0.038363,
+    -0.366738,
+    -0.738144
+   ],
    "instance": "for any a and c, a combined with ((a combined with (c combined with (c combined with c))) combined with c) equals c",
    "instance_source": "mechanical",
    "n_ops": 5,
@@ -2016,6 +2846,11 @@
    "eq": "((x * (x * x)) * y) = ((z * (w * y)) * w)",
    "etp": null,
    "formal": "((x * (x * x)) * y) = ((z * (w * y)) * w)",
+   "fp3": [
+    -0.050878,
+    0.12901,
+    -0.125839
+   ],
    "instance": "for any d, a, b and c, (a combined with (a combined with a)) combined with b equals (c combined with (d combined with b)) combined with d",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2028,6 +2863,11 @@
    "eq": "((x * (x * x)) * y) = ((z * ((w * w) * y)) * (w * w))",
    "etp": null,
    "formal": "((x * (x * x)) * y) = ((z * ((w * w) * y)) * (w * w))",
+   "fp3": [
+    -0.08654,
+    0.128874,
+    -0.09124
+   ],
    "instance": "for any d, a, b and c, (a combined with (a combined with a)) combined with b equals (c combined with ((d combined with d) combined with b)) combined with (d combined with d)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2040,6 +2880,11 @@
    "eq": "((x * (x * x)) * y) = ((z * ((x * w) * y)) * (x * w))",
    "etp": null,
    "formal": "((x * (x * x)) * y) = ((z * ((x * w) * y)) * (x * w))",
+   "fp3": [
+    -0.079369,
+    0.082611,
+    -0.22549
+   ],
    "instance": "for any d, a, b and c, (a combined with (a combined with a)) combined with b equals (c combined with ((a combined with d) combined with b)) combined with (a combined with d)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2052,6 +2897,11 @@
    "eq": "((x * (x * x)) * y) = ((z * (x * y)) * x)",
    "etp": null,
    "formal": "((x * (x * x)) * y) = ((z * (x * y)) * x)",
+   "fp3": [
+    -0.068383,
+    0.093122,
+    -0.183963
+   ],
    "instance": "for any a, b and c, (a combined with (a combined with a)) combined with b equals (c combined with (a combined with b)) combined with a",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2064,6 +2914,11 @@
    "eq": "((x * (x * x)) * y) = ((z * (y * y)) * y)",
    "etp": null,
    "formal": "((x * (x * x)) * y) = ((z * (y * y)) * y)",
+   "fp3": [
+    -0.105618,
+    0.063397,
+    0.247957
+   ],
    "instance": "for any a, b and c, (a combined with (a combined with a)) combined with b equals (c combined with (b combined with b)) combined with b",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2076,6 +2931,11 @@
    "eq": "((x * (x * x)) * y) = ((z * (z * y)) * z)",
    "etp": null,
    "formal": "((x * (x * x)) * y) = ((z * (z * y)) * z)",
+   "fp3": [
+    -0.094693,
+    0.005907,
+    -0.199555
+   ],
    "instance": "for any a, b and c, (a combined with (a combined with a)) combined with b equals (c combined with (c combined with b)) combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2088,6 +2948,11 @@
    "eq": "((y * (y * y)) * y) = ((z * (w * y)) * w)",
    "etp": null,
    "formal": "((y * (y * y)) * y) = ((z * (w * y)) * w)",
+   "fp3": [
+    -0.068553,
+    0.099221,
+    -0.183127
+   ],
    "instance": "for any d, b and c, (b combined with (b combined with b)) combined with b equals (c combined with (d combined with b)) combined with d",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2100,6 +2965,11 @@
    "eq": "((z * (z * z)) * y) = ((z * (w * y)) * w)",
    "etp": null,
    "formal": "((z * (z * z)) * y) = ((z * (w * y)) * w)",
+   "fp3": [
+    -0.100036,
+    0.009484,
+    0.01446
+   ],
    "instance": "for any d, b and c, (c combined with (c combined with c)) combined with b equals (c combined with (d combined with b)) combined with d",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2112,6 +2982,11 @@
    "eq": "((x * (x * x)) * z) = ((z * (w * z)) * w)",
    "etp": null,
    "formal": "((x * (x * x)) * z) = ((z * (w * z)) * w)",
+   "fp3": [
+    -0.097567,
+    0.060993,
+    -0.050416
+   ],
    "instance": "for any d, a and c, (a combined with (a combined with a)) combined with c equals (c combined with (d combined with c)) combined with d",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2124,6 +2999,11 @@
    "eq": "(x * ((((y * x) * z) * z) * z)) = (w * z)",
    "etp": null,
    "formal": "(x * ((((y * x) * z) * z) * z)) = (w * z)",
+   "fp3": [
+    0.117027,
+    0.657997,
+    -0.565168
+   ],
    "instance": "for any d, a, b and c, a combined with ((((b combined with a) combined with c) combined with c) combined with c) equals d combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2136,6 +3016,11 @@
    "eq": "(x * ((((y * x) * z) * z) * z)) = ((w * w) * z)",
    "etp": null,
    "formal": "(x * ((((y * x) * z) * z) * z)) = ((w * w) * z)",
+   "fp3": [
+    -0.087022,
+    0.09733,
+    -0.019915
+   ],
    "instance": "for any d, a, b and c, a combined with ((((b combined with a) combined with c) combined with c) combined with c) equals (d combined with d) combined with c",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2148,6 +3033,11 @@
    "eq": "(x * ((((y * x) * z) * z) * z)) = ((x * w) * z)",
    "etp": null,
    "formal": "(x * ((((y * x) * z) * z) * z)) = ((x * w) * z)",
+   "fp3": [
+    -0.077625,
+    0.151998,
+    0.012013
+   ],
    "instance": "for any d, a, b and c, a combined with ((((b combined with a) combined with c) combined with c) combined with c) equals (a combined with d) combined with c",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2160,6 +3050,11 @@
    "eq": "(x * ((((y * x) * z) * z) * z)) = (x * z)",
    "etp": null,
    "formal": "(x * ((((y * x) * z) * z) * z)) = (x * z)",
+   "fp3": [
+    -0.104555,
+    0.005367,
+    0.258123
+   ],
    "instance": "for any a, b and c, a combined with ((((b combined with a) combined with c) combined with c) combined with c) equals a combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2172,6 +3067,11 @@
    "eq": "(x * ((((y * x) * z) * z) * z)) = (y * z)",
    "etp": null,
    "formal": "(x * ((((y * x) * z) * z) * z)) = (y * z)",
+   "fp3": [
+    -0.02704,
+    0.276612,
+    -0.236751
+   ],
    "instance": "for any a, b and c, a combined with ((((b combined with a) combined with c) combined with c) combined with c) equals b combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2184,6 +3084,11 @@
    "eq": "(x * ((((y * x) * z) * z) * z)) = (z * z)",
    "etp": null,
    "formal": "(x * ((((y * x) * z) * z) * z)) = (z * z)",
+   "fp3": [
+    -0.064195,
+    0.130747,
+    -0.132989
+   ],
    "instance": "for any a, b and c, a combined with ((((b combined with a) combined with c) combined with c) combined with c) equals c combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2196,6 +3101,11 @@
    "eq": "(y * ((((y * y) * z) * z) * z)) = (w * z)",
    "etp": null,
    "formal": "(y * ((((y * y) * z) * z) * z)) = (w * z)",
+   "fp3": [
+    0.097618,
+    0.615134,
+    -0.540857
+   ],
    "instance": "for any d, b and c, b combined with ((((b combined with b) combined with c) combined with c) combined with c) equals d combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2208,6 +3118,11 @@
    "eq": "(z * ((((y * z) * z) * z) * z)) = (w * z)",
    "etp": null,
    "formal": "(z * ((((y * z) * z) * z) * z)) = (w * z)",
+   "fp3": [
+    0.097618,
+    0.615134,
+    -0.540857
+   ],
    "instance": "for any d, b and c, c combined with ((((b combined with c) combined with c) combined with c) combined with c) equals d combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2220,6 +3135,11 @@
    "eq": "(x * ((((z * x) * z) * z) * z)) = (w * z)",
    "etp": null,
    "formal": "(x * ((((z * x) * z) * z) * z)) = (w * z)",
+   "fp3": [
+    0.097618,
+    0.615134,
+    -0.540857
+   ],
    "instance": "for any d, a and c, a combined with ((((c combined with a) combined with c) combined with c) combined with c) equals d combined with c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2232,6 +3152,11 @@
    "eq": "((x * (x * y)) * x) = ((x * y) * (z * y))",
    "etp": null,
    "formal": "((x * (x * y)) * x) = ((x * y) * (z * y))",
+   "fp3": [
+    -0.06896,
+    0.123525,
+    0.006134
+   ],
    "instance": "for any a, b and c, (a combined with (a combined with b)) combined with a equals (a combined with b) combined with (c combined with b)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2244,6 +3169,11 @@
    "eq": "((x * (x * y)) * x) = ((x * y) * ((x * x) * y))",
    "etp": null,
    "formal": "((x * (x * y)) * x) = ((x * y) * ((x * x) * y))",
+   "fp3": [
+    -0.102295,
+    -0.000715,
+    0.053192
+   ],
    "instance": "for any a and b, (a combined with (a combined with b)) combined with a equals (a combined with b) combined with ((a combined with a) combined with b)",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2256,6 +3186,11 @@
    "eq": "((x * (x * y)) * x) = ((x * y) * ((y * x) * y))",
    "etp": null,
    "formal": "((x * (x * y)) * x) = ((x * y) * ((y * x) * y))",
+   "fp3": [
+    -0.102295,
+    -0.000715,
+    0.053192
+   ],
    "instance": "for any a and b, (a combined with (a combined with b)) combined with a equals (a combined with b) combined with ((b combined with a) combined with b)",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2268,6 +3203,11 @@
    "eq": "((y * (y * y)) * y) = ((y * y) * (z * y))",
    "etp": null,
    "formal": "((y * (y * y)) * y) = ((y * y) * (z * y))",
+   "fp3": [
+    -0.106132,
+    0.094963,
+    0.369882
+   ],
    "instance": "for any b and c, (b combined with (b combined with b)) combined with b equals (b combined with b) combined with (c combined with b)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2280,6 +3220,11 @@
    "eq": "((z * (z * y)) * z) = ((z * y) * (z * y))",
    "etp": null,
    "formal": "((z * (z * y)) * z) = ((z * y) * (z * y))",
+   "fp3": [
+    -0.104014,
+    0.040806,
+    0.088272
+   ],
    "instance": "for any b and c, (c combined with (c combined with b)) combined with c equals (c combined with b) combined with (c combined with b)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2292,6 +3237,11 @@
    "eq": "((x * (x * z)) * x) = ((x * z) * (z * z))",
    "etp": null,
    "formal": "((x * (x * z)) * x) = ((x * z) * (z * z))",
+   "fp3": [
+    -0.102524,
+    -0.010619,
+    0.042108
+   ],
    "instance": "for any a and c, (a combined with (a combined with c)) combined with a equals (a combined with c) combined with (c combined with c)",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2304,6 +3254,11 @@
    "eq": "((x * y) * ((y * z) * (y * (x * x)))) = y",
    "etp": null,
    "formal": "((x * y) * ((y * z) * (y * (x * x)))) = y",
+   "fp3": [
+    0.468478,
+    -0.358386,
+    0.253455
+   ],
    "instance": "for any a, b and c, (a combined with b) combined with ((b combined with c) combined with (b combined with (a combined with a))) equals b",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2316,6 +3271,11 @@
    "eq": "((x * y) * ((y * (x * x)) * (y * (x * x)))) = y",
    "etp": null,
    "formal": "((x * y) * ((y * (x * x)) * (y * (x * x)))) = y",
+   "fp3": [
+    0.459076,
+    -0.292072,
+    0.190693
+   ],
    "instance": "for any a and b, (a combined with b) combined with ((b combined with (a combined with a)) combined with (b combined with (a combined with a))) equals b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2328,6 +3288,11 @@
    "eq": "((x * y) * ((y * (y * x)) * (y * (x * x)))) = y",
    "etp": null,
    "formal": "((x * y) * ((y * (y * x)) * (y * (x * x)))) = y",
+   "fp3": [
+    0.459076,
+    -0.292072,
+    0.190693
+   ],
    "instance": "for any a and b, (a combined with b) combined with ((b combined with (b combined with a)) combined with (b combined with (a combined with a))) equals b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2340,6 +3305,11 @@
    "eq": "((y * y) * ((y * z) * (y * (y * y)))) = y",
    "etp": null,
    "formal": "((y * y) * ((y * z) * (y * (y * y)))) = y",
+   "fp3": [
+    -0.088,
+    -0.400712,
+    -0.294477
+   ],
    "instance": "for any b and c, (b combined with b) combined with ((b combined with c) combined with (b combined with (b combined with b))) equals b",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2352,6 +3322,11 @@
    "eq": "((z * y) * ((y * z) * (y * (z * z)))) = y",
    "etp": null,
    "formal": "((z * y) * ((y * z) * (y * (z * z)))) = y",
+   "fp3": [
+    0.040683,
+    -0.295867,
+    -0.51743
+   ],
    "instance": "for any b and c, (c combined with b) combined with ((b combined with c) combined with (b combined with (c combined with c))) equals b",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2364,6 +3339,11 @@
    "eq": "((x * z) * ((z * z) * (z * (x * x)))) = z",
    "etp": null,
    "formal": "((x * z) * ((z * z) * (z * (x * x)))) = z",
+   "fp3": [
+    -0.030215,
+    -0.1362,
+    -0.544749
+   ],
    "instance": "for any a and c, (a combined with c) combined with ((c combined with c) combined with (c combined with (a combined with a))) equals c",
    "instance_source": "mechanical",
    "n_ops": 6,
@@ -2376,6 +3356,11 @@
    "eq": "(((x * (x * (y * (x * y)))) * z) * z) = (z * w)",
    "etp": null,
    "formal": "(((x * (x * (y * (x * y)))) * z) * z) = (z * w)",
+   "fp3": [
+    0.347637,
+    0.979703,
+    -0.068783
+   ],
    "instance": "for any d, a, b and c, ((a combined with (a combined with (b combined with (a combined with b)))) combined with c) combined with c equals c combined with d",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2388,6 +3373,11 @@
    "eq": "(((x * (x * (y * (x * y)))) * z) * z) = (z * (w * w))",
    "etp": null,
    "formal": "(((x * (x * (y * (x * y)))) * z) * z) = (z * (w * w))",
+   "fp3": [
+    -0.086582,
+    0.114025,
+    -0.198526
+   ],
    "instance": "for any d, a, b and c, ((a combined with (a combined with (b combined with (a combined with b)))) combined with c) combined with c equals c combined with (d combined with d)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2400,6 +3390,11 @@
    "eq": "(((x * (x * (y * (x * y)))) * z) * z) = (z * (x * w))",
    "etp": null,
    "formal": "(((x * (x * (y * (x * y)))) * z) * z) = (z * (x * w))",
+   "fp3": [
+    -0.025722,
+    0.380334,
+    -0.373846
+   ],
    "instance": "for any d, a, b and c, ((a combined with (a combined with (b combined with (a combined with b)))) combined with c) combined with c equals c combined with (a combined with d)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2412,6 +3407,11 @@
    "eq": "(((x * (x * (y * (x * y)))) * z) * z) = (z * x)",
    "etp": null,
    "formal": "(((x * (x * (y * (x * y)))) * z) * z) = (z * x)",
+   "fp3": [
+    0.327742,
+    1.0,
+    -0.11987
+   ],
    "instance": "for any a, b and c, ((a combined with (a combined with (b combined with (a combined with b)))) combined with c) combined with c equals c combined with a",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2424,6 +3424,11 @@
    "eq": "(((x * (x * (y * (x * y)))) * z) * z) = (z * y)",
    "etp": null,
    "formal": "(((x * (x * (y * (x * y)))) * z) * z) = (z * y)",
+   "fp3": [
+    0.327742,
+    1.0,
+    -0.11987
+   ],
    "instance": "for any a, b and c, ((a combined with (a combined with (b combined with (a combined with b)))) combined with c) combined with c equals c combined with b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2436,6 +3441,11 @@
    "eq": "(((x * (x * (y * (x * y)))) * z) * z) = (z * z)",
    "etp": null,
    "formal": "(((x * (x * (y * (x * y)))) * z) * z) = (z * z)",
+   "fp3": [
+    -0.107604,
+    -0.012889,
+    0.224122
+   ],
    "instance": "for any a, b and c, ((a combined with (a combined with (b combined with (a combined with b)))) combined with c) combined with c equals c combined with c",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2448,6 +3458,11 @@
    "eq": "(((y * (y * (y * (y * y)))) * z) * z) = (z * w)",
    "etp": null,
    "formal": "(((y * (y * (y * (y * y)))) * z) * z) = (z * w)",
+   "fp3": [
+    0.327742,
+    1.0,
+    -0.11987
+   ],
    "instance": "for any d, b and c, ((b combined with (b combined with (b combined with (b combined with b)))) combined with c) combined with c equals c combined with d",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2460,6 +3475,11 @@
    "eq": "(((z * (z * (y * (z * y)))) * z) * z) = (z * w)",
    "etp": null,
    "formal": "(((z * (z * (y * (z * y)))) * z) * z) = (z * w)",
+   "fp3": [
+    0.052395,
+    0.504828,
+    -0.394066
+   ],
    "instance": "for any d, b and c, ((c combined with (c combined with (b combined with (c combined with b)))) combined with c) combined with c equals c combined with d",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2472,6 +3492,11 @@
    "eq": "(((x * (x * (z * (x * z)))) * z) * z) = (z * w)",
    "etp": null,
    "formal": "(((x * (x * (z * (x * z)))) * z) * z) = (z * w)",
+   "fp3": [
+    0.327742,
+    1.0,
+    -0.11987
+   ],
    "instance": "for any d, a and c, ((a combined with (a combined with (c combined with (a combined with c)))) combined with c) combined with c equals c combined with d",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2484,6 +3509,11 @@
    "eq": "(((x * x) * ((y * ((x * y) * z)) * w)) * z) = y",
    "etp": null,
    "formal": "(((x * x) * ((y * ((x * y) * z)) * w)) * z) = y",
+   "fp3": [
+    0.474049,
+    -0.395893,
+    0.298064
+   ],
    "instance": "for any d, a, b and c, ((a combined with a) combined with ((b combined with ((a combined with b) combined with c)) combined with d)) combined with c equals b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2496,6 +3526,11 @@
    "eq": "(((x * x) * ((y * ((x * y) * z)) * (w * w))) * z) = y",
    "etp": null,
    "formal": "(((x * x) * ((y * ((x * y) * z)) * (w * w))) * z) = y",
+   "fp3": [
+    0.459339,
+    -0.293163,
+    0.192328
+   ],
    "instance": "for any d, a, b and c, ((a combined with a) combined with ((b combined with ((a combined with b) combined with c)) combined with (d combined with d))) combined with c equals b",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2508,6 +3543,11 @@
    "eq": "(((x * x) * ((y * ((x * y) * z)) * (x * w))) * z) = y",
    "etp": null,
    "formal": "(((x * x) * ((y * ((x * y) * z)) * (x * w))) * z) = y",
+   "fp3": [
+    0.459339,
+    -0.293163,
+    0.192328
+   ],
    "instance": "for any d, a, b and c, ((a combined with a) combined with ((b combined with ((a combined with b) combined with c)) combined with (a combined with d))) combined with c equals b",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2520,6 +3560,11 @@
    "eq": "(((x * x) * ((y * ((x * y) * z)) * x)) * z) = y",
    "etp": null,
    "formal": "(((x * x) * ((y * ((x * y) * z)) * x)) * z) = y",
+   "fp3": [
+    0.459339,
+    -0.293163,
+    0.192328
+   ],
    "instance": "for any a, b and c, ((a combined with a) combined with ((b combined with ((a combined with b) combined with c)) combined with a)) combined with c equals b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2532,6 +3577,11 @@
    "eq": "(((x * x) * ((y * ((x * y) * z)) * y)) * z) = y",
    "etp": null,
    "formal": "(((x * x) * ((y * ((x * y) * z)) * y)) * z) = y",
+   "fp3": [
+    0.459339,
+    -0.293163,
+    0.192328
+   ],
    "instance": "for any a, b and c, ((a combined with a) combined with ((b combined with ((a combined with b) combined with c)) combined with b)) combined with c equals b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2544,6 +3594,11 @@
    "eq": "(((x * x) * ((y * ((x * y) * z)) * z)) * z) = y",
    "etp": null,
    "formal": "(((x * x) * ((y * ((x * y) * z)) * z)) * z) = y",
+   "fp3": [
+    0.459339,
+    -0.293163,
+    0.192328
+   ],
    "instance": "for any a, b and c, ((a combined with a) combined with ((b combined with ((a combined with b) combined with c)) combined with c)) combined with c equals b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2556,6 +3611,11 @@
    "eq": "(((y * y) * ((y * ((y * y) * z)) * w)) * z) = y",
    "etp": null,
    "formal": "(((y * y) * ((y * ((y * y) * z)) * w)) * z) = y",
+   "fp3": [
+    0.018345,
+    0.032153,
+    -0.583913
+   ],
    "instance": "for any d, b and c, ((b combined with b) combined with ((b combined with ((b combined with b) combined with c)) combined with d)) combined with c equals b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2568,6 +3628,11 @@
    "eq": "(((z * z) * ((y * ((z * y) * z)) * w)) * z) = y",
    "etp": null,
    "formal": "(((z * z) * ((y * ((z * y) * z)) * w)) * z) = y",
+   "fp3": [
+    0.459339,
+    -0.293163,
+    0.192328
+   ],
    "instance": "for any d, b and c, ((c combined with c) combined with ((b combined with ((c combined with b) combined with c)) combined with d)) combined with c equals b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2580,6 +3645,11 @@
    "eq": "(((x * x) * ((z * ((x * z) * z)) * w)) * z) = z",
    "etp": null,
    "formal": "(((x * x) * ((z * ((x * z) * z)) * w)) * z) = z",
+   "fp3": [
+    0.0406,
+    -0.331513,
+    -0.763267
+   ],
    "instance": "for any d, a and c, ((a combined with a) combined with ((c combined with ((a combined with c) combined with c)) combined with d)) combined with c equals c",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2592,6 +3662,11 @@
    "eq": "(x * y) = (((x * ((x * (x * z)) * w)) * x) * y)",
    "etp": null,
    "formal": "(x * y) = (((x * ((x * (x * z)) * w)) * x) * y)",
+   "fp3": [
+    -0.072695,
+    -0.069322,
+    0.092053
+   ],
    "instance": "for any d, a, b and c, a combined with b equals ((a combined with ((a combined with (a combined with c)) combined with d)) combined with a) combined with b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2604,6 +3679,11 @@
    "eq": "(x * y) = (((x * ((x * (x * z)) * (w * w))) * x) * y)",
    "etp": null,
    "formal": "(x * y) = (((x * ((x * (x * z)) * (w * w))) * x) * y)",
+   "fp3": [
+    -0.110094,
+    -0.104602,
+    0.27265
+   ],
    "instance": "for any d, a, b and c, a combined with b equals ((a combined with ((a combined with (a combined with c)) combined with (d combined with d))) combined with a) combined with b",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2616,6 +3696,11 @@
    "eq": "(x * y) = (((x * ((x * (x * z)) * (x * w))) * x) * y)",
    "etp": null,
    "formal": "(x * y) = (((x * ((x * (x * z)) * (x * w))) * x) * y)",
+   "fp3": [
+    -0.110094,
+    -0.104602,
+    0.27265
+   ],
    "instance": "for any d, a, b and c, a combined with b equals ((a combined with ((a combined with (a combined with c)) combined with (a combined with d))) combined with a) combined with b",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2628,6 +3713,11 @@
    "eq": "(x * y) = (((x * ((x * (x * z)) * x)) * x) * y)",
    "etp": null,
    "formal": "(x * y) = (((x * ((x * (x * z)) * x)) * x) * y)",
+   "fp3": [
+    -0.110094,
+    -0.104602,
+    0.27265
+   ],
    "instance": "for any a, b and c, a combined with b equals ((a combined with ((a combined with (a combined with c)) combined with a)) combined with a) combined with b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2640,6 +3730,11 @@
    "eq": "(x * y) = (((x * ((x * (x * z)) * y)) * x) * y)",
    "etp": null,
    "formal": "(x * y) = (((x * ((x * (x * z)) * y)) * x) * y)",
+   "fp3": [
+    -0.110094,
+    -0.104602,
+    0.27265
+   ],
    "instance": "for any a, b and c, a combined with b equals ((a combined with ((a combined with (a combined with c)) combined with b)) combined with a) combined with b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2652,6 +3747,11 @@
    "eq": "(x * y) = (((x * ((x * (x * z)) * z)) * x) * y)",
    "etp": null,
    "formal": "(x * y) = (((x * ((x * (x * z)) * z)) * x) * y)",
+   "fp3": [
+    -0.110094,
+    -0.104602,
+    0.27265
+   ],
    "instance": "for any a, b and c, a combined with b equals ((a combined with ((a combined with (a combined with c)) combined with c)) combined with a) combined with b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2664,6 +3764,11 @@
    "eq": "(y * y) = (((y * ((y * (y * z)) * w)) * y) * y)",
    "etp": null,
    "formal": "(y * y) = (((y * ((y * (y * z)) * w)) * y) * y)",
+   "fp3": [
+    -0.112467,
+    -0.091994,
+    0.358986
+   ],
    "instance": "for any d, b and c, b combined with b equals ((b combined with ((b combined with (b combined with c)) combined with d)) combined with b) combined with b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2676,6 +3781,11 @@
    "eq": "(z * y) = (((z * ((z * (z * z)) * w)) * z) * y)",
    "etp": null,
    "formal": "(z * y) = (((z * ((z * (z * z)) * w)) * z) * y)",
+   "fp3": [
+    -0.110094,
+    -0.104602,
+    0.27265
+   ],
    "instance": "for any d, b and c, c combined with b equals ((c combined with ((c combined with (c combined with c)) combined with d)) combined with c) combined with b",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2688,6 +3798,11 @@
    "eq": "(x * z) = (((x * ((x * (x * z)) * w)) * x) * z)",
    "etp": null,
    "formal": "(x * z) = (((x * ((x * (x * z)) * w)) * x) * z)",
+   "fp3": [
+    -0.110094,
+    -0.104602,
+    0.27265
+   ],
    "instance": "for any d, a and c, a combined with c equals ((a combined with ((a combined with (a combined with c)) combined with d)) combined with a) combined with c",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2700,6 +3815,11 @@
    "eq": "(x * ((x * x) * x)) = (y * (y * (x * (y * x))))",
    "etp": null,
    "formal": "(x * ((x * x) * x)) = (y * (y * (x * (y * x))))",
+   "fp3": [
+    -0.098048,
+    -0.000122,
+    0.040316
+   ],
    "instance": "for any a and b, a combined with ((a combined with a) combined with a) equals b combined with (b combined with (a combined with (b combined with a)))",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2712,6 +3832,11 @@
    "eq": "(y * ((y * y) * y)) = (y * (y * (y * (y * y))))",
    "etp": null,
    "formal": "(y * ((y * y) * y)) = (y * (y * (y * (y * y))))",
+   "fp3": [
+    -0.116991,
+    -0.0925,
+    0.547035
+   ],
    "instance": "for any b, b combined with ((b combined with b) combined with b) equals b combined with (b combined with (b combined with (b combined with b)))",
    "instance_source": "mechanical",
    "n_ops": 7,
@@ -2724,6 +3849,11 @@
    "eq": "((x * (y * y)) * y) = (y * ((y * (z * z)) * (y * y)))",
    "etp": null,
    "formal": "((x * (y * y)) * y) = (y * ((y * (z * z)) * (y * y)))",
+   "fp3": [
+    -0.087149,
+    -0.001472,
+    0.009117
+   ],
    "instance": "for any a, b and c, (a combined with (b combined with b)) combined with b equals b combined with ((b combined with (c combined with c)) combined with (b combined with b))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2736,6 +3866,11 @@
    "eq": "((y * (y * y)) * y) = (y * ((y * (z * z)) * (y * y)))",
    "etp": null,
    "formal": "((y * (y * y)) * y) = (y * ((y * (z * z)) * (y * y)))",
+   "fp3": [
+    -0.107035,
+    -0.048135,
+    0.156514
+   ],
    "instance": "for any b and c, (b combined with (b combined with b)) combined with b equals b combined with ((b combined with (c combined with c)) combined with (b combined with b))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2748,6 +3883,11 @@
    "eq": "((z * (y * y)) * y) = (y * ((y * (z * z)) * (y * y)))",
    "etp": null,
    "formal": "((z * (y * y)) * y) = (y * ((y * (z * z)) * (y * y)))",
+   "fp3": [
+    -0.102327,
+    -0.00622,
+    0.070052
+   ],
    "instance": "for any b and c, (c combined with (b combined with b)) combined with b equals b combined with ((b combined with (c combined with c)) combined with (b combined with b))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2760,6 +3900,11 @@
    "eq": "((x * (z * z)) * z) = (z * ((z * (z * z)) * (z * z)))",
    "etp": null,
    "formal": "((x * (z * z)) * z) = (z * ((z * (z * z)) * (z * z)))",
+   "fp3": [
+    -0.102813,
+    -0.070621,
+    0.067008
+   ],
    "instance": "for any a and c, (a combined with (c combined with c)) combined with c equals c combined with ((c combined with (c combined with c)) combined with (c combined with c))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2772,6 +3917,11 @@
    "eq": "(x * (x * x)) = (((((x * y) * (z * y)) * x) * y) * y)",
    "etp": null,
    "formal": "(x * (x * x)) = (((((x * y) * (z * y)) * x) * y) * y)",
+   "fp3": [
+    -0.087175,
+    0.028241,
+    0.011273
+   ],
    "instance": "for any a, b and c, a combined with (a combined with a) equals ((((a combined with b) combined with (c combined with b)) combined with a) combined with b) combined with b",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2784,6 +3934,11 @@
    "eq": "(y * (y * y)) = (((((y * y) * (z * y)) * y) * y) * y)",
    "etp": null,
    "formal": "(y * (y * y)) = (((((y * y) * (z * y)) * y) * y) * y)",
+   "fp3": [
+    -0.108537,
+    -0.005191,
+    0.227507
+   ],
    "instance": "for any b and c, b combined with (b combined with b) equals ((((b combined with b) combined with (c combined with b)) combined with b) combined with b) combined with b",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2796,6 +3951,11 @@
    "eq": "(z * (z * z)) = (((((z * y) * (z * y)) * z) * y) * y)",
    "etp": null,
    "formal": "(z * (z * z)) = (((((z * y) * (z * y)) * z) * y) * y)",
+   "fp3": [
+    -0.101957,
+    0.000434,
+    -0.005171
+   ],
    "instance": "for any b and c, c combined with (c combined with c) equals ((((c combined with b) combined with (c combined with b)) combined with c) combined with b) combined with b",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2808,6 +3968,11 @@
    "eq": "(x * (x * x)) = (((((x * z) * (z * z)) * x) * z) * z)",
    "etp": null,
    "formal": "(x * (x * x)) = (((((x * z) * (z * z)) * x) * z) * z)",
+   "fp3": [
+    -0.101957,
+    0.000434,
+    -0.005171
+   ],
    "instance": "for any a and c, a combined with (a combined with a) equals ((((a combined with c) combined with (c combined with c)) combined with a) combined with c) combined with c",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2820,6 +3985,11 @@
    "eq": "((x * x) * ((y * x) * x)) = ((z * z) * ((z * z) * z))",
    "etp": null,
    "formal": "((x * x) * ((y * x) * x)) = ((z * z) * ((z * z) * z))",
+   "fp3": [
+    -0.086517,
+    0.13505,
+    0.062533
+   ],
    "instance": "for any a, b and c, (a combined with a) combined with ((b combined with a) combined with a) equals (c combined with c) combined with ((c combined with c) combined with c)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2832,6 +4002,11 @@
    "eq": "((y * y) * ((y * y) * y)) = ((z * z) * ((z * z) * z))",
    "etp": null,
    "formal": "((y * y) * ((y * y) * y)) = ((z * z) * ((z * z) * z))",
+   "fp3": [
+    -0.100643,
+    0.068688,
+    0.084041
+   ],
    "instance": "for any b and c, (b combined with b) combined with ((b combined with b) combined with b) equals (c combined with c) combined with ((c combined with c) combined with c)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2844,6 +4019,11 @@
    "eq": "((z * z) * ((y * z) * z)) = ((z * z) * ((z * z) * z))",
    "etp": null,
    "formal": "((z * z) * ((y * z) * z)) = ((z * z) * ((z * z) * z))",
+   "fp3": [
+    -0.120284,
+    0.014712,
+    0.75547
+   ],
    "instance": "for any b and c, (c combined with c) combined with ((b combined with c) combined with c) equals (c combined with c) combined with ((c combined with c) combined with c)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2856,6 +4036,11 @@
    "eq": "((x * x) * ((z * x) * x)) = ((z * z) * ((z * z) * z))",
    "etp": null,
    "formal": "((x * x) * ((z * x) * x)) = ((z * z) * ((z * z) * z))",
+   "fp3": [
+    -0.100929,
+    0.061261,
+    0.085732
+   ],
    "instance": "for any a and c, (a combined with a) combined with ((c combined with a) combined with a) equals (c combined with c) combined with ((c combined with c) combined with c)",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2868,6 +4053,11 @@
    "eq": "((x * ((x * y) * (y * y))) * x) = (z * (w * (w * z)))",
    "etp": null,
    "formal": "((x * ((x * y) * (y * y))) * x) = (z * (w * (w * z)))",
+   "fp3": [
+    -0.020271,
+    0.258481,
+    -0.184865
+   ],
    "instance": "for any d, a, b and c, (a combined with ((a combined with b) combined with (b combined with b))) combined with a equals c combined with (d combined with (d combined with c))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2880,6 +4070,11 @@
    "eq": "((x * ((x * y) * (y * y))) * x) = (z * (x * (x * z)))",
    "etp": null,
    "formal": "((x * ((x * y) * (y * y))) * x) = (z * (x * (x * z)))",
+   "fp3": [
+    -0.034177,
+    0.242543,
+    -0.222978
+   ],
    "instance": "for any a, b and c, (a combined with ((a combined with b) combined with (b combined with b))) combined with a equals c combined with (a combined with (a combined with c))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2892,6 +4087,11 @@
    "eq": "((x * ((x * y) * (y * y))) * x) = (z * (y * (y * z)))",
    "etp": null,
    "formal": "((x * ((x * y) * (y * y))) * x) = (z * (y * (y * z)))",
+   "fp3": [
+    -0.034177,
+    0.242543,
+    -0.222978
+   ],
    "instance": "for any a, b and c, (a combined with ((a combined with b) combined with (b combined with b))) combined with a equals c combined with (b combined with (b combined with c))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2904,6 +4104,11 @@
    "eq": "((x * ((x * y) * (y * y))) * x) = (z * (z * (z * z)))",
    "etp": null,
    "formal": "((x * ((x * y) * (y * y))) * x) = (z * (z * (z * z)))",
+   "fp3": [
+    -0.096037,
+    0.011493,
+    -0.146352
+   ],
    "instance": "for any a, b and c, (a combined with ((a combined with b) combined with (b combined with b))) combined with a equals c combined with (c combined with (c combined with c))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2916,6 +4121,11 @@
    "eq": "((y * ((y * y) * (y * y))) * y) = (z * (w * (w * z)))",
    "etp": null,
    "formal": "((y * ((y * y) * (y * y))) * y) = (z * (w * (w * z)))",
+   "fp3": [
+    -0.09643,
+    0.008988,
+    -0.147462
+   ],
    "instance": "for any d, b and c, (b combined with ((b combined with b) combined with (b combined with b))) combined with b equals c combined with (d combined with (d combined with c))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2928,6 +4138,11 @@
    "eq": "((z * ((z * y) * (y * y))) * z) = (z * (w * (w * z)))",
    "etp": null,
    "formal": "((z * ((z * y) * (y * y))) * z) = (z * (w * (w * z)))",
+   "fp3": [
+    -0.104375,
+    -0.002094,
+    0.134571
+   ],
    "instance": "for any d, b and c, (c combined with ((c combined with b) combined with (b combined with b))) combined with c equals c combined with (d combined with (d combined with c))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2940,6 +4155,11 @@
    "eq": "((x * ((x * z) * (z * z))) * x) = (z * (w * (w * z)))",
    "etp": null,
    "formal": "((x * ((x * z) * (z * z))) * x) = (z * (w * (w * z)))",
+   "fp3": [
+    -0.034177,
+    0.242543,
+    -0.222978
+   ],
    "instance": "for any d, a and c, (a combined with ((a combined with c) combined with (c combined with c))) combined with a equals c combined with (d combined with (d combined with c))",
    "instance_source": "mechanical",
    "n_ops": 8,
@@ -2952,6 +4172,11 @@
    "eq": "(x * x) = (y * y)",
    "etp": "Eq40",
    "formal": "(x * x) = (y * y)",
+   "fp3": [
+    -0.075964,
+    -0.000469,
+    -0.19488
+   ],
    "instance": "for any a and b, a combined with a equals b combined with b",
    "instance_source": "handwritten",
    "n_ops": 2,
@@ -2966,6 +4191,11 @@
    "eq": "((x * x) * (x * x)) = (y * y)",
    "etp": null,
    "formal": "((x * x) * (x * x)) = (y * y)",
+   "fp3": [
+    -0.081149,
+    -0.006165,
+    -0.186802
+   ],
    "instance": "for any a and b, (a combined with a) combined with (a combined with a) equals b combined with b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -2978,6 +4208,11 @@
    "eq": "((y * x) * (y * x)) = (y * y)",
    "etp": null,
    "formal": "((y * x) * (y * x)) = (y * y)",
+   "fp3": [
+    -0.094737,
+    -0.036305,
+    -0.103328
+   ],
    "instance": "for any a and b, (b combined with a) combined with (b combined with a) equals b combined with b",
    "instance_source": "mechanical",
    "n_ops": 4,
@@ -54368,7 +55603,7 @@
   "unipot|unipot_c_xxx": true,
   "unipot|unipot_c_xyx": true
  },
- "provenance": "v4 (adds compound-term substitution instances filling odd op levels; v3 added per-op-bin synthetic laws bins 1-8, depth metadata, n4_samples=4000; v2 added single-variable-identification instance laws); certificate-pipeline pipeline/{laws,magma}.py + etp_items.law_nl; certify_all exhaustive<=3 sampled n=4; degenerate excluded; self-pairs excluded; uncertified excluded",
+ "provenance": "v5 (adds fp3 certified-fingerprint PCA coordinates per law; v4 added compound-term substitution instances filling odd op levels; v3 added per-op-bin synthetic laws bins 1-8, depth metadata, n4_samples=4000; v2 added single-variable-identification instance laws); certificate-pipeline pipeline/{laws,magma}.py + etp_items.law_nl; certify_all exhaustive<=3 sampled n=4; degenerate excluded; self-pairs excluded; uncertified excluded",
  "registers": [
   "formal",
   "instance",

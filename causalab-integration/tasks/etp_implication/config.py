@@ -62,5 +62,15 @@ def ops_bin(premise: str, conclusion: str) -> int:
             return i
     return len(OPS_BINS) - 1
 
+# certified-fingerprint PCA coordinates (v5): the law's position in the
+# implication table's geometry, 3 floats per law — the coordinate chart for
+# manifold analyses (see causal_models.EMBEDDINGS)
+FINGERPRINT_COORDS = {lid: entry["fp3"] for lid, entry in LAWS.items() if "fp3" in entry}
+
+
+def law_fingerprint_coords(lid: str) -> list:
+    return FINGERPRINT_COORDS[lid]
+
+
 MAX_TASK_TOKENS = 512
 MAX_NEW_TOKENS = 1

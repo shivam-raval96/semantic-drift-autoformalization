@@ -15,7 +15,7 @@ reach them ("certify or exclude").
 from causalab.causal.causal_model import CausalModel
 from causalab.causal.trace import Mechanism, input_var
 
-from .config import LAW_IDS, PAIRS, TASK_NAME, pair_key
+from .config import LAW_IDS, PAIRS, TASK_NAME, law_fingerprint_coords, pair_key
 from .templates import TEMPLATES, fill_template
 
 values = {
@@ -61,3 +61,13 @@ CAUSAL_MODEL = CausalModel(
 )
 
 TARGET_VARIABLE = "implication"
+
+# Coordinate embeddings for manifold analyses: laws embed at their certified
+# implication-fingerprint PCA coordinates (3D, ~61% of table variance), so a
+# manifold fit over law identity is parameterized by Lean's own metric — a
+# good fit IS the fingerprint-isometry result. The verdict embeds as +/-1.
+EMBEDDINGS = {
+    "premise_law": law_fingerprint_coords,
+    "conclusion_law": law_fingerprint_coords,
+    "implication": lambda v: [1.0 if v else -1.0],
+}
