@@ -78,3 +78,45 @@ labels after metadata write is tolerated).
    `conclusion_last`, never the variable-length spans.
 5. Verdict (1D) and law identity (3D) need separate runners:
    `intrinsic_dim` must match the embedding dimension.
+
+## Dataset geometry (2026-07-25): the premise-strength shortcut
+
+PCA of the certified implication table itself (scripts/dataset_pca.py,
+scripts/full_etp_pca.py; figures in analysis/dataset_pca/):
+
+v5 task data (247 laws, 51,381 certified pairs):
+- Law fingerprints: PC1-3 = 60.7% var (recomputed PCs correlate 1.000
+  with the stored fp3 chart). No complexity clusters (n_ops/depth/family
+  silhouettes negative); complexity is a gradient. The dominant axis is
+  implication strength: out-degree corr r = 0.48 with PC1.
+- Pairs (concat fingerprints, balanced 1,598): truth separates, AUC
+  0.945 from 3 PCs, kNN agreement 87% vs 50% null. BUT: premise
+  out-degree ALONE predicts truth at AUC 0.9635 (conclusion in-degree
+  0.667). A NEW KILL BASELINE: a model can look competent by encoding
+  "how strong is the premise law" as one scalar. Future splits must
+  stratify by premise strength.
+
+FULL ETP table (4694 laws, 22,028,942 settled implications, from
+teorth/equational_theories 2024-11-10 outcomes):
+- 8,173,585 True off-diagonal (37% - our v5 subsample's 1.6% True rate
+  is a law-selection artifact, worth remembering when balancing).
+- PC1 IS out-degree: r = 0.999, 74.4% of variance. PC1-3 = 87.5%.
+- Premise-outdeg-only AUC over all 22M pairs: 0.9835.
+- Truth from 3 pair-PCs: AUC 0.992.
+- Complexity (n_ops 0-4, depth): near-zero correlation with the leading
+  PCs, negative silhouettes - at full scale too, logic-space geometry
+  organizes by strength, not by syntactic complexity.
+
+Interpretation for the isometry work: the fp3 chart the models align
+with is largely a strength-plus-residual geometry; the causal protocol
+(causal_patch.py) and any behavioral claims must therefore separate
+"represents premise strength" from "represents the specific law" -
+the rot/shuf controls and per-strength stratification do this.
+
+## Grader validation (informalizing-etp/experiments/12)
+
+Replay fidelity 10,320/10,320. Silent:loud >= 6:1 at ETP sizes under
+EVERY grader variant (strict convention, no-dual, extraction variants);
+ratio inverts past ETP depth (loud/grammar collapse takes over). Silent
+failures: <1% rescueable by any convention leniency; 55% are
+single-equation-local (premise drifts 1.4x more often than conclusion).

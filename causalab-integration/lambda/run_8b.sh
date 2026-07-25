@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
-# The full 8B protocol, identical in shape to the Qwen-1.5B / Llama-1B runs:
+# The full 8B protocol, identical in shape to the Qwen-1.5B / Llama-1B runs,
+# PLUS the causal protocol (chart-restricted patching + boundary steering):
 #   1. etp_8b_pipeline     baseline -> subspace -> verdict manifold
 #   2. etp_8b_lawmanifold  true fingerprint chart (L8 quarter-depth)
 #   3. 20 embedding-shuffle nulls
-#   4. summary + artifact tarball for scp back
-# Expect roughly 1-3 GPU-hours end to end on an A10/A100.
+#   4. causal_patch.py     full/chart/rot/shuf patching + steering (L8, L16)
+#   5. summary + artifact tarball for scp back
+# Expect roughly 2-4 GPU-hours end to end on an A10/A100.
+# Repo root = two levels up from this script (same layout provision.sh checks)
+REPO_DIR="${REPO_DIR:-$(cd "$(dirname "$0")/../.." && pwd)}"
 set -euo pipefail
 
 CAUSALAB_DIR="$HOME/causalab"
@@ -47,6 +51,19 @@ for tf in glob.glob(f"{base}/*/spline_s0.0/premise_law/manifold_spline/metadata.
               f"| p = {(better+1)/(len(nulls)+1):.3f}")
 PY
 
-tar czf ~/etp_8b_artifacts.tgz artifacts/etp_implication/llama31_8b_instruct
+# --- causal protocol: is the chart causally load-bearing at 8B? ---
+# The scale question the 1B dissociation opened: Llama-1B has the geometry
+# but is at chance (chart present, unread); if 8B reads its chart, the
+# chart patch should move verdicts and the rot/shuf controls should not.
+for layer in 8 16; do
+  echo "=== causal_patch L$layer ==="
+  "$PY" "$REPO_DIR/causalab-integration/scripts/causal_patch.py" \
+    --model llama8b --layer "$layer" --n-items 60 --n-steer 16 \
+    2>&1 | tee "logs_8b_causal_L$layer.txt" | tail -30
+done
+
+tar czf ~/etp_8b_artifacts.tgz artifacts/etp_implication/llama31_8b_instruct \
+  "$REPO_DIR/causalab-integration/analysis/causal" 2>/dev/null || \
+  tar czf ~/etp_8b_artifacts.tgz artifacts/etp_implication/llama31_8b_instruct
 echo "DONE. Pull results with:"
 echo "  scp <instance>:~/etp_8b_artifacts.tgz ."

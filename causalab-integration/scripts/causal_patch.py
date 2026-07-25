@@ -80,8 +80,15 @@ class Runner:
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
         self.tok = AutoTokenizer.from_pretrained(model_name)
-        dtype = torch.float32  # MPS: fp32 for numerically stable logit diffs
-        self.device = device or ("mps" if torch.backends.mps.is_available() else "cpu")
+        if device is None:
+            device = (
+                "cuda" if torch.cuda.is_available()
+                else "mps" if torch.backends.mps.is_available()
+                else "cpu"
+            )
+        self.device = device
+        # fp32 on MPS/CPU for stable logit diffs; bf16 on CUDA (8B must fit 24GB)
+        dtype = torch.bfloat16 if device == "cuda" else torch.float32
         self.model = AutoModelForCausalLM.from_pretrained(model_name, torch_dtype=dtype)
         self.model.to(self.device).eval()
         self.layer = layer

@@ -1,0 +1,53 @@
+{
+ "n_laws": 4694,
+ "n_true_offdiag": 8173585,
+ "status_counts": {
+  "implicit_proof_true": 8167622,
+  "explicit_proof_false": 586845,
+  "implicit_proof_false": 13268322,
+  "explicit_proof_true": 10657,
+  "explicit_conjecture_false": 61,
+  "implicit_conjecture_false": 125,
+  "unknown": 4
+ },
+ "explained_variance": [
+  0.7439912557601929,
+  0.09776835888624191,
+  0.033330418169498444,
+  0.029238108545541763,
+  0.015126314014196396,
+  0.01194712147116661,
+  0.010333782993257046,
+  0.006673152558505535,
+  0.006356810685247183,
+  0.004045549780130386
+ ],
+ "outdeg_corr_pc123": [
+  0.999,
+  0.0376,
+  0.0179
+ ],
+ "indeg_corr_pc123": [
+  -0.6356,
+  0.4323,
+  0.4811
+ ],
+ "n_ops_corr_pc123": [
+  -0.0129,
+  0.0217,
+  0.0424
+ ],
+ "depth_corr_pc123": [
+  0.3293,
+  -0.4298,
+  -0.3588
+ ],
+ "silhouette_ops_bin": -0.1015,
+ "silhouette_depth": -0.0782,
+ "auc_premise_outdeg_full": 0.9835,
+ "auc_conclusion_indeg_full": 0.5667,
+ "pair_truth_auc_pc3": {
+  "mean": 0.9921,
+  "std": 0.0016
+ }
+}
