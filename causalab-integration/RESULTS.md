@@ -181,3 +181,26 @@ R^2 0.331 (vs 0.337), p = 0.0196. Held-out generalization and
 strength-robustness are now cross-model properties, matching the
 isometry's world-shaped pattern. Nonlinear gain slightly larger on
 Llama (+0.045 vs +0.028) but still small - linear-chart framing holds.
+
+## Matched-layer causal matrix (2026-07-25): a model difference
+
+Screened chart-patching, mean directed delta (median fraction of donor
+gap) per (model x depth); chart > rot on the stated share of items:
+
+               quarter depth          mid depth
+  Qwen-1.5B    L7  -0.19 (-13%)      L14 -0.15 (-13%)   [never > controls]
+  Llama-1B     L4  +0.09 (+25%, 92%) L8  +0.02 (+3%, 90%)
+
+Chart ~ full everywhere: the 3 certified coordinates capture all the
+mediated effect there is. Flip rate 0 everywhere (sub-logit effects).
+Steering: Qwen median curve range 0.30 logits (5/16 sign crossings),
+Llama 0.16 (0/16) - flat at this scale, as the patch results predict.
+
+Consolidated: causal coupling of the certified chart exists ONLY in the
+model that cannot do the task, is early-layer-weighted, and is absent
+at both depths in the (slightly) competent model - Qwen's 59.7% is not
+made of reading this chart. The dissociation is now double-sided:
+Llama-1B represents AND is weakly causally coupled to the chart it
+cannot use; Qwen performs without routing through the chart cell we
+found. The 8B run decides whether competence eventually recruits the
+chart (kit carries the full screened protocol).
