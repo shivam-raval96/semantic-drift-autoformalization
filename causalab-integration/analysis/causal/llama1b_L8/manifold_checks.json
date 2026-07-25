@@ -1,0 +1,43 @@
+{
+ "model_layer": "llama1b_L8",
+ "n_laws": 247,
+ "C1_participation_ratio": 2.66,
+ "C1_pca_spectrum_top10": [
+  0.6041,
+  0.0726,
+  0.0381,
+  0.033,
+  0.0259,
+  0.0228,
+  0.018,
+  0.0164,
+  0.0127,
+  0.0119
+ ],
+ "C2_loo_r2_ridge": {
+  "r2": 0.3176,
+  "null_mean": -0.0219,
+  "null_max": -0.0047,
+  "p": 0.0196
+ },
+ "C2_loo_r2_rbf": {
+  "r2": 0.3674,
+  "null_mean": -0.0506,
+  "null_max": -0.0279,
+  "p": 0.0196
+ },
+ "C3_nonlinear_gain": 0.0498,
+ "C2_knn_overlap_k10": {
+  "obs": 0.166,
+  "null": 0.0401,
+  "p": 0.002
+ },
+ "C4_strength": {
+  "loo_r2_pc1_only": 0.1292,
+  "loo_r2_pc23_only": 0.175,
+  "loo_r2_outdeg_only": -0.047,
+  "loo_r2_chart_residualized_on_outdeg": 0.3158,
+  "residualized_null_mean": -0.0212,
+  "residualized_p": 0.0196
+ }
+}

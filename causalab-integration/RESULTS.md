@@ -204,3 +204,11 @@ Llama-1B represents AND is weakly causally coupled to the chart it
 cannot use; Qwen performs without routing through the chart cell we
 found. The 8B run decides whether competence eventually recruits the
 chart (kit carries the full screened protocol).
+
+Manifold checks extended to all four (model, layer) cells: LOO ridge
+R^2 0.347 / 0.341 / 0.336 / 0.318 (qwen L7/L14, llama L4/L8), every
+cell p = 0.0196 vs 50 permuted charts; participation ratio 2.06-2.66;
+outdeg-only negative everywhere; residualized-on-strength within 0.01
+of full everywhere; nonlinear gain <= 0.05. The chart's presence,
+generalization, and strength-independence are layer-stable properties
+of both models - only its causal READOUT varies (see causal matrix).
