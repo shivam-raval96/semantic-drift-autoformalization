@@ -154,3 +154,19 @@ retro-caveats MI-2: KL-transfer 0.99 was measured where base~donor
 distributions were close; rerun on the screened subset (gap G4).
 Follow-ups: multi-position/multi-layer patching (G1b); Llama-1B
 screened run in flight; 8B kit carries --screen 240.
+
+## Screened causal patching, Llama-1B L4 - a twist (2026-07-25)
+
+Llama-1B (chance on the task) shows small but HIGHLY CONSISTENT chart
+mediation at L4: chart patch moves the verdict logit in the certified
+direction on 92% of screened items (mean +0.094 logits, ~25% of the
+donor gap; bootstrap P(<=0) < 1e-4), rot +0.016 and shuf +0.003 do
+nothing, and full (+0.076) adds NOTHING over chart - the 3 certified
+coordinates capture the entire mediated effect. Qwen L14 shows the
+opposite (chart significantly NEGATIVE vs shuf; patches mildly
+disruptive, no positive mediation).
+Caveat before interpreting: layer mismatch. Llama was patched at
+quarter-depth L4 where a chart->activation write may act like editing
+the input text; Qwen at mid-depth L14. Matched-layer runs (Qwen L7,
+Llama L8) queued. Flip rate is 0 everywhere - gaps are sub-logit; the
+effect is real but behaviorally inert, consistent with the dissociation.
