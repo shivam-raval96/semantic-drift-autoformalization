@@ -241,6 +241,10 @@ def main():
     ap.add_argument("--k-centroid-prompts", type=int, default=6)
     ap.add_argument("--register", default="formal")
     ap.add_argument("--seed", type=int, default=2026)
+    ap.add_argument("--screen", type=int, default=0, metavar="N_CANDIDATES",
+                    help="pre-screen N candidate items with clean+donor forwards "
+                    "and keep the n-items with the largest directed donor gap "
+                    "(the premise-SENSITIVE subset). 0 = no screening.")
     args = ap.parse_args()
 
     global RNG
@@ -259,9 +263,17 @@ def main():
     print(f"loading {MODELS[args.model]} (layer {args.layer})", flush=True)
     runner = Runner(MODELS[args.model], args.layer)
 
-    print("building per-law centroids (leakage-controlled pool)", flush=True)
-    centroids = build_centroids(runner, laws, pairs, fp3,
-                                centroid_conclusions, args.k_centroid_prompts)
+    cache_path = os.path.join(
+        out_dir, f"centroids_k{args.k_centroid_prompts}_s{args.seed}.npz")
+    if os.path.exists(cache_path):
+        z = np.load(cache_path)
+        centroids = {l: z[l] for l in z.files}
+        print(f"centroids loaded from cache ({len(centroids)} laws)", flush=True)
+    else:
+        print("building per-law centroids (leakage-controlled pool)", flush=True)
+        centroids = build_centroids(runner, laws, pairs, fp3,
+                                    centroid_conclusions, args.k_centroid_prompts)
+        np.savez(cache_path, **centroids)
 
     W = fit_chart(centroids, fp3)
     perm_map = dict(zip(law_ids, RNG.permutation(law_ids).tolist()))
@@ -277,7 +289,32 @@ def main():
 
     ops_of = lambda a, b: laws[a]["n_ops"] + laws[b]["n_ops"]
 
-    items = sample_items(pairs, fp3, laws, item_conclusions, args.n_items, ops_of)
+    n_sample = max(args.screen, args.n_items)
+    items = sample_items(pairs, fp3, laws, item_conclusions, n_sample, ops_of)
+    if args.screen:
+        # keep only premise-SENSITIVE items: the text-level premise flip must
+        # itself move the verdict logit in the certified direction, otherwise
+        # there is no effect for any patch to mediate (the Qwen L14 lesson:
+        # unscreened flip items have median donor gap 0.145 logits).
+        print(f"screening {len(items)} candidates for donor gap", flush=True)
+        screened = []
+        for n, it in enumerate(items):
+            a, b, ap_ = it["a"], it["b"], it["a_prime"]
+            reg = args.register if all(
+                args.register in laws[x] for x in (a, ap_, b)) else "instance"
+            enc, pos = runner._prompt_and_pos(laws, a, b, reg)
+            clean, _ = runner.forward(enc, patch_pos=pos)
+            enc2, pos2 = runner._prompt_and_pos(laws, ap_, b, reg)
+            donor, _ = runner.forward(enc2, patch_pos=pos2)
+            target = 1.0 if it["direction"] == "F->T" else -1.0
+            screened.append((float((donor - clean) * target), it))
+            if (n + 1) % 50 == 0:
+                print(f"  screened {n+1}/{len(items)}", flush=True)
+        screened.sort(key=lambda x: -x[0])
+        kept = screened[: args.n_items]
+        print(f"kept {len(kept)} items; directed donor gap "
+              f"range {kept[-1][0]:.2f}..{kept[0][0]:.2f}", flush=True)
+        items = [it for _, it in kept]
     print(f"{len(items)} intervention items "
           f"({sum(1 for i in items if i['direction']=='F->T')} F->T)", flush=True)
 

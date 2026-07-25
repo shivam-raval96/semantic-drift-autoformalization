@@ -58,7 +58,7 @@ PY
 for layer in 8 16; do
   echo "=== causal_patch L$layer ==="
   "$PY" "$REPO_DIR/causalab-integration/scripts/causal_patch.py" \
-    --model llama8b --layer "$layer" --n-items 60 --n-steer 16 \
+    --model llama8b --layer "$layer" --n-items 60 --n-steer 16 --screen 240 \
     2>&1 | tee "logs_8b_causal_L$layer.txt" | tail -30
 done
 

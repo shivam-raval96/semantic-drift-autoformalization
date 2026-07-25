@@ -120,3 +120,37 @@ EVERY grader variant (strict convention, no-dual, extraction variants);
 ratio inverts past ETP depth (loud/grammar collapse takes over). Silent
 failures: <1% rescueable by any convention leniency; 55% are
 single-equation-local (premise drifts 1.4x more often than conclusion).
+
+## Manifold checks (2026-07-25, scripts/manifold_checks.py, Qwen L14)
+
+C1 dimensionality: participation ratio 2.46 (spectrum 62.9/6.5/4.9%) -
+the 247 law centroids genuinely occupy ~2.5 effective dims; 3D chart is
+the right order.
+C2 held-out generalization (the REAL isometry test): leave-one-law-out
+ridge from the certified chart predicts unseen-law centroids at LOO R^2
+0.341 while ALL 50 permuted charts score negative (null max -0.003),
+p = 0.0196. kNN neighbor preservation 0.151 vs 0.040 null (p = 0.002).
+The spline was not memorizing anchors.
+C3 linearity: RBF gains only +0.028 LOO R^2 over ridge - the structure
+is essentially a LINEAR 3D embedding; write "chart/subspace", soften
+"manifold" (the Othello lesson, applied to ourselves).
+C4 strength confound REJECTED (closes gap G2 for Qwen): outdeg alone
+predicts centroids at LOO R^2 -0.044 (nothing); chart residualized on
+outdeg keeps R^2 0.337, p = 0.0196. The alignment tracks law identity,
+not the one-scalar dataset shortcut (which would have allowed AUC 0.96).
+
+## Causal patching, screened (analysis/causal/qwen_L14/results.json)
+
+Screening (240 candidates -> 60 most premise-sensitive) works: median
+directed donor gap 0.66 logits (was 0.145 unscreened), clean acc 58%.
+Verdict: NO patch condition mediates it - full -0.05, chart -0.08 of
+the donor gap, rot -0.11, shuf -0.003, flip rate 0 everywhere. Even the
+full centroid patch fails while the text-level premise flip succeeds:
+the premise information driving the verdict does not flow through the
+single (L14, premise_last) cell as a centroid difference.
+Combined statement: the certified geometry is PRESENT, GENERALIZES to
+held-out laws, and is NOT CAUSALLY READ at this cell at 1.5B. Also
+retro-caveats MI-2: KL-transfer 0.99 was measured where base~donor
+distributions were close; rerun on the screened subset (gap G4).
+Follow-ups: multi-position/multi-layer patching (G1b); Llama-1B
+screened run in flight; 8B kit carries --screen 240.
