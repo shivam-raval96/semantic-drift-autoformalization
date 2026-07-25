@@ -16,20 +16,20 @@
  ],
  "C2_loo_r2_ridge": {
   "r2": 0.3413,
-  "null_mean": -0.0209,
+  "null_mean": -0.022,
   "null_max": -0.0025,
   "p": 0.0196
  },
  "C2_loo_r2_rbf": {
   "r2": 0.3691,
-  "null_mean": -0.0653,
-  "null_max": -0.016,
+  "null_mean": -0.0644,
+  "null_max": -0.0423,
   "p": 0.0196
  },
  "C3_nonlinear_gain": 0.0278,
  "C2_knn_overlap_k10": {
   "obs": 0.1514,
-  "null": 0.0404,
+  "null": 0.04,
   "p": 0.002
  },
  "C4_strength": {
@@ -37,7 +37,7 @@
   "loo_r2_pc23_only": 0.1898,
   "loo_r2_outdeg_only": -0.0441,
   "loo_r2_chart_residualized_on_outdeg": 0.3369,
-  "residualized_null_mean": -0.0219,
+  "residualized_null_mean": -0.0212,
   "residualized_p": 0.0196
  }
 }

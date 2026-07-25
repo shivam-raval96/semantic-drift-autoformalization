@@ -170,3 +170,14 @@ quarter-depth L4 where a chart->activation write may act like editing
 the input text; Qwen at mid-depth L14. Matched-layer runs (Qwen L7,
 Llama L8) queued. Flip rate is 0 everywhere - gaps are sub-logit; the
 effect is real but behaviorally inert, consistent with the dissociation.
+
+## Manifold checks replicate on Llama-1B (analysis/causal/llama1b_L4/manifold_checks.json)
+
+Near-identical to Qwen across every check: participation ratio 2.58
+(vs 2.46); LOO ridge R^2 0.336 (vs 0.341), all 50 permuted charts
+negative, p = 0.0196; kNN overlap 0.152 (vs 0.151), p = 0.002;
+outdeg-only R^2 -0.048 (vs -0.044); chart residualized on outdeg keeps
+R^2 0.331 (vs 0.337), p = 0.0196. Held-out generalization and
+strength-robustness are now cross-model properties, matching the
+isometry's world-shaped pattern. Nonlinear gain slightly larger on
+Llama (+0.045 vs +0.028) but still small - linear-chart framing holds.
