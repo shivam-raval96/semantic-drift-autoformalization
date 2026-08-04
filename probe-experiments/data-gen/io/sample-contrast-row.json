@@ -1,0 +1,37 @@
+{
+  "problem_id": "contrast_v1_0001",
+  "tier": "easy",
+  "source": "etp",
+  "e_label": "E6",
+  "f_label": "E3",
+  "equation_e": "x = y ◇ y",
+  "equation_f": "x = x ◇ x",
+  "canonical_e": "v1 = (v2 ∘ v2)",
+  "canonical_f": "v1 = (v1 ∘ v1)",
+  "theme": "paint",
+  "palette_e": {
+    "x": "crimson",
+    "y": "ochre"
+  },
+  "palette_f": {
+    "x": "crimson"
+  },
+  "story": "In a certain paint workshop, the colorist follows one unbreakable habit. Take any two pigments at all — call the first crimson and the second ochre.\n\nShe pours ochre into ochre and sets the result aside as Batch 1.\n\nHowever she chooses her two starting pigments, crimson itself and Batch 1 always come out the exact same color. That is simply how this workshop works, without exception.\n\nOne morning her apprentice wonders about something. Take any pigment — again call it crimson. Pour crimson into crimson and set the result aside as Batch 1.\n\nIn this workshop, must crimson itself and Batch 1 always come out the same color?",
+  "correct_rg": "ASSUME: x = op(y, y)\nASK: x = op(x, x)",
+  "wrong_rg": "ASSUME: x = op(y, y)\nASK: x = op(x, y)",
+  "perturbation": {
+    "type": "var_sub",
+    "target": "ask"
+  },
+  "ops_e": 1,
+  "ops_f": 1,
+  "ops_total": 2,
+  "max_depth": 1,
+  "wrong_ops_total": 2,
+  "wrong_max_depth": 1,
+  "pair_hash": "88089f3541e83349",
+  "law_hash_e": "a9fff3361170eb50",
+  "law_hash_f": "e64416d6c7a708db",
+  "contrast_version": "v1",
+  "group_lawcc": "cc-0000"
+}

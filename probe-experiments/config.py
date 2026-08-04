@@ -8,6 +8,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 
+PATHS = {
+    "contrast_v1": ROOT / "contrast_v1",
+    "runs": ROOT / "runs",
+}
+
 # Subject model: whose activations are probed and steered.
 SUBJECT_MODEL = {
     "id": "meta-llama/Llama-3.1-8B-Instruct",  # lab convention; ft-experiments base model
