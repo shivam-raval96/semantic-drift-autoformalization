@@ -35,9 +35,11 @@ DATA = {
 
 # Activation capture.
 CAPTURE = {
-    "layers": "all",            # residual stream after every block (0..32)
+    "layers": "all",            # embeddings + every block = 33 rows per item
     "sites": ("answer_last_token", "answer_mean_pooled"),
     "dtype": "float16",
+    "batch_size": 8,
+    "text_template": "story + '\\n\\n' + rg (bare text, no chat template)",
 }
 
 # Probing.
