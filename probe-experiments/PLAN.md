@@ -65,4 +65,17 @@ written before any run; Actual results stay empty until runs exist.
 
 ## Actual results
 
-(empty until runs exist)
+**Probing (runs/probe-v1/probe_results.json, 2026-08-05).** Curves rise from 0.50 at
+layer 0 to peaks of 0.599 (last, L32) / 0.623 (mean, L28); controls clean (shuffled
+0.49–0.52, length 0.50, BoW floor 0.539). BUT under the law-disjoint split the probe
+falls to 0.520–0.527 (fold range 0.47–0.58) ≈ the BoW floor — the pre-registered
+refutation condition for H1. Signal is law-tied, concentrated on easy problems
+(easy 0.695 vs medium/hard ~0.59 at best layer) and on size-changing edits
+(prune 0.686 / grow 0.648 vs var_sub 0.589 / arg_swap 0.565).
+
+**Verdict:** H1 refuted for base Llama-3.1-8B reading bare story+answer text at these
+sites — no law-general linear correctness direction. Consistent with the model's
+behavioral floor on this task (~0% correct translations in ft-experiments base evals).
+H2 (steering) is moot from this direction as specified. Candidate follow-ups, not yet
+decided: probe the grammar-FT'd checkpoint (does FT create the direction?), task-framed
+verification prompts, perturbation-token-local sites, or a task-competent model.
