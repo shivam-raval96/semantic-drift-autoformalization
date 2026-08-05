@@ -63,10 +63,13 @@ def capture(items: list, config: dict) -> dict:
             os.environ.setdefault("HF_TOKEN", os.environ[key])
             break
 
+    # Big-vocab buffers were the FT run's OOM too; same allocator fix.
+    os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
+
     import numpy as np
     import torch
     import transformers
-    from transformers import AutoModelForCausalLM, AutoTokenizer
+    from transformers import AutoModel, AutoTokenizer
 
     t0 = time.time()
     tok = AutoTokenizer.from_pretrained(MODEL_ID)
@@ -81,7 +84,10 @@ def capture(items: list, config: dict) -> dict:
         if int(transformers.__version__.split(".")[0]) >= 5
         else {"torch_dtype": torch.bfloat16}
     )
-    model = AutoModelForCausalLM.from_pretrained(MODEL_ID, **kw).to("cuda")
+    # Transformer body only: we need hidden states, never logits — the LM
+    # head would add a (batch, seq, 128256) buffer per forward plus ~1GB
+    # of weights, which is exactly what OOMed the first full run.
+    model = AutoModel.from_pretrained(MODEL_ID, **kw).to("cuda")
     model.eval()
     load_s = time.time() - t0
 
@@ -100,7 +106,7 @@ def capture(items: list, config: dict) -> dict:
             {"input_ids": [ids_all[i] for i in batch]}, return_tensors="pt"
         ).to("cuda")
         with torch.no_grad():
-            out = model(**enc, output_hidden_states=True)
+            out = model(**enc, output_hidden_states=True, use_cache=False)
         hs = out.hidden_states  # tuple(n_layers+1) of (B, L, d)
         mask = enc["attention_mask"]
         for row, i in enumerate(batch):
