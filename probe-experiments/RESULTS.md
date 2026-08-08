@@ -1,94 +1,70 @@
-# Probing: is translation correctness linearly represented? — results for review
+# Probing: is translation correctness linearly represented?
 
-## 1. What the experiment is
+## Experiment
 
-When Llama-3.1-8B-Instruct *reads* a themed story (a deterministically informalized ETP
-implication) together with a candidate rigid-grammar formalization, is the correctness of
-that candidate **linearly decodable** from the model's residual stream — and, if a robust
-direction exists, does injecting it during generation steer translation behavior?
-Contrastive-pair design from the mentor meeting; hypotheses and refutation conditions
-pre-registered in `PLAN.md` before any run. Relevant background fact: this same base
-model scores ~0–1% correct at *producing* these translations
-(`ft-experiments/runs/base-v1`), so this probes whether the evaluation representation
-exists even where generation fails.
+Llama-3.1-8B-Instruct reads a story (informalized ETP implication) plus a candidate
+rigid-grammar answer. Question: can a linear probe on its hidden states separate correct
+from wrong answers, and does that hold on unseen equations? Pre-registered in `PLAN.md`.
+Background: this model scores ~0-1% when *producing* these translations
+(`ft-experiments/runs/base-v1`), so this tests whether evaluation exists internally even
+where generation fails.
 
-## 2. Setup
+## Data creation (contrast_v1)
 
-**Dataset (`contrast_v1`, frozen, sha-pinned).** 1,000 problems: 334 easy (ops_total
-2–4, ETP laws) / 333 medium (5–8, ETP) / 333 hard (10–12, genform synthetics); vacuous
-laws excluded; seeded and byte-reproducible. Per problem: story (repo renderer,
-back-parse verified), correct answer = reference RG (round-trip verified), wrong answer =
-**one surgical AST edit** of the reference — arg_swap / var_sub / prune / grow (counts
-226/274/247/253) — accepted only if checkform grades it well-formed `wrong`; 193
-candidate edits landing inside the grader's symmetry orbit were rejected and resampled;
-both wrong lines keep ≥1 `op(`. Labels are 100% mechanical (checkform; R1). 2,000 texts,
-exact 50/50.
+```
+sample 1,000 implication pairs      seed 0, vacuous excluded
+  easy 334 (ops 2-4, ETP) | medium 333 (5-8, ETP) | hard 333 (10-12, genform)
+        v
+render story (repo renderer)        back-parse must recover the source laws
+        v
+correct answer = reference RG       must re-grade "correct", identity transform
+        v
+wrong answer = ONE AST edit         arg_swap 226 / var_sub 274 / prune 247 / grow 253
+        v                           must re-grade well-formed "wrong"
+        v                           193 edits inside grader symmetries: rejected, redone
+freeze + verify                     manifest, sha256, 2,000 texts, exact 50/50
+```
 
-**Capture.** Bare text `story + "\n\n" + answer` (no chat template), reader mode (no
-generation). Llama-3.1-8B-Instruct bf16 on A10G; residual stream at all 33 layers
-(embeddings + 32 blocks), two sites per text: final answer token (`last`) and mean over
-answer tokens (`mean`); float16; activations checksum-bound to the dataset.
+Labels are mechanical end to end (checkform only, R1).
 
-**Probing.** Per layer × site: StandardScaler + logistic regression, 5-fold GroupKFold
-grouped by problem (a problem's correct/wrong twins never straddle a split); all AUROCs
-out-of-fold. Controls: char-TF-IDF (2–5-grams) on the answer text alone (lexical floor);
-answer-length single-feature probe; layer-0 embeddings; shuffled-train-label probes
-(3 seeds); law-disjoint robustness split (GroupKFold by law connected component — caveat:
-the largest component holds 556/1000 problems).
+## Setup
 
-**Steering.** Not run. Pre-registered H2 takes its direction from the best probe layer;
-the probing outcome (below) removed its premise — a direction that does not generalize
-across laws cannot produce a law-general behavioral effect. Open review point: whether to
-run it anyway for completeness.
-
-## 3. Expected outcome (written before running)
-
-- **H1 (probing):** per-layer AUROC rising from ≈lexical floor at layer 0 to a strong
-  mid-layer peak, well above every baseline **under held-out-law splits**. Refutation
-  condition: probe ≈ bag-of-words baseline out-of-law. Prior in this lab: a
-  certificate-gold drift probe reached AUROC 0.96 (different task — model-generated
-  drift, task-competent model, verdict-side).
-- **H2 (steering):** verdict distribution moves monotonically with steering strength
-  while a norm-matched random direction stays flat.
-
-## 4. What we got
-
-| Measurement | AUROC |
+| | |
 |---|---|
-| Best probe, `mean` site (layer 28) | **0.623** |
-| Best probe, `last` site (layer 32) | 0.599 |
-| Layer 0 (embeddings), either site | 0.498–0.503 |
-| **Law-disjoint split, best layers** | **0.520 (mean) / 0.527 (last)**, fold range 0.47–0.58 |
-| Lexical floor (char TF-IDF on answers) | 0.539 |
-| Answer length | 0.505 |
-| Shuffled-label control (3 seeds) | 0.491–0.515 |
+| Model | meta-llama/Llama-3.1-8B-Instruct, bf16, read-only (no generation) |
+| Input | bare text: story + blank line + answer, no chat template |
+| Captured | residual stream, all 33 layers, two sites (last answer token; mean over answer tokens) |
+| Probe | StandardScaler + logistic regression, per layer per site |
+| Splits | primary: 5-fold GroupKFold by problem. Strict: by law component (largest holds 556/1000) |
+| Controls | char TF-IDF on answers, answer length, layer 0, shuffled labels x3 |
+| Frozen | dataset sha-pinned, capture bound to that sha, all seeds and probe config fixed |
+| Steering | not run: pre-registered direction comes from the best probe layer, which did not generalize (below) |
 
-- **Curve shape:** flat 0.50 at layer 0, monotone rise through depth (mean site: 0.614
-  by layer 16, peak 0.623 at layer 28) — the in-distribution signal is computed by the
-  network, not lexical.
-- **Breakdowns at best layer (mean site):** by tier — easy 0.695, medium 0.584, hard
-  0.589. By edit type — prune 0.686, grow 0.648, var_sub 0.589, **arg_swap 0.565**
-  (the purely order-semantic edit is the least visible).
-- **Verdict vs pre-registration:** under the law-disjoint split the probe sits at the
-  lexical floor — the pre-registered refutation condition for H1. **H1 refuted** for
-  this model, this reading format, and these sites: the in-distribution 0.62 is
-  law-tied signal, not a law-general correctness direction. H2 not run (premise
-  removed).
-- **Scope limits a reviewer should weigh:** single subject model (base 8B, which is at
-  ~0% behavioral competence on this task); passive bare-text reading (no
-  verification-framed prompt); two pooled sites only (no perturbation-token-local
-  reading); law-disjoint split partially degenerate (556-problem component); probes are
-  plain logistic regression on raw activations.
+## Expected (written before running)
 
-## Artifacts
+H1: probe well above all baselines and stable on held-out laws. Refuted if it matches
+the bag-of-words floor out-of-law. Lab precedent on a related task with a competent
+model: 0.96 AUROC. H2: steering shifts verdicts monotonically, random direction flat.
 
-| Artifact | Path |
-|---|---|
-| Pre-registration | `probe-experiments/PLAN.md` |
-| Dataset + manifest | `probe-experiments/contrast_v1/` |
-| Dataset generator / verifier | `probe-experiments/data-gen/` (`VERIFY PASS` required) |
-| Capture runner + run records | `probe-experiments/capture/`, `runs/capture-v1/` |
-| Probe code + full results JSON | `probe-experiments/probing/`, `runs/probe-v1/probe_results.json` |
+## Result
 
-Repro: `data-gen/build_contrast.py` → `data-gen/verify_contrast.py` →
-`modal run capture/modal_capture.py` → `.venv/bin/python probing/fit_probes.py`.
+![AUROC by layer](runs/probe-v1/auroc_by_layer.png)
+
+In-distribution the probe reaches 0.623 (mean site, layer 28) and 0.599 (last site,
+layer 32), above the 0.539 lexical floor; layer 0 is 0.50 and controls are clean
+(shuffled 0.49-0.52, length 0.505). On the law-disjoint split it drops to 0.52-0.53,
+i.e. the lexical floor: the signal is tied to specific equations, not a general
+correctness direction. At the best layer: easy 0.695 vs medium/hard ~0.59; size-changing
+edits most visible (prune 0.686, grow 0.648), the order-semantic arg_swap least (0.565).
+**H1 refuted under the pre-registered condition. H2 dropped (premise removed).**
+Full numbers: `runs/probe-v1/probe_results.json`.
+
+## Open questions
+
+1. Does the grammar-FT checkpoint (Phase 5a adapter) develop the direction the base model lacks?
+2. Does verification framing ("is this translation correct?") surface it vs passive reading?
+3. Is the signal local to the edited tokens rather than the pooled sites we read?
+4. Worth running steering at layer 28 anyway as a completeness check?
+
+Repro: `data-gen/build_contrast.py` -> `data-gen/verify_contrast.py` ->
+`modal run capture/modal_capture.py` -> `probing/fit_probes.py` -> `analysis/make_figure.py`.
