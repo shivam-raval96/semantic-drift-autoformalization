@@ -48,7 +48,7 @@ model: 0.96 AUROC. H2: steering shifts verdicts monotonically, random direction 
 
 ## Result
 
-![AUROC by layer](runs/probe-v1/auroc_by_layer.png)
+![AUROC by layer](auroc_by_layer.png)
 
 In-distribution the probe reaches 0.623 (mean site, layer 28) and 0.599 (last site,
 layer 32), above the 0.539 lexical floor; layer 0 is 0.50 and controls are clean

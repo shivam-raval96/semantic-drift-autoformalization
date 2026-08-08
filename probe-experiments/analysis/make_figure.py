@@ -49,6 +49,6 @@ for spine in ("top", "right"):
     ax.spines[spine].set_visible(False)
 ax.legend(loc="upper left", frameon=False, fontsize=9)
 fig.tight_layout()
-out = ROOT / "runs" / "probe-v1" / "auroc_by_layer.png"
+out = ROOT / "auroc_by_layer.png"
 fig.savefig(out)
 print(f"-> {out}")
