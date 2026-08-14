@@ -156,10 +156,13 @@ def verify(items: list, config: dict) -> dict:
 
 
 @app.local_entrypoint()
-def main(model: str, limit: int = 0, dry_run: bool = False):
+def main(model: str, limit: int = 0, dry_run: bool = False,
+         template: str = "verify_prompt.md"):
     pxc = load_config()
     mcfg = pxc.MODELS[model]
-    template = (STAGE / "verify_prompt.md").read_text(encoding="utf-8")
+    template_name = template
+    template = (STAGE / template_name).read_text(encoding="utf-8")
+    template_sha = hashlib.sha256(template.encode()).hexdigest()
 
     rows = [
         json.loads(line)
@@ -172,6 +175,16 @@ def main(model: str, limit: int = 0, dry_run: bool = False):
         sample.extend(rng.sample(pool, pxc.VERIFY["problems_per_tier"]))
     if limit:
         sample = sample[:limit]
+
+    example_problem = None
+    if "{example_story}" in template:
+        sample_ids = {r["problem_id"] for r in sample}
+        ex = next(r for r in rows
+                  if r["tier"] == "easy" and r["problem_id"] not in sample_ids)
+        example_problem = ex["problem_id"]
+        template = (template.replace("{example_story}", ex["story"])
+                            .replace("{example_yes_rg}", ex["correct_rg"])
+                            .replace("{example_no_rg}", ex["wrong_rg"]))
 
     items = []
     for row in sample:
@@ -190,7 +203,9 @@ def main(model: str, limit: int = 0, dry_run: bool = False):
         "gpu": GPU,
         "batch_size": 8 if ":" in GPU else 16,
         "max_new_tokens": pxc.VERIFY["max_new_tokens"],
-        "template_sha256": hashlib.sha256(template.encode()).hexdigest(),
+        "template": template_name,
+        "template_sha256": template_sha,
+        "example_problem": example_problem,
         "sample_seed": pxc.VERIFY["sample_seed"],
         "problems_per_tier": pxc.VERIFY["problems_per_tier"],
         "limit": limit,
@@ -209,7 +224,11 @@ def main(model: str, limit: int = 0, dry_run: bool = False):
     out_dir = PX_ROOT / "runs" / "verify-v1"
     out_dir.mkdir(parents=True, exist_ok=True)
     record = {"stage": "verify-gate", **config, **result}
-    tag = model if not limit else f"{model}-limit{limit}"
+    tag = model
+    if template_name != "verify_prompt.md":
+        tag += "-fewshot"
+    if limit:
+        tag += f"-limit{limit}"
     (out_dir / f"{tag}.json").write_text(json.dumps(record, indent=2) + "\n")
     keep = {k: v for k, v in record.items() if k != "rows"}
     print(json.dumps(keep, indent=2))
