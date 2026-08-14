@@ -85,12 +85,30 @@ plus few-shot (32B crosses 0.65 on the easy tier only). Consistent with the
 probing null: models that cannot verify behaviorally do not carry a general
 correctness direction.
 
+## Round 3 (2026-08-15): logit-margin gate and the Qwen3-32B probe
+
+**Margin gate** (threshold-free: margin = logit("yes") - logit("no") at the answer
+position, AUROC vs labels; `runs/verify-v1/*-margin.json`): 8B 0.522, 7B 0.564,
+**32B 0.669** (per-tier 0.74 / 0.69 / 0.57), 70B 0.629. Qwen3-32B is the smallest
+model clearing ~0.65 and beats the 70B; captured per the gate rule.
+
+**Qwen3-32B probes** (same dataset, same splits, same controls;
+`runs/probe-32b/`): linear, mean site, best layer 61/65: **0.705 in-distribution,
+0.599 law-disjoint** (folds 0.588-0.641, all above the floor), easy tier 0.793.
+Lexical floor recomputed under the SAME law-disjoint split: **0.503 (chance)**.
+MLP twin: 0.578-0.600 law-disjoint (no nonlinear gain). Shuffled labels 0.48-0.52.
+
+Read: a law-general, linearly decodable correctness signal exists in the capable
+model's deep layers and is absent in the incapable 8B (0.520); probe and
+behavioral profiles agree tier by tier. H1, refuted on 8B, is supported on 32B.
+Caveat: word-level elicitation still fails everywhere (best 0.59); the signal is
+below the model's margin readout on hard problems for both instruments.
+
 ## Open questions
 
-1. Qwen3-32B passes on easy problems only: capture and probe it on that basis, or hold the line at the overall gate?
-2. No-think is the protocol, but the lab's budget result (mech-interp exp 1) predicts thinking would unlock verification: relax it for the gate?
-3. Grammar-FT checkpoint (Phase 5a adapter): does training the task in create the direction?
-4. Logit-margin scoring (P(yes) vs P(no)) instead of generated words, to remove the conservatism threshold entirely?
+1. Steering (H2) now has a premise: inject the layer-61 direction, site-restricted, negated-vector and norm-matched controls (Denis's exp-1 Part 3 design).
+2. Grammar-FT checkpoint: does FT move the 8B toward the 32B's representational state?
+3. Thinking-on gate arm for Qwen3-32B (protocol variant, flagged).
 
 Repro: `data-gen/build_contrast.py` -> `data-gen/verify_contrast.py` ->
 `modal run capture/modal_capture.py` -> `probing/fit_probes.py` -> `analysis/make_figure.py`;
