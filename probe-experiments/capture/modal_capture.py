@@ -22,10 +22,29 @@ Run record: probe-experiments/runs/capture-v1/<tag>.json
   modal run capture/modal_capture.py                          # full 2,000 texts
 """
 
+import importlib.util
 import json
+import os
 from pathlib import Path
 
 import modal
+
+STAGE = Path(__file__).resolve().parent
+PX_ROOT = STAGE.parent
+
+GPU = os.environ.get("CAPTURE_GPU", "A10G")
+
+
+def load_config():
+    """Local-side only: this module is also imported inside the container,
+    where the repo tree does not exist, so config must load lazily."""
+    spec = importlib.util.spec_from_file_location(
+        "px_root_config", PX_ROOT / "config.py"
+    )
+    pxc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(pxc)
+    return pxc
+
 
 app = modal.App("harsh-probe-capture")
 
@@ -40,22 +59,17 @@ weights = modal.Volume.from_name("harsh-ft-grammar-weights", create_if_missing=T
 acts_vol = modal.Volume.from_name("harsh-probe-activations", create_if_missing=True)
 hf_secret = modal.Secret.from_name("huggingface-secret")
 
-MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
-BATCH_SIZE = 8
-
-
 @app.function(
-    gpu="A10G",
+    gpu=GPU,
     image=image,
     volumes={"/models": weights, "/acts": acts_vol},
     secrets=[hf_secret],
-    timeout=1800,
+    timeout=3600,
     retries=0,
     max_containers=1,
     scaledown_window=60,
 )
 def capture(items: list, config: dict) -> dict:
-    import os
     import time
 
     for key in ("HF_TOKEN", "HUGGING_FACE_HUB_TOKEN", "HUGGINGFACE_TOKEN"):
@@ -72,7 +86,8 @@ def capture(items: list, config: dict) -> dict:
     from transformers import AutoModel, AutoTokenizer
 
     t0 = time.time()
-    tok = AutoTokenizer.from_pretrained(MODEL_ID)
+    model_id = config["model_id"]
+    tok = AutoTokenizer.from_pretrained(model_id)
     tok.padding_side = "right"
     if tok.pad_token_id is None:
         eos = tok.eos_token_id
@@ -87,7 +102,10 @@ def capture(items: list, config: dict) -> dict:
     # Transformer body only: we need hidden states, never logits — the LM
     # head would add a (batch, seq, 128256) buffer per forward plus ~1GB
     # of weights, which is exactly what OOMed the first full run.
-    model = AutoModel.from_pretrained(MODEL_ID, **kw).to("cuda")
+    multi_gpu = ":" in config["gpu"]
+    model = AutoModel.from_pretrained(
+        model_id, device_map="auto" if multi_gpu else "cuda", **kw
+    )
     model.eval()
     load_s = time.time() - t0
 
@@ -100,8 +118,9 @@ def capture(items: list, config: dict) -> dict:
     order = sorted(range(len(items)), key=lambda i: len(ids_all[i]))
     acts_last, acts_mean = {}, {}
     t1 = time.time()
-    for b0 in range(0, len(order), BATCH_SIZE):
-        batch = order[b0 : b0 + BATCH_SIZE]
+    bs = config["batch_size"]
+    for b0 in range(0, len(order), bs):
+        batch = order[b0 : b0 + bs]
         enc = tok.pad(
             {"input_ids": [ids_all[i] for i in batch]}, return_tensors="pt"
         ).to("cuda")
@@ -132,7 +151,7 @@ def capture(items: list, config: dict) -> dict:
     lengths = [len(x) for x in ids_all]
     ans_lengths = [len(x) - s for x, s in zip(ids_all, span_starts)]
     meta = {
-        "model": MODEL_ID,
+        "model": model_id,
         "n_texts": len(items),
         "layers": len(next(iter(acts_last.values()))),
         "d_model": int(next(iter(acts_last.values())).shape[1]),
@@ -166,9 +185,10 @@ def capture(items: list, config: dict) -> dict:
 
 
 @app.local_entrypoint()
-def main(limit: int = 0, tag: str = ""):
-    stage = Path(__file__).resolve().parent
-    root = stage.parent
+def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "", dry_run: bool = False):
+    root = PX_ROOT
+    pxc = load_config()
+    mcfg = pxc.MODELS[model]
     manifest = json.loads((root / "contrast_v1" / "manifest.json").read_text())
     rows = [
         json.loads(line)
@@ -177,7 +197,7 @@ def main(limit: int = 0, tag: str = ""):
     ]
     if limit:
         rows = rows[:limit]
-    tag = tag or ("full" if not limit else f"limit{limit}")
+    tag = tag or (f"{model}-full" if not limit else f"{model}-limit{limit}")
 
     items = []
     for row in rows:
@@ -194,11 +214,20 @@ def main(limit: int = 0, tag: str = ""):
 
     config = {
         "tag": tag,
+        "model_key": model,
+        "model_id": mcfg["id"],
+        "gpu": GPU,
         "limit": limit,
         "contrast_version": "v1",
         "contrast_sha256": manifest["files"]["contrast.jsonl"],
-        "batch_size": BATCH_SIZE,
+        "batch_size": 4 if ":" in GPU else 8,
     }
+    if dry_run:
+        print(f"items: {len(items)}")
+        print(f"config: {json.dumps(config, indent=2)}")
+        print(f"--- first text (tail) ---\n...{items[0]['text'][-200:]}")
+        return
+
     summary = capture.remote(items, config)
 
     runs_dir = root / "runs" / "capture-v1"

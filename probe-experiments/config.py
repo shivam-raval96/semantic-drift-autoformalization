@@ -42,15 +42,17 @@ CAPTURE = {
     "text_template": "story + '\\n\\n' + rg (bare text, no chat template)",
 }
 
-# Behavioral verification gate (mentor decision 2026-08: probe the smallest
-# model that scores ~>=0.65 answering "is this formalization correct?").
+# Model ladder (mentor decision 2026-08): gate behaviorally, then capture and
+# probe the smallest model that scores ~>=0.65 on the verification question.
+MODELS = {
+    "llama-3.1-8b": {"id": "meta-llama/Llama-3.1-8B-Instruct", "gpu": "A10G"},
+    "qwen2.5-7b": {"id": "Qwen/Qwen2.5-7B-Instruct", "gpu": "A10G"},
+    "qwen3-32b": {"id": "Qwen/Qwen3-32B", "gpu": "A100-80GB"},
+    "llama-3.3-70b": {"id": "meta-llama/Llama-3.3-70B-Instruct", "gpu": "H100:2"},
+}
+
+# Behavioral verification gate.
 VERIFY = {
-    "models": {
-        "llama-3.1-8b": {"id": "meta-llama/Llama-3.1-8B-Instruct", "gpu": "A10G"},
-        "qwen2.5-7b": {"id": "Qwen/Qwen2.5-7B-Instruct", "gpu": "A10G"},
-        "qwen3-32b": {"id": "Qwen/Qwen3-32B", "gpu": "A100-80GB"},
-        "llama-3.3-70b": {"id": "meta-llama/Llama-3.3-70B-Instruct", "gpu": "H100:2"},
-    },
     "problems_per_tier": 50,   # 150 problems -> 300 texts, seeded, stratified
     "sample_seed": 0,
     "threshold": 0.65,

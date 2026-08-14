@@ -158,7 +158,7 @@ def verify(items: list, config: dict) -> dict:
 @app.local_entrypoint()
 def main(model: str, limit: int = 0, dry_run: bool = False):
     pxc = load_config()
-    mcfg = pxc.VERIFY["models"][model]
+    mcfg = pxc.MODELS[model]
     template = (STAGE / "verify_prompt.md").read_text(encoding="utf-8")
 
     rows = [
