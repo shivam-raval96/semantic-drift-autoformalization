@@ -59,12 +59,39 @@ edits most visible (prune 0.686, grow 0.648), the order-semantic arg_swap least 
 **H1 refuted under the pre-registered condition. H2 dropped (premise removed).**
 Full numbers: `runs/probe-v1/probe_results.json`.
 
+## Round 2 (2026-08-14): nonlinear probes and the model ladder
+
+**MLP twin.** Every linear probe re-fit as an MLP (128 hidden, same captures, same
+grouped splits): best 0.555 in-distribution, law-disjoint 0.504, controls clean.
+Nonlinearity does not rescue the signal (`runs/probe-v1/probe_results_mlp.json`).
+
+**Behavioral verification gate.** Frozen prompt: story + candidate, "is this
+formalization correct, yes or no", greedy, 300 balanced texts (50 problems/tier,
+seed 0). Diagnostic arm adds one worked yes/no example pair (separate template,
+tagged `-fewshot`). All records in `runs/verify-v1/`, zero unparseable anywhere.
+
+| Model | Primary | Few-shot | Yes-rate (primary) | Yes-precision |
+|---|---|---|---|---|
+| Llama-3.1-8B | 0.500 | - | 0.000 | n/a |
+| Qwen2.5-7B | 0.520 | 0.503 | 0.027 | 0.88 |
+| Qwen3-32B | 0.537 | 0.590 (easy 0.67) | 0.063 | 0.79 |
+| Llama-3.3-70B | 0.540 | 0.533 | 0.053 | 0.88-1.00 |
+
+Read: no model reaches the 0.65 gate under either elicitation, so per the
+pre-registered rule there is no capture target and the ladder stops. The failure
+mode is uniform: near-universal "no" with rare but precise "yes" (0.79-1.00),
+i.e. weak signal far below threshold, not blindness. Capability rises with scale
+plus few-shot (32B crosses 0.65 on the easy tier only). Consistent with the
+probing null: models that cannot verify behaviorally do not carry a general
+correctness direction.
+
 ## Open questions
 
-1. Does the grammar-FT checkpoint (Phase 5a adapter) develop the direction the base model lacks?
-2. Does verification framing ("is this translation correct?") surface it vs passive reading?
-3. Is the signal local to the edited tokens rather than the pooled sites we read?
-4. Worth running steering at layer 28 anyway as a completeness check?
+1. Qwen3-32B passes on easy problems only: capture and probe it on that basis, or hold the line at the overall gate?
+2. No-think is the protocol, but the lab's budget result (mech-interp exp 1) predicts thinking would unlock verification: relax it for the gate?
+3. Grammar-FT checkpoint (Phase 5a adapter): does training the task in create the direction?
+4. Logit-margin scoring (P(yes) vs P(no)) instead of generated words, to remove the conservatism threshold entirely?
 
 Repro: `data-gen/build_contrast.py` -> `data-gen/verify_contrast.py` ->
-`modal run capture/modal_capture.py` -> `probing/fit_probes.py` -> `analysis/make_figure.py`.
+`modal run capture/modal_capture.py` -> `probing/fit_probes.py` -> `analysis/make_figure.py`;
+gate: `behavior/run_verify.sh <model-key> [--template verify_prompt_fewshot.md]`.
