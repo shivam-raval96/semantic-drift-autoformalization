@@ -1,0 +1,492 @@
+{
+  "stage": "probing",
+  "capture_tag": "full",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "n_texts": 2000,
+  "cv": {
+    "primary": "GroupKFold(5) grouped by problem_id",
+    "robustness": "GroupKFold(5) grouped by group_lawcc"
+  },
+  "estimator": "mlp",
+  "estimator_spec": "MLPClassifier(early_stopping=True, hidden_layer_sizes=(128,), max_iter=300,\n              random_state=0)",
+  "sites": {
+    "last": {
+      "per_layer": [
+        {
+          "layer": 0,
+          "auroc_oof": 0.5078,
+          "auroc_folds_mean": 0.504,
+          "auroc_folds_sd": 0.0205
+        },
+        {
+          "layer": 1,
+          "auroc_oof": 0.5062,
+          "auroc_folds_mean": 0.5141,
+          "auroc_folds_sd": 0.0179
+        },
+        {
+          "layer": 2,
+          "auroc_oof": 0.5115,
+          "auroc_folds_mean": 0.5137,
+          "auroc_folds_sd": 0.0067
+        },
+        {
+          "layer": 3,
+          "auroc_oof": 0.5035,
+          "auroc_folds_mean": 0.5034,
+          "auroc_folds_sd": 0.0081
+        },
+        {
+          "layer": 4,
+          "auroc_oof": 0.526,
+          "auroc_folds_mean": 0.5291,
+          "auroc_folds_sd": 0.0116
+        },
+        {
+          "layer": 5,
+          "auroc_oof": 0.5052,
+          "auroc_folds_mean": 0.5085,
+          "auroc_folds_sd": 0.0094
+        },
+        {
+          "layer": 6,
+          "auroc_oof": 0.5302,
+          "auroc_folds_mean": 0.5318,
+          "auroc_folds_sd": 0.0035
+        },
+        {
+          "layer": 7,
+          "auroc_oof": 0.5357,
+          "auroc_folds_mean": 0.5392,
+          "auroc_folds_sd": 0.0166
+        },
+        {
+          "layer": 8,
+          "auroc_oof": 0.5265,
+          "auroc_folds_mean": 0.53,
+          "auroc_folds_sd": 0.0201
+        },
+        {
+          "layer": 9,
+          "auroc_oof": 0.5208,
+          "auroc_folds_mean": 0.5242,
+          "auroc_folds_sd": 0.0106
+        },
+        {
+          "layer": 10,
+          "auroc_oof": 0.5179,
+          "auroc_folds_mean": 0.5209,
+          "auroc_folds_sd": 0.0127
+        },
+        {
+          "layer": 11,
+          "auroc_oof": 0.5335,
+          "auroc_folds_mean": 0.5341,
+          "auroc_folds_sd": 0.0109
+        },
+        {
+          "layer": 12,
+          "auroc_oof": 0.5377,
+          "auroc_folds_mean": 0.5405,
+          "auroc_folds_sd": 0.0124
+        },
+        {
+          "layer": 13,
+          "auroc_oof": 0.5481,
+          "auroc_folds_mean": 0.5506,
+          "auroc_folds_sd": 0.0155
+        },
+        {
+          "layer": 14,
+          "auroc_oof": 0.5396,
+          "auroc_folds_mean": 0.5396,
+          "auroc_folds_sd": 0.0093
+        },
+        {
+          "layer": 15,
+          "auroc_oof": 0.5534,
+          "auroc_folds_mean": 0.5555,
+          "auroc_folds_sd": 0.0023
+        },
+        {
+          "layer": 16,
+          "auroc_oof": 0.5478,
+          "auroc_folds_mean": 0.5494,
+          "auroc_folds_sd": 0.0031
+        },
+        {
+          "layer": 17,
+          "auroc_oof": 0.5499,
+          "auroc_folds_mean": 0.5517,
+          "auroc_folds_sd": 0.0126
+        },
+        {
+          "layer": 18,
+          "auroc_oof": 0.549,
+          "auroc_folds_mean": 0.5532,
+          "auroc_folds_sd": 0.0114
+        },
+        {
+          "layer": 19,
+          "auroc_oof": 0.5502,
+          "auroc_folds_mean": 0.5534,
+          "auroc_folds_sd": 0.0129
+        },
+        {
+          "layer": 20,
+          "auroc_oof": 0.5512,
+          "auroc_folds_mean": 0.551,
+          "auroc_folds_sd": 0.0079
+        },
+        {
+          "layer": 21,
+          "auroc_oof": 0.5459,
+          "auroc_folds_mean": 0.5477,
+          "auroc_folds_sd": 0.0181
+        },
+        {
+          "layer": 22,
+          "auroc_oof": 0.5535,
+          "auroc_folds_mean": 0.5548,
+          "auroc_folds_sd": 0.0145
+        },
+        {
+          "layer": 23,
+          "auroc_oof": 0.555,
+          "auroc_folds_mean": 0.5567,
+          "auroc_folds_sd": 0.0119
+        },
+        {
+          "layer": 24,
+          "auroc_oof": 0.5451,
+          "auroc_folds_mean": 0.5471,
+          "auroc_folds_sd": 0.0138
+        },
+        {
+          "layer": 25,
+          "auroc_oof": 0.5465,
+          "auroc_folds_mean": 0.5482,
+          "auroc_folds_sd": 0.0133
+        },
+        {
+          "layer": 26,
+          "auroc_oof": 0.5476,
+          "auroc_folds_mean": 0.5513,
+          "auroc_folds_sd": 0.0254
+        },
+        {
+          "layer": 27,
+          "auroc_oof": 0.5471,
+          "auroc_folds_mean": 0.5507,
+          "auroc_folds_sd": 0.0239
+        },
+        {
+          "layer": 28,
+          "auroc_oof": 0.5368,
+          "auroc_folds_mean": 0.539,
+          "auroc_folds_sd": 0.0178
+        },
+        {
+          "layer": 29,
+          "auroc_oof": 0.5425,
+          "auroc_folds_mean": 0.546,
+          "auroc_folds_sd": 0.0053
+        },
+        {
+          "layer": 30,
+          "auroc_oof": 0.5517,
+          "auroc_folds_mean": 0.5562,
+          "auroc_folds_sd": 0.0186
+        },
+        {
+          "layer": 31,
+          "auroc_oof": 0.5394,
+          "auroc_folds_mean": 0.5438,
+          "auroc_folds_sd": 0.013
+        },
+        {
+          "layer": 32,
+          "auroc_oof": 0.5438,
+          "auroc_folds_mean": 0.5443,
+          "auroc_folds_sd": 0.0121
+        }
+      ],
+      "best_layer": 23,
+      "best_auroc_oof": 0.555,
+      "lawcc_robustness": {
+        "auroc_oof": 0.5039,
+        "fold_aurocs": [
+          0.5002,
+          0.5172,
+          0.5179,
+          0.5142,
+          0.4726
+        ],
+        "caveat": "largest law component holds 556/1000 problems"
+      },
+      "shuffled_label_auroc": [
+        0.4909,
+        0.4946,
+        0.4965
+      ],
+      "breakdown_at_best": {
+        "by_tier": {
+          "easy": 0.5913,
+          "hard": 0.5287,
+          "medium": 0.5435
+        },
+        "by_perturbation": {
+          "arg_swap": 0.5273,
+          "grow": 0.5258,
+          "prune": 0.6286,
+          "var_sub": 0.5386
+        }
+      },
+      "seconds": 36.6
+    },
+    "mean": {
+      "per_layer": [
+        {
+          "layer": 0,
+          "auroc_oof": 0.4957,
+          "auroc_folds_mean": 0.4951,
+          "auroc_folds_sd": 0.0067
+        },
+        {
+          "layer": 1,
+          "auroc_oof": 0.5098,
+          "auroc_folds_mean": 0.5134,
+          "auroc_folds_sd": 0.0161
+        },
+        {
+          "layer": 2,
+          "auroc_oof": 0.5076,
+          "auroc_folds_mean": 0.5076,
+          "auroc_folds_sd": 0.0035
+        },
+        {
+          "layer": 3,
+          "auroc_oof": 0.4971,
+          "auroc_folds_mean": 0.4977,
+          "auroc_folds_sd": 0.0071
+        },
+        {
+          "layer": 4,
+          "auroc_oof": 0.5125,
+          "auroc_folds_mean": 0.513,
+          "auroc_folds_sd": 0.0036
+        },
+        {
+          "layer": 5,
+          "auroc_oof": 0.506,
+          "auroc_folds_mean": 0.5066,
+          "auroc_folds_sd": 0.0082
+        },
+        {
+          "layer": 6,
+          "auroc_oof": 0.5102,
+          "auroc_folds_mean": 0.5135,
+          "auroc_folds_sd": 0.0106
+        },
+        {
+          "layer": 7,
+          "auroc_oof": 0.5106,
+          "auroc_folds_mean": 0.5119,
+          "auroc_folds_sd": 0.0092
+        },
+        {
+          "layer": 8,
+          "auroc_oof": 0.5188,
+          "auroc_folds_mean": 0.5212,
+          "auroc_folds_sd": 0.0115
+        },
+        {
+          "layer": 9,
+          "auroc_oof": 0.5107,
+          "auroc_folds_mean": 0.5129,
+          "auroc_folds_sd": 0.0169
+        },
+        {
+          "layer": 10,
+          "auroc_oof": 0.5103,
+          "auroc_folds_mean": 0.5111,
+          "auroc_folds_sd": 0.0037
+        },
+        {
+          "layer": 11,
+          "auroc_oof": 0.5169,
+          "auroc_folds_mean": 0.5186,
+          "auroc_folds_sd": 0.005
+        },
+        {
+          "layer": 12,
+          "auroc_oof": 0.5285,
+          "auroc_folds_mean": 0.5316,
+          "auroc_folds_sd": 0.0185
+        },
+        {
+          "layer": 13,
+          "auroc_oof": 0.5201,
+          "auroc_folds_mean": 0.5209,
+          "auroc_folds_sd": 0.0044
+        },
+        {
+          "layer": 14,
+          "auroc_oof": 0.5213,
+          "auroc_folds_mean": 0.5212,
+          "auroc_folds_sd": 0.0096
+        },
+        {
+          "layer": 15,
+          "auroc_oof": 0.5388,
+          "auroc_folds_mean": 0.54,
+          "auroc_folds_sd": 0.0069
+        },
+        {
+          "layer": 16,
+          "auroc_oof": 0.527,
+          "auroc_folds_mean": 0.5278,
+          "auroc_folds_sd": 0.0088
+        },
+        {
+          "layer": 17,
+          "auroc_oof": 0.5392,
+          "auroc_folds_mean": 0.5412,
+          "auroc_folds_sd": 0.0083
+        },
+        {
+          "layer": 18,
+          "auroc_oof": 0.528,
+          "auroc_folds_mean": 0.53,
+          "auroc_folds_sd": 0.0182
+        },
+        {
+          "layer": 19,
+          "auroc_oof": 0.5228,
+          "auroc_folds_mean": 0.5235,
+          "auroc_folds_sd": 0.0049
+        },
+        {
+          "layer": 20,
+          "auroc_oof": 0.5262,
+          "auroc_folds_mean": 0.5288,
+          "auroc_folds_sd": 0.009
+        },
+        {
+          "layer": 21,
+          "auroc_oof": 0.5368,
+          "auroc_folds_mean": 0.5399,
+          "auroc_folds_sd": 0.0153
+        },
+        {
+          "layer": 22,
+          "auroc_oof": 0.5344,
+          "auroc_folds_mean": 0.5369,
+          "auroc_folds_sd": 0.0143
+        },
+        {
+          "layer": 23,
+          "auroc_oof": 0.5319,
+          "auroc_folds_mean": 0.5363,
+          "auroc_folds_sd": 0.0162
+        },
+        {
+          "layer": 24,
+          "auroc_oof": 0.5226,
+          "auroc_folds_mean": 0.5257,
+          "auroc_folds_sd": 0.0118
+        },
+        {
+          "layer": 25,
+          "auroc_oof": 0.5206,
+          "auroc_folds_mean": 0.521,
+          "auroc_folds_sd": 0.0051
+        },
+        {
+          "layer": 26,
+          "auroc_oof": 0.5218,
+          "auroc_folds_mean": 0.5217,
+          "auroc_folds_sd": 0.0061
+        },
+        {
+          "layer": 27,
+          "auroc_oof": 0.5182,
+          "auroc_folds_mean": 0.519,
+          "auroc_folds_sd": 0.0068
+        },
+        {
+          "layer": 28,
+          "auroc_oof": 0.5251,
+          "auroc_folds_mean": 0.5264,
+          "auroc_folds_sd": 0.0155
+        },
+        {
+          "layer": 29,
+          "auroc_oof": 0.5246,
+          "auroc_folds_mean": 0.5266,
+          "auroc_folds_sd": 0.0132
+        },
+        {
+          "layer": 30,
+          "auroc_oof": 0.5328,
+          "auroc_folds_mean": 0.541,
+          "auroc_folds_sd": 0.0202
+        },
+        {
+          "layer": 31,
+          "auroc_oof": 0.5241,
+          "auroc_folds_mean": 0.5275,
+          "auroc_folds_sd": 0.0148
+        },
+        {
+          "layer": 32,
+          "auroc_oof": 0.5164,
+          "auroc_folds_mean": 0.5194,
+          "auroc_folds_sd": 0.0068
+        }
+      ],
+      "best_layer": 17,
+      "best_auroc_oof": 0.5392,
+      "lawcc_robustness": {
+        "auroc_oof": 0.512,
+        "fold_aurocs": [
+          0.5175,
+          0.5119,
+          0.4931,
+          0.5712,
+          0.5201
+        ],
+        "caveat": "largest law component holds 556/1000 problems"
+      },
+      "shuffled_label_auroc": [
+        0.4877,
+        0.4894,
+        0.4977
+      ],
+      "breakdown_at_best": {
+        "by_tier": {
+          "easy": 0.5774,
+          "hard": 0.5041,
+          "medium": 0.5375
+        },
+        "by_perturbation": {
+          "arg_swap": 0.5085,
+          "grow": 0.4891,
+          "prune": 0.6454,
+          "var_sub": 0.5114
+        }
+      },
+      "seconds": 35.5
+    }
+  },
+  "baselines": {
+    "bow_char_tfidf": {
+      "auroc_oof": 0.5454,
+      "auroc_folds_mean": 0.5457
+    },
+    "answer_length": 0.5093,
+    "majority": 0.5
+  },
+  "runtime_s": 72.7
+}
