@@ -26,11 +26,18 @@ import modal
 STAGE = Path(__file__).resolve().parent
 PX_ROOT = STAGE.parent
 
-spec = importlib.util.spec_from_file_location("px_root_config", PX_ROOT / "config.py")
-pxc = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(pxc)
-
 GPU = os.environ.get("VERIFY_GPU", "A10G")
+
+
+def load_config():
+    """Local-side only: this module is also imported inside the container,
+    where the repo tree does not exist, so config must load lazily."""
+    spec = importlib.util.spec_from_file_location(
+        "px_root_config", PX_ROOT / "config.py"
+    )
+    pxc = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(pxc)
+    return pxc
 
 app = modal.App("harsh-probe-verify")
 image = (
@@ -149,7 +156,8 @@ def verify(items: list, config: dict) -> dict:
 
 
 @app.local_entrypoint()
-def main(model: str, limit: int = 0):
+def main(model: str, limit: int = 0, dry_run: bool = False):
+    pxc = load_config()
     mcfg = pxc.VERIFY["models"][model]
     template = (STAGE / "verify_prompt.md").read_text(encoding="utf-8")
 
@@ -188,6 +196,14 @@ def main(model: str, limit: int = 0):
         "limit": limit,
         "threshold": pxc.VERIFY["threshold"],
     }
+    if dry_run:
+        labels = [it["label"] for it in items]
+        print(f"items: {len(items)}  correct/wrong: {sum(labels)}/{len(labels) - sum(labels)}")
+        print(f"tiers: {sorted({it['tier'] for it in items})}")
+        print(f"config: {json.dumps(config, indent=2)}")
+        print(f"--- first prompt ---\n{items[0]['prompt']}")
+        return
+
     result = verify.remote(items, config)
 
     out_dir = PX_ROOT / "runs" / "verify-v1"

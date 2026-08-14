@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """Answer-extraction contract for the verification gate."""
 
+import modal_verify
 from modal_verify import extract
+
+# The module is imported inside the container too: config loading must stay
+# lazy (a module-level pxc broke container startup once; keep it that way).
+assert not hasattr(modal_verify, "pxc"), "config must not load at module level"
 
 CASES = [
     ("Yes", "yes"),
