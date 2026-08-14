@@ -169,6 +169,11 @@ def capture(items: list, config: dict) -> dict:
     }
     with open(f"{out_dir}/meta.json", "w") as fh:
         json.dump(meta, fh, indent=2)
+    # A corrupt archive once reached the volume; never publish unverified.
+    import zipfile
+    for name in ("acts-last.npz", "acts-mean.npz"):
+        bad = zipfile.ZipFile(f"{out_dir}/{name}").testzip()
+        assert bad is None, f"{name} corrupt at {bad}"
     acts_vol.commit()
     save_s = time.time() - t2
 
