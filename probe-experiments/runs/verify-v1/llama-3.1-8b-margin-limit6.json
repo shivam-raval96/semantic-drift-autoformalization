@@ -1,0 +1,105 @@
+{
+  "stage": "verify-gate",
+  "model_key": "llama-3.1-8b",
+  "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+  "gpu": "A10G",
+  "batch_size": 16,
+  "max_new_tokens": 16,
+  "scoring": "margin",
+  "template": "verify_prompt.md",
+  "template_sha256": "0610fcf7e01644d493b73fa8443f5b3d2bdd6771bfbf4a925bae326ca66e53ef",
+  "example_problem": null,
+  "sample_seed": 0,
+  "problems_per_tier": 50,
+  "limit": 6,
+  "threshold": 0.65,
+  "n": 12,
+  "margin_auroc": 0.6667,
+  "acc_margin_sign": 0.5,
+  "yes_rate_margin_sign": 0.0,
+  "by_tier_sign": {
+    "easy": 0.5
+  },
+  "gpu_seconds": {
+    "load": 13.0,
+    "forward": 3.7
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  },
+  "rows": [
+    {
+      "id": "contrast_v1_0198::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -2.0
+    },
+    {
+      "id": "contrast_v1_0198::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -3.375
+    },
+    {
+      "id": "contrast_v1_0216::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -2.25
+    },
+    {
+      "id": "contrast_v1_0216::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.75
+    },
+    {
+      "id": "contrast_v1_0021::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0021::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0133::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0133::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.625
+    },
+    {
+      "id": "contrast_v1_0262::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -2.0
+    },
+    {
+      "id": "contrast_v1_0262::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.125
+    },
+    {
+      "id": "contrast_v1_0249::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0249::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.0
+    }
+  ]
+}

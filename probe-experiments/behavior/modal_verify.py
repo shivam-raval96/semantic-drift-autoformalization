@@ -100,6 +100,11 @@ def verify(items: list, config: dict) -> dict:
     model.eval()
     load_s = time.time() - t0
 
+    if config["scoring"] == "margin":
+        variants = lambda w: {tok(v, add_special_tokens=False).input_ids[0]
+                              for v in (w, w.capitalize(), " " + w, " " + w.capitalize())}
+        yes_ids, no_ids = sorted(variants("yes")), sorted(variants("no"))
+
     chat_kw = {"enable_thinking": False} if "qwen3" in model_id.lower() else {}
     prompts = [
         tok.apply_chat_template(
@@ -109,22 +114,59 @@ def verify(items: list, config: dict) -> dict:
         for it in items
     ]
 
-    outputs = []
+    outputs, margins = [], []
     t1 = time.time()
     bs = config["batch_size"]
     for b0 in range(0, len(prompts), bs):
         enc = tok(prompts[b0 : b0 + bs], return_tensors="pt", padding=True,
                   add_special_tokens=False).to(model.device)
         with torch.no_grad():
-            gen = model.generate(
-                **enc, max_new_tokens=config["max_new_tokens"], do_sample=False,
-                pad_token_id=tok.pad_token_id,
-            )
-        outputs.extend(
-            tok.decode(g[enc["input_ids"].shape[1]:], skip_special_tokens=True)
-            for g in gen
-        )
+            if config["scoring"] == "margin":
+                logits = model(**enc, use_cache=False).logits[:, -1, :].float()
+                m = (logits[:, yes_ids].max(dim=1).values
+                     - logits[:, no_ids].max(dim=1).values)
+                margins.extend(m.cpu().tolist())
+            else:
+                gen = model.generate(
+                    **enc, max_new_tokens=config["max_new_tokens"], do_sample=False,
+                    pad_token_id=tok.pad_token_id,
+                )
+                outputs.extend(
+                    tok.decode(g[enc["input_ids"].shape[1]:], skip_special_tokens=True)
+                    for g in gen
+                )
     gen_s = time.time() - t1
+
+    if config["scoring"] == "margin":
+        rows = [{"id": it["id"], "label": it["label"],
+                 "pred": "yes" if mg > 0 else "no", "margin": round(mg, 4)}
+                for it, mg in zip(items, margins)]
+        pos = sorted(r["margin"] for r in rows if r["label"] == 1)
+        neg = sorted(r["margin"] for r in rows if r["label"] == 0)
+        ranks, all_m = 0.0, sorted(r["margin"] for r in rows)
+        import bisect
+        for x in pos:
+            lo, hi = bisect.bisect_left(neg, x), bisect.bisect_right(neg, x)
+            ranks += lo + (hi - lo) / 2.0
+        auroc = ranks / (len(pos) * len(neg))
+        acc = sum(1 for r in rows if (r["margin"] > 0) == (r["label"] == 1)) / len(rows)
+        by_tier = {}
+        for t in sorted({it["tier"] for it in items}):
+            sub = [(r, it) for r, it in zip(rows, items) if it["tier"] == t]
+            by_tier[t] = round(sum(1 for r, _ in sub
+                                   if (r["margin"] > 0) == (r["label"] == 1)) / len(sub), 4)
+        return {
+            "n": len(rows),
+            "margin_auroc": round(auroc, 4),
+            "acc_margin_sign": round(acc, 4),
+            "yes_rate_margin_sign": round(sum(1 for r in rows if r["margin"] > 0)
+                                          / len(rows), 4),
+            "by_tier_sign": by_tier,
+            "gpu_seconds": {"load": round(load_s, 1), "forward": round(gen_s, 1)},
+            "versions": {"torch": torch.__version__,
+                         "transformers": transformers.__version__},
+            "rows": rows,
+        }
 
     rows = []
     for it, out in zip(items, outputs):
@@ -157,7 +199,7 @@ def verify(items: list, config: dict) -> dict:
 
 @app.local_entrypoint()
 def main(model: str, limit: int = 0, dry_run: bool = False,
-         template: str = "verify_prompt.md"):
+         template: str = "verify_prompt.md", scoring: str = "generate"):
     pxc = load_config()
     mcfg = pxc.MODELS[model]
     template_name = template
@@ -203,6 +245,7 @@ def main(model: str, limit: int = 0, dry_run: bool = False,
         "gpu": GPU,
         "batch_size": 8 if ":" in GPU else 16,
         "max_new_tokens": pxc.VERIFY["max_new_tokens"],
+        "scoring": scoring,
         "template": template_name,
         "template_sha256": template_sha,
         "example_problem": example_problem,
@@ -227,6 +270,8 @@ def main(model: str, limit: int = 0, dry_run: bool = False,
     tag = model
     if template_name != "verify_prompt.md":
         tag += "-fewshot"
+    if scoring == "margin":
+        tag += "-margin"
     if limit:
         tag += f"-limit{limit}"
     (out_dir / f"{tag}.json").write_text(json.dumps(record, indent=2) + "\n")
