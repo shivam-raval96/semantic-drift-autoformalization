@@ -97,10 +97,11 @@ DEFAULT_BUDGETS = (0, 512)
 DEFAULT_LAYER = 24
 
 # Doses as fractions of the median residual-stream norm at the injection layer.
-# 0.1 is a light touch, 0.4 is heavy enough that the earlier work would expect
-# coherence to be at risk; running both is how the usable range gets found.
-DEFAULT_ALPHAS = (0.1, 0.2, 0.4)
-DEFAULT_CONTROL_ALPHA = 0.2
+# A smoke run at 0.2 already wrote the required notation less often than the
+# untouched model, so the series is centred below that: the question is what
+# the direction does while the output is still intact, and a dose that breaks
+# the output answers a different question.
+DEFAULT_ALPHAS = (0.05, 0.1, 0.2)
 
 DEFAULT_PER_BIN = 20
 DEFAULT_ANSWER_TOKENS = 512
@@ -111,10 +112,14 @@ def build_conditions(
     budgets: Sequence[int],
     layer: int,
     alphas: Sequence[float],
-    control_alpha: float,
     per_bin: int,
 ) -> List[runs.Condition]:
-    """The sweep, as data: an untouched baseline, a dose series, two controls."""
+    """The sweep, as data: an untouched baseline and a dose series per arm.
+
+    Both controls run at every dose the steered arm runs at. Which dose changes
+    anything cannot be known before the run, and a control measured at some
+    other dose cannot rule out the explanation that the effect is disturbance.
+    """
     conditions: List[runs.Condition] = []
     shared = dict(layer=layer, per_bin=per_bin)
     for budget in budgets:
@@ -123,26 +128,17 @@ def build_conditions(
                 "untouched_B{}".format(budget), arm="untouched", budget=budget, alpha=0.0, **shared
             )
         )
-        for alpha in alphas:
-            conditions.append(
-                runs.Condition(
-                    "steer_a{:g}_B{}".format(alpha, budget),
-                    arm="steer",
-                    budget=budget,
-                    alpha=float(alpha),
-                    **shared
+        for arm in ("steer", "random", "negated"):
+            for alpha in alphas:
+                conditions.append(
+                    runs.Condition(
+                        "{}_a{:g}_B{}".format(arm, alpha, budget),
+                        arm=arm,
+                        budget=budget,
+                        alpha=float(alpha),
+                        **shared
+                    )
                 )
-            )
-        for arm in ("random", "negated"):
-            conditions.append(
-                runs.Condition(
-                    "{}_a{:g}_B{}".format(arm, control_alpha, budget),
-                    arm=arm,
-                    budget=budget,
-                    alpha=float(control_alpha),
-                    **shared
-                )
-            )
     return conditions
 
 
@@ -441,40 +437,39 @@ def make_figure(summary: dict, run: runs.RunDirectory) -> Optional[Path]:
     fig, axes = plt.subplots(1, 2, figsize=(11.5, 4.4))
     colours = {0: "#d95f02", 512: "#1f77b4"}
 
+    styles = {"steer": ("o", "-"), "random": ("x", ":"), "negated": ("s", "--")}
+
     for budget in budgets:
         cells = summary["budgets"][budget]["cells"]
-        steered = sorted(
-            ((c["alpha"], c) for c in cells.values() if c["arm"] == "steer"),
-            key=lambda pair: pair[0],
-        )
         untouched = [c for c in cells.values() if c["arm"] == "untouched"]
         colour = colours.get(int(budget))
 
-        doses = [a for a, _ in steered]
-        for axis, key in ((axes[0], "accuracy"), (axes[1], "wrote_required_notation")):
-            values = [c[key]["rate"] for _, c in steered]
-            low = [v - c[key]["ci95"][0] for v, (_, c) in zip(values, steered)]
-            high = [c[key]["ci95"][1] - v for v, (_, c) in zip(values, steered)]
-            axis.errorbar(
-                doses, values, yerr=[low, high], marker="o", capsize=3, color=colour,
-                label="budget {} tokens".format(budget),
+        for arm, (marker, line) in styles.items():
+            series = sorted(
+                ((c["alpha"], c) for c in cells.values() if c["arm"] == arm),
+                key=lambda pair: pair[0],
             )
-            if untouched:
-                axis.axhline(
-                    untouched[0][key]["rate"], linestyle="--", linewidth=1, color=colour,
-                    alpha=0.6,
-                )
-        for arm, marker in (("random", "x"), ("negated", "s")):
-            control = [c for c in cells.values() if c["arm"] == arm]
-            if control:
-                axes[0].scatter(
-                    [control[0]["alpha"]], [control[0]["accuracy"]["rate"]],
-                    marker=marker, color=colour, zorder=5,
+            if not series:
+                continue
+            doses = [a for a, _ in series]
+            for axis, key in ((axes[0], "accuracy"), (axes[1], "wrote_required_notation")):
+                values = [c[key]["rate"] for _, c in series]
+                low = [v - c[key]["ci95"][0] for v, (_, c) in zip(values, series)]
+                high = [c[key]["ci95"][1] - v for v, (_, c) in zip(values, series)]
+                axis.errorbar(
+                    doses, values, yerr=[low, high], marker=marker, linestyle=line,
+                    capsize=3, color=colour,
                     label="{}, budget {}".format(arm, budget),
+                )
+        if untouched:
+            for axis, key in ((axes[0], "accuracy"), (axes[1], "wrote_required_notation")):
+                axis.axhline(
+                    untouched[0][key]["rate"], linestyle="-", linewidth=1,
+                    color=colour, alpha=0.4,
                 )
 
     axes[0].set_ylabel("share of answers correct")
-    axes[0].set_title("Accuracy against dose\n(dashed line: the untouched model)")
+    axes[0].set_title("Accuracy against dose\n(flat line: the untouched model)")
     axes[1].set_ylabel("share of answers in the required ASSUME/ASK notation")
     axes[1].set_title("Output format against dose")
     for axis in axes:
@@ -516,12 +511,6 @@ def main(argv: Optional[List[str]] = None) -> int:
         "(default: %(default)s)",
     )
     cli.add_argument(
-        "--control-alpha",
-        type=float,
-        default=DEFAULT_CONTROL_ALPHA,
-        help="dose the random and negated controls run at (default: %(default)s)",
-    )
-    cli.add_argument(
         "--per-bin",
         type=int,
         default=DEFAULT_PER_BIN,
@@ -540,15 +529,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.quick:
         args.per_bin = min(args.per_bin, 2)
         args.budgets = (0, 32)
-        args.alphas = (0.2,)
+        args.alphas = (0.1,)
         # Enough room for an answer to finish. Below roughly 256 tokens the
         # model gets cut off mid-answer and every row grades as unparseable,
         # which would leave the grading path untested by the smoke run.
         args.answer_tokens = min(args.answer_tokens, 256)
 
-    conditions = build_conditions(
-        args.budgets, args.layer, args.alphas, args.control_alpha, args.per_bin
-    )
+    conditions = build_conditions(args.budgets, args.layer, args.alphas, args.per_bin)
     out_dir = runs.resolve_out_dir(args, __file__)
     run = runs.RunDirectory.open(
         out_dir,
@@ -559,7 +546,6 @@ def main(argv: Optional[List[str]] = None) -> int:
             "budgets": list(args.budgets),
             "layer": args.layer,
             "alphas": list(args.alphas),
-            "control_alpha": args.control_alpha,
             "per_bin": args.per_bin,
             "answer_tokens": args.answer_tokens,
             "control_seed": CONTROL_SEED,

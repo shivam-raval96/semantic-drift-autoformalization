@@ -90,7 +90,14 @@ DEFAULT_BUDGETS = (0, 512)
 # alpha 1 meant there; the vector's size relative to the residual stream is
 # recorded in the summary rather than left implicit.
 DEFAULT_LAYER = 24
-DEFAULT_ALPHAS = (0.5, 1.0)
+
+# At alpha 1 this vector is about a third of the typical residual-stream
+# length, and a smoke run at that dose left the steered *and* the random arms
+# unable to produce a readable answer at all — which measures disturbance, not
+# direction. 0.25 and 0.5 are there so the series reaches doses light enough to
+# leave the output intact, and alpha 1 is kept because it is what the earlier
+# null was measured at.
+DEFAULT_ALPHAS = (0.25, 0.5, 1.0)
 
 DEFAULT_PER_BIN = 20
 DEFAULT_ANSWER_TOKENS = 512
@@ -107,9 +114,13 @@ def build_conditions(
 
     Four arms per budget: the untouched story baseline, the plain-English arm
     that sets the ceiling a form intervention could reach, the steered cells,
-    and the two controls. Controls run only at the largest dose and only where
-    the interesting comparison is, since their job is to interpret a positive
-    result rather than to trace a curve.
+    and the two controls.
+
+    The controls run at every dose the steered arm runs at, rather than at one
+    representative dose. A dose big enough to change anything is also big enough
+    to disturb the model, and which dose that is cannot be known before the run;
+    a control measured at a different dose than the effect cannot rule the
+    disturbance explanation out.
     """
     conditions: List[runs.Condition] = []
     shared = dict(layer=layer, per_bin=per_bin)
@@ -123,26 +134,17 @@ def build_conditions(
                 "literal_B{}".format(budget), arm="literal", budget=budget, alpha=0.0, **shared
             )
         )
-        for alpha in alphas:
-            conditions.append(
-                runs.Condition(
-                    "steer_a{:g}_B{}".format(alpha, budget),
-                    arm="steer",
-                    budget=budget,
-                    alpha=float(alpha),
-                    **shared
+        for arm in ("steer", "random", "negated"):
+            for alpha in alphas:
+                conditions.append(
+                    runs.Condition(
+                        "{}_a{:g}_B{}".format(arm, alpha, budget),
+                        arm=arm,
+                        budget=budget,
+                        alpha=float(alpha),
+                        **shared
+                    )
                 )
-            )
-        for arm in ("random", "negated"):
-            conditions.append(
-                runs.Condition(
-                    "{}_a{:g}_B{}".format(arm, max(alphas), budget),
-                    arm=arm,
-                    budget=budget,
-                    alpha=float(max(alphas)),
-                    **shared
-                )
-            )
     return conditions
 
 
@@ -452,35 +454,52 @@ def make_figure(summary: dict, run: runs.RunDirectory) -> Optional[Path]:
         return None
 
     budgets = sorted(summary["budgets"], key=int)
-    fig, axes = plt.subplots(1, len(budgets), figsize=(5.5 * len(budgets), 4.4), squeeze=False)
+    fig, axes = plt.subplots(1, len(budgets), figsize=(5.8 * len(budgets), 4.6), squeeze=False)
+    styles = {
+        "steer": ("o", "-", "#1f77b4"),
+        "random": ("x", ":", "#d62728"),
+        "negated": ("s", "--", "#9467bd"),
+    }
 
     for column, budget in enumerate(budgets):
         axis = axes[0][column]
         cells = summary["budgets"][budget]["cells"]
-        names = sorted(cells, key=lambda n: (cells[n]["arm"] != "story", n))
-        rates = [cells[n]["accuracy"]["rate"] for n in names]
-        low = [r - cells[n]["accuracy"]["ci95"][0] for r, n in zip(rates, names)]
-        high = [cells[n]["accuracy"]["ci95"][1] - r for r, n in zip(rates, names)]
-        colours = {
-            "story": "#888888",
-            "literal": "#2a9d3f",
-            "steer": "#1f77b4",
-            "random": "#d62728",
-            "negated": "#9467bd",
-        }
-        axis.bar(
-            range(len(names)),
-            rates,
-            yerr=[low, high],
-            capsize=3,
-            color=[colours[cells[n]["arm"]] for n in names],
-        )
-        axis.set_xticks(range(len(names)))
-        axis.set_xticklabels(names, rotation=40, ha="right", fontsize=8)
+
+        for arm, (marker, line, colour) in styles.items():
+            series = sorted(
+                ((c["alpha"], c) for c in cells.values() if c["arm"] == arm),
+                key=lambda pair: pair[0],
+            )
+            if not series:
+                continue
+            rates = [c["accuracy"]["rate"] for _, c in series]
+            low = [r - c["accuracy"]["ci95"][0] for r, (_, c) in zip(rates, series)]
+            high = [c["accuracy"]["ci95"][1] - r for r, (_, c) in zip(rates, series)]
+            axis.errorbar(
+                [a for a, _ in series], rates, yerr=[low, high], marker=marker,
+                linestyle=line, capsize=3, color=colour, label=arm,
+            )
+
+        # The two untouched arms bracket what any form intervention could do:
+        # the story arm is where it starts, the plain-English arm is what a
+        # perfect conversion would be worth.
+        for arm, colour, label in (
+            ("story", "#888888", "untouched, story input"),
+            ("literal", "#2a9d3f", "untouched, plain-English input"),
+        ):
+            reference = [c for c in cells.values() if c["arm"] == arm]
+            if reference:
+                axis.axhline(
+                    reference[0]["accuracy"]["rate"], linestyle="-", linewidth=1.4,
+                    color=colour, alpha=0.8, label=label,
+                )
+
+        axis.set_xlabel("dose, as a multiple of the difference vector")
         axis.set_ylim(0, 1)
         axis.set_ylabel("share of answers correct")
         axis.set_title("thinking budget {} tokens".format(budget))
-        axis.grid(alpha=0.3, axis="y")
+        axis.grid(alpha=0.3)
+        axis.legend(fontsize=8)
 
     fig.suptitle("Steering the story-to-plain-English direction, by thinking budget")
     fig.tight_layout()
