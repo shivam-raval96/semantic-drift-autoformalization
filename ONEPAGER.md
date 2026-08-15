@@ -18,7 +18,7 @@ Done:
   rows, law-disjoint from eval_v1.
 - Base evals (vLLM, greedy, no-think, A10G): Llama-3.2-1B 0/777 correct in all
   three arms; Llama-3.1-8B 1/777 (story), 3/777 (literal), 0/777 (two-stage).
-  Signal lives in the unparseable rate (8B: story 6-24%, literal 13-45% by tier).
+  Signal lives in the unparseable rate (8B: story 6.0-23.5%, literal 13.3-45.0% by tier).
 - Phase 5a training complete: LoRA r=16, all layers, 41.9M trainable params,
   75 steps; holdout perplexity 9.72 -> 2.49; format probes passed.
 
@@ -36,17 +36,19 @@ length, layer 0, shuffled labels.
 
 Results:
 1. Llama-3.1-8B (reader mode, 33 layers x 2 sites): in-distribution 0.623 peak,
-   law-disjoint 0.520 = lexical floor. Pre-registered H1 refuted. MLP twin also
-   collapses (0.504-0.512 law-disjoint).
+   law-disjoint 0.520, within 0.02 of the like-for-like lexical floor (0.503).
+   Pre-registered H1 refuted. MLP twin also collapses (0.504-0.512 law-disjoint).
 2. Behavioral verification gate, 300 balanced texts, one-word answers:
    8B 0.500 / Qwen2.5-7B 0.520 / Qwen3-32B 0.537 / Llama-3.3-70B 0.540 - all
-   fail ~0.65; uniform conservative pattern (rare "yes" answers 0.79-1.0
-   precise). Few-shot arm: 32B 0.590 (easy tier 0.67), others flat.
+   fail ~0.65; conservative pattern (8B emits zero "yes"; the others' rare "yes"
+   answers are 0.79-0.88 precise). Few-shot arm: 32B 0.590 (easy tier 0.67);
+   7B and 70B moved slightly down; 8B not run.
 3. Logit-margin gate (threshold-free): 8B 0.522 / 7B 0.564 / 32B 0.669 /
    70B 0.629. Qwen3-32B is the smallest passer and beats the 70B.
 4. Qwen3-32B probes (65 layers x 2 sites): in-distribution 0.705 (layer 61),
-   law-disjoint 0.599 (all folds 0.588-0.641) vs lexical floor 0.503 under the
-   same split; easy tier 0.793. MLP adds nothing (linear structure).
+   law-disjoint 0.599 (all folds 0.584-0.641) vs lexical floor 0.503 under the
+   same split; easy tier 0.793. MLP shows no consistent gain (below linear at the
+   reported site; 0.600 vs 0.570 at the other).
 
 5. Direction analysis (local): probes fit on independent law-disjoint folds
    share a dominant direction (mean pairwise cosine 0.70 in 5,120-d; range

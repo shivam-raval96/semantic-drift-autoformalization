@@ -78,7 +78,7 @@ model: 0.96 AUROC. H2: steering shifts verdicts monotonically, random direction 
 <p>In-distribution the probe reaches 0.623 (mean site, layer 28) and 0.599 (last site,
 layer 32), above the 0.539 lexical floor; layer 0 is 0.50 and controls are clean
 (shuffled 0.49-0.52, length 0.505). On the law-disjoint split it drops to 0.52-0.53,
-i.e. the lexical floor: the signal is tied to specific equations, not a general
+close to the lexical floor: the signal is tied to specific equations, not a general
 correctness direction. At the best layer: easy 0.695 vs medium/hard ~0.59; size-changing
 edits most visible (prune 0.686, grow 0.648), the order-semantic arg_swap least (0.565).
 <strong>H1 refuted under the pre-registered condition. H2 dropped (premise removed).</strong>
@@ -146,7 +146,7 @@ position, AUROC vs labels; <code>runs/verify-v1/*-margin.json</code>): 8B 0.522,
 model clearing ~0.65 and beats the 70B; captured per the gate rule.</p>
 <p><strong>Qwen3-32B probes</strong> (same dataset, same splits, same controls;
 <code>runs/probe-32b/</code>): linear, mean site, best layer 61/65: <strong>0.705 in-distribution,
-0.599 law-disjoint</strong> (folds 0.588-0.641, all above the floor), easy tier 0.793.
+0.599 law-disjoint</strong> (folds 0.584-0.641, all above the floor), easy tier 0.793.
 Lexical floor recomputed under the SAME law-disjoint split: <strong>0.503 (chance)</strong>.
 MLP twin: 0.578-0.600 law-disjoint (no nonlinear gain). Shuffled labels 0.48-0.52.</p>
 <p>Read: a law-general, linearly decodable correctness signal exists in the capable
