@@ -1,2 +1,9 @@
 .env
 .DS_Store
+__pycache__/
+
+# Notebooks bootstrap by cloning this repo at a pinned commit and importing
+# from it. Run one outside Colab and it clones a copy of the repo into
+# itself; the copy then goes stale, because the clone step is skipped once
+# the directory exists.
+semantic-drift-autoformalization/

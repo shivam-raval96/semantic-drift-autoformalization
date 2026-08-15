@@ -1,0 +1,86 @@
+---
+description: How a new mechanistic-interpretability experiment is laid out and written
+alwaysApply: true
+---
+
+# New experiments: one dated folder, one Python file
+
+Experiments are plain Python scripts, run by the user on a rented GPU box.
+They are not notebooks. The numbered notebooks already in
+`mech-interp-experiments/` are earlier Colab work and are left as they are.
+
+## Layout
+
+For any new experiment, first create a folder under `mech-interp-experiments/`
+named after the date the experiment is started, in `YYYY-MM-DD` form. Inside
+it, the experiment is a **single Python file**, named after what it measures:
+
+```
+mech-interp-experiments/
+  2026-08-15/
+    steering-at-budget-512.py     the experiment: design, generation, analysis
+    runs/
+      steering-at-budget-512/     everything the script wrote
+        run_meta.json             config and provenance, written once
+        records/<condition>.jsonl one row per graded example
+        summary.json              the headline numbers
+    figures/
+```
+
+Several related experiments started the same day share the dated folder, one
+file each. A run directory is never edited after the fact.
+
+## The experiment file
+
+- Holds the design, the generation, and the analysis. Support `--analyze-only`
+  so the tables and figures can be redone from the run directory with no model
+  and no GPU — iterating on a plot must never require re-running the model.
+- Support `--quick` for a tiny smoke run that checks the plumbing end to end
+  in minutes before committing to a real one.
+- Take `--out-dir`, `--seed`, `--model`, and `--force` as arguments; do not
+  edit constants in the file to change what a run does.
+- Write the question, what each possible outcome would mean, and the controls
+  into a comment block at the top **before running anything**. Deciding
+  afterwards what a null result meant is how a null becomes a story.
+- Declare the sweep as data — a list of conditions — rather than as nested
+  loops, so each cell has a name, its settings are recorded, and a rerun
+  resumes.
+
+## Non-negotiables
+
+- **`informalizing-etp/` is read-only.** Never add, move, or modify files
+  inside it; import from it by putting it on `sys.path`. Everything written
+  for this project lives in `mech-interp-experiments/`.
+- **Do not reimplement shared machinery per experiment.** Model loading,
+  generation, thinking-budget forcing, steering hooks, activation capture, and
+  grading belong in a shared module that every experiment imports, living in
+  `mech-interp-experiments/` alongside the dated folders. Two copies
+  of any of these turn a difference between the copies into an apparent
+  effect. This has already happened in this project twice: the thinking-budget
+  sweep was implemented separately in two notebooks and the copies disagree by
+  5–7 points at every budget, and the steered and unsteered budget generators
+  are a near-verbatim copy-paste that are then compared against each other.
+- **Resume safely.** Write a condition's records to a temporary name and
+  publish them only when that condition finishes, so a crash or a dropped
+  connection cannot leave a short file that looks complete.
+- **Record provenance.** Every run directory stores the model, the seed, all
+  parameters, and the commit of both this repository and `informalizing-etp`.
+- Fixed seed 0, unless the experiment is about sampling variance.
+- One variable per experiment where possible; hold the model, the seed, and
+  the prompt template fixed across the conditions being compared.
+- Exclude vacuous laws (`x = x`, `x = y`) from every sample unless the
+  experiment is about them.
+- Compare conditions **paired**, on the same problems, with McNemar's test. At
+  ~52 examples the paired comparison is the difference between resolving a
+  ten-point shift and not.
+- Report every rate with its denominator, a confidence interval, and the
+  baseline it is measured against.
+- A steering intervention needs two controls: a random direction of the same
+  length, and the negated vector. A symmetric response to `+v` and `-v` means
+  the measurement is of disturbance size, not of direction.
+
+## Notebooks
+
+Notebooks are for looking at results, not producing them. A notebook that
+reads a run directory and plots it is fine; a notebook that generates results
+is not.

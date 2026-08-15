@@ -1,0 +1,47 @@
+---
+description: Write reports, write-ups, and summaries in plain language, with no unexplained jargon
+alwaysApply: true
+---
+
+# Reports must be readable without decoding
+
+Applies to anything written up for a human to read — markdown, HTML, notebook prose,
+figure captions, commit-message-length summaries, and the chat response itself.
+
+## Rules
+
+- **Never use a term of art without defining it in place**, on first use, in one clause.
+  Assume the reader knows the field broadly but not this project.
+- **No project-internal shorthand as if it were common knowledge**: names like `exp03`,
+  `run6`, `L18-a4`, or `checkform` mean nothing on their own. Say what they are.
+- **No vague hedging phrases** that carry no information: "non-trivial", "interesting",
+  "as expected", "modulo the usual caveats", "leaves something on the table".
+- **Spell out every acronym on first use**, including ones that feel obvious.
+- **Say the number and what it is measured against.** A percentage with no baseline,
+  denominator, or unit is not a result.
+- **Prefer the ordinary word.** "leverages" → "uses". "orthogonal to" → "unrelated to".
+  "surface a signal" → "show".
+- Lead each section with the plain-English conclusion, then the supporting detail.
+
+## Examples
+
+❌ "1-NN retrieval on the residual stream is 86% at mid-stack, well above the lexical floor."
+
+✅ "For each text we look at the model's internal activations and find the closest other
+text, excluding anything written in the same style. 86% of the time that closest text
+describes the same law. Guessing at random would get 1.9%."
+
+❌ "Steering along the contrastive direction is null."
+
+✅ "Nudging the model's activations toward the 'literal' style and away from the 'story'
+style changed accuracy by zero — the intervention did nothing."
+
+❌ "exp01 a=4 at L12 underperforms."
+
+✅ "In the steering experiment, injecting the vector at layer 12 with strength 4 scored
+worse than the untouched model."
+
+## Check before finishing
+
+Reread the report as someone who has not seen the code. If any sentence would make them
+stop and ask "what does that mean?", rewrite it.
