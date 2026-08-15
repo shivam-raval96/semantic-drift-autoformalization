@@ -444,7 +444,8 @@ def make_figure(summary: dict, run: runs.RunDirectory) -> Optional[Path]:
     for budget in budgets:
         cells = summary["budgets"][budget]["cells"]
         steered = sorted(
-            (c["alpha"], c) for c in cells.values() if c["arm"] == "steer"
+            ((c["alpha"], c) for c in cells.values() if c["arm"] == "steer"),
+            key=lambda pair: pair[0],
         )
         untouched = [c for c in cells.values() if c["arm"] == "untouched"]
         colour = colours.get(int(budget))
@@ -540,7 +541,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         args.per_bin = min(args.per_bin, 2)
         args.budgets = (0, 32)
         args.alphas = (0.2,)
-        args.answer_tokens = min(args.answer_tokens, 128)
+        # Enough room for an answer to finish. Below roughly 256 tokens the
+        # model gets cut off mid-answer and every row grades as unparseable,
+        # which would leave the grading path untested by the smoke run.
+        args.answer_tokens = min(args.answer_tokens, 256)
 
     conditions = build_conditions(
         args.budgets, args.layer, args.alphas, args.control_alpha, args.per_bin

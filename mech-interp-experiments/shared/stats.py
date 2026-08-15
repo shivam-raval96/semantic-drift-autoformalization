@@ -67,7 +67,14 @@ def wilson_interval(successes: int, total: int, z: float = Z95) -> Tuple[float, 
     centre = (p + z * z / (2 * total)) / denominator
     spread = z * math.sqrt(p * (1 - p) / total + z * z / (4 * total * total))
     spread /= denominator
-    return (max(0.0, centre - spread), min(1.0, centre + spread))
+    # The interval contains the observed proportion by construction, but at 0
+    # and 1 the two terms cancel only up to rounding and the bound can land a
+    # few 1e-17 the wrong side of it. Clamping to the proportion keeps the
+    # distance from rate to bound non-negative, which is what error bars need.
+    return (
+        max(0.0, min(p, centre - spread)),
+        min(1.0, max(p, centre + spread)),
+    )
 
 
 def rate(successes: int, total: int) -> Rate:

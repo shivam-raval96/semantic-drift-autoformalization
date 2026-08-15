@@ -599,7 +599,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         args.budget = 32
         args.layers = (12, 24)
         args.surfaces = args.surfaces[:2]
-        args.answer_tokens = min(args.answer_tokens, 128)
+        # Enough room for an answer to finish; below roughly 256 tokens every
+        # row grades as unparseable and the smoke run stops testing grading.
+        args.answer_tokens = min(args.answer_tokens, 256)
 
     if args.budget <= 0:
         raise SystemExit(

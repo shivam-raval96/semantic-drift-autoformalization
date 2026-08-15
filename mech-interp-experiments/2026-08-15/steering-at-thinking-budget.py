@@ -533,7 +533,9 @@ def main(argv: Optional[List[str]] = None) -> int:
         args.per_bin = min(args.per_bin, 2)
         args.budgets = (0, 32)
         args.alphas = (1.0,)
-        args.answer_tokens = min(args.answer_tokens, 128)
+        # Enough room for an answer to finish; below roughly 256 tokens every
+        # row grades as unparseable and the smoke run stops testing grading.
+        args.answer_tokens = min(args.answer_tokens, 256)
 
     conditions = build_conditions(args.budgets, args.layer, args.alphas, args.per_bin)
     out_dir = runs.resolve_out_dir(args, __file__)
