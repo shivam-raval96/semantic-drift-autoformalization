@@ -1,0 +1,20 @@
+{"pair_id": "E7-E5", "ops_total": 2, "status": "wrong", "transform": null, "response": "ASSUME: jasmine = op(oolong, op(jasmine, oolong))\nASK: jasmine = op(oolong, jasmine)"}
+{"pair_id": "E7-E4", "ops_total": 2, "status": "wrong", "transform": null, "response": "ASSUME: jasmine = op(oolong, op(jasmine, oolong))\nASK: jasmine = op(oolong, jasmine)"}
+{"pair_id": "E4-E7", "ops_total": 2, "status": "wrong", "transform": null, "response": "ASSUME: jasmine = op(jasmine, oolong)\nASK: jasmine = op(jasmine, op(oolong, rooibos))"}
+{"pair_id": "E36-E6", "ops_total": 3, "status": "wrong", "transform": null, "response": "ASSUME: op(hum, op(chirp, hum)) = whistle\nASK: op(hum, hum) = whistle"}
+{"pair_id": "E22-E5", "ops_total": 3, "status": "wrong", "transform": null, "response": "ASSUME: op(chirp, buzz) = whistle\nASK: op(hum, whistle) = whistle"}
+{"pair_id": "E15-E3", "ops_total": 3, "status": "correct", "transform": {"swap_e": false, "swap_f": false, "dual": false}, "response": "ASSUME: quince = op(medlar, op(quince, damson))\nASK: quince = op(quince, quince)"}
+{"pair_id": "E3-E20", "ops_total": 3, "status": "wrong", "transform": null, "response": "ASSUME: op(whistle, whistle) = whistle\nASK: op(whistle, op(hum, chirp)) = op(chirp, op(hum, op(whistle, chirp)))"}
+{"pair_id": "E39-E6", "ops_total": 3, "status": "correct", "transform": {"swap_e": false, "swap_f": false, "dual": false}, "response": "ASSUME: op(whistle, whistle) = op(hum, whistle)\nASK: hum = op(whistle, whistle)"}
+{"pair_id": "E28-E10", "ops_total": 4, "status": "wrong", "transform": null, "response": "ASSUME: op(hum, op(hum, whistle)) = whistle  \nASK: op(hum, op(whistle, hum)) = op(whistle, hum)"}
+{"pair_id": "E4-E382", "ops_total": 4, "status": "wrong", "transform": null, "response": "ASSUME: quince = op(quince, op(medlar, quince))\nASK: op(quince, medlar) = op(op(quince, medlar), damson)"}
+{"pair_id": "E318-E7", "ops_total": 4, "status": "unparseable", "transform": null, "response": "ASSUME: op(whistle, whistle) = op(hum, op(chirp, op(whistle)))\nASK: whistle = op(whistle, op(hum, op(chirp, op(whistle))))"}
+{"pair_id": "E358-E7", "ops_total": 4, "status": "wrong", "transform": null, "response": "ASSUME: op(jasmine, oolong) = op(rooibos, op(sencha, chamomile))\nASK: jasmine = op(jasmine, oolong)"}
+{"pair_id": "E255-E32", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(quince, op(op(quince, quince), quince)) = quince  \nASK: op(quince, op(op(medlar, medlar), medlar)) = medlar"}
+{"pair_id": "E23-E193", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(quince, op(quince, quince)) = quince\nASK: op(quince, op(op(medlar, damson), op(medlar, mulberry))) = quince"}
+{"pair_id": "E3834-E4", "ops_total": 5, "status": "correct", "transform": {"swap_e": false, "swap_f": false, "dual": false}, "response": "ASSUME: op(whistle, hum) = op(op(chirp, chirp), op(buzz, buzz))\nASK: whistle = op(whistle, hum)"}
+{"pair_id": "E257-E10", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(quince, op(op(quince, quince), medlar)) = quince\nASK: quince = op(op(quince, medlar), quince)"}
+{"pair_id": "E3-E4268", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: quince = op(quince, quince)\nASK: op(quince, op(quince, medlar)) = op(medlar, op(medlar, quince))"}
+{"pair_id": "E28-E100", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(hum, op(hum, whistle)) = whistle  \nASK: op(hum, op(op(hum, whistle), whistle)) = whistle"}
+{"pair_id": "E1320-E3", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(jasmine, oolong), rooibos), rooibos) = jasmine\nASK: op(jasmine, jasmine) = jasmine"}
+{"pair_id": "E112-E32", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: quince = op(quince, op(op(medlar, damson), medlar))\nASK: quince = op(op(medlar, medlar), medlar)"}

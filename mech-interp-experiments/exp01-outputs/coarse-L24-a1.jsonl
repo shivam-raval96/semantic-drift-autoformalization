@@ -1,0 +1,20 @@
+{"pair_id": "E7-E5", "ops_total": 2, "status": "correct", "transform": {"swap_e": false, "swap_f": false, "dual": false}, "response": "```\nASSUME: jasmine = op(oolong, rooibos)\nASK: jasmine = op(oolong, jasmine)\n```"}
+{"pair_id": "E7-E4", "ops_total": 2, "status": "wrong", "transform": null, "response": "```\nASSUME: jasmine = op(jasmine, oolong)\nASK: jasmine = op(jasmine, oolong)\n```"}
+{"pair_id": "E4-E7", "ops_total": 2, "status": "wrong", "transform": null, "response": "```\nASSUME: jasmine = op(jasmine, oolong)\nASK: jasmine = op(jasmine, op(oolong, rooibos))\n```"}
+{"pair_id": "E36-E6", "ops_total": 3, "status": "wrong", "transform": null, "response": "```\nASSUME: whistle = op(chirp, op(hum, chirp))\nASK: whistle = op(hum, hum)\n```"}
+{"pair_id": "E22-E5", "ops_total": 3, "status": "wrong", "transform": null, "response": "```\nASSUME: op(chirp, buzz) = whistle\nASK: op(hum, whistle) = whistle\n```"}
+{"pair_id": "E15-E3", "ops_total": 3, "status": "correct", "transform": {"swap_e": false, "swap_f": false, "dual": false}, "response": "```\nASSUME: quince = op(medlar, op(quince, damson))\nASK: quince = op(quince, quince)\n```"}
+{"pair_id": "E3-E20", "ops_total": 3, "status": "wrong", "transform": null, "response": "ASSUME: whistle = op(whistle, whistle)\nASK: whistle = op(op(hum, chirp), whistle)"}
+{"pair_id": "E39-E6", "ops_total": 3, "status": "correct", "transform": {"swap_e": false, "swap_f": false, "dual": false}, "response": "```\nASSUME: op(whistle, whistle) = op(hum, whistle)\nASK: hum = op(whistle, whistle)\n```"}
+{"pair_id": "E28-E10", "ops_total": 4, "status": "wrong", "transform": null, "response": "```\nASSUME: op(hum, op(hum, whistle)) = whistle\nASK: op(hum, whistle) = op(whistle, hum)\n```"}
+{"pair_id": "E4-E382", "ops_total": 4, "status": "wrong", "transform": null, "response": "```\nASSUME: quince = op(quince, op(quince, medlar))\nASK: op(quince, medlar) = op(op(quince, medlar), damson)\n```"}
+{"pair_id": "E318-E7", "ops_total": 4, "status": "wrong", "transform": null, "response": "```\nASSUME: op(whistle, whistle) = op(hum, op(chirp, op(whistle, whistle)))\nASK: whistle = op(whistle, op(chirp, whistle))\n```"}
+{"pair_id": "E358-E7", "ops_total": 4, "status": "wrong", "transform": null, "response": "```\nASSUME: op(jasmine, oolong) = op(rooibos, op(oolong, rooibos))\nASK: jasmine = op(jasmine, oolong)\n```"}
+{"pair_id": "E255-E32", "ops_total": 5, "status": "wrong", "transform": null, "response": "```\nASSUME: op(quince, op(op(quince, quince), quince)) = quince\nASK: op(quince, op(medlar, medlar)) = op(medlar, quince)\n```"}
+{"pair_id": "E23-E193", "ops_total": 5, "status": "wrong", "transform": null, "response": "```\nASSUME: quince = op(quince, op(quince, quince))\nASK: quince = op(op(quince, medlar), op(op(quince, damson), op(quince, mulberry)))\n```"}
+{"pair_id": "E3834-E4", "ops_total": 5, "status": "correct", "transform": {"swap_e": false, "swap_f": false, "dual": false}, "response": "```\nASSUME: op(whistle, hum) = op(op(chirp, chirp), op(buzz, buzz))\nASK: whistle = op(whistle, hum)\n```"}
+{"pair_id": "E257-E10", "ops_total": 5, "status": "wrong", "transform": null, "response": "```\nASSUME: quince = op(quince, op(op(quince, quince), medlar))\nASK: quince = op(op(quince, medlar), medlar)\n```"}
+{"pair_id": "E3-E4268", "ops_total": 5, "status": "wrong", "transform": null, "response": "```\nASSUME: quince = op(quince, quince)\nASK: op(quince, op(quince, medlar)) = op(quince, op(quince, op(quince, medlar)))\n```"}
+{"pair_id": "E28-E100", "ops_total": 5, "status": "wrong", "transform": null, "response": "```\nASSUME: op(whistle, op(whistle, hum)) = whistle\nASK: op(whistle, op(hum, op(whistle, hum))) = whistle\n```"}
+{"pair_id": "E1320-E3", "ops_total": 5, "status": "wrong", "transform": null, "response": "```\nASSUME: jasmine = op(oolong, op(op(oolong, rooibos), rooibos))\nASK: jasmine = op(jasmine, jasmine)\n```"}
+{"pair_id": "E112-E32", "ops_total": 5, "status": "wrong", "transform": null, "response": "```\nASSUME: quince = op(quince, op(op(medlar, damson), damson))\nASK: quince = op(op(quince, medlar), medlar)\n```"}

@@ -59,6 +59,10 @@ CONTROLS AND WHAT LIMITS THIS
   records the tokenized length of every prompt and the analysis fails loudly if
   it varies within a family, since that would reintroduce the confound in the
   units the model actually sees.
+- The law pool is large enough that each cell draws on far more distinct laws
+  than it needs, so the problems within a cell are close to independent. The
+  shallowest cell of the six-operation family is the binding one; see
+  DEFAULT_POOL_PER_BIN.
 - The literal description is the default surface form because it scores highest,
   which leaves the most room for accuracy to fall. On the story form a depth
   effect could be hidden by a floor.
@@ -93,6 +97,14 @@ EXPERIMENT = "depth-at-fixed-length"
 DEFAULT_BUDGETS = (512,)
 DEFAULT_PER_CELL = 200
 DEFAULT_ANSWER_TOKENS = 512
+
+# How many laws to synthesize per operation count. The shared default of 4000
+# is far too small here: the shallowest cell of the six-operation family is
+# rare, and at that size it holds 13 laws, so 200 problems would reuse each of
+# them about 15 times and would not be 200 independent problems. At 60000 that
+# cell holds 254 laws and each is used about 1.6 times. Generation is a pure
+# function of the seed and takes about ten seconds.
+DEFAULT_POOL_PER_BIN = 60000
 
 
 def build_conditions(
@@ -168,12 +180,18 @@ def run_experiment(args, run: runs.RunDirectory, conditions: List[runs.Condition
     print(runs.describe(conditions, run))
     print("\ngenerating {} of {} conditions".format(len(todo), len(conditions)))
 
-    pool = dataset.build_pool()
+    # Build every condition's problems before the model is loaded. A cell whose
+    # law pool is too small to fill raises here, in seconds, rather than after
+    # a model load and however many hours of generation came before it.
+    print("building datasets for all {} conditions".format(len(todo)))
+    pool = dataset.build_pool(per_bin=args.pool_per_bin)
+    problems = {c.name: samples_for(pool, c, args.seed) for c in todo}
+
     model, tokenizer = model_module.load(args.model)
     generator = generation.Generator(model, tokenizer, batch_size=args.batch_size)
 
     for condition in todo:
-        samples = samples_for(pool, condition, args.seed)
+        samples = problems[condition.name]
         prompts = [
             # The same "thinking on" wrapper at every budget, so the budget is
             # the only thing that differs between them.
@@ -520,6 +538,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     cli.add_argument("--batch-size", type=int, default=8)
     cli.add_argument(
+        "--pool-per-bin",
+        type=int,
+        default=DEFAULT_POOL_PER_BIN,
+        help="laws to synthesize per operation count; sets how many distinct "
+        "laws each cell can draw on (default: %(default)s)",
+    )
+    cli.add_argument(
         "--answer-tokens",
         type=int,
         default=DEFAULT_ANSWER_TOKENS,
@@ -530,7 +555,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.quick:
         args.per_cell = min(args.per_cell, 4)
         args.budgets = (0, 64)
-        args.answer_tokens = min(args.answer_tokens, 128)
+        # A small pool is enough for four problems a cell and keeps the smoke
+        # test quick. The answer cap is deliberately left at its real value:
+        # capping it lower truncates answers mid-expression and every row grades
+        # as unreadable, which hides whether grading works at all.
+        args.pool_per_bin = min(args.pool_per_bin, 4000)
 
     conditions = build_conditions(args.cells, args.budgets, args.per_cell, args.form)
     out_dir = runs.resolve_out_dir(args, __file__)
@@ -544,6 +573,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             "per_cell": args.per_cell,
             "form": args.form,
             "answer_tokens": args.answer_tokens,
+            "pool_per_bin": args.pool_per_bin,
             "cells": [list(cell) for cell in args.cells],
             "conditions": [c.as_dict() for c in conditions],
         },

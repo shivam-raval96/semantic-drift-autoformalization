@@ -1,0 +1,52 @@
+{"pair_id": "E7-E5", "ops_total": 2, "status": "correct", "transform": {"swap_e": true, "swap_f": true, "dual": false}, "response": "ASSUME: op(y, z) = x  \nASK: op(y, x) = x"}
+{"pair_id": "E7-E4", "ops_total": 2, "status": "correct", "transform": {"swap_e": true, "swap_f": true, "dual": false}, "response": "ASSUME: op(y, z) = x  \nASK: op(x, y) = x"}
+{"pair_id": "E4-E7", "ops_total": 2, "status": "correct", "transform": {"swap_e": true, "swap_f": true, "dual": false}, "response": "ASSUME: op(x, y) = x  \nASK: op(y, z) = x"}
+{"pair_id": "E36-E6", "ops_total": 3, "status": "wrong", "transform": null, "response": "ASSUME: op(y, z) = op(op(y, z), z)\nASK: op(y, y) = x"}
+{"pair_id": "E22-E5", "ops_total": 3, "status": "correct", "transform": {"swap_e": true, "swap_f": false, "dual": false}, "response": "ASSUME: op(y, op(z, w)) = x  \nASK: x = op(y, x)"}
+{"pair_id": "E15-E3", "ops_total": 3, "status": "correct", "transform": {"swap_e": true, "swap_f": true, "dual": false}, "response": "ASSUME: op(y, op(x, z)) = x  \nASK: op(x, x) = x"}
+{"pair_id": "E3-E20", "ops_total": 3, "status": "correct", "transform": {"swap_e": true, "swap_f": false, "dual": false}, "response": "ASSUME: op(x, x) = x  \nASK: x = op(y, op(z, y))"}
+{"pair_id": "E39-E6", "ops_total": 3, "status": "correct", "transform": {"swap_e": false, "swap_f": false, "dual": false}, "response": "ASSUME: op(x, x) = op(y, x)  \nASK: x = op(y, y)"}
+{"pair_id": "E28-E10", "ops_total": 4, "status": "wrong", "transform": null, "response": "ASSUME: op(y, x) = op(op(y, x), x)\nASK: op(y, x) = op(x, op(y, x))"}
+{"pair_id": "E4-E382", "ops_total": 4, "status": "wrong", "transform": null, "response": "ASSUME: op(x, y) = x  \nASK: op(op(x, y), z) = op(x, z)"}
+{"pair_id": "E318-E7", "ops_total": 4, "status": "wrong", "transform": null, "response": "ASSUME: op(x, op(z, x)) = op(y, op(z, x))\nASK: x = op(y, z)"}
+{"pair_id": "E358-E7", "ops_total": 4, "status": "wrong", "transform": null, "response": "ASSUME: op(x, op(w, u)) = op(z, op(w, u))\nASK: x = op(y, z)"}
+{"pair_id": "E255-E32", "ops_total": 5, "status": "correct", "transform": {"swap_e": true, "swap_f": true, "dual": false}, "response": "ASSUME: op(op(op(x, x), x), x) = x  \nASK: op(op(y, y), y) = x"}
+{"pair_id": "E23-E193", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(x, op(x, x)) = x  \nASK: op(op(y, z), op(y, w)) = x"}
+{"pair_id": "E3834-E4", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(x, op(z, z)) = op(op(w, w), op(op(z, z), op(w, w)))\nASK: x = op(x, y)"}
+{"pair_id": "E257-E10", "ops_total": 5, "status": "correct", "transform": {"swap_e": true, "swap_f": true, "dual": false}, "response": "ASSUME: op(op(op(x, x), y), x) = x  \nASK: op(x, op(y, x)) = x"}
+{"pair_id": "E3-E4268", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(x, x) = x  \nASK: op(x, op(x, op(x, y))) = op(x, op(x, op(x, y)))"}
+{"pair_id": "E28-E100", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(y, x) = x\nASK: op(x, op(op(x, x), y)) = x"}
+{"pair_id": "E1320-E3", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(y, x), z), z) = y\nASK: x = op(x, x)"}
+{"pair_id": "E112-E32", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(y, z), z), x) = x  \nASK: op(op(y, y), op(op(y, y), y)) = x"}
+{"pair_id": "E10-E247", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(y, x) = x\nASK: op(op(op(z, z), y), y) = x"}
+{"pair_id": "E3331-E3", "ops_total": 5, "status": "wrong", "transform": null, "response": "ASSUME: op(x, op(y, op(z, op(x, y)))) = x\nASK: x = op(x, x)"}
+{"pair_id": "E60-E313", "ops_total": 6, "status": "wrong", "transform": null, "response": "ASSUME: op(y, op(z, z)) = x\nASK: op(x, op(x, y)) = op(y, op(x, y))"}
+{"pair_id": "E40-E3852", "ops_total": 6, "status": "correct", "transform": {"swap_e": false, "swap_f": false, "dual": false}, "response": "ASSUME: op(x, x) = op(y, y)  \nASK: op(x, y) = op(op(z, w), op(w, y))"}
+{"pair_id": "E35-E3868", "ops_total": 6, "status": "wrong", "transform": null, "response": "ASSUME: op(op(y, z), y) = x  \nASK: op(op(op(x, x), y), op(op(x, op(y, x)), y)) = op(x, op(op(op(x, x), y), y))"}
+{"pair_id": "E14-E3812", "ops_total": 6, "status": "wrong", "transform": null, "response": "ASSUME: op(y, op(x, y)) = x  \nASK: op(x, op(z, y)) = op(op(z, z), op(z, y))"}
+{"pair_id": "E398-E260", "ops_total": 6, "status": "wrong", "transform": null, "response": "ASSUME: op(op(z, y), op(x, y)) = op(x, y)\nASK: op(op(op(x, y), x), x) = x"}
+{"pair_id": "E2480-E13", "ops_total": 6, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(y, z), y), x) = x  \nASK: op(y, op(x, x)) = x"}
+{"pair_id": "E401-E62", "ops_total": 6, "status": "unparseable", "transform": null, "response": "ASSUME: op(x, op(z, y)) = op(op(Value 2, w), Value 1)\nASK: op(op(op(x, x), x), y) = y"}
+{"pair_id": "E22-E3407", "ops_total": 6, "status": "wrong", "transform": null, "response": "ASSUME: op(y, op(z, w)) = x  \nASK: op(x, op(y, op(z, op(y, op(z, w))))) = op(x, op(y, op(z, w)))"}
+{"pair_id": "E8-E2088", "ops_total": 6, "status": "wrong", "transform": null, "response": "ASSUME: op(x, op(x, x)) = x  \nASK: op(x, op(op(y, x), x)) = op(op(x, y), op(x, y))"}
+{"pair_id": "E235-E400", "ops_total": 6, "status": "wrong", "transform": null, "response": "ASSUME: op(y, op(y, op(y, z))) = x  \nASK: op(op(x, y), op(z, y)) = op(op(z, y), op(x, y))"}
+{"pair_id": "E142-E4130", "ops_total": 7, "status": "wrong", "transform": null, "response": "ASSUME: op(z, op(op(z, z), x)) = x  \nASK: op(op(op(op(x, y), x), y), x) = op(x, y)"}
+{"pair_id": "E1477-E61", "ops_total": 7, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(z, w), op(y, op(z, w))), op(x, op(y, op(z, w)))) = x  \nASK: op(op(op(z, w), op(y, op(z, w))), op(x, op(y, op(z, w)))) = x"}
+{"pair_id": "E2808-E198", "ops_total": 7, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(y, z), op(z, y)), op(op(y, z), op(z, y))) = x  \nASK: op(op(op(y, z), op(w, x)), op(op(y, z), op(w, x))) = x"}
+{"pair_id": "E99-E2932", "ops_total": 7, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(x, x), x), x) = x  \nASK: op(op(op(op(x, z), y), w), y) = x"}
+{"pair_id": "E161-E2998", "ops_total": 7, "status": "wrong", "transform": null, "response": "ASSUME: op(op(x, y), op(y, z)) = x  \nASK: op(op(op(op(z, y), y), z), x) = x"}
+{"pair_id": "E3462-E261", "ops_total": 7, "status": "wrong", "transform": null, "response": "ASSUME: op(x, op(y, op(x, y))) = op(x, y)\nASK: x = op(op(op(x, y), x), y)"}
+{"pair_id": "E1049-E406", "ops_total": 7, "status": "unparseable", "transform": null, "response": "ASSUME: op(y, op(y, op(op(y, op(y, y)), y), y)) = y  \nASK: op(op(op(z, w), x), y) = op(x, y)"}
+{"pair_id": "E3825-E119", "ops_total": 7, "status": "wrong", "transform": null, "response": "ASSUME: op(op(x, y), op(y, z)) = op(x, op(z, op(y, z)))\nASK: op(op(op(x, y), z), op(y, op(op(x, y), z))) = x"}
+{"pair_id": "E1103-E174", "ops_total": 7, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(z, z), x), w) = x\nASK: op(op(y, x), op(z, z)) = x"}
+{"pair_id": "E239-E3758", "ops_total": 7, "status": "wrong", "transform": null, "response": "ASSUME: op(z, op(y, op(z, x))) = x  \nASK: op(op(op(x, y), y), op(x, x)) = op(x, y)"}
+{"pair_id": "E2082-E3455", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(op(x, y), z), w), x) = x  \nASK: op(op(op(x, y), op(u, v)), op(w, op(z, op(op(op(x, y), z), w)))) = op(x, y)"}
+{"pair_id": "E1300-E2679", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(op(x, z), y), y), y) = x  \nASK: op(op(op(op(x, y), z), x), x) = x"}
+{"pair_id": "E1929-E3865", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(y, op(y, op(z, z))) = x  \nASK: op(x, op(x, op(x, y))) = op(op(x, op(x, y)), y)"}
+{"pair_id": "E3199-E1578", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(op(y, z), y), y), z) = x  \nASK: op(op(y, op(z, y)), op(y, op(z, y))) = x"}
+{"pair_id": "E2079-E2825", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(x, y), z), op(op(z, y), op(op(op(x, y), z), op(z, y)))) = x  \nASK: op(op(op(y, z), op(w, x)), op(op(op(op(y, z), op(w, x)), u), u)) = x"}
+{"pair_id": "E2202-E2856", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(op(op(y, z), z), op(y, w)) = x  \nASK: op(op(op(op(x, y), x), op(op(x, y), y)), op(op(op(x, y), x), y)) = x"}
+{"pair_id": "E4272-E1169", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(x, op(x, op(x, x))) = op(y, op(y, op(y, y)))\nASK: op(y, op(z, op(y, y))) = y"}
+{"pair_id": "E588-E1400", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(w, op(x, op(w, op(x, x)))) = x  \nASK: op(op(op(op(z, w), x), x), y) = x"}
+{"pair_id": "E3674-E3656", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(x, op(y, op(x, x))) = op(y, op(x, op(x, x)))\nASK: op(x, y) = op(z, op(op(w, u), w))"}
+{"pair_id": "E2732-E2016", "ops_total": 8, "status": "wrong", "transform": null, "response": "ASSUME: op(y, op(z, w)) = op(op(y, op(z, w)), u)\nASK: op(op(y, op(z, w)), op(y, z)) = x"}
