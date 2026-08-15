@@ -94,11 +94,25 @@ DEFAULT_SURFACES = dataset.STORY_THEMES + ("literal",)
 DEFAULT_LAYERS = (4, 8, 12, 16, 20, 24, 28, 32, 36)
 
 # The positions read, and what each one means in plain terms.
+#
+# Three of these are read after the reasoning, not one, because the obvious
+# choice is the worst of them. The last token of the whole sequence is the
+# newline that follows the closing `</think>` tag, and that token is identical
+# in every sequence in the run; a low number there could mean the law was lost
+# or could just mean structural tokens carry little content. Reading inside the
+# trace avoids that, and the average over the trace is the fairest counterpart
+# to the pre-reasoning reading, which is also taken over content.
 POSITIONS = {
     "problem_end": "the last token of the problem statement, before any reasoning",
     "prompt_end": "the last token of the prompt, including the task instructions",
-    "after_reasoning": "the last token after the reasoning trace has closed",
+    "reasoning_end": "the last token of the reasoning trace itself",
+    "reasoning_mean": "averaged over every token of the reasoning trace",
+    "after_reasoning": "the last token before the answer starts, just after the trace closes",
 }
+
+# The positions that only exist once the model has reasoned. Identification at
+# these is what the experiment is about; the first two are the reference.
+POST_REASONING = ("reasoning_end", "reasoning_mean", "after_reasoning")
 
 DEFAULT_BUDGET = 512
 # 10 per operation-count bin gives 53 laws once vacuous ones are dropped, close
@@ -201,6 +215,7 @@ def run_experiment(args, run: runs.RunDirectory, conditions: List[runs.Condition
         after = hooks.capture_residuals(
             model, tokenizer, after_texts, args.layers,
             batch_size=args.act_batch_size,
+            spans=[completion.thinking for completion in completions],
             progress="{}: after reasoning".format(surface),
         )
 
@@ -208,6 +223,8 @@ def run_experiment(args, run: runs.RunDirectory, conditions: List[runs.Condition
             {
                 "problem_end": before["span_last"],
                 "prompt_end": before["last"],
+                "reasoning_end": after["span_last"],
+                "reasoning_mean": after["span_mean"],
                 "after_reasoning": after["last"],
                 "pair_ids": [s["pair_id"] for s in samples],
                 "surface": surface,
@@ -318,7 +335,7 @@ def analyze(run: runs.RunDirectory, conditions: List[runs.Condition]) -> dict:
             stacked = torch.cat([loaded[name][position][layer] for name in surfaces])
             hits = nearest_neighbour_hits(stacked, labels, origin)
             entry = {"overall": stats.rate_of(hits).as_dict()}
-            if position == "after_reasoning":
+            if position in POST_REASONING:
                 entry["when_answer_correct"] = stats.rate_of(
                     hit for hit, ok in zip(hits, was_correct) if ok
                 ).as_dict()
@@ -354,20 +371,21 @@ def analyze(run: runs.RunDirectory, conditions: List[runs.Condition]) -> dict:
 def reasoning_cost(summary: dict) -> dict:
     """What the reasoning trace did to identification, at a matched layer.
 
-    Compared at the layer that reads best before reasoning, so the comparison
-    is not won by picking a different layer for each position.
+    Every post-reasoning position is compared at the layer that reads best
+    before reasoning, so no comparison is won by picking a different layer for
+    each side of it.
     """
     layer = summary["best_layer"]["problem_end"]
     before = summary["identification"]["problem_end"][layer]["overall"]
-    after = summary["identification"]["after_reasoning"].get(layer)
-    if after is None:
-        return {}
-    return {
-        "layer": int(layer),
-        "before": before,
-        "after": after["overall"],
-        "delta": after["overall"]["rate"] - before["rate"],
-    }
+    out = {"layer": int(layer), "before": before, "after": {}}
+    for position in POST_REASONING:
+        cell = summary["identification"].get(position, {}).get(layer)
+        if cell is None:
+            continue
+        out["after"][position] = dict(
+            cell["overall"], delta=cell["overall"]["rate"] - before["rate"]
+        )
+    return out
 
 
 def nearest_neighbour_hits(
@@ -430,26 +448,27 @@ def print_summary(summary: dict) -> None:
         split = summary["identification"][position][best]
         if "when_answer_correct" in split:
             print(
-                "  on problems answered correctly {:.1%} ({}/{}), on problems "
-                "answered wrongly {:.1%} ({}/{})".format(
-                    split["when_answer_correct"]["rate"],
-                    split["when_answer_correct"]["successes"],
-                    split["when_answer_correct"]["total"],
-                    split["when_answer_wrong"]["rate"],
-                    split["when_answer_wrong"]["successes"],
-                    split["when_answer_wrong"]["total"],
+                "  on problems answered correctly {}, on problems answered "
+                "wrongly {}".format(
+                    _share(split["when_answer_correct"]),
+                    _share(split["when_answer_wrong"]),
                 )
             )
 
     cost = summary.get("reasoning_cost")
-    if cost:
+    if cost and cost.get("after"):
         print(
-            "\nat layer {}, reasoning takes identification from {:.1%} to "
-            "{:.1%}, a change of {:+.1f} points".format(
-                cost["layer"], cost["before"]["rate"], cost["after"]["rate"],
-                100 * cost["delta"],
+            "\nreading at layer {}, where the problem statement reads best "
+            "({:.1%}), reasoning leaves identification at".format(
+                cost["layer"], cost["before"]["rate"]
             )
         )
+        for position, cell in cost["after"].items():
+            print(
+                "  {:<16} {:.1%}, a change of {:+.1f} points".format(
+                    position, cell["rate"], 100 * cell["delta"]
+                )
+            )
 
     print("\naccuracy and reasoning length per surface form")
     for surface, accuracy in sorted(summary["accuracy_by_surface"].items()):
@@ -461,6 +480,13 @@ def print_summary(summary: dict) -> None:
                 thinking["think_tokens_mean"], thinking["cut_off"]["rate"],
             )
         )
+
+
+def _share(cell: dict) -> str:
+    """A rate with its denominator, or a plain note when the group is empty."""
+    if not cell["total"]:
+        return "no such problems"
+    return "{:.1%} ({}/{})".format(cell["rate"], cell["successes"], cell["total"])
 
 
 def make_figure(args, summary: dict, run: runs.RunDirectory) -> Optional[Path]:
@@ -498,8 +524,15 @@ def make_figure(args, summary: dict, run: runs.RunDirectory) -> Optional[Path]:
     # before-and-after difference can be seen and not only tabulated.
     surfaces = summary["surfaces"]
     loaded = {name: torch.load(activations_path(run, name)) for name in surfaces}
-    for axis, position in zip(axes[1:], ("problem_end", "after_reasoning")):
-        layer = int(summary["best_layer"]["problem_end"])
+    reference_layer = summary["best_layer"]["problem_end"]
+    # Of the three post-reasoning positions, draw whichever holds the law best,
+    # so the panel shows the strongest case that anything survived.
+    best_post = max(
+        POST_REASONING,
+        key=lambda p: summary["identification"][p][reference_layer]["overall"]["rate"],
+    )
+    for axis, position in zip(axes[1:], ("problem_end", best_post)):
+        layer = int(reference_layer)
         stacked = torch.cat([loaded[name][position][layer] for name in surfaces])
         points, explained = principal_components(stacked)
         pair_ids = loaded[surfaces[0]]["pair_ids"]
