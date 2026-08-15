@@ -1,0 +1,13 @@
+{
+  "layer": 61,
+  "site": "mean",
+  "fold_direction_cosines": {
+    "mean": 0.6996,
+    "min": 0.2568,
+    "max": 0.9364
+  },
+  "readout_alignment": {
+    "n_texts": 300,
+    "spearman_probe_vs_margin": 0.3021
+  }
+}

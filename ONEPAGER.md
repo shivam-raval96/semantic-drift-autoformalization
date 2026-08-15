@@ -48,6 +48,12 @@ Results:
    law-disjoint 0.599 (all folds 0.588-0.641) vs lexical floor 0.503 under the
    same split; easy tier 0.793. MLP adds nothing (linear structure).
 
+5. Direction analysis (local): probes fit on independent law-disjoint folds
+   share a dominant direction (mean pairwise cosine 0.70 in 5,120-d; range
+   0.26-0.94, the low pair excluding the largest law cluster). Probe score vs
+   the model's own yes/no margin: Spearman 0.30 (n=300) - the representation
+   and the behavioral readout are partially decoupled.
+
 Headline: a law-general, linearly decodable correctness signal exists in the
 capable model's deep layers and is absent in the incapable 8B; representation
 and behavioral competence emerge together, tier for tier.
