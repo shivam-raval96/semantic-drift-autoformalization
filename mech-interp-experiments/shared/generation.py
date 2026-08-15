@@ -65,7 +65,7 @@ NO_THINK_SAMPLING = dict(do_sample=True, temperature=0.7, top_p=0.8, top_k=20)
 class Completion:
     """One example's result: the answer, and how much thinking produced it."""
 
-    __slots__ = ("answer", "think_tokens", "closed_naturally", "answer_tokens")
+    __slots__ = ("answer", "think_tokens", "closed_naturally", "answer_tokens", "thinking")
 
     def __init__(
         self,
@@ -73,6 +73,7 @@ class Completion:
         think_tokens: int,
         closed_naturally: bool,
         answer_tokens: int,
+        thinking: str = "",
     ):
         self.answer = answer
         self.think_tokens = think_tokens
@@ -80,8 +81,13 @@ class Completion:
         # in. The share of examples in that state is how hard the budget bit.
         self.closed_naturally = closed_naturally
         self.answer_tokens = answer_tokens
+        # The reasoning text itself, for experiments that read activations from
+        # the end of the trace. Empty at budget 0, where there is no trace.
+        self.thinking = thinking
 
     def as_dict(self) -> dict:
+        # The reasoning text is deliberately absent: it is long, it would
+        # dominate every records file, and nothing downstream grades it.
         return {
             "think_tokens": self.think_tokens,
             "closed_naturally": self.closed_naturally,
@@ -258,6 +264,7 @@ class Generator:
                 think_tokens=len(thought),
                 closed_naturally=was_closed,
                 answer_tokens=len(answer),
+                thinking=self.tokenizer.decode(thought, skip_special_tokens=True),
             )
             for answer, thought, was_closed in zip(answers, thinking_ids, closed)
         ]

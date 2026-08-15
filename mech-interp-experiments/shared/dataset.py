@@ -55,7 +55,7 @@ from .vendor import ensure_on_path
 
 ensure_on_path()
 
-from benchmark import make_sample  # noqa: E402
+from benchmark import load_equations, make_sample, sample_pairs_stratified  # noqa: E402
 from filter_vacuous import is_vacuous  # noqa: E402
 from genform import generate_corpus  # noqa: E402
 from literalform import render_description  # noqa: E402
@@ -289,6 +289,64 @@ def sample_depth_balanced(
             samples.append(sample)
             got += 1
     return samples
+
+
+# ------------------------------------------------- The published ETP law list
+
+# Bin 1 of the published list is made entirely of pairs containing a vacuous
+# law, so the useful stratified range starts at 2.
+ETP_BINS = tuple(range(2, 9))
+
+
+def sample_etp_stratified(
+    per_bin: int,
+    seed: int,
+    bins: Sequence[int] = ETP_BINS,
+    form: str = "story",
+    template_path: Optional[Path] = None,
+) -> List[dict]:
+    """Draw pairs from the published ETP law list, stratified by operation count.
+
+    The counterpart of sample_depth_balanced for experiments that continue the
+    earlier steering and activation work: same sampler, same seed and same law
+    list those runs used, so their baselines remain the right comparison.
+
+    Sampling never consults `form`, so one seed gives the identical pair set in
+    every surface form and two arms can be compared example by example.
+    """
+    equations, _ = load_equations()
+    samples = sample_pairs_stratified(
+        equations, per_bin, seed, tuple(bins), form=form, template_path=template_path
+    )
+    return [sample for sample in samples if not is_vacuous(sample)]
+
+
+def sample_etp_matched(
+    per_bin: int,
+    seed: int,
+    forms: Sequence[str] = ("story", "literal"),
+    bins: Sequence[int] = ETP_BINS,
+) -> Dict[str, List[dict]]:
+    """The same pairs rendered in each of `forms`, aligned position by position."""
+    arms = {form: sample_etp_stratified(per_bin, seed, bins, form) for form in forms}
+    reference = [s["pair_id"] for s in arms[forms[0]]]
+    for form in forms[1:]:
+        if [s["pair_id"] for s in arms[form]] != reference:
+            raise SystemExit(
+                "the {!r} arm drew a different pair set than {!r}; the sampler "
+                "is meant to ignore the form".format(form, forms[0])
+            )
+    return arms
+
+
+def split_alternating(samples: Sequence[dict]) -> Tuple[List[dict], List[dict]]:
+    """Split into a fit half and a held-out half, taking every other pair.
+
+    Alternating rather than cutting in the middle because the sampler emits
+    pairs grouped by complexity bin, so a contiguous split would put the easy
+    problems in one half and the hard ones in the other.
+    """
+    return list(samples[0::2]), list(samples[1::2])
 
 
 def render_all_forms(metadata: dict) -> Dict[str, str]:
