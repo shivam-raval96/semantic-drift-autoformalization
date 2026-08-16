@@ -265,7 +265,12 @@ def ladder(vectors: np.ndarray, depths: np.ndarray) -> dict:
     axis = centroids[levels[-1]] - centroids[levels[0]]
     norm = np.linalg.norm(axis)
     if norm == 0:
-        return {"ordered": False, "projections": {}}
+        # Every problem has the identical vector, so there is no axis at all.
+        # This is the expected state at layer 0 of the last-token read: layer 0
+        # is the embedding output and the last token is the same one for every
+        # problem, so nothing about the problem has reached it yet. Seeing it
+        # here confirms the read position is what it is meant to be.
+        return {"ordered": False, "projections": {}, "identical": True}
     axis = axis / norm
     raw = {d: float(centroids[d] @ axis) for d in levels}
     low, high = raw[levels[0]], raw[levels[-1]]
@@ -621,11 +626,15 @@ def print_summary(summary: dict, layers: Sequence[int]) -> None:
             for layer in layers:
                 entry = per_layer[str(layer)]
                 rungs = entry["ladder"]["projections"]
-                shown = " ".join(
-                    "{:.2f}".format(rungs[d]) for d in sorted(rungs, key=int)
-                )
-                if not entry["ladder"]["ordered"]:
-                    shown += "  out of order"
+                if entry["ladder"].get("identical"):
+                    shown = "identical for every problem"
+                else:
+                    shown = " ".join(
+                        "{:.2f}".format(rungs[d]) for d in sorted(rungs, key=int)
+                    )
+                    if not entry["ladder"]["ordered"]:
+                        shown += "  out of order"
+                in_plane = entry["depth_axis_in_pca_plane"]
                 print(
                     row.format(
                         layer,
@@ -639,7 +648,7 @@ def print_summary(summary: dict, layers: Sequence[int]) -> None:
                         if entry.get("failure_auc") is None
                         else "{:.3f}".format(entry["failure_auc"]),
                         _p(entry.get("failure_auc_p")),
-                        "{:.1%}".format(entry["depth_axis_in_pca_plane"]),
+                        "n/a" if in_plane != in_plane else "{:.1%}".format(in_plane),
                     )
                 )
         if summary["permutations"]:
