@@ -1,7 +1,8 @@
 # Depth as a difficulty variable, with text length held fixed
 
-*Status: dataset design built and verified; the experiment is written but has
-not been run.*
+*Status: run. Accuracy falls with depth in both families while prompt length
+stays constant to the token; the numbers are in
+`depth-at-fixed-length-findings.md`.*
 
 ## The problem this solves
 

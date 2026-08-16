@@ -33,7 +33,11 @@ python3 2026-08-15/depth-at-fixed-length.py --quick
 
 | started | experiment | question | status |
 |---|---|---|---|
-| 2026-08-15 | [`depth-at-fixed-length`](2026-08-15/depth-at-fixed-length.md) | does accuracy fall with a problem's serial depth once text length is held constant? | written, not run |
+| 2026-08-15 | [`depth-at-fixed-length`](2026-08-15/depth-at-fixed-length.md) | does accuracy fall with a problem's serial depth once text length is held constant? | [run: yes, by 21.5 and 33.0 points](2026-08-15/depth-at-fixed-length-findings.md) |
+| 2026-08-15 | [`depth-in-activations`](2026-08-15/depth-in-activations.py) | do the activations order by that same depth, better than the text they were read from? | written, not run |
+| 2026-08-15 | [`law-representation-after-reasoning`](2026-08-15/law-representation-after-reasoning.py) | does the model still hold which law it was given once it has finished reasoning? | written, not run |
+| 2026-08-15 | [`steering-at-thinking-budget`](2026-08-15/steering-at-thinking-budget.py) | does the story-to-plain-English steering direction do anything once the model is allowed to reason? | run once; its header records what that run showed about the design |
+| 2026-08-15 | [`steering-story-to-rigid-grammar`](2026-08-15/steering-story-to-rigid-grammar.py) | does steering toward the answer notation, a much bigger contrast, change what gets written? | written, not run |
 
 ## Earlier Colab notebooks
 
