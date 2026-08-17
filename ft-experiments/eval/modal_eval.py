@@ -136,6 +136,9 @@ def _generate(
             "dtype": "bfloat16",
             "max_model_len": max_model_len,
             "chat_template": "model default via llm.chat, add_generation_prompt",
+            "timeout_s": (3600 if (lora and arm == "two-stage")
+                          else 2700 if lora
+                          else 1800 if arm == "two-stage" else 900),
         },
         "timing": {"model_load_s": round(load_s, 1), "generate_s": round(generate_s, 1)},
     }
@@ -184,10 +187,45 @@ def generate_a100(
 # response, so the sequence cap is raised to 12288.
 TWO_STAGE_MAX_MODEL_LEN = 12288
 TWO_STAGE_GUARDRAILS = {**GUARDRAILS, "timeout": 1800}
+# FT adapters stream long fluent RG instead of stopping early (~3x the
+# base run's generated tokens): the story arm reached 222/777 prompts at
+# the 900s cap. Escalated caps for adapter runs, disclosed in run_meta,
+# same precedent as the two-stage escalation above.
+FT_GUARDRAILS = {**GUARDRAILS, "timeout": 2700}
+FT_TWO_STAGE_GUARDRAILS = {**GUARDRAILS, "timeout": 3600}
+
+
+@app.function(**_fn_common, **FT_GUARDRAILS)
+def generate_a10g_ft(
+    model_id: str, conversations: list, max_tokens: int, lora: dict | None = None,
+    chat_kwargs: dict | None = None,
+) -> dict:
+    return _generate(model_id, conversations, max_tokens, lora=lora,
+                     chat_kwargs=chat_kwargs)
 
 
 @app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)
 def generate_a10g_two_stage(
+    model_id: str,
+    conversations: list,
+    max_tokens: int,
+    two_stage: dict,
+    lora: dict | None = None,
+    chat_kwargs: dict | None = None,
+) -> dict:
+    return _generate(
+        model_id,
+        conversations,
+        max_tokens,
+        max_model_len=TWO_STAGE_MAX_MODEL_LEN,
+        two_stage=two_stage,
+        lora=lora,
+        chat_kwargs=chat_kwargs,
+    )
+
+
+@app.function(**_fn_common, **FT_TWO_STAGE_GUARDRAILS)
+def generate_a10g_two_stage_ft(
     model_id: str,
     conversations: list,
     max_tokens: int,
@@ -299,14 +337,16 @@ def main(
     on_a100 = entry["gpu"] == "A100-80GB"
     t0 = time.monotonic()
     if arm == "two-stage":
-        fn = generate_a100_two_stage if on_a100 else generate_a10g_two_stage
+        fn = (generate_a100_two_stage if on_a100
+              else generate_a10g_two_stage_ft if lora else generate_a10g_two_stage)
         result = fn.remote(
             model_id, conversations, MAX_TOKENS,
             {"template": stage2_template_text, "suffix": stage2_suffix},
             lora=lora, chat_kwargs=chat_kwargs,
         )
     else:
-        fn = generate_a100 if on_a100 else generate_a10g
+        fn = (generate_a100 if on_a100
+              else generate_a10g_ft if lora else generate_a10g)
         result = fn.remote(model_id, conversations, MAX_TOKENS, lora=lora,
                            chat_kwargs=chat_kwargs)
     wall_s = time.monotonic() - t0
