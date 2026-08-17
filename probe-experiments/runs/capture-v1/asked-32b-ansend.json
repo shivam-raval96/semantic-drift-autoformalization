@@ -1,0 +1,39 @@
+{
+  "stage": "capture",
+  "tag": "asked-32b-ansend",
+  "model_key": "qwen3-32b",
+  "model_id": "Qwen/Qwen3-32B",
+  "adapter": null,
+  "gpu": "A100-80GB",
+  "limit": 0,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": true,
+  "gate_sample": false,
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/asked-32b-ansend",
+  "n_texts": 2000,
+  "shape_per_item": [
+    65,
+    5120
+  ],
+  "token_len": {
+    "min": 275,
+    "max": 589,
+    "mean": 414.8
+  },
+  "answer_token_len": {
+    "min": 139,
+    "max": 308,
+    "mean": 212.4
+  },
+  "gpu_seconds": {
+    "load": 43.1,
+    "forward": 312.0,
+    "save": 668.0
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}
