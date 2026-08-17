@@ -87,10 +87,18 @@ correctness direction.
 
 ## Round 3 (2026-08-15): logit-margin gate and the Qwen3-32B probe
 
-**Margin gate** (threshold-free: margin = logit("yes") - logit("no") at the answer
-position, AUROC vs labels; `runs/verify-v1/*-margin.json`): 8B 0.522, 7B 0.564,
-**32B 0.669** (per-tier 0.74 / 0.69 / 0.57), 70B 0.629. Qwen3-32B is the smallest
-model clearing ~0.65 and beats the 70B; captured per the gate rule.
+**Margin gate** (threshold-free: margin = logit("yes") - logit("no") at the
+answer position, AUROC vs labels; `runs/verify-v1/*-margin.json`):
+
+| Model | Margin AUROC | easy | medium | hard |
+|---|---|---|---|---|
+| Llama-3.1-8B | 0.522 | - | - | - |
+| Qwen2.5-7B | 0.564 | - | - | - |
+| **Qwen3-32B** | **0.669** | 0.740 | 0.691 | 0.574 |
+| Llama-3.3-70B | 0.629 | 0.680 | 0.619 | 0.597 |
+
+Qwen3-32B is the smallest model clearing ~0.65 and beats the 70B; captured
+per the gate rule.
 
 **Qwen3-32B probes** (same dataset, same splits, same controls;
 `runs/probe-32b/`): linear, mean site, best layer 61/65: **0.705 in-distribution,
@@ -130,15 +138,26 @@ identically (`runs/probe-ft8b/`): law-disjoint 0.517-0.533 vs base 0.520-0.527,
 in-distribution 0.59-0.60 vs 0.62. Grammar training left the correctness
 representation unchanged.
 
-**Grammar-FT behavioral verdict (Thread A, both scales; details in
-`ft-experiments/runs/ft-v1/comparison.md`).** 8B: unparseable 45->0%
-(literal), 39->0% (two-stage), 9-24% -> 18-52% (story, runaway generation);
-correct 0% throughout. Qwen3-32B, same recipe: grammar perfected but correct
-collapsed - literal 32-61% -> 3-6%, two-stage 29-62% -> 2-6%, story 13-39% ->
-3-10% with the runaway returning (32-60% unparseable, nearly all length-capped).
+**Grammar-FT behavioral verdict (Thread A, both scales).** Same recipe on both
+models (LoRA r=16 all layers, raw RG text, 3 epochs); pooled over all 777
+problems (per-tier tables in `ft-experiments/runs/ft-v1/comparison.md`):
+
+![Grammar-FT effect](ft_effect.png)
+
+| Model / arm | Correct, base -> FT | Unparseable, base -> FT |
+|---|---|---|
+| 8B story | 0.1% -> 0.0% | 12.2% -> 32.3% (runaway) |
+| 8B literal | 0.4% -> 0.0% | 22.8% -> 0.0% |
+| 8B two-stage | 0.0% -> 0.0% | 19.2% -> 0.1% |
+| 32B story | 18.8% -> 5.3% | 6.7% -> 43.2% (runaway) |
+| 32B literal | **34.4% -> 3.6%** | 5.7% -> 0.1% |
+| 32B two-stage | **34.9% -> 3.3%** | 6.3% -> 0.5% |
+
 Grammar-only continuation training is a behavioral override, not a skill
-injection: no semantic gain where capability is absent, displacement where it
-exists.
+injection: syntax is perfected (literal/two-stage unparseable to ~0%), the
+story arm gains a non-stopping pathology instead (nearly all length-capped),
+no semantics appears where capability was absent (8B), and existing
+translation ability is displaced where it was present (32B, 34% -> 3-4%).
 
 ## Open questions
 
