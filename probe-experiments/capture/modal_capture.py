@@ -212,7 +212,8 @@ def capture(items: list, config: dict) -> dict:
 
 @app.local_entrypoint()
 def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
-         dry_run: bool = False, adapter: str = "", asked: bool = False):
+         dry_run: bool = False, adapter: str = "", asked: bool = False,
+         gate_sample: bool = False):
     root = PX_ROOT
     pxc = load_config()
     mcfg = pxc.MODELS[model]
@@ -226,18 +227,22 @@ def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
         rows = rows[:limit]
     tag = tag or (f"{model}-full" if not limit else f"{model}-limit{limit}")
     if asked and not tag.startswith("asked"):
-        tag = f"asked-{tag}"
+        tag = f"asked-{tag}" + ("-gate300" if gate_sample else "")
 
     items = []
     if asked:
         template = (root / "behavior" / "verify_prompt.md").read_text(encoding="utf-8")
-        import random as _random
-        rng = _random.Random(pxc.VERIFY["sample_seed"])
-        sample = []
-        for t in ("easy", "medium", "hard"):
-            pool = [r for r in rows if r["tier"] == t]
-            sample.extend(rng.sample(pool, pxc.VERIFY["problems_per_tier"]))
-        rows = sample
+        # Full contrast_v1 by default: 300-text gate subsampling left the
+        # law-disjoint split underpowered (150 problems). Use --gate-sample
+        # only to reproduce the original gate subset.
+        if gate_sample:
+            import random as _random
+            rng = _random.Random(pxc.VERIFY["sample_seed"])
+            sample = []
+            for t in ("easy", "medium", "hard"):
+                pool = [r for r in rows if r["tier"] == t]
+                sample.extend(rng.sample(pool, pxc.VERIFY["problems_per_tier"]))
+            rows = sample
         if limit:
             rows = rows[:limit]
     for row in rows:
@@ -269,6 +274,7 @@ def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
         "contrast_version": "v1",
         "contrast_sha256": manifest["files"]["contrast.jsonl"],
         "chat_mode": asked,
+        "gate_sample": gate_sample,
         "batch_size": 4 if ":" in GPU else 8,
     }
     if dry_run:

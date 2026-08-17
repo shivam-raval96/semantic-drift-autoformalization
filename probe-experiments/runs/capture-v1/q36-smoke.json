@@ -1,0 +1,38 @@
+{
+  "stage": "capture",
+  "tag": "q36-smoke",
+  "model_key": "qwen3.6-27b",
+  "model_id": "Qwen/Qwen3.6-27B",
+  "adapter": null,
+  "gpu": "A100-80GB",
+  "limit": 4,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": false,
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/q36-smoke",
+  "n_texts": 8,
+  "shape_per_item": [
+    65,
+    5120
+  ],
+  "token_len": {
+    "min": 158,
+    "max": 192,
+    "mean": 168.0
+  },
+  "answer_token_len": {
+    "min": 20,
+    "max": 23,
+    "mean": 20.8
+  },
+  "gpu_seconds": {
+    "load": 38.7,
+    "forward": 2.7,
+    "save": 2.6
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}

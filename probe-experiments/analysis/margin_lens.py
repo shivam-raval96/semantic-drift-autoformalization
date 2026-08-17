@@ -15,7 +15,11 @@ from pathlib import Path
 import numpy as np
 from sklearn.metrics import roc_auc_score
 
+import sys
+
 ROOT = Path(__file__).resolve().parents[1]
+ACTS_DIR = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "capture" / "acts-qwen3-32b"
+OUT_NAME = sys.argv[2] if len(sys.argv) > 2 else "margin_lens.json"
 EPS = 1e-6
 
 d = np.load(ROOT / "capture" / "qwen3-32b-head-rows.npz")
@@ -23,13 +27,13 @@ norm_w = d["norm_weight"].astype(np.float32)
 yes_rows = np.stack([d[f"row_{i}"] for i in d["yes_ids"]]).astype(np.float32)
 no_rows = np.stack([d[f"row_{i}"] for i in d["no_ids"]]).astype(np.float32)
 
-meta = json.loads((ROOT / "capture" / "acts-qwen3-32b" / "meta.json").read_text())
+meta = json.loads((ACTS_DIR / "meta.json").read_text())
 ids = meta["ids"]
 y = np.array([meta["labels"][i] for i in ids])
 
 results = {}
 for site in ("last", "mean"):
-    npz = np.load(ROOT / "capture" / "acts-qwen3-32b" / f"acts-{site}.npz")
+    npz = np.load(ACTS_DIR / f"acts-{site}.npz")
     acts = np.stack([npz[i] for i in ids]).astype(np.float32)  # (2000, 65, 5120)
     per_layer = []
     for L in range(acts.shape[1]):
@@ -58,5 +62,5 @@ record = {
 }
 out = ROOT / "runs" / "lens-v1"
 out.mkdir(parents=True, exist_ok=True)
-(out / "margin_lens.json").write_text(json.dumps(record, indent=2) + "\n")
-print(f"-> {out / 'margin_lens.json'}")
+(out / OUT_NAME).write_text(json.dumps(record, indent=2) + "\n")
+print(f"-> {out / OUT_NAME}")

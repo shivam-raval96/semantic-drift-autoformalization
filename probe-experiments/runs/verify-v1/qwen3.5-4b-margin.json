@@ -1,0 +1,1835 @@
+{
+  "stage": "verify-gate",
+  "model_key": "qwen3.5-4b",
+  "model_id": "Qwen/Qwen3.5-4B",
+  "gpu": "A10G",
+  "batch_size": 16,
+  "max_new_tokens": 16,
+  "scoring": "margin",
+  "template": "verify_prompt.md",
+  "template_sha256": "0610fcf7e01644d493b73fa8443f5b3d2bdd6771bfbf4a925bae326ca66e53ef",
+  "example_problem": null,
+  "sample_seed": 0,
+  "problems_per_tier": 50,
+  "limit": 0,
+  "threshold": 0.65,
+  "n": 300,
+  "margin_auroc": 0.626,
+  "acc_margin_sign": 0.5167,
+  "yes_rate_margin_sign": 0.0633,
+  "by_tier_sign": {
+    "easy": 0.53,
+    "hard": 0.51,
+    "medium": 0.51
+  },
+  "gpu_seconds": {
+    "load": 75.9,
+    "forward": 46.0
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  },
+  "rows": [
+    {
+      "id": "contrast_v1_0198::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0198::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.125
+    },
+    {
+      "id": "contrast_v1_0216::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0216::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0021::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0021::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0133::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0133::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0262::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0262::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.0
+    },
+    {
+      "id": "contrast_v1_0249::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0249::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0208::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0208::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0156::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0156::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0245::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0245::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0184::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0184::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0299::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0299::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0112::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0112::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.25
+    },
+    {
+      "id": "contrast_v1_0259::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0259::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0072::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0072::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0145::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0145::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0049::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.875
+    },
+    {
+      "id": "contrast_v1_0049::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0317::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.25
+    },
+    {
+      "id": "contrast_v1_0317::wrong",
+      "label": 0,
+      "pred": "yes",
+      "margin": 0.375
+    },
+    {
+      "id": "contrast_v1_0129::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0129::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0273::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0273::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0309::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0309::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0076::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0076::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0159::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0159::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0051::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0051::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.25
+    },
+    {
+      "id": "contrast_v1_0038::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0038::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0170::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0170::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0242::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0242::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0287::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 1.25
+    },
+    {
+      "id": "contrast_v1_0287::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.0
+    },
+    {
+      "id": "contrast_v1_0052::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0052::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0182::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0182::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0223::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0223::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0162::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0162::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0313::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0313::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0328::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0328::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0105::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0105::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0283::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0283::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.875
+    },
+    {
+      "id": "contrast_v1_0227::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0227::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.625
+    },
+    {
+      "id": "contrast_v1_0267::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0267::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.875
+    },
+    {
+      "id": "contrast_v1_0134::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0134::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0032::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0032::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0281::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.375
+    },
+    {
+      "id": "contrast_v1_0281::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": 0.0
+    },
+    {
+      "id": "contrast_v1_0008::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0008::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0048::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0048::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.0
+    },
+    {
+      "id": "contrast_v1_0205::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0205::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0321::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0321::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0001::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0001::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0314::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0314::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0253::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0253::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0171::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": 0.0
+    },
+    {
+      "id": "contrast_v1_0171::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0125::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0125::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0167::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0167::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0367::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0367::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.625
+    },
+    {
+      "id": "contrast_v1_0432::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0432::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0625::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0625::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0448::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0448::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0457::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0457::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0407::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0407::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0613::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0613::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0564::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.5
+    },
+    {
+      "id": "contrast_v1_0564::wrong",
+      "label": 0,
+      "pred": "yes",
+      "margin": 0.375
+    },
+    {
+      "id": "contrast_v1_0381::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": 0.0
+    },
+    {
+      "id": "contrast_v1_0381::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0376::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0376::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0498::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0498::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0595::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0595::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0585::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0585::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0390::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0390::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0489::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0489::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0617::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0617::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0484::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0484::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0398::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0398::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0615::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.125
+    },
+    {
+      "id": "contrast_v1_0615::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0505::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0505::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0611::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0611::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0439::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0439::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0643::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0643::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0635::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0635::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0482::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0482::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0562::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0562::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0640::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0640::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.625
+    },
+    {
+      "id": "contrast_v1_0532::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0532::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0497::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0497::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0629::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0629::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0458::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0458::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0483::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0483::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0429::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0429::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0431::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0431::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0430::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0430::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0351::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0351::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0648::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0648::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0468::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0468::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0578::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0578::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0370::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0370::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0380::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0380::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0401::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0401::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0411::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0411::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.625
+    },
+    {
+      "id": "contrast_v1_0354::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0354::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0535::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0535::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.625
+    },
+    {
+      "id": "contrast_v1_0603::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0603::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0476::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0476::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0602::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0602::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0455::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0455::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0445::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0445::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0969::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0969::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0882::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0882::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0964::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.5
+    },
+    {
+      "id": "contrast_v1_0964::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": 0.0
+    },
+    {
+      "id": "contrast_v1_0808::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0808::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0898::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.375
+    },
+    {
+      "id": "contrast_v1_0898::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0920::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0920::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0996::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0996::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0850::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0850::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0710::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0710::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0834::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0834::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0981::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.25
+    },
+    {
+      "id": "contrast_v1_0981::wrong",
+      "label": 0,
+      "pred": "yes",
+      "margin": 0.125
+    },
+    {
+      "id": "contrast_v1_0727::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0727::wrong",
+      "label": 0,
+      "pred": "yes",
+      "margin": 0.125
+    },
+    {
+      "id": "contrast_v1_0917::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -2.125
+    },
+    {
+      "id": "contrast_v1_0917::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.625
+    },
+    {
+      "id": "contrast_v1_0968::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.5
+    },
+    {
+      "id": "contrast_v1_0968::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0990::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0990::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0839::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0839::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0765::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0765::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0792::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0792::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0676::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -2.5
+    },
+    {
+      "id": "contrast_v1_0676::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.625
+    },
+    {
+      "id": "contrast_v1_0806::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": 0.0
+    },
+    {
+      "id": "contrast_v1_0806::wrong",
+      "label": 0,
+      "pred": "yes",
+      "margin": 0.125
+    },
+    {
+      "id": "contrast_v1_0780::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0780::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0858::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0858::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": 0.0
+    },
+    {
+      "id": "contrast_v1_0755::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0755::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0838::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0838::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0886::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -2.25
+    },
+    {
+      "id": "contrast_v1_0886::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.125
+    },
+    {
+      "id": "contrast_v1_0699::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0699::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0719::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0719::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0742::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0742::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0691::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0691::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0961::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.25
+    },
+    {
+      "id": "contrast_v1_0961::wrong",
+      "label": 0,
+      "pred": "yes",
+      "margin": 0.625
+    },
+    {
+      "id": "contrast_v1_0992::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0992::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0941::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0941::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0976::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0976::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0705::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0705::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.375
+    },
+    {
+      "id": "contrast_v1_0681::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.75
+    },
+    {
+      "id": "contrast_v1_0681::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0731::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0731::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0993::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.375
+    },
+    {
+      "id": "contrast_v1_0993::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0764::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0764::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.25
+    },
+    {
+      "id": "contrast_v1_0978::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0978::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0962::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0962::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.875
+    },
+    {
+      "id": "contrast_v1_0729::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0729::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0868::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0868::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.25
+    },
+    {
+      "id": "contrast_v1_0714::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.875
+    },
+    {
+      "id": "contrast_v1_0714::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0857::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -1.0
+    },
+    {
+      "id": "contrast_v1_0857::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0686::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0686::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.625
+    },
+    {
+      "id": "contrast_v1_0679::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.75
+    },
+    {
+      "id": "contrast_v1_0679::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -1.125
+    },
+    {
+      "id": "contrast_v1_0767::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -2.625
+    },
+    {
+      "id": "contrast_v1_0767::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -2.0
+    },
+    {
+      "id": "contrast_v1_0762::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.25
+    },
+    {
+      "id": "contrast_v1_0762::wrong",
+      "label": 0,
+      "pred": "yes",
+      "margin": 0.375
+    },
+    {
+      "id": "contrast_v1_0913::correct",
+      "label": 1,
+      "pred": "no",
+      "margin": -0.5
+    },
+    {
+      "id": "contrast_v1_0913::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.125
+    },
+    {
+      "id": "contrast_v1_0775::correct",
+      "label": 1,
+      "pred": "yes",
+      "margin": 0.375
+    },
+    {
+      "id": "contrast_v1_0775::wrong",
+      "label": 0,
+      "pred": "no",
+      "margin": -0.125
+    }
+  ]
+}
