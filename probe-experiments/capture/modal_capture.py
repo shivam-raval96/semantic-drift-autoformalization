@@ -121,6 +121,15 @@ def capture(items: list, config: dict) -> dict:
     model.eval()
     load_s = time.time() - t0
 
+    if config.get("chat_mode"):
+        chat_kw = {"enable_thinking": False} if "qwen3" in model_id.lower() else {}
+        for it in items:
+            it["text"] = tok.apply_chat_template(
+                [{"role": "user", "content": it["text"]}],
+                tokenize=False, add_generation_prompt=True, **chat_kw,
+            )
+            it["prefix"] = it["text"][: len(it["text"]) // 2]  # span = tail half
+
     # Tokenize once, unpadded; the answer span starts where the prefix ends.
     ids_all = [tok(it["text"]).input_ids for it in items]
     span_starts = [len(tok(it["prefix"]).input_ids) for it in items]
@@ -203,7 +212,7 @@ def capture(items: list, config: dict) -> dict:
 
 @app.local_entrypoint()
 def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
-         dry_run: bool = False, adapter: str = ""):
+         dry_run: bool = False, adapter: str = "", asked: bool = False):
     root = PX_ROOT
     pxc = load_config()
     mcfg = pxc.MODELS[model]
@@ -213,22 +222,42 @@ def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
         for line in (root / "contrast_v1" / "contrast.jsonl").read_text().splitlines()
         if line.strip()
     ]
-    if limit:
+    if limit and not asked:
         rows = rows[:limit]
     tag = tag or (f"{model}-full" if not limit else f"{model}-limit{limit}")
+    if asked and not tag.startswith("asked"):
+        tag = f"asked-{tag}"
 
     items = []
+    if asked:
+        template = (root / "behavior" / "verify_prompt.md").read_text(encoding="utf-8")
+        import random as _random
+        rng = _random.Random(pxc.VERIFY["sample_seed"])
+        sample = []
+        for t in ("easy", "medium", "hard"):
+            pool = [r for r in rows if r["tier"] == t]
+            sample.extend(rng.sample(pool, pxc.VERIFY["problems_per_tier"]))
+        rows = sample
+        if limit:
+            rows = rows[:limit]
     for row in rows:
-        prefix = row["story"] + "\n\n"
         for kind, label in (("correct", 1), ("wrong", 0)):
-            items.append(
-                {
+            if asked:
+                items.append({
+                    "id": f"{row['problem_id']}::{kind}",
+                    "text": template.replace("{story}", row["story"])
+                                    .replace("{rg}", row[f"{kind}_rg"]),
+                    "prefix": "",
+                    "label": label,
+                })
+            else:
+                prefix = row["story"] + "\n\n"
+                items.append({
                     "id": f"{row['problem_id']}::{kind}",
                     "text": prefix + row[f"{kind}_rg"],
                     "prefix": prefix,
                     "label": label,
-                }
-            )
+                })
 
     config = {
         "tag": tag,
@@ -239,6 +268,7 @@ def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
         "limit": limit,
         "contrast_version": "v1",
         "contrast_sha256": manifest["files"]["contrast.jsonl"],
+        "chat_mode": asked,
         "batch_size": 4 if ":" in GPU else 8,
     }
     if dry_run:
