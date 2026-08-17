@@ -1,0 +1,135 @@
+{
+  "site": "mean",
+  "control_label": "story theme (4-way, chance 0.25)",
+  "cv": "GroupKFold(5) by law component",
+  "models": [
+    {
+      "model": "Llama-3.1-8B",
+      "n_layers": 33,
+      "per_depth": [
+        {
+          "frac_depth": 0.5,
+          "layer": 16,
+          "correctness_auroc": 0.533,
+          "theme_acc": 1.0
+        },
+        {
+          "frac_depth": 0.65,
+          "layer": 21,
+          "correctness_auroc": 0.5273,
+          "theme_acc": 0.999
+        },
+        {
+          "frac_depth": 0.8,
+          "layer": 26,
+          "correctness_auroc": 0.5256,
+          "theme_acc": 1.0
+        },
+        {
+          "frac_depth": 0.95,
+          "layer": 30,
+          "correctness_auroc": 0.5205,
+          "theme_acc": 1.0
+        }
+      ],
+      "best_correctness_auroc": 0.533,
+      "best_theme_acc": 1.0
+    },
+    {
+      "model": "Qwen3.5-4B",
+      "n_layers": 33,
+      "per_depth": [
+        {
+          "frac_depth": 0.5,
+          "layer": 16,
+          "correctness_auroc": 0.5325,
+          "theme_acc": 1.0
+        },
+        {
+          "frac_depth": 0.65,
+          "layer": 21,
+          "correctness_auroc": 0.5319,
+          "theme_acc": 0.9985
+        },
+        {
+          "frac_depth": 0.8,
+          "layer": 26,
+          "correctness_auroc": 0.5307,
+          "theme_acc": 1.0
+        },
+        {
+          "frac_depth": 0.95,
+          "layer": 30,
+          "correctness_auroc": 0.53,
+          "theme_acc": 1.0
+        }
+      ],
+      "best_correctness_auroc": 0.5325,
+      "best_theme_acc": 1.0
+    },
+    {
+      "model": "Qwen3-32B",
+      "n_layers": 65,
+      "per_depth": [
+        {
+          "frac_depth": 0.5,
+          "layer": 32,
+          "correctness_auroc": 0.5155,
+          "theme_acc": 1.0
+        },
+        {
+          "frac_depth": 0.65,
+          "layer": 42,
+          "correctness_auroc": 0.5228,
+          "theme_acc": 1.0
+        },
+        {
+          "frac_depth": 0.8,
+          "layer": 51,
+          "correctness_auroc": 0.5817,
+          "theme_acc": 0.9905
+        },
+        {
+          "frac_depth": 0.95,
+          "layer": 61,
+          "correctness_auroc": 0.5985,
+          "theme_acc": 1.0
+        }
+      ],
+      "best_correctness_auroc": 0.5985,
+      "best_theme_acc": 1.0
+    },
+    {
+      "model": "Qwen3.6-27B",
+      "n_layers": 65,
+      "per_depth": [
+        {
+          "frac_depth": 0.5,
+          "layer": 32,
+          "correctness_auroc": 0.6157,
+          "theme_acc": 0.991
+        },
+        {
+          "frac_depth": 0.65,
+          "layer": 42,
+          "correctness_auroc": 0.7155,
+          "theme_acc": 0.9735
+        },
+        {
+          "frac_depth": 0.8,
+          "layer": 51,
+          "correctness_auroc": 0.8107,
+          "theme_acc": 0.9735
+        },
+        {
+          "frac_depth": 0.95,
+          "layer": 61,
+          "correctness_auroc": 0.8107,
+          "theme_acc": 1.0
+        }
+      ],
+      "best_correctness_auroc": 0.8107,
+      "best_theme_acc": 1.0
+    }
+  ]
+}

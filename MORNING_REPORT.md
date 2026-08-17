@@ -100,10 +100,19 @@ measured behavioral gate (0.6694) to 0.0007.
 | Llama-3.1-8B | 0.522 | 0.527 |
 | Qwen3.5-4B | 0.626 | 0.549 |
 | Qwen3-32B | 0.669 | 0.599 |
-| Qwen3.6-27B | 0.826 | (pending) |
+| **Qwen3.6-27B** | **0.826** | **0.8146** |
 
-Monotone so far (Spearman 1.0 on n=3 — which is exactly why a skeptic agent is
-auditing it; n=3 perfect rank order happens by chance 1 in 6).
+Pearson r = 0.948, Spearman = 1.0 (n=4). Shuffled-label controls clean at every
+point (0.48-0.52). Qwen3.6-27B is a striking data point: it reads 0.815 on
+completely held-out law families, far above anything else we have measured, and
+close to its own behavioral capability.
+
+Caveats a skeptic agent is currently auditing: n=4 makes Spearman 1.0 a
+1-in-24 coincidence under the null; the models differ in depth and
+architecture (Qwen3.5/3.6 are hybrid linear-attention); and "best layer over
+all layers" gives deeper models more chances at a maximum. A task-irrelevant
+control probe (story theme) is running to test whether this is specific to
+correctness or generic representational quality.
 
 ---
 

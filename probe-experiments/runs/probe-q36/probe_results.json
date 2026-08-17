@@ -1,0 +1,876 @@
+{
+  "stage": "probing",
+  "capture_tag": "qwen3.6-27b-full",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "model": "Qwen/Qwen3.6-27B",
+  "n_texts": 2000,
+  "cv": {
+    "primary": "GroupKFold(5) grouped by problem_id",
+    "robustness": "GroupKFold(5) grouped by group_lawcc"
+  },
+  "estimator": "linear",
+  "estimator_spec": "LogisticRegression(max_iter=1000)",
+  "sites": {
+    "last": {
+      "per_layer": [
+        {
+          "layer": 0,
+          "auroc_oof": 0.498,
+          "auroc_folds_mean": 0.496,
+          "auroc_folds_sd": 0.0155
+        },
+        {
+          "layer": 1,
+          "auroc_oof": 0.5472,
+          "auroc_folds_mean": 0.5481,
+          "auroc_folds_sd": 0.0129
+        },
+        {
+          "layer": 2,
+          "auroc_oof": 0.5462,
+          "auroc_folds_mean": 0.5459,
+          "auroc_folds_sd": 0.0134
+        },
+        {
+          "layer": 3,
+          "auroc_oof": 0.5578,
+          "auroc_folds_mean": 0.5573,
+          "auroc_folds_sd": 0.0041
+        },
+        {
+          "layer": 4,
+          "auroc_oof": 0.5683,
+          "auroc_folds_mean": 0.5683,
+          "auroc_folds_sd": 0.0115
+        },
+        {
+          "layer": 5,
+          "auroc_oof": 0.5668,
+          "auroc_folds_mean": 0.5681,
+          "auroc_folds_sd": 0.0187
+        },
+        {
+          "layer": 6,
+          "auroc_oof": 0.5581,
+          "auroc_folds_mean": 0.5581,
+          "auroc_folds_sd": 0.0202
+        },
+        {
+          "layer": 7,
+          "auroc_oof": 0.5495,
+          "auroc_folds_mean": 0.5501,
+          "auroc_folds_sd": 0.0224
+        },
+        {
+          "layer": 8,
+          "auroc_oof": 0.5501,
+          "auroc_folds_mean": 0.5514,
+          "auroc_folds_sd": 0.0147
+        },
+        {
+          "layer": 9,
+          "auroc_oof": 0.5543,
+          "auroc_folds_mean": 0.5543,
+          "auroc_folds_sd": 0.0158
+        },
+        {
+          "layer": 10,
+          "auroc_oof": 0.5671,
+          "auroc_folds_mean": 0.5678,
+          "auroc_folds_sd": 0.016
+        },
+        {
+          "layer": 11,
+          "auroc_oof": 0.5657,
+          "auroc_folds_mean": 0.5659,
+          "auroc_folds_sd": 0.0102
+        },
+        {
+          "layer": 12,
+          "auroc_oof": 0.561,
+          "auroc_folds_mean": 0.5612,
+          "auroc_folds_sd": 0.0122
+        },
+        {
+          "layer": 13,
+          "auroc_oof": 0.5615,
+          "auroc_folds_mean": 0.5623,
+          "auroc_folds_sd": 0.0158
+        },
+        {
+          "layer": 14,
+          "auroc_oof": 0.5543,
+          "auroc_folds_mean": 0.5548,
+          "auroc_folds_sd": 0.0222
+        },
+        {
+          "layer": 15,
+          "auroc_oof": 0.5591,
+          "auroc_folds_mean": 0.5593,
+          "auroc_folds_sd": 0.0128
+        },
+        {
+          "layer": 16,
+          "auroc_oof": 0.5644,
+          "auroc_folds_mean": 0.5645,
+          "auroc_folds_sd": 0.02
+        },
+        {
+          "layer": 17,
+          "auroc_oof": 0.5663,
+          "auroc_folds_mean": 0.567,
+          "auroc_folds_sd": 0.0199
+        },
+        {
+          "layer": 18,
+          "auroc_oof": 0.5526,
+          "auroc_folds_mean": 0.5518,
+          "auroc_folds_sd": 0.0128
+        },
+        {
+          "layer": 19,
+          "auroc_oof": 0.5583,
+          "auroc_folds_mean": 0.5575,
+          "auroc_folds_sd": 0.0115
+        },
+        {
+          "layer": 20,
+          "auroc_oof": 0.5604,
+          "auroc_folds_mean": 0.5608,
+          "auroc_folds_sd": 0.0114
+        },
+        {
+          "layer": 21,
+          "auroc_oof": 0.5474,
+          "auroc_folds_mean": 0.5481,
+          "auroc_folds_sd": 0.0105
+        },
+        {
+          "layer": 22,
+          "auroc_oof": 0.5479,
+          "auroc_folds_mean": 0.5482,
+          "auroc_folds_sd": 0.0107
+        },
+        {
+          "layer": 23,
+          "auroc_oof": 0.5494,
+          "auroc_folds_mean": 0.5491,
+          "auroc_folds_sd": 0.0134
+        },
+        {
+          "layer": 24,
+          "auroc_oof": 0.5504,
+          "auroc_folds_mean": 0.5506,
+          "auroc_folds_sd": 0.0136
+        },
+        {
+          "layer": 25,
+          "auroc_oof": 0.5587,
+          "auroc_folds_mean": 0.5592,
+          "auroc_folds_sd": 0.0109
+        },
+        {
+          "layer": 26,
+          "auroc_oof": 0.5721,
+          "auroc_folds_mean": 0.5735,
+          "auroc_folds_sd": 0.0108
+        },
+        {
+          "layer": 27,
+          "auroc_oof": 0.5779,
+          "auroc_folds_mean": 0.5785,
+          "auroc_folds_sd": 0.0158
+        },
+        {
+          "layer": 28,
+          "auroc_oof": 0.6012,
+          "auroc_folds_mean": 0.6015,
+          "auroc_folds_sd": 0.0186
+        },
+        {
+          "layer": 29,
+          "auroc_oof": 0.6122,
+          "auroc_folds_mean": 0.6138,
+          "auroc_folds_sd": 0.0122
+        },
+        {
+          "layer": 30,
+          "auroc_oof": 0.624,
+          "auroc_folds_mean": 0.625,
+          "auroc_folds_sd": 0.0107
+        },
+        {
+          "layer": 31,
+          "auroc_oof": 0.6214,
+          "auroc_folds_mean": 0.6224,
+          "auroc_folds_sd": 0.0132
+        },
+        {
+          "layer": 32,
+          "auroc_oof": 0.6523,
+          "auroc_folds_mean": 0.6533,
+          "auroc_folds_sd": 0.0296
+        },
+        {
+          "layer": 33,
+          "auroc_oof": 0.6682,
+          "auroc_folds_mean": 0.669,
+          "auroc_folds_sd": 0.0197
+        },
+        {
+          "layer": 34,
+          "auroc_oof": 0.6866,
+          "auroc_folds_mean": 0.6878,
+          "auroc_folds_sd": 0.0135
+        },
+        {
+          "layer": 35,
+          "auroc_oof": 0.6928,
+          "auroc_folds_mean": 0.6937,
+          "auroc_folds_sd": 0.0142
+        },
+        {
+          "layer": 36,
+          "auroc_oof": 0.705,
+          "auroc_folds_mean": 0.7052,
+          "auroc_folds_sd": 0.0191
+        },
+        {
+          "layer": 37,
+          "auroc_oof": 0.7045,
+          "auroc_folds_mean": 0.7039,
+          "auroc_folds_sd": 0.0199
+        },
+        {
+          "layer": 38,
+          "auroc_oof": 0.7176,
+          "auroc_folds_mean": 0.7172,
+          "auroc_folds_sd": 0.0232
+        },
+        {
+          "layer": 39,
+          "auroc_oof": 0.7215,
+          "auroc_folds_mean": 0.722,
+          "auroc_folds_sd": 0.0216
+        },
+        {
+          "layer": 40,
+          "auroc_oof": 0.7149,
+          "auroc_folds_mean": 0.7154,
+          "auroc_folds_sd": 0.0221
+        },
+        {
+          "layer": 41,
+          "auroc_oof": 0.7307,
+          "auroc_folds_mean": 0.731,
+          "auroc_folds_sd": 0.021
+        },
+        {
+          "layer": 42,
+          "auroc_oof": 0.7297,
+          "auroc_folds_mean": 0.7303,
+          "auroc_folds_sd": 0.0207
+        },
+        {
+          "layer": 43,
+          "auroc_oof": 0.7313,
+          "auroc_folds_mean": 0.7316,
+          "auroc_folds_sd": 0.0237
+        },
+        {
+          "layer": 44,
+          "auroc_oof": 0.7459,
+          "auroc_folds_mean": 0.7459,
+          "auroc_folds_sd": 0.0165
+        },
+        {
+          "layer": 45,
+          "auroc_oof": 0.7519,
+          "auroc_folds_mean": 0.7522,
+          "auroc_folds_sd": 0.0145
+        },
+        {
+          "layer": 46,
+          "auroc_oof": 0.7625,
+          "auroc_folds_mean": 0.7624,
+          "auroc_folds_sd": 0.0166
+        },
+        {
+          "layer": 47,
+          "auroc_oof": 0.7677,
+          "auroc_folds_mean": 0.769,
+          "auroc_folds_sd": 0.0169
+        },
+        {
+          "layer": 48,
+          "auroc_oof": 0.7752,
+          "auroc_folds_mean": 0.7749,
+          "auroc_folds_sd": 0.0184
+        },
+        {
+          "layer": 49,
+          "auroc_oof": 0.784,
+          "auroc_folds_mean": 0.7839,
+          "auroc_folds_sd": 0.0149
+        },
+        {
+          "layer": 50,
+          "auroc_oof": 0.8151,
+          "auroc_folds_mean": 0.8156,
+          "auroc_folds_sd": 0.0156
+        },
+        {
+          "layer": 51,
+          "auroc_oof": 0.8191,
+          "auroc_folds_mean": 0.8192,
+          "auroc_folds_sd": 0.0156
+        },
+        {
+          "layer": 52,
+          "auroc_oof": 0.8052,
+          "auroc_folds_mean": 0.8056,
+          "auroc_folds_sd": 0.0176
+        },
+        {
+          "layer": 53,
+          "auroc_oof": 0.7985,
+          "auroc_folds_mean": 0.7992,
+          "auroc_folds_sd": 0.0165
+        },
+        {
+          "layer": 54,
+          "auroc_oof": 0.7907,
+          "auroc_folds_mean": 0.7904,
+          "auroc_folds_sd": 0.015
+        },
+        {
+          "layer": 55,
+          "auroc_oof": 0.7912,
+          "auroc_folds_mean": 0.7912,
+          "auroc_folds_sd": 0.013
+        },
+        {
+          "layer": 56,
+          "auroc_oof": 0.8012,
+          "auroc_folds_mean": 0.8014,
+          "auroc_folds_sd": 0.0135
+        },
+        {
+          "layer": 57,
+          "auroc_oof": 0.7978,
+          "auroc_folds_mean": 0.7977,
+          "auroc_folds_sd": 0.0108
+        },
+        {
+          "layer": 58,
+          "auroc_oof": 0.799,
+          "auroc_folds_mean": 0.799,
+          "auroc_folds_sd": 0.0112
+        },
+        {
+          "layer": 59,
+          "auroc_oof": 0.8009,
+          "auroc_folds_mean": 0.8007,
+          "auroc_folds_sd": 0.0128
+        },
+        {
+          "layer": 60,
+          "auroc_oof": 0.8007,
+          "auroc_folds_mean": 0.8006,
+          "auroc_folds_sd": 0.0111
+        },
+        {
+          "layer": 61,
+          "auroc_oof": 0.8074,
+          "auroc_folds_mean": 0.8079,
+          "auroc_folds_sd": 0.0095
+        },
+        {
+          "layer": 62,
+          "auroc_oof": 0.8109,
+          "auroc_folds_mean": 0.8116,
+          "auroc_folds_sd": 0.0088
+        },
+        {
+          "layer": 63,
+          "auroc_oof": 0.8068,
+          "auroc_folds_mean": 0.8075,
+          "auroc_folds_sd": 0.0088
+        },
+        {
+          "layer": 64,
+          "auroc_oof": 0.8028,
+          "auroc_folds_mean": 0.8035,
+          "auroc_folds_sd": 0.0115
+        }
+      ],
+      "best_layer": 51,
+      "best_auroc_oof": 0.8191,
+      "lawcc_robustness": {
+        "auroc_oof": 0.7639,
+        "fold_aurocs": [
+          0.7976,
+          0.7082,
+          0.7224,
+          0.8093,
+          0.8072
+        ],
+        "caveat": "largest law component holds 556/1000 problems"
+      },
+      "shuffled_label_auroc": [
+        0.499,
+        0.5151,
+        0.4776
+      ],
+      "breakdown_at_best": {
+        "by_tier": {
+          "easy": 0.8931,
+          "hard": 0.7308,
+          "medium": 0.8218
+        },
+        "by_perturbation": {
+          "arg_swap": 0.6839,
+          "grow": 0.8316,
+          "prune": 0.8775,
+          "var_sub": 0.867
+        }
+      },
+      "seconds": 101.3
+    },
+    "mean": {
+      "per_layer": [
+        {
+          "layer": 0,
+          "auroc_oof": 0.5002,
+          "auroc_folds_mean": 0.5012,
+          "auroc_folds_sd": 0.0123
+        },
+        {
+          "layer": 1,
+          "auroc_oof": 0.5747,
+          "auroc_folds_mean": 0.5755,
+          "auroc_folds_sd": 0.0126
+        },
+        {
+          "layer": 2,
+          "auroc_oof": 0.5772,
+          "auroc_folds_mean": 0.5772,
+          "auroc_folds_sd": 0.0124
+        },
+        {
+          "layer": 3,
+          "auroc_oof": 0.5784,
+          "auroc_folds_mean": 0.5791,
+          "auroc_folds_sd": 0.0083
+        },
+        {
+          "layer": 4,
+          "auroc_oof": 0.5813,
+          "auroc_folds_mean": 0.581,
+          "auroc_folds_sd": 0.0106
+        },
+        {
+          "layer": 5,
+          "auroc_oof": 0.591,
+          "auroc_folds_mean": 0.5908,
+          "auroc_folds_sd": 0.0138
+        },
+        {
+          "layer": 6,
+          "auroc_oof": 0.5852,
+          "auroc_folds_mean": 0.5848,
+          "auroc_folds_sd": 0.0158
+        },
+        {
+          "layer": 7,
+          "auroc_oof": 0.5793,
+          "auroc_folds_mean": 0.5787,
+          "auroc_folds_sd": 0.0128
+        },
+        {
+          "layer": 8,
+          "auroc_oof": 0.5751,
+          "auroc_folds_mean": 0.5756,
+          "auroc_folds_sd": 0.0115
+        },
+        {
+          "layer": 9,
+          "auroc_oof": 0.5774,
+          "auroc_folds_mean": 0.5777,
+          "auroc_folds_sd": 0.009
+        },
+        {
+          "layer": 10,
+          "auroc_oof": 0.5633,
+          "auroc_folds_mean": 0.5636,
+          "auroc_folds_sd": 0.01
+        },
+        {
+          "layer": 11,
+          "auroc_oof": 0.5666,
+          "auroc_folds_mean": 0.5668,
+          "auroc_folds_sd": 0.0051
+        },
+        {
+          "layer": 12,
+          "auroc_oof": 0.5718,
+          "auroc_folds_mean": 0.5726,
+          "auroc_folds_sd": 0.013
+        },
+        {
+          "layer": 13,
+          "auroc_oof": 0.572,
+          "auroc_folds_mean": 0.5722,
+          "auroc_folds_sd": 0.0104
+        },
+        {
+          "layer": 14,
+          "auroc_oof": 0.5761,
+          "auroc_folds_mean": 0.5756,
+          "auroc_folds_sd": 0.0081
+        },
+        {
+          "layer": 15,
+          "auroc_oof": 0.5845,
+          "auroc_folds_mean": 0.5845,
+          "auroc_folds_sd": 0.0061
+        },
+        {
+          "layer": 16,
+          "auroc_oof": 0.5901,
+          "auroc_folds_mean": 0.5895,
+          "auroc_folds_sd": 0.0049
+        },
+        {
+          "layer": 17,
+          "auroc_oof": 0.5949,
+          "auroc_folds_mean": 0.5956,
+          "auroc_folds_sd": 0.0092
+        },
+        {
+          "layer": 18,
+          "auroc_oof": 0.602,
+          "auroc_folds_mean": 0.6033,
+          "auroc_folds_sd": 0.0153
+        },
+        {
+          "layer": 19,
+          "auroc_oof": 0.5944,
+          "auroc_folds_mean": 0.595,
+          "auroc_folds_sd": 0.0123
+        },
+        {
+          "layer": 20,
+          "auroc_oof": 0.5886,
+          "auroc_folds_mean": 0.5893,
+          "auroc_folds_sd": 0.0159
+        },
+        {
+          "layer": 21,
+          "auroc_oof": 0.5897,
+          "auroc_folds_mean": 0.5899,
+          "auroc_folds_sd": 0.0193
+        },
+        {
+          "layer": 22,
+          "auroc_oof": 0.5847,
+          "auroc_folds_mean": 0.5854,
+          "auroc_folds_sd": 0.0134
+        },
+        {
+          "layer": 23,
+          "auroc_oof": 0.5908,
+          "auroc_folds_mean": 0.5914,
+          "auroc_folds_sd": 0.0187
+        },
+        {
+          "layer": 24,
+          "auroc_oof": 0.6031,
+          "auroc_folds_mean": 0.6048,
+          "auroc_folds_sd": 0.0171
+        },
+        {
+          "layer": 25,
+          "auroc_oof": 0.616,
+          "auroc_folds_mean": 0.6172,
+          "auroc_folds_sd": 0.0222
+        },
+        {
+          "layer": 26,
+          "auroc_oof": 0.6014,
+          "auroc_folds_mean": 0.6025,
+          "auroc_folds_sd": 0.0227
+        },
+        {
+          "layer": 27,
+          "auroc_oof": 0.6179,
+          "auroc_folds_mean": 0.6188,
+          "auroc_folds_sd": 0.0215
+        },
+        {
+          "layer": 28,
+          "auroc_oof": 0.6648,
+          "auroc_folds_mean": 0.6653,
+          "auroc_folds_sd": 0.0225
+        },
+        {
+          "layer": 29,
+          "auroc_oof": 0.67,
+          "auroc_folds_mean": 0.6714,
+          "auroc_folds_sd": 0.0179
+        },
+        {
+          "layer": 30,
+          "auroc_oof": 0.67,
+          "auroc_folds_mean": 0.6708,
+          "auroc_folds_sd": 0.0192
+        },
+        {
+          "layer": 31,
+          "auroc_oof": 0.6656,
+          "auroc_folds_mean": 0.6661,
+          "auroc_folds_sd": 0.0164
+        },
+        {
+          "layer": 32,
+          "auroc_oof": 0.7334,
+          "auroc_folds_mean": 0.7339,
+          "auroc_folds_sd": 0.0156
+        },
+        {
+          "layer": 33,
+          "auroc_oof": 0.7498,
+          "auroc_folds_mean": 0.7507,
+          "auroc_folds_sd": 0.0169
+        },
+        {
+          "layer": 34,
+          "auroc_oof": 0.7551,
+          "auroc_folds_mean": 0.7561,
+          "auroc_folds_sd": 0.0182
+        },
+        {
+          "layer": 35,
+          "auroc_oof": 0.7527,
+          "auroc_folds_mean": 0.7536,
+          "auroc_folds_sd": 0.0184
+        },
+        {
+          "layer": 36,
+          "auroc_oof": 0.7661,
+          "auroc_folds_mean": 0.7666,
+          "auroc_folds_sd": 0.0102
+        },
+        {
+          "layer": 37,
+          "auroc_oof": 0.7688,
+          "auroc_folds_mean": 0.7688,
+          "auroc_folds_sd": 0.0158
+        },
+        {
+          "layer": 38,
+          "auroc_oof": 0.7763,
+          "auroc_folds_mean": 0.7767,
+          "auroc_folds_sd": 0.0142
+        },
+        {
+          "layer": 39,
+          "auroc_oof": 0.776,
+          "auroc_folds_mean": 0.7765,
+          "auroc_folds_sd": 0.0153
+        },
+        {
+          "layer": 40,
+          "auroc_oof": 0.786,
+          "auroc_folds_mean": 0.7869,
+          "auroc_folds_sd": 0.0132
+        },
+        {
+          "layer": 41,
+          "auroc_oof": 0.7907,
+          "auroc_folds_mean": 0.7909,
+          "auroc_folds_sd": 0.0144
+        },
+        {
+          "layer": 42,
+          "auroc_oof": 0.792,
+          "auroc_folds_mean": 0.7926,
+          "auroc_folds_sd": 0.0144
+        },
+        {
+          "layer": 43,
+          "auroc_oof": 0.7929,
+          "auroc_folds_mean": 0.7939,
+          "auroc_folds_sd": 0.0156
+        },
+        {
+          "layer": 44,
+          "auroc_oof": 0.8041,
+          "auroc_folds_mean": 0.8046,
+          "auroc_folds_sd": 0.019
+        },
+        {
+          "layer": 45,
+          "auroc_oof": 0.8146,
+          "auroc_folds_mean": 0.8148,
+          "auroc_folds_sd": 0.0213
+        },
+        {
+          "layer": 46,
+          "auroc_oof": 0.8245,
+          "auroc_folds_mean": 0.8246,
+          "auroc_folds_sd": 0.0156
+        },
+        {
+          "layer": 47,
+          "auroc_oof": 0.8329,
+          "auroc_folds_mean": 0.8326,
+          "auroc_folds_sd": 0.0134
+        },
+        {
+          "layer": 48,
+          "auroc_oof": 0.839,
+          "auroc_folds_mean": 0.8391,
+          "auroc_folds_sd": 0.012
+        },
+        {
+          "layer": 49,
+          "auroc_oof": 0.8699,
+          "auroc_folds_mean": 0.8698,
+          "auroc_folds_sd": 0.0076
+        },
+        {
+          "layer": 50,
+          "auroc_oof": 0.8686,
+          "auroc_folds_mean": 0.8691,
+          "auroc_folds_sd": 0.0125
+        },
+        {
+          "layer": 51,
+          "auroc_oof": 0.8642,
+          "auroc_folds_mean": 0.8647,
+          "auroc_folds_sd": 0.0096
+        },
+        {
+          "layer": 52,
+          "auroc_oof": 0.8595,
+          "auroc_folds_mean": 0.86,
+          "auroc_folds_sd": 0.0042
+        },
+        {
+          "layer": 53,
+          "auroc_oof": 0.855,
+          "auroc_folds_mean": 0.8553,
+          "auroc_folds_sd": 0.0034
+        },
+        {
+          "layer": 54,
+          "auroc_oof": 0.8549,
+          "auroc_folds_mean": 0.8555,
+          "auroc_folds_sd": 0.0057
+        },
+        {
+          "layer": 55,
+          "auroc_oof": 0.849,
+          "auroc_folds_mean": 0.8493,
+          "auroc_folds_sd": 0.0093
+        },
+        {
+          "layer": 56,
+          "auroc_oof": 0.8421,
+          "auroc_folds_mean": 0.8426,
+          "auroc_folds_sd": 0.008
+        },
+        {
+          "layer": 57,
+          "auroc_oof": 0.8417,
+          "auroc_folds_mean": 0.842,
+          "auroc_folds_sd": 0.0071
+        },
+        {
+          "layer": 58,
+          "auroc_oof": 0.8457,
+          "auroc_folds_mean": 0.8466,
+          "auroc_folds_sd": 0.0073
+        },
+        {
+          "layer": 59,
+          "auroc_oof": 0.847,
+          "auroc_folds_mean": 0.8479,
+          "auroc_folds_sd": 0.0089
+        },
+        {
+          "layer": 60,
+          "auroc_oof": 0.8511,
+          "auroc_folds_mean": 0.8518,
+          "auroc_folds_sd": 0.0075
+        },
+        {
+          "layer": 61,
+          "auroc_oof": 0.8492,
+          "auroc_folds_mean": 0.8499,
+          "auroc_folds_sd": 0.0097
+        },
+        {
+          "layer": 62,
+          "auroc_oof": 0.8491,
+          "auroc_folds_mean": 0.8496,
+          "auroc_folds_sd": 0.0086
+        },
+        {
+          "layer": 63,
+          "auroc_oof": 0.8506,
+          "auroc_folds_mean": 0.8508,
+          "auroc_folds_sd": 0.0096
+        },
+        {
+          "layer": 64,
+          "auroc_oof": 0.8414,
+          "auroc_folds_mean": 0.8424,
+          "auroc_folds_sd": 0.0112
+        }
+      ],
+      "best_layer": 49,
+      "best_auroc_oof": 0.8699,
+      "lawcc_robustness": {
+        "auroc_oof": 0.8146,
+        "fold_aurocs": [
+          0.8394,
+          0.756,
+          0.8203,
+          0.9167,
+          0.8539
+        ],
+        "caveat": "largest law component holds 556/1000 problems"
+      },
+      "shuffled_label_auroc": [
+        0.5102,
+        0.5083,
+        0.4948
+      ],
+      "breakdown_at_best": {
+        "by_tier": {
+          "easy": 0.9263,
+          "hard": 0.807,
+          "medium": 0.8625
+        },
+        "by_perturbation": {
+          "arg_swap": 0.7659,
+          "grow": 0.8959,
+          "prune": 0.9065,
+          "var_sub": 0.8947
+        }
+      },
+      "seconds": 151.3
+    }
+  },
+  "baselines": {
+    "bow_char_tfidf": {
+      "auroc_oof": 0.5389,
+      "auroc_folds_mean": 0.5398
+    },
+    "answer_length": 0.5045,
+    "majority": 0.5
+  },
+  "runtime_s": 252.7
+}

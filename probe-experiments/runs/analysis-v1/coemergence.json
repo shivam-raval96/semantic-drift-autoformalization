@@ -54,10 +54,28 @@
       "above_lexical_floor": 0.0955,
       "in_distribution_auroc": 0.7046,
       "n_layers": 65
+    },
+    {
+      "model": "Qwen3.6-27B",
+      "capability_margin_auroc": 0.8258,
+      "representation_lawdisjoint_auroc": 0.8146,
+      "site": "mean",
+      "fold_aurocs": [
+        0.8394,
+        0.756,
+        0.8203,
+        0.9167,
+        0.8539
+      ],
+      "fold_mean": 0.8373,
+      "fold_sd": 0.0519,
+      "above_lexical_floor": 0.3116,
+      "in_distribution_auroc": 0.8699,
+      "n_layers": 65
     }
   ],
-  "pearson_r": 0.8975,
+  "pearson_r": 0.9483,
   "spearman_r": 1.0,
-  "n_models": 3,
+  "n_models": 4,
   "caveat": "n is small; correlation is descriptive, not inferential. Fold SDs are the honest uncertainty on each point."
 }

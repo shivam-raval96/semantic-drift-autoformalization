@@ -1,0 +1,28 @@
+{
+  "model_target": "qwen3.6-27b",
+  "acts": "acts-q36",
+  "site": "mean",
+  "n_texts": 2000,
+  "probe_layer_capture_row": 54,
+  "probe_lawdisjoint_auroc": 0.8208,
+  "lenses": {
+    "jlens": {
+      "matched_block": 53,
+      "cosine": 0.0127,
+      "abs_cosine_mean_all_blocks": 0.0083,
+      "abs_cosine_max_all_blocks": 0.0166,
+      "random_abs_cosine_p95": 0.02717,
+      "blocks_exceeding_random_p95": 0,
+      "n_blocks": 63
+    },
+    "rlens": {
+      "matched_block": 53,
+      "cosine": 0.0151,
+      "abs_cosine_mean_all_blocks": 0.0085,
+      "abs_cosine_max_all_blocks": 0.0172,
+      "random_abs_cosine_p95": 0.02676,
+      "blocks_exceeding_random_p95": 0,
+      "n_blocks": 63
+    }
+  }
+}
