@@ -72,7 +72,9 @@ controls what it says, not what it knows.
 
 `runs/lens-v1/jspace_alignment.json` — cosine(probe direction, J-lens yes/no
 direction) = **0.011**, versus a random-direction |cos| p95 of **0.027** in the
-same 5120-dim space. Independently, the J-lens direction used *as* a
+same 5120-dim space. **This holds at every layer, not just the one we probed:
+across all 63 lens blocks the mean |cosine| is 0.0065 and the maximum is
+0.0189 — zero of 63 exceed the random-direction p95.** Independently, the J-lens direction used *as* a
 correctness classifier reaches only 0.556–0.562: these are two different
 directions carrying different information.
 

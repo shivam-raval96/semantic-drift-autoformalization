@@ -13,7 +13,7 @@ silent, and we now have the full mechanism with positive controls.**
 | Evidence | Number | Control it beats |
 |---|---|---|
 | The information is really there | probe 0.599 law-disjoint | lexical floor 0.503 |
-| It is NOT on the yes/no verbalization axis | cosine **0.011** | random \|cos\| p95 0.027 |
+| It is NOT on the yes/no verbalization axis (at ANY layer) | cosine **0.011**; 0 of 63 blocks exceed random | random \|cos\| p95 0.027 |
 | It has NO verbal expression at all | readout max **0.1143** | random 0.1121; positive control **0.9503** |
 | Steering it does nothing | Δmargin **−0.07** | random −0.78 |
 | ...and the harness demonstrably works | J-lens dir Δmargin **+24.16**, yes-rate 6%→**100%** | same code, same texts |
