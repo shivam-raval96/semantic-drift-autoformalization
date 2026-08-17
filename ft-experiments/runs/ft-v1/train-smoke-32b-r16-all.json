@@ -1,0 +1,103 @@
+{
+  "run_name": "smoke-32b-r16-all",
+  "config": {
+    "run_name": "smoke-32b-r16-all",
+    "model_id": "Qwen/Qwen3-32B",
+    "seed": 0,
+    "rank": 16,
+    "lora_alpha": 16,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "layers_to_transform": null,
+    "batch_size": 1,
+    "grad_accum": 4,
+    "lr": 0.0002,
+    "save_steps": 10,
+    "max_steps": 10
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.14.1",
+    "peft": "0.19.1",
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "quantized_fallback_4bit": false
+  },
+  "dataset": {
+    "samples": 200,
+    "holdout_samples": 100,
+    "total_tokens": 7387,
+    "blocks_1024": 7
+  },
+  "trainable_param_count": 134217728,
+  "trainable_param_names_sample": [
+    "base_model.model.model.layers.0.self_attn.q_proj.lora_A.default.weight",
+    "base_model.model.model.layers.0.self_attn.q_proj.lora_B.default.weight",
+    "base_model.model.model.layers.0.self_attn.k_proj.lora_A.default.weight",
+    "base_model.model.model.layers.0.self_attn.k_proj.lora_B.default.weight",
+    "base_model.model.model.layers.0.self_attn.v_proj.lora_A.default.weight",
+    "base_model.model.model.layers.0.self_attn.v_proj.lora_B.default.weight"
+  ],
+  "steps": 10,
+  "train_loss_final": 0.6556557536125183,
+  "loss_curve": [
+    {
+      "step": 1,
+      "loss": 0.7437934279441833
+    },
+    {
+      "step": 2,
+      "loss": 0.7177022695541382
+    },
+    {
+      "step": 3,
+      "loss": 0.7262874841690063
+    },
+    {
+      "step": 4,
+      "loss": 0.6840791702270508
+    },
+    {
+      "step": 5,
+      "loss": 0.643153965473175
+    },
+    {
+      "step": 6,
+      "loss": 0.6326204538345337
+    },
+    {
+      "step": 7,
+      "loss": 0.6108591556549072
+    },
+    {
+      "step": 8,
+      "loss": 0.6040599942207336
+    },
+    {
+      "step": 9,
+      "loss": 0.6018132567405701
+    },
+    {
+      "step": 10,
+      "loss": 0.5921883583068848
+    }
+  ],
+  "probes": {
+    "holdout_loss_base": 2.4947,
+    "holdout_loss_ft": 1.9157,
+    "holdout_ppl_base": 12.12,
+    "holdout_ppl_ft": 6.79,
+    "raw_completion_base": " What is the value of op(1, 2)?\nThe problem gives a recursive definition for the function $ op(x, y) $, which is defined as:\n\n$$\nop(x, y) = op(op(y, y),",
+    "raw_completion_ft": " op(x, op(x, y)) = op(op(x, y), y) ??\nASK: op(x, op(x, y)) = op(op(x, y), y) ??\nASK: op(x, op(x,"
+  },
+  "checkpoints_dir": "/models/checkpoints/smoke-32b-r16-all",
+  "train_seconds": 134.8,
+  "wall_seconds": 207.6,
+  "timestamp": "2026-08-17T12:17:11.005807+00:00"
+}
