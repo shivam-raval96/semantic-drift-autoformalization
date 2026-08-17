@@ -91,7 +91,48 @@ measured behavioral gate (0.6694) to 0.0007.
 
 **Interpretation of the asked-mode half is still under control** (see §5).
 
-### 2.5 Capability and representation co-emerge (MODERATE confidence)
+### 2.4b REPLICATION on a second model, two independent lenses (HIGH confidence)
+
+`runs/lens-v1/replicate_alignment_qwen3.6-27b.json`
+
+Qwen3.6-27B has a far STRONGER correctness representation (law-disjoint
+**0.821**) than Qwen3-32B (0.599) - so any "the direction is just weak/noisy"
+objection is off the table. Yet:
+
+| lens | cosine at matched layer | all-block mean \|cos\| | blocks exceeding random p95 |
+|---|---|---|---|
+| J-lens | +0.0127 | 0.0083 | **0 / 63** |
+| R-lens (independent method) | +0.0151 | 0.0085 | **0 / 63** |
+
+Same result on a different model, with lenses fitted by a different group
+using a different recipe (n=25 pile prompts vs n=1000 wikitext), and with two
+methodologically distinct lenses. The orthogonality is not an artifact of one
+model or one lens.
+
+### 2.5 The scaling is SPECIFIC to correctness, not generic (HIGH confidence)
+
+`runs/analysis-v1/control_probe.json`
+
+The obvious alternative to co-emergence is "bigger/newer models represent
+everything better." Tested directly with a task-irrelevant label (the story's
+theme) decoded from the same activations, same splits, depth-matched layers:
+
+| Model | correctness (law-disjoint) | theme accuracy (chance 0.25) |
+|---|---|---|
+| Llama-3.1-8B | 0.533 | **1.000** |
+| Qwen3.5-4B | 0.533 | **1.000** |
+| Qwen3-32B | 0.599 | **1.000** |
+| Qwen3.6-27B | **0.811** | **1.000** |
+
+Every model, including the weakest, decodes the irrelevant property
+perfectly. Only correctness scales with capability. The generic-quality
+explanation is dead.
+
+(These numbers use fixed fractional depths rather than best-of-all-layers, so
+they also neutralize the "deeper models get more chances at a maximum"
+concern.)
+
+### 2.6 Capability and representation co-emerge (MODERATE-HIGH confidence)
 
 `runs/analysis-v1/coemergence.json`
 
