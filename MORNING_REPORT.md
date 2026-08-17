@@ -89,7 +89,24 @@ at the same position* reads 0.62–0.64. Under the verification prompt the same
 readout climbs to 0.686 and ends at 0.6701 — which matches the independently
 measured behavioral gate (0.6694) to 0.0007.
 
-**Interpretation of the asked-mode half is still under control** (see §5).
+**IMPORTANT — the control landed and it changed this claim.** A placebo
+question ("Is the story written in English?"), identical in format and read at
+the identical position, still yields a yes/no margin that predicts correctness
+at **0.6366** (n=2000) versus **0.6701** for the real verification question.
+
+So the channel does NOT open because the model was asked about correctness. It
+opens because the model is in an answer position in a chat format. The honest
+version of 2.4:
+
+> Reading bare text mid-document, the yes/no axis carries no correctness
+> information at any depth (max 0.545). Put the same content in a chat prompt
+> and read at the position where the model is about to answer *any* yes/no
+> question, and that axis carries correctness at 0.64-0.67 — whether or not
+> the question is about correctness.
+
+That is still a real and interesting dissociation (format/position gates
+access to the verbal channel), but it is NOT "task framing routes correctness",
+and the earlier phrasing is withdrawn. `runs/lens-v1/placebo_last.json`.
 
 ### 2.4b REPLICATION on a second model, two independent lenses (HIGH confidence)
 
@@ -191,9 +208,8 @@ correctness or generic representational quality.
 - **Position control (2×2).** Reader-mode reads at the end of the RG;
   asked-mode read at the generation position. The `ansend` capture reads the
   *asked* prompt at the end of the RG, making the comparison position-matched.
-- **Placebo question.** Identical context and position, but the question is
-  "Is the story written in English?". If the yes/no margin still tracks
-  correctness, the effect is format/position, not verification framing.
+- **Placebo question — DONE, and it falsified the routing claim** (see 2.4).
+  0.6366 with an unrelated question vs 0.6701 with the real one.
 - **Specificity control.** Does a probe for a task-irrelevant label (story
   theme) also scale with capability? If yes, co-emergence is generic.
 
