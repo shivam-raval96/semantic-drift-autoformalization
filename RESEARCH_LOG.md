@@ -307,3 +307,122 @@ planned, tens of GPU-hours) is now unnecessary.
 
 These three make different predictions and can be separated by the
 experiments queued next.
+
+---
+
+## 8. FLAGSHIP: is our correctness direction inside the verbalization pathway?
+
+**Question.** Our probe reads correctness (law-disjoint 0.599) but steering
+along that direction moved nothing. The workspace paper offers a candidate
+mechanism: a probe direction can be almost entirely outside the subspace that
+actually drives what the model says. Is ours?
+
+**Hypothesis (H-workspace).** cosine(probe direction, J-lens yes/no direction)
+is near zero. If so, steering along the probe direction cannot move the yes/no
+readout, and the "causally inert" result is explained by geometry rather than
+by the information being epiphenomenal.
+
+**Method.** Qwen3-32B has a free pre-fitted J-lens (Neuronpedia, n=1000).
+Note: the published file is a raw `fit()` checkpoint, not a saved lens, so the
+lens was reconstructed exactly as the running mean `jacobian_sum / n_done`.
+The J-lens yes/no direction at block L is
+`v_L = (mean W_U[yes_ids] - mean W_U[no_ids]) @ J_L`. Index mapping made
+explicit: capture row R = output of decoder block R-1, so our layer-61 probe
+direction corresponds to J-lens block 60.
+Code: `steering/extract_lens_directions.py`, `analysis/jspace_alignment.py`.
+
+**Result.**
+
+| measurement | value |
+|---|---|
+| cosine(probe dir, J-lens yes/no dir) at the matched layer | **0.0110** |
+| random unit-direction \|cosine\| baseline, p95 (5120 dims, n=2000) | 0.0270 |
+| J-lens direction used AS a classifier, reader mode (best layer) | 0.5566 |
+| J-lens direction used AS a classifier, asked mode (best layer) | 0.5615 |
+
+**Verdict: H-workspace supported.** Our correctness direction is
+statistically indistinguishable from orthogonal to the model's yes/no
+verbalization direction - the observed cosine is *below* the 95th percentile
+of random directions in the same space. Independently, the verbalization
+direction itself is nearly uninformative about correctness (0.556-0.562),
+i.e. these are two genuinely different directions carrying different
+information.
+
+**Why this matters.** It converts our steering null from "we pushed and
+nothing happened" into a mechanical statement: we pushed along a direction
+with essentially no component on the axis that controls the model's answer, so
+no effect was possible. The information is real, readable, and sits outside
+the verbalization pathway.
+
+**The control this demands (running).** If the geometry explanation is right,
+steering along the J-lens direction *should* move the margin. That is also the
+positive control our original steering experiment lacked: without it, a null
+cannot distinguish "this direction is inert" from "our steering harness does
+nothing". Launched: `modal_steer.py --direction-src jlens`.
+
+---
+
+## 9. Adversarial review (independent agent) - what survived
+
+I commissioned an agent to falsify the recruitment claim. It reproduced every
+number from the artifacts and found real problems. Recording its verdict in
+full because several of my claims changed.
+
+**SAFE (survives all objections):**
+> The model's own yes/no readout is uninformative about correctness at every
+> depth when reading story+RG as bare text (0.499-0.545, n=2000), while a
+> supervised probe on the *same activations at the same position* reaches
+> 0.62-0.64. The information is in the residual stream and is not on the
+> yes/no unembedding axis.
+
+**CONFOUNDED (withdrawn pending controls):** the "task framing performs
+late-depth routing" interpretation, for two reasons I accept:
+
+- **C1 position.** Reader-mode `last` = final token of the RG mid-document;
+  asked-mode `last` = the generation position inside the chat template. These
+  are different sites, so part of the "late rise" is just attention hauling
+  content to a fresh position. Control: capture the asked-mode prompt at the
+  *end of the RG* (mid-prompt) - the `ansend` site. **Now running.**
+- **C2 licensing.** In reader mode "yes"/"no" are not licensed continuations
+  at all, so AUROC = 0.5 there is close to guaranteed a priori rather than
+  measured. Control: an identical chat prompt at the identical position asking
+  a question unrelated to correctness ("Is the story written in English?"). If
+  the margin still tracks correctness, the effect is format/position, not
+  verification framing. **Now running** (`behavior/placebo_prompt.md`).
+
+**DEAD:** "peaks at L53 then declines to the output." The endpoint was the
+double-norm artifact; corrected Delta = 0.0156 with a bootstrap 95% CI of
+[-0.004, +0.036] (agent's computation, 400 resamples over problems). The
+corrected curve is a step at ~block 49 followed by a flat plateau, and L53 is
+a post-hoc max over 15 near-identical values. Clause deleted.
+
+**C5, and it changed a headline.** `knows_vs_says` compared a probe under
+problem-grouped CV (which leaks: the same law can appear on both sides) to a
+fit-free lens. Re-run with law-disjoint grouping:
+
+| site | probe (problem CV) | probe (law-disjoint) | model readout | honest gap |
+|---|---|---|---|---|
+| last | 0.7247 | **0.6708** | 0.6701 | **0.034 max, ~0.001 at output** |
+| mean | 0.7369 | 0.6866 | 0.5480 | 0.153 (but `mean` site is confounded, C4) |
+
+**So the "model knows much more than it says" claim is withdrawn at the
+answer position.** Under a proper split the probe reads 0.6708 and the model
+expresses 0.6701 - essentially identical. The honest and more interesting
+statement is the reverse: *when asked, Qwen3-32B's verbal readout captures
+essentially everything a linear probe can extract at that position.* Hidden
+knowledge appears only in reader mode, where the channel is not licensed.
+
+**Also flagged and accepted:** C4 (the asked-mode `mean` site uses a character
+midpoint heuristic, averaging ~211 tokens vs 34 in reader mode - cross-mode
+mean comparisons are invalid and are dropped), C6 (index 64 is post-final-norm,
+not a residual state; block 63's raw residual is never exposed by HF - so
+curves should be described in block terms and index 64 plotted separately),
+C7 (asked capture was n=300 while reader was n=2000; full 2000 runs launched),
+C8 (asked-mode `meta.json` inherited the reader-mode `text_template` string -
+fixed; transformers version differed 5.14.1 vs 5.15.0 between captures -
+recorded, not yet controlled).
+
+**Ruled out by the agent, so we stop worrying about them:** label/surface
+leakage (RG-statistics-only classifier 0.5111), yes/no token id correctness
+(margin sign agrees with the model's actually generated word on 297/300),
+bf16->fp16 overflow (0 NaN/Inf), BOS handling, right-padding index.
