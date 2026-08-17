@@ -151,8 +151,11 @@ GUARDRAILS = dict(
 )
 
 
+# max_inputs=1: one chunk per container. A warm container serving a second
+# chunk builds a second vLLM engine on a GPU still holding the first (OOM).
 _fn_common = dict(
-    gpu="A10G", image=image, volumes={"/models": weights}, secrets=[hf_secret]
+    gpu="A10G", image=image, volumes={"/models": weights}, secrets=[hf_secret],
+    max_inputs=1,
 )
 
 
@@ -166,7 +169,8 @@ def generate_a10g(
 
 
 _fn_a100 = dict(
-    gpu="A100-80GB", image=image, volumes={"/models": weights}, secrets=[hf_secret]
+    gpu="A100-80GB", image=image, volumes={"/models": weights}, secrets=[hf_secret],
+    max_inputs=1,
 )
 
 
