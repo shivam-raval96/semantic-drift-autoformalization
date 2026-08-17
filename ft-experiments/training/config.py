@@ -47,4 +47,16 @@ PRESETS = {
         "rank": 16, "layer": -1, "seed": 0, "samples": 0,
         "batch_size": 1, "grad_accum": 4, "epochs": EPOCHS, "save_steps": SAVE_STEPS,
     },
+    # 32B arm (decision 2026-08-17): same recipe, fresh checkpoint names.
+    # Launch with TRAIN_MODEL_ID="Qwen/Qwen3-32B" TRAIN_GPU="A100-80GB".
+    "smoke-32b": {
+        "run_name": "smoke-32b-r16-all",
+        "rank": 16, "layer": -1, "seed": 0, "samples": 200,
+        "batch_size": 1, "grad_accum": 4, "max_steps": 10, "save_steps": 10,
+    },
+    "phase5a-32b": {
+        "run_name": "phase5a-32b-r16-all",
+        "rank": 16, "layer": -1, "seed": 0, "samples": 0,
+        "batch_size": 1, "grad_accum": 4, "epochs": EPOCHS, "save_steps": SAVE_STEPS,
+    },
 }
