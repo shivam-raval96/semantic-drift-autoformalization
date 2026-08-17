@@ -1,0 +1,38 @@
+{
+  "stage": "capture",
+  "tag": "qwen3.6-27b-full",
+  "model_key": "qwen3.6-27b",
+  "model_id": "Qwen/Qwen3.6-27B",
+  "adapter": null,
+  "gpu": "A100-80GB",
+  "limit": 0,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": false,
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/qwen3.6-27b-full",
+  "n_texts": 2000,
+  "shape_per_item": [
+    65,
+    5120
+  ],
+  "token_len": {
+    "min": 151,
+    "max": 462,
+    "mean": 289.7
+  },
+  "answer_token_len": {
+    "min": 20,
+    "max": 56,
+    "mean": 35.4
+  },
+  "gpu_seconds": {
+    "load": 37.6,
+    "forward": 298.7,
+    "save": 401.0
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}

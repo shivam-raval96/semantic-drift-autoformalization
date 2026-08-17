@@ -49,7 +49,10 @@ for site in ("last", "mean"):
             m.fit(h[tr], y[tr])
             scores[te] = m.decision_function(h[te])
         probe_auc.append(round(float(roc_auc_score(y, scores)), 4))
-        hn = h / np.sqrt((h * h).mean(axis=1, keepdims=True) + EPS) * norm_w
+        if L == acts.shape[1] - 1:
+            hn = h          # already normed by HF (validated)
+        else:
+            hn = h / np.sqrt((h * h).mean(axis=1, keepdims=True) + EPS) * norm_w
         mg = (hn @ yes_rows.T).max(axis=1) - (hn @ no_rows.T).max(axis=1)
         margin_auc.append(round(float(roc_auc_score(y, mg)), 4))
     gaps = [round(p - m, 4) for p, m in zip(probe_auc, margin_auc)]

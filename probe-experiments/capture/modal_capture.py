@@ -124,11 +124,18 @@ def capture(items: list, config: dict) -> dict:
     if config.get("chat_mode"):
         chat_kw = {"enable_thinking": False} if "qwen3" in model_id.lower() else {}
         for it in items:
+            raw = it["text"]
             it["text"] = tok.apply_chat_template(
-                [{"role": "user", "content": it["text"]}],
+                [{"role": "user", "content": raw}],
                 tokenize=False, add_generation_prompt=True, **chat_kw,
             )
-            it["prefix"] = it["text"][: len(it["text"]) // 2]  # span = tail half
+            # ansend_prefix = chat text truncated right after the RG answer, so
+            # the answer-end POSITION is comparable to reader mode's last site.
+            cut = it.pop("ansend_raw", None)
+            if cut and cut in it["text"]:
+                it["ansend_prefix"] = it["text"][
+                    : it["text"].index(cut) + len(cut)]
+            it["prefix"] = it["text"][: len(it["text"]) // 2]
 
     # Tokenize once, unpadded; the answer span starts where the prefix ends.
     ids_all = [tok(it["text"]).input_ids for it in items]
@@ -136,8 +143,15 @@ def capture(items: list, config: dict) -> dict:
     for it, ids, start in zip(items, ids_all, span_starts):
         assert start < len(ids), f"{it['id']}: empty answer span"
 
+    # Position-matched site: last token of the candidate answer itself.
+    ansend_pos = [
+        (len(tok(it["ansend_prefix"]).input_ids) - 1)
+        if it.get("ansend_prefix") else None
+        for it in items
+    ]
+
     order = sorted(range(len(items)), key=lambda i: len(ids_all[i]))
-    acts_last, acts_mean = {}, {}
+    acts_last, acts_mean, acts_ansend = {}, {}, {}
     t1 = time.time()
     bs = config["batch_size"]
     for b0 in range(0, len(order), bs):
@@ -161,6 +175,11 @@ def capture(items: list, config: dict) -> dict:
                     for h in hs
                 ]
             )
+            ap = ansend_pos[i]
+            if ap is not None and 0 <= ap < real:
+                acts_ansend[items[i]["id"]] = np.stack(
+                    [h[row, ap].float().cpu().numpy().astype(np.float16) for h in hs]
+                )
         del out, hs
     fwd_s = time.time() - t1
 
@@ -169,6 +188,8 @@ def capture(items: list, config: dict) -> dict:
     t2 = time.time()
     np.savez_compressed(f"{out_dir}/acts-last.npz", **acts_last)
     np.savez_compressed(f"{out_dir}/acts-mean.npz", **acts_mean)
+    if acts_ansend:
+        np.savez_compressed(f"{out_dir}/acts-ansend.npz", **acts_ansend)
     lengths = [len(x) for x in ids_all]
     ans_lengths = [len(x) - s for x, s in zip(ids_all, span_starts)]
     meta = {
@@ -176,7 +197,8 @@ def capture(items: list, config: dict) -> dict:
         "n_texts": len(items),
         "layers": len(next(iter(acts_last.values()))),
         "d_model": int(next(iter(acts_last.values())).shape[1]),
-        "sites": ["last", "mean"],
+        "sites": ["last", "mean"] + (["ansend"] if acts_ansend else []),
+        "n_ansend": len(acts_ansend),
         "text_template": "story + '\\n\\n' + rg (bare, no chat template)",
         "ids": [it["id"] for it in items],
         "labels": {it["id"]: it["label"] for it in items},
@@ -192,7 +214,8 @@ def capture(items: list, config: dict) -> dict:
         json.dump(meta, fh, indent=2)
     # A corrupt archive once reached the volume; never publish unverified.
     import zipfile
-    for name in ("acts-last.npz", "acts-mean.npz"):
+    for name in (["acts-last.npz", "acts-mean.npz"]
+                 + (["acts-ansend.npz"] if acts_ansend else [])):
         bad = zipfile.ZipFile(f"{out_dir}/{name}").testzip()
         assert bad is None, f"{name} corrupt at {bad}"
     acts_vol.commit()
@@ -253,6 +276,7 @@ def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
                     "text": template.replace("{story}", row["story"])
                                     .replace("{rg}", row[f"{kind}_rg"]),
                     "prefix": "",
+                    "ansend_raw": row[f"{kind}_rg"],
                     "label": label,
                 })
             else:

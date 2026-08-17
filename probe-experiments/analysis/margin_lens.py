@@ -38,8 +38,13 @@ for site in ("last", "mean"):
     per_layer = []
     for L in range(acts.shape[1]):
         h = acts[:, L, :]
-        rms = np.sqrt((h * h).mean(axis=1, keepdims=True) + EPS)
-        hn = h / rms * norm_w
+        # HF appends the LAST hidden state after the final norm, so that row
+        # is already normalized (verified: runs/lens-v1/validate_lens_*.json).
+        # Normalizing it again corrupts the readout.
+        if L == acts.shape[1] - 1:
+            hn = h
+        else:
+            hn = h / np.sqrt((h * h).mean(axis=1, keepdims=True) + EPS) * norm_w
         margin = (hn @ yes_rows.T).max(axis=1) - (hn @ no_rows.T).max(axis=1)
         per_layer.append(round(float(roc_auc_score(y, margin)), 4))
     results[site] = per_layer
