@@ -49,6 +49,10 @@ MODELS = {
     "qwen2.5-7b": {"id": "Qwen/Qwen2.5-7B-Instruct", "gpu": "A10G"},
     "qwen3-32b": {"id": "Qwen/Qwen3-32B", "gpu": "A100-80GB"},
     "llama-3.3-70b": {"id": "meta-llama/Llama-3.3-70B-Instruct", "gpu": "H100:2"},
+    # Roster extension (2026-08-18): lens-covered modern models.
+    "qwen3.6-27b": {"id": "Qwen/Qwen3.6-27B", "gpu": "A100-80GB"},
+    "qwen3.5-4b": {"id": "Qwen/Qwen3.5-4B", "gpu": "A10G"},
+    "gemma-3-27b": {"id": "google/gemma-3-27b-it", "gpu": "A100-80GB"},
 }
 
 # Behavioral verification gate.
