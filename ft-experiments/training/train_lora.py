@@ -28,6 +28,8 @@ Checkpoints (PEFT adapter format, vLLM-loadable) go to the shared
 volume under /models/checkpoints/<run_name>/step-N/.
 """
 
+import os
+
 import modal
 
 app = modal.App("harsh-ft-grammar-train")
@@ -43,13 +45,14 @@ train_image = (
 weights = modal.Volume.from_name("harsh-ft-grammar-weights", create_if_missing=True)
 hf_secret = modal.Secret.from_name("huggingface-secret")
 
-MODEL_ID = "meta-llama/Llama-3.1-8B-Instruct"
+MODEL_ID = os.environ.get("TRAIN_MODEL_ID", "meta-llama/Llama-3.1-8B-Instruct")
+TRAIN_GPU = os.environ.get("TRAIN_GPU", "A10G")
 BLOCK = 1024
 PROBE_PROMPT = "ASSUME: op(x, y) = op(op(y, y), x)\nASK:"
 
 
 @app.function(
-    gpu="A10G",
+    gpu=TRAIN_GPU,
     image=train_image,
     volumes={"/models": weights},
     secrets=[hf_secret],
@@ -83,7 +86,8 @@ def train(texts: list, holdout_texts: list, config: dict) -> dict:
     )
 
     torch.manual_seed(config["seed"])
-    tok = AutoTokenizer.from_pretrained(MODEL_ID)
+    model_id = config.get("model_id", MODEL_ID)
+    tok = AutoTokenizer.from_pretrained(model_id)
 
     # ---- dataset: tokenize + EOS + concatenate + fixed blocks ----
     ids = []
@@ -97,12 +101,12 @@ def train(texts: list, holdout_texts: list, config: dict) -> dict:
     load_kwargs = dict(dtype=torch.bfloat16, device_map="cuda")
     fallback_4bit = False
     try:
-        model = AutoModelForCausalLM.from_pretrained(MODEL_ID, **load_kwargs)
+        model = AutoModelForCausalLM.from_pretrained(model_id, **load_kwargs)
     except torch.cuda.OutOfMemoryError:
         fallback_4bit = True
         from transformers import BitsAndBytesConfig
         model = AutoModelForCausalLM.from_pretrained(
-            MODEL_ID,
+            model_id,
             quantization_config=BitsAndBytesConfig(
                 load_in_4bit=True,
                 bnb_4bit_quant_type="nf4",
@@ -271,6 +275,7 @@ def build_config(
     )
     config = {
         "run_name": base["run_name"],
+        "model_id": MODEL_ID,
         "seed": base["seed"],
         "rank": base["rank"],
         "lora_alpha": base["rank"],  # alpha=r convention
