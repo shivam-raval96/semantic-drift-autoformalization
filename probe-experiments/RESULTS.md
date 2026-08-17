@@ -104,11 +104,47 @@ behavioral profiles agree tier by tier. H1, refuted on 8B, is supported on 32B.
 Caveat: word-level elicitation still fails everywhere (best 0.59); the signal is
 below the model's margin readout on hard problems for both instruments.
 
+## Round 4 (2026-08-17): steering, FT probes, and the grammar-FT verdict
+
+**Steering (H2).** Layer-61 unit direction injected into decoder layer 60's
+output at all positions, scaled by the measured mean residual norm (1583.7),
+forward-only margin readout on the 300 gate texts. 8 conditions, one engine
+load; `runs/steer-v1/qwen3-32b.json`.
+
+| Condition | Margin AUROC | Mean margin |
+|---|---|---|
+| baseline (alpha 0) | 0.6694 | -2.62 |
+| direction +0.25 / +0.5 / +1.0 | 0.673 / 0.672 / 0.671 | -2.68 to -2.78 |
+| direction -0.5 / -1.0 | 0.670 / 0.675 | -2.69 / -3.17 |
+| random +0.5 / +1.0 (norm-matched) | 0.671 / 0.673 | -3.40 / -3.90 |
+
+The baseline reproduces the independent margin gate exactly (0.6694).
+Injection reaches the computation (margins move; the direction perturbs them
+less than random noise at matched norm) yet discrimination never moves more
+than 0.006 AUROC at any strength or sign. **H2 refuted: the correctness
+direction is readable but causally inert** - the lab's fourth independent
+represented-but-not-read result.
+
+**FT-checkpoint probes.** The Phase 5a grammar-FT 8B, captured and probed
+identically (`runs/probe-ft8b/`): law-disjoint 0.517-0.533 vs base 0.520-0.527,
+in-distribution 0.59-0.60 vs 0.62. Grammar training left the correctness
+representation unchanged.
+
+**Grammar-FT behavioral verdict (Thread A, both scales; details in
+`ft-experiments/runs/ft-v1/comparison.md`).** 8B: unparseable 45->0%
+(literal), 39->0% (two-stage), 9-24% -> 18-52% (story, runaway generation);
+correct 0% throughout. Qwen3-32B, same recipe: grammar perfected but correct
+collapsed - literal 32-61% -> 3-6%, two-stage 29-62% -> 2-6%, story 13-39% ->
+3-10% with the runaway returning (32-60% unparseable, nearly all length-capped).
+Grammar-only continuation training is a behavioral override, not a skill
+injection: no semantic gain where capability is absent, displacement where it
+exists.
+
 ## Open questions
 
-1. Steering (H2) now has a premise: inject the layer-61 direction, site-restricted, negated-vector and norm-matched controls (Denis's exp-1 Part 3 design).
-2. Grammar-FT checkpoint: does FT move the 8B toward the 32B's representational state?
-3. Thinking-on gate arm for Qwen3-32B (protocol variant, flagged).
+1. A v2 FT recipe with the task in-distribution (instruction-formatted story->RG pairs): does it add correctness without displacement?
+2. Why is the correctness direction causally unused - and is any direction at this site causally live (e.g. sweep read/write sites, or patch instead of add)?
+3. Thinking-on gate arm for Qwen3-32B (still unrun; Denis's budget result predicts a large jump).
 
 Repro: `data-gen/build_contrast.py` -> `data-gen/verify_contrast.py` ->
 `modal run capture/modal_capture.py` -> `probing/fit_probes.py` -> `analysis/make_figure.py`;
