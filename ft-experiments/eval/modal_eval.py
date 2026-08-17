@@ -153,6 +153,20 @@ GUARDRAILS = dict(
 
 # max_inputs=1: one chunk per container. A warm container serving a second
 # chunk builds a second vLLM engine on a GPU still holding the first (OOM).
+# Two-stage runs two full generation passes (8B: ~7 min each), which
+# cannot fit the 15-min single-pass cap; 30-min timeout here, disclosed
+# and stamped in run_meta. Stage-2 prompts embed a whole stage-1
+# response, so the sequence cap is raised to 12288.
+TWO_STAGE_MAX_MODEL_LEN = 12288
+TWO_STAGE_GUARDRAILS = {**GUARDRAILS, "timeout": 1800}
+# FT adapters stream long fluent RG instead of stopping early (~3x the
+# base run's generated tokens): the story arm reached 222/777 prompts at
+# the 900s cap. Escalated caps for adapter runs, disclosed in run_meta,
+# same precedent as the two-stage escalation above.
+FT_GUARDRAILS = {**GUARDRAILS, "timeout": 2700}
+FT_TWO_STAGE_GUARDRAILS = {**GUARDRAILS, "timeout": 3600}
+
+
 _fn_common = dict(
     gpu="A10G", image=image, volumes={"/models": weights}, secrets=[hf_secret],
     max_inputs=1,
@@ -212,18 +226,6 @@ def generate_a100(
                      chat_kwargs=chat_kwargs)
 
 
-# Two-stage runs two full generation passes (8B: ~7 min each), which
-# cannot fit the 15-min single-pass cap; 30-min timeout here, disclosed
-# and stamped in run_meta. Stage-2 prompts embed a whole stage-1
-# response, so the sequence cap is raised to 12288.
-TWO_STAGE_MAX_MODEL_LEN = 12288
-TWO_STAGE_GUARDRAILS = {**GUARDRAILS, "timeout": 1800}
-# FT adapters stream long fluent RG instead of stopping early (~3x the
-# base run's generated tokens): the story arm reached 222/777 prompts at
-# the 900s cap. Escalated caps for adapter runs, disclosed in run_meta,
-# same precedent as the two-stage escalation above.
-FT_GUARDRAILS = {**GUARDRAILS, "timeout": 2700}
-FT_TWO_STAGE_GUARDRAILS = {**GUARDRAILS, "timeout": 3600}
 
 
 @app.function(**_fn_common, **FT_GUARDRAILS)
