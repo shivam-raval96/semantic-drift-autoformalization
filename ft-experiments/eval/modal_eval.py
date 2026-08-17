@@ -312,6 +312,7 @@ def main(
     adapter: str = "",
     adapter_rank: int = 16,
     out_tag: str = "base-v1",
+    chunk: int = 0,
 ):
     import hashlib
     import json
@@ -394,12 +395,13 @@ def main(
     if done:
         print(f"= resuming: {done}/{len(rows)} rows already on disk")
 
+    chunk = chunk or CHUNK
     backend = None
     timing = {"model_load_s": 0.0, "generate_s": 0.0}
     t0 = time.monotonic()
     with results_path.open("a", encoding="utf-8") as out_fh:
-        for c0 in range(done, len(rows), CHUNK):
-            c1 = min(c0 + CHUNK, len(rows))
+        for c0 in range(done, len(rows), chunk):
+            c1 = min(c0 + chunk, len(rows))
             if arm == "two-stage":
                 result = fn.remote(model_id, conversations[c0:c1], MAX_TOKENS,
                                    two_stage_arg, lora=lora, chat_kwargs=chat_kwargs)
@@ -453,7 +455,7 @@ def main(
         "guardrails": (FT_TWO_STAGE_GUARDRAILS if (lora and arm == "two-stage")
                        else FT_GUARDRAILS if lora
                        else TWO_STAGE_GUARDRAILS if arm == "two-stage" else GUARDRAILS),
-        "chunk_size": CHUNK,
+        "chunk_size": chunk,
         "max_model_len": TWO_STAGE_MAX_MODEL_LEN if arm == "two-stage" else MAX_MODEL_LEN,
         "prompt_template": template.name,
         "prompt_template_sha256": hashlib.sha256(template.read_bytes()).hexdigest(),
