@@ -530,3 +530,74 @@ encodes is largely NOT what answering uses.
 **Caveat.** The asked set here is n=300 vs reader n=2000, and both directions
 are fit in-sample (the 1.0 self-AUROCs are that, not a result). Re-run when
 the full 2000-text asked capture lands before treating the asymmetry as solid.
+
+---
+
+## 13. Co-emergence across models, and the control that makes it meaningful
+
+**Question.** Does a law-general correctness representation appear only in
+models that can actually do the task, or is it there regardless?
+
+**Method.** Same frozen dataset, same law-disjoint grouping, reader-mode
+activations, four models spanning the capability range measured by the
+threshold-free behavioral margin gate.
+
+**Result.**
+
+| Model | capability (margin AUROC) | representation (law-disjoint probe) |
+|---|---|---|
+| Llama-3.1-8B | 0.522 | 0.527 |
+| Qwen3.5-4B | 0.626 | 0.549 |
+| Qwen3-32B | 0.669 | 0.599 |
+| Qwen3.6-27B | **0.826** | **0.8146** |
+
+Pearson 0.948, Spearman 1.0 (n=4). Shuffled-label controls clean everywhere
+(0.48-0.52).
+
+**The obvious objection, and the control that kills it.** Maybe bigger/newer
+models just represent everything better, and any probe would scale. Tested by
+decoding a task-IRRELEVANT property - the story's theme - from the same
+activations, same splits, at fixed fractional depths (which also removes the
+"deeper models get more chances at a maximum" concern):
+
+| Model | correctness (law-disjoint) | theme accuracy (chance 0.25) |
+|---|---|---|
+| Llama-3.1-8B | 0.533 | 1.000 |
+| Qwen3.5-4B | 0.533 | 1.000 |
+| Qwen3-32B | 0.599 | 1.000 |
+| Qwen3.6-27B | 0.811 | 1.000 |
+
+Every model decodes the irrelevant property perfectly, including the weakest.
+Only correctness scales. **The generic-representational-quality explanation is
+eliminated**, and the scaling is specific to the property we care about.
+
+**Remaining caveat.** n=4 means Spearman 1.0 is a 1-in-24 coincidence under
+the null, and the models differ in architecture (Qwen3.5/3.6 are hybrid
+linear-attention). The correlation is descriptive; the specificity control is
+the load-bearing part.
+
+---
+
+## 14. Replication of the orthogonality result (second model, two lenses)
+
+**Why.** A geometric null on one model with one lens is thin evidence. The
+strongest available replication: a different model, lenses fitted by a
+different group with a different recipe, and two methodologically distinct
+lens types (J-lens and its LRP-based successor R-lens).
+
+**Result** (`runs/lens-v1/replicate_alignment_qwen3.6-27b.json`). Qwen3.6-27B,
+whose correctness representation is far STRONGER (law-disjoint 0.821 vs the
+32B's 0.599), so "the direction is weak or noisy" cannot explain a null:
+
+| lens | cosine at matched layer | all-block mean abs cosine | blocks exceeding random p95 |
+|---|---|---|---|
+| J-lens (n=25 pile prompts) | +0.0127 | 0.0083 | **0 / 63** |
+| R-lens (independent method) | +0.0151 | 0.0085 | **0 / 63** |
+
+For comparison, Qwen3-32B with the Neuronpedia n=1000 wikitext lens: mean
+0.0065, max 0.0189, 0/63.
+
+**Verdict.** The orthogonality of the correctness direction to the
+verbalization axis holds across models, across lens-fitting recipes, across
+lens methods, and across every layer. It is a property of these
+representations, not of one measurement.
