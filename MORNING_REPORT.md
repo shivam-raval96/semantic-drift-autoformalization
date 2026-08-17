@@ -165,12 +165,52 @@ point (0.48-0.52). Qwen3.6-27B is a striking data point: it reads 0.815 on
 completely held-out law families, far above anything else we have measured, and
 close to its own behavioral capability.
 
-Caveats a skeptic agent is currently auditing: n=4 makes Spearman 1.0 a
-1-in-24 coincidence under the null; the models differ in depth and
-architecture (Qwen3.5/3.6 are hybrid linear-attention); and "best layer over
-all layers" gives deeper models more chances at a maximum. A task-irrelevant
-control probe (story theme) is running to test whether this is specific to
-correctness or generic representational quality.
+**A second skeptic agent audited this claim in depth, reproduced all four
+numbers bit-exactly from the activations, and found real problems. Its
+corrections are adopted:**
+
+- **Report it as ORDINAL, not linear.** Spearman 1.0 at n=4 has an exact
+  permutation P of 1/24 = 0.042 (best achievable at this n); Pearson r=0.948
+  gives p=0.052. Worse, the relation is not one line: the slope through the
+  three low-capability models under-predicts Qwen3.6-27B by 0.16 AUROC.
+  "Pearson r = 0.95" is withdrawn; "ranks agree" is what the data supports.
+- **The fold SDs we reported are NOT valid uncertainty.** The law-disjoint
+  GroupKFold is pathological: fold 0 holds 1112 texts (all easy + some
+  medium), fold 1 holds 666 (all hard/genform), folds 2-4 hold 74 each. It is
+  effectively a TIER split, and its SD overstates estimator noise ~4x versus a
+  permutation null. Replaced by a paired clustered bootstrap over the 1000
+  problems: 0.527 [0.511,0.542], 0.549 [0.537,0.561], 0.599 [0.586,0.612],
+  0.815 [0.800,0.829]. All adjacent pairs separate, but the Llama->Qwen3.5-4B
+  gap (+0.022) collapses to ~0.004 under an equally defensible layer/site rule.
+- **"Absent in the incapable 8B" is too strong.** Llama-3.1-8B's 0.527 is 2.8
+  sigma above a within-pair label-flip null - small but real. Corrected
+  wording: weakest, not absent.
+- **The specificity control is STRONGER than we reported.** At full dimension
+  theme decoding saturates at 1.000 for every model (a ceiling). At matched
+  capacity (k principal components) Spearman(capability, theme) = **-0.4** -
+  the most capable model has the WORST task-irrelevant decodability. Generic
+  representational quality is not just uncontrolled-for, it runs the opposite
+  way.
+- **Survives:** capacity matching (random projection to 1024 dims, PCA-64
+  preserve the ordering), parameter count (a 4B beats an 8B; a 27B beats a 32B
+  at identical probe geometry), identical folds across models (verified
+  byte-identical ids/labels/groups), and layer selection (reported values sit
+  BELOW each model's layer-wise maximum, so no winner's curse).
+- **Unresolved on the x-axis too:** Qwen3-32B - Qwen3.5-4B = +0.044 with CI
+  [-0.004, +0.090]. One of the three adjacent ranks is a near coin flip.
+- **Near-circularity to state explicitly:** x is the model's own yes/no
+  readout and y is a probe of the same construct. What makes it non-trivial is
+  that y is measured in READER mode (no question, no chat template) while x is
+  asked mode.
+- **"Co-emerges" does not mean "supports."** Our own steering result shows the
+  direction is causally inert; no phrasing may imply it underlies the behavior.
+
+**Decisive follow-up now running:** capture + probe `llama-3.3-70b`. Its
+behavioral capability (0.629) is statistically identical to Qwen3.5-4B's
+(0.626, paired delta -0.004 [-0.045,+0.038]) while it is 17x larger and from a
+different family. Co-emergence predicts a probe near 0.55; a scale/quality
+story predicts 0.60+. `gemma-3-27b` (0.602) is also running to fill the empty
+middle band, taking n from 4 to 6 (P(perfect order) 0.042 -> 0.0014).
 
 ---
 
