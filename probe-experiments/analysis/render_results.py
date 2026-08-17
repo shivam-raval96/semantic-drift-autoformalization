@@ -8,7 +8,9 @@ from pathlib import Path
 
 import markdown
 
-ROOT = Path(__file__).resolve().parents[1]
+import sys
+
+ROOT = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]
 md = (ROOT / "RESULTS.md").read_text(encoding="utf-8")
 
 def embed(match):
