@@ -29,6 +29,9 @@ meta = json.loads((ACTS / "meta.json").read_text())
 ids = meta["ids"]
 y = np.array([meta["labels"][i] for i in ids])
 groups = np.array([i.split("::")[0] for i in ids])
+rows_meta = {json.loads(l)["problem_id"]: json.loads(l)
+             for l in (ROOT / "contrast_v1" / "contrast.jsonl").open()}
+groups_law = np.array([rows_meta[g]["group_lawcc"] for g in groups])
 
 d = np.load(ROOT / "capture" / "qwen3-32b-head-rows.npz")
 norm_w = d["norm_weight"].astype(np.float32)
@@ -39,16 +42,17 @@ out = {}
 for site in ("last", "mean"):
     npz = np.load(ACTS / f"acts-{site}.npz")
     acts = np.stack([npz[i] for i in ids]).astype(np.float32)
-    probe_auc, margin_auc = [], []
+    probe_auc, probe_auc_law, margin_auc = [], [], []
     for L in range(acts.shape[1]):
         h = acts[:, L, :]
-        scores = np.zeros(len(y))
-        for tr, te in GroupKFold(5).split(h, y, groups):
-            m = make_pipeline(StandardScaler(),
-                              LogisticRegression(C=1.0, max_iter=1000))
-            m.fit(h[tr], y[tr])
-            scores[te] = m.decision_function(h[te])
-        probe_auc.append(round(float(roc_auc_score(y, scores)), 4))
+        for grp, sink in ((groups, probe_auc), (groups_law, probe_auc_law)):
+            scores = np.zeros(len(y))
+            for tr, te in GroupKFold(5).split(h, y, grp):
+                m = make_pipeline(StandardScaler(),
+                                  LogisticRegression(C=1.0, max_iter=1000))
+                m.fit(h[tr], y[tr])
+                scores[te] = m.decision_function(h[te])
+            sink.append(round(float(roc_auc_score(y, scores)), 4))
         if L == acts.shape[1] - 1:
             hn = h          # already normed by HF (validated)
         else:
@@ -56,23 +60,28 @@ for site in ("last", "mean"):
         mg = (hn @ yes_rows.T).max(axis=1) - (hn @ no_rows.T).max(axis=1)
         margin_auc.append(round(float(roc_auc_score(y, mg)), 4))
     gaps = [round(p - m, 4) for p, m in zip(probe_auc, margin_auc)]
+    gaps_law = [round(p - m, 4) for p, m in zip(probe_auc_law, margin_auc)]
     best_probe = int(np.argmax(probe_auc))
     best_margin = int(np.argmax(margin_auc))
     out[site] = {
-        "probe_auroc": probe_auc, "margin_auroc": margin_auc, "gap": gaps,
+        "probe_auroc": probe_auc, "probe_auroc_lawdisjoint": probe_auc_law,
+        "margin_auroc": margin_auc, "gap": gaps, "gap_lawdisjoint": gaps_law,
+        "max_gap_lawdisjoint": {"layer": int(np.argmax(gaps_law)),
+                                "gap": max(gaps_law)},
         "best_probe": {"layer": best_probe, "auroc": probe_auc[best_probe]},
         "best_margin": {"layer": best_margin, "auroc": margin_auc[best_margin]},
         "final_layer_margin": margin_auc[-1],
         "max_gap": {"layer": int(np.argmax(gaps)), "gap": max(gaps)},
     }
-    print(f"[{site}] probe peak {probe_auc[best_probe]} @L{best_probe} | "
+    print(f"[{site}] probe(problem-CV) {probe_auc[best_probe]} @L{best_probe} | "
+          f"probe(law-disjoint) max {max(probe_auc_law)} | "
           f"margin peak {margin_auc[best_margin]} @L{best_margin} | "
-          f"margin final {margin_auc[-1]} | max gap {max(gaps)} @L{np.argmax(gaps)}")
+          f"margin final {margin_auc[-1]} | gap_law max {max(gaps_law)}")
 
 record = {
     "stage": "knows-vs-says", "model": meta["model"], "mode": "asked (verification prompt)",
     "n_texts": meta["n_texts"], "n_problems": len(set(groups)),
-    "cv": "GroupKFold(5) by problem_id", "reference_behavioral_margin": 0.6694,
+    "cv": "GroupKFold(5), reported both by problem_id and by law component", "reference_behavioral_margin": 0.6694,
     "sites": out,
 }
 o = ROOT / "runs" / "lens-v1"

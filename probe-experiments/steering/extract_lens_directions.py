@@ -39,62 +39,96 @@ weights = modal.Volume.from_name("harsh-ft-grammar-weights", create_if_missing=T
 acts_vol = modal.Volume.from_name("harsh-probe-activations", create_if_missing=True)
 hf_secret = modal.Secret.from_name("huggingface-secret")
 
-MODEL_ID = "Qwen/Qwen3.6-27B"
-LENSES = {
-    "jlens": ("camilablank/workspace-lenses", "qwen3.6-27b/j-lens/lens.pt"),
-    "rlens": ("camilablank/workspace-lenses", "qwen3.6-27b/r-lens/lens.pt"),
+# Qwen3-32B is our primary model (all probe/steering results live there) AND
+# a clean dense transformer, so steering is position-local. Free J-lens from
+# the Neuronpedia batch (n=1000, wikitext, Anthropic jlens recipe).
+TARGETS = {
+    "qwen3-32b": {
+        "model_id": "Qwen/Qwen3-32B",
+        "lenses": {"jlens": ("neuronpedia/jacobian-lens",
+                             "qwen3-32b/jlens/Salesforce-wikitext/"
+                             "Qwen3-32B_jacobian_lens.pt")},
+    },
+    "qwen3.6-27b": {
+        "model_id": "Qwen/Qwen3.6-27B",
+        "lenses": {"jlens": ("camilablank/workspace-lenses",
+                             "qwen3.6-27b/j-lens/lens.pt"),
+                   "rlens": ("camilablank/workspace-lenses",
+                             "qwen3.6-27b/r-lens/lens.pt")},
+    },
 }
 
 
 @app.function(image=image, volumes={"/models": weights, "/acts": acts_vol},
               secrets=[hf_secret], timeout=3600, retries=0, cpu=4, memory=32768)
-def extract() -> dict:
+def extract(target: str) -> dict:
     for key in ("HF_TOKEN", "HUGGING_FACE_HUB_TOKEN"):
         if os.environ.get(key):
             os.environ.setdefault("HF_TOKEN", os.environ[key])
             break
     import numpy as np
     import torch
-    from huggingface_hub import snapshot_download
+    from huggingface_hub import hf_hub_download, snapshot_download
     from jlens import JacobianLens
     from safetensors import safe_open
     from transformers import AutoTokenizer
 
-    tok = AutoTokenizer.from_pretrained(MODEL_ID)
+    cfg = TARGETS[target]
+    model_id, lenses = cfg["model_id"], cfg["lenses"]
+    tok = AutoTokenizer.from_pretrained(model_id)
     variants = lambda w: sorted({
         tok(v, add_special_tokens=False).input_ids[0]
         for v in (w, w.capitalize(), " " + w, " " + w.capitalize())
     })
     yes_ids, no_ids = variants("yes"), variants("no")
 
-    idx_dir = snapshot_download(MODEL_ID, allow_patterns=["*.index.json"])
+    idx_dir = snapshot_download(model_id, allow_patterns=["*.index.json"])
     index = json.loads((Path(idx_dir) / "model.safetensors.index.json").read_text())
     wmap = index["weight_map"]
-    need = {k: wmap[k] for k in ("model.norm.weight", "lm_head.weight")
-            if k in wmap}
-    tied = "lm_head.weight" not in wmap
-    if tied:
-        need["model.embed_tokens.weight"] = wmap["model.embed_tokens.weight"]
-    local = snapshot_download(MODEL_ID, allow_patterns=[*set(need.values()),
+    # Key names differ across wrappers (plain vs ForConditionalGeneration,
+    # which nests the text stack under model.language_model.*). Detect.
+    norm_key = next(k for k in wmap
+                    if k.endswith("norm.weight") and "layers." not in k)
+    head_key = ("lm_head.weight" if "lm_head.weight" in wmap
+                else next(k for k in wmap if k.endswith("embed_tokens.weight")))
+    tied = head_key != "lm_head.weight"
+    need = {norm_key: wmap[norm_key], head_key: wmap[head_key]}
+    local = snapshot_download(model_id, allow_patterns=[*set(need.values()),
                                                         "*.index.json"])
-    head_key = "model.embed_tokens.weight" if tied else "lm_head.weight"
     with safe_open(str(Path(local) / need[head_key]), framework="pt") as f:
         head = f.get_slice(head_key)
         yes_rows = torch.stack([head[i].float() for i in yes_ids])
         no_rows = torch.stack([head[i].float() for i in no_ids])
-    with safe_open(str(Path(local) / need["model.norm.weight"]), framework="pt") as f:
-        norm_w = f.get_tensor("model.norm.weight").float()
+    with safe_open(str(Path(local) / need[norm_key]), framework="pt") as f:
+        norm_w = f.get_tensor(norm_key).float()
 
     contrast = (yes_rows.mean(0) - no_rows.mean(0))  # [d]
     out = {"norm_weight": norm_w.numpy(),
            "yes_ids": np.array(yes_ids), "no_ids": np.array(no_ids),
            "yes_rows": yes_rows.numpy(), "no_rows": no_rows.numpy(),
            "contrast_unembed": contrast.numpy()}
-    summary = {"model": MODEL_ID, "tied_embeddings": bool(tied),
+    summary = {"model": model_id, "target": target, "norm_key": norm_key,
+               "head_key": head_key, "tied_embeddings": bool(tied),
                "yes_ids": yes_ids, "no_ids": no_ids, "lenses": {}}
 
-    for name, (repo, filename) in LENSES.items():
-        lens = JacobianLens.from_pretrained(repo, filename=filename)
+    for name, (repo, filename) in lenses.items():
+        # Two on-Hub formats: a saved lens ({"J": ...}) and a raw fit()
+        # checkpoint ({"jacobian_sum", "n_done", ...}). The lens is the
+        # running mean, so the checkpoint converts exactly.
+        path = hf_hub_download(repo, filename)
+        blob = torch.load(path, map_location="cpu", weights_only=True)
+        if "J" in blob:
+            lens = JacobianLens.load(path)
+            jac, n_prompts = lens.jacobians, int(lens.n_prompts)
+        elif "jacobian_sum" in blob:
+            n_prompts = int(blob["n_done"])
+            jac = {int(L): (v.float() / n_prompts)
+                   for L, v in blob["jacobian_sum"].items()}
+            print(f"[{name}] fit-checkpoint -> mean over {n_prompts} prompts")
+        else:
+            raise ValueError(f"{filename}: unknown lens format {list(blob)[:6]}")
+        lens = type("L", (), {"jacobians": jac, "n_prompts": n_prompts,
+                              "d_model": next(iter(jac.values())).shape[0]})()
         layers = sorted(lens.jacobians.keys())
         dirs, norms = [], []
         for L in layers:
@@ -113,15 +147,16 @@ def extract() -> dict:
         del lens
 
     os.makedirs("/acts/lens", exist_ok=True)
-    np.savez("/acts/lens/qwen3.6-27b-lens-dirs.npz", **out)
+    np.savez(f"/acts/lens/{target}-lens-dirs.npz", **out)
     acts_vol.commit()
     return summary
 
 
 @app.local_entrypoint()
-def main():
-    s = extract.remote()
+def main(target: str = "qwen3-32b"):
+    s = extract.remote(target)
     print(json.dumps(s, indent=2))
     out = Path(__file__).resolve().parents[1] / "runs" / "lens-v1"
     out.mkdir(parents=True, exist_ok=True)
-    (out / "lens_directions_meta.json").write_text(json.dumps(s, indent=2) + "\n")
+    (out / f"lens_directions_{target}.json").write_text(
+        json.dumps(s, indent=2) + "\n")

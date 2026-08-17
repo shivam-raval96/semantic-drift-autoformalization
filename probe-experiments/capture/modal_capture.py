@@ -199,7 +199,9 @@ def capture(items: list, config: dict) -> dict:
         "d_model": int(next(iter(acts_last.values())).shape[1]),
         "sites": ["last", "mean"] + (["ansend"] if acts_ansend else []),
         "n_ansend": len(acts_ansend),
-        "text_template": "story + '\\n\\n' + rg (bare, no chat template)",
+        "text_template": ("chat-templated prompt from " + config["prompt_file"]
+                          if config.get("chat_mode")
+                          else "story + '\\n\\n' + rg (bare, no chat template)"),
         "ids": [it["id"] for it in items],
         "labels": {it["id"]: it["label"] for it in items},
         "token_len": {"min": min(lengths), "max": max(lengths),
@@ -236,7 +238,7 @@ def capture(items: list, config: dict) -> dict:
 @app.local_entrypoint()
 def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
          dry_run: bool = False, adapter: str = "", asked: bool = False,
-         gate_sample: bool = False):
+         gate_sample: bool = False, prompt_file: str = "verify_prompt.md"):
     root = PX_ROOT
     pxc = load_config()
     mcfg = pxc.MODELS[model]
@@ -254,7 +256,7 @@ def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
 
     items = []
     if asked:
-        template = (root / "behavior" / "verify_prompt.md").read_text(encoding="utf-8")
+        template = (root / "behavior" / prompt_file).read_text(encoding="utf-8")
         # Full contrast_v1 by default: 300-text gate subsampling left the
         # law-disjoint split underpowered (150 problems). Use --gate-sample
         # only to reproduce the original gate subset.
@@ -299,6 +301,7 @@ def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
         "contrast_sha256": manifest["files"]["contrast.jsonl"],
         "chat_mode": asked,
         "gate_sample": gate_sample,
+        "prompt_file": prompt_file if asked else None,
         "batch_size": 4 if ":" in GPU else 8,
     }
     if dry_run:
