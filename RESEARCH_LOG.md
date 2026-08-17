@@ -426,3 +426,107 @@ recorded, not yet controlled).
 leakage (RG-statistics-only classifier 0.5111), yes/no token id correctness
 (margin sign agrees with the model's actually generated word on 297/300),
 bf16->fp16 overflow (0 NaN/Inf), BOS handling, right-padding index.
+
+---
+
+## 10. What does the correctness direction SAY? (vocabulary readout)
+
+**Question.** Orthogonal to the yes/no axis is not the same as outside the
+verbalizable workspace. Is our direction verbalizable at all?
+
+**Method.** The J-lens readout of a residual direction v at block L is
+`(W_U J_L) v`: one score per vocabulary token, how much v raises the model's
+disposition to eventually emit that token. Applied to our probe direction,
+its negation, a random direction, and - critically - two POSITIVE CONTROLS
+(the J-lens yes/no direction and the raw unembedding yes/no contrast), which
+are verbalizable by construction and must read out as yes-tokens if the code
+is correct. `analysis/direction_vocabulary.py`.
+
+**Result.**
+
+| direction | max score | sd | top tokens |
+|---|---|---|---|
+| J-lens yes/no (POSITIVE CONTROL) | **0.9503** | 0.0889 | `yes`, ` yes`, `_yes`, `_YES`, ` Yes`, `Yes`, ... |
+| raw unembedding yes/no | 1.0397 | 0.0230 | `yes`, ` Yes`, ` YES`, ` oui`, ` yeah` ... |
+| **our probe direction** | **0.1143** | 0.0239 | `水稻`, `$LANG`, `不来`, `.initializeApp` ... |
+| probe direction, negated | 0.1087 | 0.0239 | unrelated vocabulary |
+| random direction (NULL) | 0.1121 | 0.0234 | unrelated vocabulary |
+
+**Verdict.** The readout method demonstrably works: a verbalizable direction
+reads out as its own tokens at 8x the noise floor. Our correctness direction
+reads out **at the random-direction level** (0.1143 vs 0.1121). It is not
+merely off the yes/no axis - it has no verbal expression at all.
+
+**Statement of the finding.** Qwen3-32B linearly encodes whether a candidate
+formalization is correct in a direction that, by the model's own causal
+readout, corresponds to saying *nothing in particular*. The knowledge is
+real and decodable but verbally silent.
+
+---
+
+## 11. STEERING POSITIVE CONTROL - the missing piece of the original null
+
+**Question.** Our steering experiment moved nothing. Two explanations: (a) the
+probe direction is causally inert, (b) our steering harness does not work. The
+original experiment could not distinguish these because it had no positive
+control - no direction that SHOULD move the readout.
+
+**Hypothesis.** The J-lens yes/no direction is a causal direction for saying
+yes by construction. If the harness works, injecting it must move the margin;
+if the geometry explanation is right, our probe direction still will not.
+
+**Method.** Identical harness, identical 300 texts, identical alphas and
+controls; only the injected direction changes.
+`steering/modal_steer.py --direction-src jlens`.
+
+**Result.**
+
+| condition (alpha=+0.5) | mean margin | delta vs baseline | yes-rate | AUROC |
+|---|---|---|---|---|
+| baseline (alpha 0) | -2.618 | - | 0.06 | 0.6694 |
+| **J-lens direction** | **+21.540** | **+24.16** | **1.00** | 0.6468 |
+| our probe direction | -2.685 | -0.07 | 0.067 | 0.6723 |
+| random, norm-matched | -3.399 | -0.78 | 0.037 | 0.6706 |
+
+Dose-response for the J-lens direction is monotone and enormous:
+alpha = -1.0 -> -45.4, -0.5 -> -33.7, 0 -> -2.6, +0.25 -> -0.2, +0.5 -> +21.5,
++1.0 -> +22.4; yes-rate goes 0.00, 0.00, 0.06, 0.35, 1.00, 1.00.
+
+**Verdict.** The harness works. A 24-logit swing and a 6%->100% flip in the
+model's answer are available from this injection site with this code. Our
+correctness direction produces a change (-0.07) **smaller than a random
+direction of the same norm** (-0.78). Explanation (b) is eliminated; the
+original null is real and is explained by geometry.
+
+**Nuance worth reporting honestly.** Steering the J direction shifts the
+model's *bias*, not its *evidence*: at alpha=+0.5 it answers yes to
+everything, yet AUROC only falls 0.669 -> 0.647, i.e. it still ranks correct
+above wrong. So the verbalization axis controls what the model *says*, not
+what it *knows*. That is a nice independent illustration of the same
+knows/says separation.
+
+---
+
+## 12. Are there TWO correctness representations?
+
+**Question.** If the reader-mode direction is verbally silent, how does the
+model answer at 0.67 when asked? Either it recruits that same direction, or it
+uses a different one.
+
+**Method.** Fit a direction on each activation set at its own best layer,
+compare. `analysis/two_directions.py`.
+
+**Result.** cosine(reader direction, asked direction) = **0.0533** (random
+|cos| p95 = 0.0265). Cross-application: the asked-mode direction reads
+correctness in reader-mode activations at **0.6004**, while the reader-mode
+direction reads asked-mode activations at only **0.5367**.
+
+**Interpretation (moderate confidence).** The two are largely different
+directions - roughly twice the random baseline, so not literally orthogonal,
+but sharing very little. The asymmetry is suggestive: what the model uses to
+answer is partially present during passive reading, but what passive reading
+encodes is largely NOT what answering uses.
+
+**Caveat.** The asked set here is n=300 vs reader n=2000, and both directions
+are fit in-sample (the 1.0 self-AUROCs are that, not a result). Re-run when
+the full 2000-text asked capture lands before treating the asymmetry as solid.

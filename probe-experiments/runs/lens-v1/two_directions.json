@@ -1,0 +1,17 @@
+{
+  "site": "mean",
+  "layers": {
+    "reader": 61,
+    "asked": 57
+  },
+  "n_texts": {
+    "reader": 2000,
+    "asked": 300
+  },
+  "cosine_reader_vs_asked": 0.0533,
+  "random_abs_cosine_p95": 0.02645,
+  "reader_dir_on_reader_acts": 1.0,
+  "reader_dir_on_asked_acts": 0.5367,
+  "asked_dir_on_reader_acts": 0.6004,
+  "asked_dir_on_asked_acts": 1.0
+}
