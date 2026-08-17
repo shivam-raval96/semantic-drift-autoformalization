@@ -208,6 +208,87 @@ capability-vs-representation co-emergence analysis.
 
 ---
 
+---
+
+## 6. A real bug, caught by validation (IMPORTANT)
+
+**Why this entry exists.** Before building on the margin-lens results I ran the
+obvious correctness check a reviewer would demand: applied to the FINAL layer
+state, the lens must reproduce the model's true logits.
+`analysis/validate_lens.py`.
+
+**Result: FAIL.** Max absolute logit difference 28.2, argmax mismatch.
+
+**Diagnosis (tested, not assumed).** I hypothesized that HuggingFace appends
+the last hidden state AFTER applying the final norm, meaning
+`hidden_states[-1]` is already normalized and our lens normalized it twice. I
+tested this by computing logits three ways on the same states and comparing to
+the model's true logits:
+
+| computation | max abs diff vs true logits |
+|---|---|
+| our lens (norm applied) | 28.215 |
+| no norm applied | **0.0622** (= bf16 rounding) |
+
+Diagnosis confirmed. Rows 0..n-1 of our captures are raw residuals (single
+norm correct); the LAST row is pre-normed (must be used as-is).
+
+**Impact and correction.** Only the final capture row was affected. Fixed in
+`margin_lens.py` and `knows_vs_says.py`; all analyses recomputed. Corrected
+numbers (Qwen3-32B):
+
+- reader mode: still flat - max 0.545 @L59, final 0.499. Finding unchanged.
+- asked mode: peak 0.6855 @L53, **final layer 0.6701** (was mis-computed as
+  0.6588).
+- knows-vs-says: probe 0.7247 vs model's expressed 0.6701 -> gap 0.055 at the
+  output, max gap 0.128 @L46.
+
+**A validation that came free with the fix.** The corrected final-layer lens
+value is **0.6701**, and the independently measured behavioral margin gate on
+the same 300 texts is **0.6694**. Two completely separate measurement paths
+(saved activations + reconstructed readout vs live generation logits) agree to
+0.0007. This is strong evidence the method is now correct.
+
+**Claim that got weaker and must be reported honestly.** I previously wrote
+that the model's readout "peaks at L53 then DECLINES by 0.027 to the output."
+With the bug fixed the decline is 0.686 -> 0.670 = **0.015**, on 300 texts.
+That is within plausible noise for this sample size and is NOT currently a
+defensible claim. It is demoted to an observation pending the full 2,000-text
+rerun and a significance test.
+
+**Lesson recorded.** The reader-mode null was never at risk (all its layers
+are raw residuals), but had I skipped this check, a headline sentence in the
+write-up would have been wrong. Every lens-style readout in this project now
+carries a reproduce-the-true-logits gate.
+
+---
+
+## 7. Model-roster reconnaissance (agent) and a plan change
+
+Verified inventory of free pre-fitted lenses (agent enumerated the HF APIs):
+
+- **Qwen3-32B - our own primary model - HAS a free J-lens** at
+  `neuronpedia/jacobian-lens` (n=1000, wikitext, Anthropic recipe). This was
+  the decisive discovery: the flagship workspace experiment can run on the
+  exact model where every probe and steering number already lives, with no
+  cross-model caveat and no expensive lens fitting.
+- `camilablank/workspace-lenses` has matched J+R pairs for qwen3.5-4b/9b/27b,
+  qwen3.6-27b, gemma-3-27b-it, plus MoE models.
+- **Architecture warning that changes model choice:** Qwen3.6-27B and
+  Qwen3.5-4B are NOT plain dense transformers - 3 of every 4 blocks are gated
+  linear attention (DeltaNet/SSM family) carrying recurrent state across
+  positions. Residual capture and probing remain valid, but **steering is not
+  position-local** in these models: an intervention at token t propagates
+  through recurrent state. For a causal steering claim this is a serious
+  confound.
+
+**Decision (plan change).** Qwen3-32B - dense, standard residual path, free
+lens, and the model all our results are on - becomes the flagship for the
+J-space experiment. Qwen3.6-27B remains valuable as the strongest verifier
+(margin 0.826) and for probe/co-emergence work, but any steering result there
+would need the recurrence caveat stated. Fitting our own 32B lens (previously
+planned, tens of GPU-hours) is now unnecessary.
+
 ## Running hypotheses entering the next block
 
 - **H-route (favored).** Correctness lives outside the verbalization pathway
