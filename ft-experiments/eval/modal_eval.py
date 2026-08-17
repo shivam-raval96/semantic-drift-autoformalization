@@ -174,6 +174,35 @@ _fn_a100 = dict(
 )
 
 
+@app.function(**_fn_a100, **FT_GUARDRAILS)
+def generate_a100_ft(
+    model_id: str, conversations: list, max_tokens: int, lora: dict | None = None,
+    chat_kwargs: dict | None = None,
+) -> dict:
+    return _generate(model_id, conversations, max_tokens, lora=lora,
+                     chat_kwargs=chat_kwargs)
+
+
+@app.function(**_fn_a100, **FT_TWO_STAGE_GUARDRAILS)
+def generate_a100_two_stage_ft(
+    model_id: str,
+    conversations: list,
+    max_tokens: int,
+    two_stage: dict,
+    lora: dict | None = None,
+    chat_kwargs: dict | None = None,
+) -> dict:
+    return _generate(
+        model_id,
+        conversations,
+        max_tokens,
+        max_model_len=TWO_STAGE_MAX_MODEL_LEN,
+        two_stage=two_stage,
+        lora=lora,
+        chat_kwargs=chat_kwargs,
+    )
+
+
 @app.function(**_fn_a100, **GUARDRAILS)
 def generate_a100(
     model_id: str, conversations: list, max_tokens: int, lora: dict | None = None,
@@ -377,10 +406,11 @@ def main(
     chat_kwargs = {"enable_thinking": False} if "qwen3" in model_id.lower() else None
     on_a100 = entry["gpu"] == "A100-80GB"
     if arm == "two-stage":
-        fn = (generate_a100_two_stage if on_a100
+        fn = ((generate_a100_two_stage_ft if lora else generate_a100_two_stage)
+              if on_a100
               else generate_a10g_two_stage_ft if lora else generate_a10g_two_stage)
     else:
-        fn = (generate_a100 if on_a100
+        fn = ((generate_a100_ft if lora else generate_a100) if on_a100
               else generate_a10g_ft if lora else generate_a10g)
     two_stage_arg = ({"template": stage2_template_text, "suffix": stage2_suffix}
                      if arm == "two-stage" else None)
