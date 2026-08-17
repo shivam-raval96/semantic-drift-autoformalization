@@ -51,7 +51,7 @@ app = modal.App("harsh-probe-capture")
 image = (
     modal.Image.from_registry("nvidia/cuda:12.8.1-devel-ubuntu22.04", add_python="3.12")
     .uv_pip_install(
-        "torch", "transformers", "accelerate", "numpy", "huggingface_hub[hf_transfer]"
+        "torch", "transformers", "accelerate", "numpy", "peft", "huggingface_hub[hf_transfer]"
     )
     .env({"HF_HUB_ENABLE_HF_TRANSFER": "1", "HF_HOME": "/models/hf"})
 )
@@ -103,9 +103,21 @@ def capture(items: list, config: dict) -> dict:
     # head would add a (batch, seq, 128256) buffer per forward plus ~1GB
     # of weights, which is exactly what OOMed the first full run.
     multi_gpu = ":" in config["gpu"]
-    model = AutoModel.from_pretrained(
-        model_id, device_map="auto" if multi_gpu else "cuda", **kw
-    )
+    if config.get("adapter"):
+        # LoRA adapters carry CausalLM key paths: load the LM, merge the
+        # adapter into the weights, then keep only the transformer body.
+        from peft import PeftModel
+        from transformers import AutoModelForCausalLM
+
+        lm = AutoModelForCausalLM.from_pretrained(
+            model_id, device_map="auto" if multi_gpu else "cuda", **kw
+        )
+        lm = PeftModel.from_pretrained(lm, config["adapter"]).merge_and_unload()
+        model = lm.model
+    else:
+        model = AutoModel.from_pretrained(
+            model_id, device_map="auto" if multi_gpu else "cuda", **kw
+        )
     model.eval()
     load_s = time.time() - t0
 
@@ -190,7 +202,8 @@ def capture(items: list, config: dict) -> dict:
 
 
 @app.local_entrypoint()
-def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "", dry_run: bool = False):
+def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "",
+         dry_run: bool = False, adapter: str = ""):
     root = PX_ROOT
     pxc = load_config()
     mcfg = pxc.MODELS[model]
@@ -221,6 +234,7 @@ def main(model: str = "llama-3.1-8b", limit: int = 0, tag: str = "", dry_run: bo
         "tag": tag,
         "model_key": model,
         "model_id": mcfg["id"],
+        "adapter": adapter or None,
         "gpu": GPU,
         "limit": limit,
         "contrast_version": "v1",
