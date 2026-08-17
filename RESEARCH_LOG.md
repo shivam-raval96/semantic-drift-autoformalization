@@ -601,3 +601,64 @@ For comparison, Qwen3-32B with the Neuronpedia n=1000 wikitext lens: mean
 verbalization axis holds across models, across lens-fitting recipes, across
 lens methods, and across every layer. It is a property of these
 representations, not of one measurement.
+
+---
+
+## 15. THE PLACEBO CONTROL FALSIFIED OUR OWN INTERPRETATION
+
+**Question.** Does the yes/no channel carry correctness because the model was
+asked about correctness, or merely because it is in an answer position in a
+chat format?
+
+**Hypothesis under test (ours).** Task framing recruits correctness into the
+verbal channel. Prediction: a yes/no question about something ELSE should
+leave the channel uninformative (~0.50).
+
+**Method.** Identical prompt structure, identical chat template, identical
+capture position; only the final question changed to "Is the story written in
+English?" - a property that is (a) unrelated to correctness and (b) identical
+for both texts of a problem, since they share a story. n=2000.
+`behavior/placebo_prompt.md`, `analysis/site_margin.py`.
+
+**Result.**
+
+| condition, generation position | lens AUROC | n |
+|---|---|---|
+| real verification question | 0.6701 | 300 |
+| **placebo question (unrelated)** | **0.6366** | 2000 |
+| bare text, mid-document (reader) | 0.4990 | 2000 |
+
+**Verdict: our interpretation was WRONG.** An unrelated yes/no question
+recovers most of the effect. The channel does not open because the model was
+asked about correctness; it opens because the model is in an answer position
+in a chat format. The claim "task framing performs a late-depth routing of
+correctness" is **withdrawn**.
+
+**What survives, stated precisely:**
+
+> Reading story+RG as bare text, the yes/no axis carries no correctness
+> information at any of 65 layers (max 0.545, final 0.499). Place the same
+> content in a chat prompt and read where the model is about to answer *any*
+> yes/no question, and that same axis carries correctness at 0.64-0.67 -
+> whether or not the question concerns correctness.
+
+That is still a genuine dissociation - format and position gate access to the
+verbal channel - but it is a claim about *answer-position states*, not about
+verification framing.
+
+**Why this matters more than the loss.** It also strengthens the central
+result. The reader-mode correctness direction is orthogonal to the
+verbalization axis and verbally silent; the answer-position signal lives ON
+that axis. Combined with the near-orthogonality of the two fitted directions
+(cosine 0.053, entry 12), the coherent picture is:
+
+> The model maintains a silent correctness representation while reading, and
+> separately constructs a verbally-accessible one when placed in an answering
+> context. The two are nearly orthogonal. Neither is the other.
+
+**Process note.** This is the second time tonight an adversarial control
+overturned one of my own interpretations (the first was the leaky-CV "knows
+more than it says" claim). Both were predicted in advance by the skeptic
+agent. The lesson I am recording: for any claim of the form "X causes the
+model to do Y", run the version of the experiment where X is replaced by a
+placebo BEFORE writing the interpretation down.
