@@ -42,6 +42,7 @@ hf_secret = modal.Secret.from_name("huggingface-secret")
 IMAGE_TAG = "nvidia/cuda:12.8.1-devel-ubuntu22.04 + python3.12 + uv:vllm"
 MAX_TOKENS = 4096  # repo convention for the reasoning-off regime
 MAX_MODEL_LEN = 8192  # prompts are ~2k tokens; caps KV allocation
+CHUNK = 100  # prompts per remote call: a timeout costs one chunk, never the run
 
 
 def _generate(
@@ -136,9 +137,6 @@ def _generate(
             "dtype": "bfloat16",
             "max_model_len": max_model_len,
             "chat_template": "model default via llm.chat, add_generation_prompt",
-            "timeout_s": (3600 if (lora and arm == "two-stage")
-                          else 2700 if lora
-                          else 1800 if arm == "two-stage" else 900),
         },
         "timing": {"model_load_s": round(load_s, 1), "generate_s": round(generate_s, 1)},
     }
@@ -264,6 +262,44 @@ def generate_a100_two_stage(
     )
 
 
+def _grade_chunk(rows, prompts, result, arm, model_id, stage2_template_text,
+                 stage2_suffix, grade, bucket_of, hashlib):
+    """Grade one generation chunk into result rows (append-on-land)."""
+    graded = []
+    stage1_rows = result.get("stage1_rows") or [None] * len(result["rows"])
+    for r, prompt, gen, s1 in zip(rows, prompts, result["rows"], stage1_rows):
+        verdict = grade(gen["text"], {"canonical_e": r["canonical_e"], "canonical_f": r["canonical_f"]})
+        row = {
+            "pair_id": r["problem_id"],
+            "tier": r["tier"],
+            "form": arm,
+            "model": model_id,
+            "regime": "off",
+            "ops_total": r["ops_total"],
+            "depth": r["max_depth"],
+            "pair_hash": r["pair_hash"],
+            "sent_prompt_hash": hashlib.sha256(prompt.encode()).hexdigest()[:12],
+            "response": gen["text"],
+            "verdict": verdict,
+            "finish_reason": gen["finish_reason"],
+            "completion_tokens": gen["completion_tokens"],
+            "prompt_tokens": gen["prompt_tokens"],
+            "api_error": None,
+        }
+        if s1 is not None:
+            stage2_prompt = stage2_template_text.replace("{story}", s1["text"]) + stage2_suffix
+            row["sent_prompt_hash"] = hashlib.sha256(stage2_prompt.encode()).hexdigest()[:12]
+            row.update(
+                stage1_sent_prompt_hash=hashlib.sha256(prompt.encode()).hexdigest()[:12],
+                stage1_response=s1["text"],
+                stage1_finish_reason=s1["finish_reason"],
+                stage1_completion_tokens=s1["completion_tokens"],
+            )
+        row["bucket"] = bucket_of(row)
+        graded.append(row)
+    return graded
+
+
 @app.local_entrypoint()
 def main(
     model: str = "1b",
@@ -335,62 +371,50 @@ def main(
     # Qwen3 templates think by default; the frozen protocol is no-think.
     chat_kwargs = {"enable_thinking": False} if "qwen3" in model_id.lower() else None
     on_a100 = entry["gpu"] == "A100-80GB"
-    t0 = time.monotonic()
     if arm == "two-stage":
         fn = (generate_a100_two_stage if on_a100
               else generate_a10g_two_stage_ft if lora else generate_a10g_two_stage)
-        result = fn.remote(
-            model_id, conversations, MAX_TOKENS,
-            {"template": stage2_template_text, "suffix": stage2_suffix},
-            lora=lora, chat_kwargs=chat_kwargs,
-        )
     else:
         fn = (generate_a100 if on_a100
               else generate_a10g_ft if lora else generate_a10g)
-        result = fn.remote(model_id, conversations, MAX_TOKENS, lora=lora,
-                           chat_kwargs=chat_kwargs)
-    wall_s = time.monotonic() - t0
+    two_stage_arg = ({"template": stage2_template_text, "suffix": stage2_suffix}
+                     if arm == "two-stage" else None)
 
     # Limited runs must never clobber a full run directory.
     dir_name = f"{model}-{arm}" + (f"-limit{limit}" if limit else "")
     out_dir = ftc.PATHS["runs"] / out_tag / dir_name
     out_dir.mkdir(parents=True, exist_ok=True)
-    results_rows = []
-    stage1_rows = result.get("stage1_rows") or [None] * len(rows)
-    for r, prompt, gen, s1 in zip(rows, prompts, result["rows"], stage1_rows):
-        verdict = grade(gen["text"], {"canonical_e": r["canonical_e"], "canonical_f": r["canonical_f"]})
-        row = {
-            "pair_id": r["problem_id"],
-            "tier": r["tier"],
-            "form": arm,
-            "model": model_id,
-            "regime": "off",
-            "ops_total": r["ops_total"],
-            "depth": r["max_depth"],
-            "pair_hash": r["pair_hash"],
-            "sent_prompt_hash": hashlib.sha256(prompt.encode()).hexdigest()[:12],
-            "response": gen["text"],
-            "verdict": verdict,
-            "finish_reason": gen["finish_reason"],
-            "completion_tokens": gen["completion_tokens"],
-            "prompt_tokens": gen["prompt_tokens"],
-            "api_error": None,
-        }
-        if s1 is not None:
-            stage2_prompt = stage2_template_text.replace("{story}", s1["text"]) + stage2_suffix
-            row["sent_prompt_hash"] = hashlib.sha256(stage2_prompt.encode()).hexdigest()[:12]
-            row.update(
-                stage1_sent_prompt_hash=hashlib.sha256(prompt.encode()).hexdigest()[:12],
-                stage1_response=s1["text"],
-                stage1_finish_reason=s1["finish_reason"],
-                stage1_completion_tokens=s1["completion_tokens"],
-            )
-        row["bucket"] = bucket_of(row)
-        results_rows.append(row)
+    results_path = out_dir / "results.jsonl"
+    done = (sum(1 for l in results_path.open() if l.strip())
+            if results_path.exists() else 0)
+    if done:
+        print(f"= resuming: {done}/{len(rows)} rows already on disk")
 
-    with (out_dir / "results.jsonl").open("w", encoding="utf-8") as fh:
-        for row in results_rows:
-            fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+    backend = None
+    timing = {"model_load_s": 0.0, "generate_s": 0.0}
+    t0 = time.monotonic()
+    with results_path.open("a", encoding="utf-8") as out_fh:
+        for c0 in range(done, len(rows), CHUNK):
+            c1 = min(c0 + CHUNK, len(rows))
+            if arm == "two-stage":
+                result = fn.remote(model_id, conversations[c0:c1], MAX_TOKENS,
+                                   two_stage_arg, lora=lora, chat_kwargs=chat_kwargs)
+            else:
+                result = fn.remote(model_id, conversations[c0:c1], MAX_TOKENS,
+                                   lora=lora, chat_kwargs=chat_kwargs)
+            backend = result["backend"]
+            timing["model_load_s"] += result["timing"]["model_load_s"]
+            timing["generate_s"] += result["timing"]["generate_s"]
+            chunk_rows = _grade_chunk(rows[c0:c1], prompts[c0:c1], result, arm,
+                                      model_id, stage2_template_text, stage2_suffix,
+                                      grade, bucket_of, hashlib)
+            for row in chunk_rows:
+                out_fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+            out_fh.flush()
+            print(f"= chunk {c0}-{c1} written ({c1}/{len(rows)}, "
+                  f"gen {result['timing']['generate_s']}s)", flush=True)
+    wall_s = time.monotonic() - t0
+    results_rows = [json.loads(l) for l in results_path.open() if l.strip()]
 
     tiers = sorted({row["tier"] for row in results_rows})
     buckets = ("exact", "correct-swapped", "correct-dualized", "wrong", "unparseable")
@@ -418,11 +442,14 @@ def main(
         "n": len(rows),
         "limit": limit or None,
         "sampling": {"temperature": 0.0, "max_tokens": MAX_TOKENS, "greedy": True},
-        "backend": result["backend"],
+        "backend": backend or {"note": "resume-only, no new chunks"},
         "gpu_requested": "A10G",
         "adapter": ({"path": adapter, "rank": adapter_rank} if adapter else None),
         "image": IMAGE_TAG,
-        "guardrails": TWO_STAGE_GUARDRAILS if arm == "two-stage" else GUARDRAILS,
+        "guardrails": (FT_TWO_STAGE_GUARDRAILS if (lora and arm == "two-stage")
+                       else FT_GUARDRAILS if lora
+                       else TWO_STAGE_GUARDRAILS if arm == "two-stage" else GUARDRAILS),
+        "chunk_size": CHUNK,
         "max_model_len": TWO_STAGE_MAX_MODEL_LEN if arm == "two-stage" else MAX_MODEL_LEN,
         "prompt_template": template.name,
         "prompt_template_sha256": hashlib.sha256(template.read_bytes()).hexdigest(),
@@ -438,13 +465,13 @@ def main(
             if arm == "two-stage"
             else {}
         ),
-        "timing": {**result["timing"], "wall_s": round(wall_s, 1)},
+        "timing": {**{k: round(v, 1) for k, v in timing.items()}, "wall_s": round(wall_s, 1)},
     }
     (out_dir / "run_meta.json").write_text(json.dumps(meta, indent=2) + "\n")
     (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
 
     print(f"\n{model_id} · {arm} · n={len(rows)} · wall {wall_s:.0f}s "
-          f"(load {result['timing']['model_load_s']}s, gen {result['timing']['generate_s']}s)")
+          f"(load {timing['model_load_s']:.0f}s, gen {timing['generate_s']:.0f}s)")
     for tier, s in summary.items():
         print(f"  {tier:12s} n={s['n']:3d}  correct {s['correct_pct']:5.1f}%  "
               f"exact {s['exact']:3d}  swapped {s['correct-swapped']:3d}  "

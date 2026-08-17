@@ -1,0 +1,14 @@
+{
+  "normal": {
+    "n": 6,
+    "exact": 0,
+    "correct-swapped": 0,
+    "correct-dualized": 0,
+    "wrong": 4,
+    "unparseable": 2,
+    "correct": 0,
+    "correct_pct": 0.0,
+    "unparseable_pct": 33.3,
+    "length_finishes": 0
+  }
+}
