@@ -52,6 +52,7 @@ def _generate(
     max_model_len: int = MAX_MODEL_LEN,
     two_stage: dict | None = None,
     lora: dict | None = None,
+    chat_kwargs: dict | None = None,
 ) -> dict:
     """Batch-generate; with two_stage, feed each raw stage-1 response
     verbatim into the stage-2 template (mechanical {story} replacement,
@@ -96,6 +97,7 @@ def _generate(
             convs,
             SamplingParams(temperature=0.0, max_tokens=max_tokens),
             lora_request=lora_request,
+            **({"chat_template_kwargs": chat_kwargs} if chat_kwargs else {}),
         )
         return [
             {
@@ -155,9 +157,25 @@ _fn_common = dict(
 
 @app.function(**_fn_common, **GUARDRAILS)
 def generate_a10g(
-    model_id: str, conversations: list, max_tokens: int, lora: dict | None = None
+    model_id: str, conversations: list, max_tokens: int, lora: dict | None = None,
+    chat_kwargs: dict | None = None,
 ) -> dict:
-    return _generate(model_id, conversations, max_tokens, lora=lora)
+    return _generate(model_id, conversations, max_tokens, lora=lora,
+                     chat_kwargs=chat_kwargs)
+
+
+_fn_a100 = dict(
+    gpu="A100-80GB", image=image, volumes={"/models": weights}, secrets=[hf_secret]
+)
+
+
+@app.function(**_fn_a100, **GUARDRAILS)
+def generate_a100(
+    model_id: str, conversations: list, max_tokens: int, lora: dict | None = None,
+    chat_kwargs: dict | None = None,
+) -> dict:
+    return _generate(model_id, conversations, max_tokens, lora=lora,
+                     chat_kwargs=chat_kwargs)
 
 
 # Two-stage runs two full generation passes (8B: ~7 min each), which
@@ -175,6 +193,7 @@ def generate_a10g_two_stage(
     max_tokens: int,
     two_stage: dict,
     lora: dict | None = None,
+    chat_kwargs: dict | None = None,
 ) -> dict:
     return _generate(
         model_id,
@@ -183,6 +202,27 @@ def generate_a10g_two_stage(
         max_model_len=TWO_STAGE_MAX_MODEL_LEN,
         two_stage=two_stage,
         lora=lora,
+        chat_kwargs=chat_kwargs,
+    )
+
+
+@app.function(**_fn_a100, **TWO_STAGE_GUARDRAILS)
+def generate_a100_two_stage(
+    model_id: str,
+    conversations: list,
+    max_tokens: int,
+    two_stage: dict,
+    lora: dict | None = None,
+    chat_kwargs: dict | None = None,
+) -> dict:
+    return _generate(
+        model_id,
+        conversations,
+        max_tokens,
+        max_model_len=TWO_STAGE_MAX_MODEL_LEN,
+        two_stage=two_stage,
+        lora=lora,
+        chat_kwargs=chat_kwargs,
     )
 
 
@@ -254,15 +294,21 @@ def main(
     stage2_template_text = LITERAL_TEMPLATE.read_text(encoding="utf-8")
     stage2_suffix = wrap_prompt("", "off", model_id, "literal")
     lora = {"path": adapter, "rank": adapter_rank} if adapter else None
+    # Qwen3 templates think by default; the frozen protocol is no-think.
+    chat_kwargs = {"enable_thinking": False} if "qwen3" in model_id.lower() else None
+    on_a100 = entry["gpu"] == "A100-80GB"
     t0 = time.monotonic()
     if arm == "two-stage":
-        result = generate_a10g_two_stage.remote(
+        fn = generate_a100_two_stage if on_a100 else generate_a10g_two_stage
+        result = fn.remote(
             model_id, conversations, MAX_TOKENS,
             {"template": stage2_template_text, "suffix": stage2_suffix},
-            lora=lora,
+            lora=lora, chat_kwargs=chat_kwargs,
         )
     else:
-        result = generate_a10g.remote(model_id, conversations, MAX_TOKENS, lora=lora)
+        fn = generate_a100 if on_a100 else generate_a10g
+        result = fn.remote(model_id, conversations, MAX_TOKENS, lora=lora,
+                           chat_kwargs=chat_kwargs)
     wall_s = time.monotonic() - t0
 
     # Limited runs must never clobber a full run directory.

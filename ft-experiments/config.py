@@ -24,6 +24,7 @@ REPO = ROOT.parent / "informalizing-etp"          # Oren's pipeline: renderers, 
 MODELS = {
     "1b": {"hf_id": "meta-llama/Llama-3.2-1B-Instruct", "gpu": "A10G", "tp": 1},
     "8b": {"hf_id": "meta-llama/Llama-3.1-8B-Instruct", "gpu": "A10G", "tp": 1},
+    "qwen3-32b": {"hf_id": "Qwen/Qwen3-32B", "gpu": "A100-80GB", "tp": 1},
     "70b": {
         "hf_id": "meta-llama/Llama-3.1-70B-Instruct",
         "gpu": "H100:2",
