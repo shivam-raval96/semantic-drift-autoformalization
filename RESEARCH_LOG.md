@@ -1,0 +1,228 @@
+# Research log
+
+Chronological, hypothesis-first. Each entry: question, hypothesis, what was
+done and why, result, whether the hypothesis survived, what it changes.
+Dashboard (live status) is `DASHBOARD.md`. Numbers trace to committed run
+records under `probe-experiments/runs/` and `ft-experiments/runs/`.
+
+---
+
+## Where we stood entering tonight
+
+Established over the previous rounds (all committed, fact-checked):
+
+- **Grammar-only fine-tuning is a behavioral override, not a skill injection.**
+  Syntax perfected (unparseable 45% -> 0% on literal/two-stage), zero
+  correctness gain on Llama-3.1-8B, and on Qwen3-32B it *destroyed* existing
+  translation ability (34% -> 3-4% pooled). `ft-experiments/RESULTS.md`
+- **Correctness is linearly represented in a capable model but not in an
+  incapable one.** Probe law-disjoint AUROC: Qwen3-32B 0.599 vs lexical floor
+  0.503; Llama-3.1-8B 0.520 (= floor). `probe-experiments/RESULTS.md`
+- **The direction is causally inert.** Steering at +-1.0x residual norm, with
+  negated and norm-matched random controls, moved margin AUROC by <0.006.
+- **The model's own readout only weakly tracks what the probe reads**
+  (Spearman 0.30 between probe score and yes/no margin on the same items).
+
+The unresolved question that motivated tonight: **why is correctness readable
+but unused?** Two competing explanations were on the table:
+
+- **E1 (routing/verbalization).** The information exists in the residual
+  stream but sits outside the pathway that produces output tokens; it is only
+  recruited into that pathway under specific conditions (e.g. being asked).
+- **E2 (epiphenomenal).** The probe reads a byproduct that the model never
+  uses for anything - a correlate of correctness, not a functional signal.
+
+Both predict the steering null. They differ in what should happen when the
+model is *asked* the verification question: E1 predicts the signal enters the
+output channel at some depth; E2 predicts it never does, and the behavioral
+0.669 comes from a separate computation.
+
+---
+
+## 1. Literature reconnaissance (4 parallel agents)
+
+**Why.** Before spending GPU time, find out whether the tools to distinguish
+E1/E2 already exist. Specifically: methods that read *what the model is
+disposed to say* at intermediate depths.
+
+**What was found (all verified, links in agent reports):**
+
+- **Logit lens** (nostalgebraist 2020): apply the model's own final norm +
+  unembedding to intermediate residual states. Reads the output channel at any
+  depth. Known caveat: assumes intermediate states share the final layer's
+  basis, which fails on some model families ("representation drift", Belrose
+  et al. 2023, arXiv 2303.08112). Recommended mitigation: pair with supervised
+  probes - which we already have.
+- **Tuned lens**: fixes drift with learned per-layer affine maps. **No
+  pretrained tuned lens exists for any Qwen model** (verified by enumerating
+  the AlignmentResearch registry). Training one would be ~1.7B params of
+  translators. Deprioritized.
+- **J-lens / J-space** (Anthropic, "Verbalizable Representations Form a Global
+  Workspace in Language Models", transformer-circuits.pub/2026/workspace,
+  July 2026): per-layer Jacobian of final-layer residual w.r.t. layer-l
+  residual, averaged over prompts. Rows of `W_U J_l` give, per vocabulary
+  token, the direction that most raises the disposition to eventually emit it.
+  J-space = sparse cone spanned by such directions = the model's verbalizable
+  workspace. **Critical for us:** the paper reports that when a supervised
+  probe direction is decomposed, its J-space component (~10-15% of variance)
+  carries most of the causal power to redirect answers. That is a direct,
+  falsifiable candidate mechanism for our steering null.
+- **R-lens** (Blank, Bhatia, Nanda; LessWrong Aug 5 2026): drop-in J-lens
+  replacement using layerwise-relevance-propagation rules in the backward
+  pass; fixes early-layer noise that Anthropic's own paper acknowledges.
+  Pre-fitted J-lens AND R-lens weights are free on HF (`camilablank/
+  workspace-lenses`, `neuronpedia/jacobian-lens`).
+- **Our own repo**: Denis designed a J-space experiment (his exp 10) but
+  never ran it, on Qwen3-4B, asking a different question (story-abstraction vs
+  grammar-emission dissociation). No lens method has ever been run in this lab.
+  Shivam's standing guardrail: lens methods only when attached to a concrete
+  question. Ours is attached.
+
+**Decision.** Run the cheapest discriminating experiment first (logit-lens
+style readout on activations we already have), then the J-space decomposition
+on a model with a free pre-fitted lens.
+
+---
+
+## 2. Margin lens, reader mode (Qwen3-32B)
+
+**Question.** During passive reading, does correctness information enter the
+model's output channel at *any* depth?
+
+**Hypothesis (E1).** It enters somewhere - probably late, since the probe
+signal itself only becomes strong past ~two-thirds depth.
+
+**Method.** Extracted just two tensors from the checkpoint: the final RMSNorm
+weight and the 8 `lm_head` rows for yes/no token variants (~100 KB, CPU-only
+Modal job). Applied `RMSNorm(h_l) @ (w_yes - w_no)` at every one of the 65
+captured layers on the existing 2,000 reader-mode activations, scored AUROC
+against the mechanical labels. Cost: pennies, no GPU.
+Code: `probe-experiments/analysis/{extract_head_rows,margin_lens}.py`.
+
+**Result.** Flat. last site: 0.503 (L0), 0.520 (L48), 0.518 (L61), 0.509
+(L64), max 0.545 @L59. mean site never exceeds 0.53. On the *same*
+activations a supervised probe reaches 0.705.
+
+**Verdict.** Hypothesis not supported in reader mode. Correctness is present
+(probe 0.70) but never enters the verbal channel at any depth during passive
+reading. This is a stronger statement than "the signal is lost late" - it is
+never routed at all.
+
+**Caveats recorded.** Raw logit lens can under-read on Qwen-class models due
+to basis drift; a null here is weaker evidence than a positive. This is
+exactly why the asked-mode contrast below matters: same method, same model,
+same texts - if the method were simply blind, asked mode would also be flat.
+
+---
+
+## 3. Margin lens, asked mode (Qwen3-32B) - the recruitment experiment
+
+**Question.** When the verification question is in the prompt (where the model
+behaviorally scores 0.669), where along depth does the signal enter the
+channel?
+
+**Hypothesis.** If E1 is right, the curve should rise at some depth. The
+*shape* is informative: early rise = the question changes processing from the
+start; late rise = a routing operation near the output.
+
+**Method.** Added an asked-mode capture path (verification prompt through the
+chat template, thinking disabled) and captured all 65 layers. Ran the
+identical margin lens.
+
+**Result.** Rises from ~0.50 through the first two-thirds, then climbs:
+0.574 (L48), **peak 0.686 (L53)**, 0.666 (L61), **0.659 at the final layer**.
+
+**Verdict.** E1 supported, and it also rules out "the method is blind to
+Qwen-class geometry": the same instrument that read flat 0.50 in reader mode
+reads 0.686 in asked mode. The question performs a **late-depth routing
+operation** - correctness information is moved into the output pathway only in
+the last third of the network, only when asked.
+
+**Unexpected observation (the interesting one).** The curve PEAKS at L53 and
+then DECLINES by ~0.027 to the output. The model's own readout is better 11
+layers before the end than at the end.
+
+---
+
+## 4. Knows-vs-says (same asked-mode activations)
+
+**Question.** Is there more correctness information in the stream than the
+model expresses, and where is the gap largest?
+
+**Method.** Per layer, on identical activations: supervised probe (grouped CV
+by problem) vs the model's own margin readout. `analysis/knows_vs_says.py`.
+
+**Result.** last site: probe peaks 0.725, model's margin peaks 0.686 and ends
+at 0.659; max gap 0.128 at L46. mean site: probe 0.737, margin ends 0.508,
+gap up to 0.206.
+
+**Interpretation (moderate confidence).** The model carries substantially more
+correctness information than its verbal channel expresses, at every depth,
+even when directly asked. Combined with entry #3, the picture is: information
+present throughout -> partially routed to the channel when asked -> and even
+the routed portion degrades slightly before the output.
+
+**Data-quality flaw found and fixed.** This ran on 300 texts (150 problems)
+because asked-mode inherited the behavioral gate's subsample. Too small for
+law-disjoint splits and for trusting per-layer differences of ~0.03. Capture
+now uses the full 2,000 texts by default (`--gate-sample` reproduces the old
+subset). Full-data reruns launched for Qwen3-32B and Qwen3.6-27B; the numbers
+above should be treated as provisional until those land.
+
+---
+
+## 5. Roster expansion and the flagship model choice
+
+**Question.** Which model should carry the workspace (J-space) experiment?
+
+**Constraint discovered in the literature pass:** fitting a J-lens for
+Qwen3-32B is expensive (63 source layers x 5120^2, ~40 backward passes per
+prompt, ~1000 prompts). Free pre-fitted J-lens AND R-lens exist for
+Qwen3.6-27B - which has **identical geometry to our Qwen3-32B (64 layers,
+hidden 5120)**, so our entire pipeline ports without shape changes.
+
+**Behavioral gates (margin AUROC, 300 balanced texts, threshold-free):**
+
+| Model | Margin AUROC |
+|---|---|
+| Llama-3.1-8B | 0.522 |
+| Qwen2.5-7B | 0.564 |
+| Qwen3.5-4B | 0.626 |
+| Llama-3.3-70B | 0.629 |
+| Qwen3-32B | 0.669 |
+| **Qwen3.6-27B** | **0.826** |
+| gemma-3-27b | (running) |
+
+**Decision.** Qwen3.6-27B becomes the flagship: it is the most capable
+verifier we have found, it has free lenses, and its geometry matches our
+existing captures. Fitting our own 32B lens is deferred - it would cost real
+GPU hours to answer the same question on a *weaker* model. This is a
+resource-efficiency call, not a scientific compromise: if the flagship result
+is strong, confirming it on Qwen3-32B afterwards is a well-motivated
+follow-up rather than a prerequisite.
+
+**Secondary value:** the gate ladder above is itself a result - capability at
+this task varies hugely across families and generations (a 4B model from a
+newer generation beats a 70B from an older one), which is the x-axis for the
+capability-vs-representation co-emergence analysis.
+
+---
+
+## Running hypotheses entering the next block
+
+- **H-route (favored).** Correctness lives outside the verbalization pathway
+  and is recruited into it late, only under task framing. Predicts: on
+  Qwen3.6-27B (a better verifier) the asked-mode rise should be earlier and/or
+  larger; and our probe direction should have a small J-space component.
+- **H-workspace-steer.** Steering failed because we pushed a direction that is
+  mostly workspace-orthogonal. Predicts: the J-lens yes/no direction
+  (`J_l^T (w_yes - w_no)`) should steer where our probe direction did not, and
+  the two directions should have low cosine similarity.
+- **H-capability.** The steering null is partly a capability artifact (the 32B
+  is a weak verifier at 0.669). Predicts: steering on Qwen3.6-27B (0.826)
+  produces a measurable effect where the 32B did not. This is a confound we
+  can now test directly, and it must be tested before attributing the null to
+  workspace geometry.
+
+These three make different predictions and can be separated by the
+experiments queued next.
