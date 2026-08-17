@@ -22,8 +22,15 @@ Done:
 - Phase 5a training complete: LoRA r=16, all layers, 41.9M trainable params,
   75 steps; holdout perplexity 9.72 -> 2.49; format probes passed.
 
-Yet to be done: the FT-side evals (score B) and base-vs-FT comparison; Phase 5b
-(rank-1 single-layer + rank sweep); analysis + kill verdict.
+FT evals complete (runs/ft-v1/comparison.md). 8B: unparseable eliminated in
+literal (45->0%) and two-stage (39->0%), inverted in story (9-24% -> 18-52%,
+runaway generation); correct 0% everywhere. 32B (same recipe, fresh adapter):
+grammar perfected, but correct COLLAPSED - literal 32-61% -> 3-6%, two-stage
+29-62% -> 2-6%, story 13-39% -> 3-10% with runaway returning (32-60% unparse).
+Kill verdict: grammar-only continuation training is a behavioral override, not
+a skill injection - it adds nothing where semantics is absent (8B) and
+displaces translation where semantics exists (32B). Still open: Phase 5b rank
+sweep (moot under the kill verdict unless reframed).
 
 ## Thread B: is translation correctness linearly represented? (probe-experiments/)
 
@@ -60,10 +67,15 @@ Headline: a law-general, linearly decodable correctness signal exists in the
 capable model's deep layers and is absent in the incapable 8B; representation
 and behavioral competence emerge together, tier for tier.
 
-Yet to be done: steering with the layer-61 direction (H2; design fixed:
-site-restricted, negated-vector + norm-matched controls); probe the Phase 5a
-FT checkpoint (does grammar FT move the 8B toward the 32B state?); thinking-on
-gate arm (protocol variant).
+Round 4 (complete): (a) FT-8B probes - representation unchanged by grammar FT
+(law-disjoint 0.52-0.53 = base). (b) Steering, 300 texts x 8 conditions:
+baseline margin AUROC 0.6694 reproduced exactly; direction injection at
+0.25-1.0x residual norm (both signs) moves AUROC < 0.006; norm-matched random
+shifts margins more than the direction does. The correctness direction is
+readable but causally inert - the lab's fourth independent
+represented-but-not-read result. (c) 32B base translation: story 13-39%,
+literal 32-61%, two-stage 29-62%, order5 <=1.5% (depth cliff); the first
+signal-zone model on eval_v1.
 
 ## Setup details (at hand for the meeting)
 
