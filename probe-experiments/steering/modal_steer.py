@@ -184,7 +184,7 @@ def steer(items: list, config: dict) -> dict:
 
 
 @app.local_entrypoint()
-def main(limit: int = 0, dry_run: bool = False):
+def main(limit: int = 0, dry_run: bool = False, direction_src: str = "probe"):
     import numpy as np
 
     pxc = load_config()
@@ -192,9 +192,24 @@ def main(limit: int = 0, dry_run: bool = False):
     mcfg = pxc.MODELS[model_key]
 
     d = np.load(PX_ROOT / "runs" / "probe-32b" / "direction_L61_mean.npz")
-    direction = d["direction"].astype(float).tolist()
     capture_layer = int(d["layer"])          # capture row index (emb + blocks)
     hook_layer = capture_layer - 1           # decoder layer whose OUTPUT is that row
+    if direction_src == "probe":
+        direction = d["direction"].astype(float)
+    elif direction_src == "jlens":
+        # POSITIVE CONTROL. The J-lens yes/no direction is, by construction,
+        # the residual direction that most raises the disposition to say
+        # "yes" over "no" from this layer. If steering along it does not move
+        # the margin, the steering harness itself is not working and the
+        # probe-direction null is uninformative.
+        lens = np.load(PX_ROOT / "capture" / "qwen3-32b-lens-dirs.npz")
+        layers = list(lens["jlens_layers"])
+        idx = layers.index(hook_layer)
+        v = lens["jlens_dirs"][idx].astype(float)
+        direction = v / np.linalg.norm(v)
+    else:
+        raise SystemExit(f"unknown direction_src {direction_src}")
+    direction = direction.tolist()
 
     acts_meta = json.loads((PX_ROOT / "capture" / "acts-qwen3-32b" / "meta.json").read_text())
     npz = np.load(PX_ROOT / "capture" / "acts-qwen3-32b" / "acts-last.npz")
@@ -234,6 +249,7 @@ def main(limit: int = 0, dry_run: bool = False):
         "random_alphas": RANDOM_ALPHAS,
         "random_seed": 0,
         "batch_size": 16,
+        "direction_src": direction_src,
         "direction_sha256": hashlib.sha256(
             np.array(direction, dtype=np.float32).tobytes()).hexdigest()[:16],
         "template_sha256": hashlib.sha256(template.encode()).hexdigest(),
@@ -251,7 +267,7 @@ def main(limit: int = 0, dry_run: bool = False):
 
     out_dir = PX_ROOT / "runs" / "steer-v1"
     out_dir.mkdir(parents=True, exist_ok=True)
-    tag = "qwen3-32b" if not limit else f"qwen3-32b-limit{limit}"
+    tag = f"qwen3-32b-{direction_src}" + (f"-limit{limit}" if limit else "")
     slim = {k: v for k, v in config.items() if k != "direction"}
     record = {"stage": "steering", **slim, **result}
     (out_dir / f"{tag}.json").write_text(json.dumps(record, indent=2) + "\n")
