@@ -29,9 +29,10 @@ SITE = "mean"
 def load(acts_dir):
     d = ROOT / "capture" / acts_dir
     meta = json.loads((d / "meta.json").read_text())
-    ids = meta["ids"]
+    site = SITE if (d / f"acts-{SITE}.npz").exists() else "last"
+    npz = np.load(d / f"acts-{site}.npz")
+    ids = [i for i in meta["ids"] if i in npz]
     y = np.array([meta["labels"][i] for i in ids])
-    npz = np.load(d / f"acts-{SITE}.npz")
     return meta, ids, y, np.stack([npz[i] for i in ids]).astype(np.float32)
 
 
@@ -43,14 +44,22 @@ def fit_dir(X, y):
 
 
 sets = {}
-for mode, acts in (("reader", "acts-qwen3-32b"), ("asked", "acts-asked-32b")):
+_asked = ("acts-ansend-32b"
+          if (ROOT / "capture" / "acts-ansend-32b" / "acts-last.npz").exists()
+          else "acts-asked-32b")
+for mode, acts in (("reader", "acts-qwen3-32b"), ("asked", _asked)):
     if (ROOT / "capture" / acts / "meta.json").exists():
         sets[mode] = load(acts)
 
 probe = json.loads((ROOT / "runs" / "probe-32b" / "probe_results.json").read_text())
 best_reader = probe["sites"][SITE]["best_layer"]
-kv = json.loads((ROOT / "runs" / "lens-v1" / "knows_vs_says.json").read_text())
-best_asked = int(np.argmax(kv["sites"][SITE]["probe_auroc_lawdisjoint"]))
+pl = ROOT / "runs" / "lens-v1" / "asked_last_full.json"
+if pl.exists():
+    best_asked = max(json.loads(pl.read_text())["probe_lawdisjoint_sampled"],
+                     key=lambda t: t[1])[0]
+else:
+    kv = json.loads((ROOT / "runs" / "lens-v1" / "knows_vs_says.json").read_text())
+    best_asked = int(np.argmax(kv["sites"][SITE]["probe_auroc_lawdisjoint"]))
 
 out = {"site": SITE, "layers": {"reader": best_reader, "asked": best_asked},
        "n_texts": {m: int(sets[m][0]["n_texts"]) for m in sets}}

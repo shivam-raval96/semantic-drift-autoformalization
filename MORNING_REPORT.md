@@ -153,12 +153,24 @@ concern.)
 
 `runs/analysis-v1/coemergence.json`
 
-| Model | behavioral capability | law-disjoint representation |
-|---|---|---|
-| Llama-3.1-8B | 0.522 | 0.527 |
-| Qwen3.5-4B | 0.626 | 0.549 |
-| Qwen3-32B | 0.669 | 0.599 |
-| **Qwen3.6-27B** | **0.826** | **0.8146** |
+Authoritative numbers, pre-registered `mean` site, paired clustered bootstrap
+over the 1000 problems, permutation null under the SAME law-disjoint grouping
+(`runs/analysis-v1/probe_uncertainty.json`):
+
+| Model | capability | representation | 95% CI | sigma above null |
+|---|---|---|---|---|
+| Llama-3.1-8B | 0.522 | 0.5204 | [0.511, 0.530] | 1.91 (NOT clearly above chance) |
+| Qwen3.5-4B | 0.626 | 0.5490 | [0.537, 0.562] | 3.89 |
+| Qwen3-32B | 0.669 | 0.5985 | [0.586, 0.611] | 8.50 |
+| **Qwen3.6-27B** | **0.826** | **0.8146** | [0.801, 0.829] | **18.68** |
+
+Paired adjacent differences, same problems for both models, all **P(>0) = 1.0**:
++0.0286 [0.016, 0.040], +0.0495 [0.035, 0.065], +0.2161 [0.199, 0.233].
+
+Note the significance ladder is itself monotone (1.9 -> 3.9 -> 8.5 -> 18.7
+sigma). The 8B is the honest boundary case: at the pre-registered site it is
+1.91 sigma above its null, i.e. **at or barely above chance** - so "weakest",
+never "absent".
 
 Pearson r = 0.948, Spearman = 1.0 (n=4). Shuffled-label controls clean at every
 point (0.48-0.52). Qwen3.6-27B is a striking data point: it reads 0.815 on
