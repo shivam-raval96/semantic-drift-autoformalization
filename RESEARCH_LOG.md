@@ -804,3 +804,34 @@ it explains none of the base effect.
 
 That is the claim that survives every control we ran, and it is stronger than
 the version I first wrote AND stronger than the version I retracted.
+
+---
+
+## 19. Infrastructure post-mortem: the "volume corruption" was largely self-inflicted
+
+**Symptom, recurring all night.** Large activation archives downloaded from
+the Modal volume repeatedly failed zip verification ("Bad CRC-32", "Bad magic
+number"), sometimes verifying on a later retry. I attributed this to a
+read-after-write race on Modal's side and built a settle-verify-retry helper
+around it.
+
+**Actual diagnosis (found while debugging the 70B).** In several cases TWO of
+my own background jobs were downloading the SAME remote file to the SAME local
+path concurrently - e.g. a standalone pull and a chained pull-and-probe script
+launched minutes apart, both still running. Two writers on one path produce
+exactly these symptoms, and the "settle then retry" fix appeared to work only
+because the competing writer had exited by then.
+
+**Evidence.** The 70B pull failed all four attempts while a second script was
+pulling the same file; the moment that competitor exited, the remaining puller
+had exclusive access. Earlier "races" line up with the same pattern of
+overlapping jobs.
+
+**Correct fix (for tomorrow, not applied tonight):** make the puller write to a
+unique temp path and atomically rename on success, and take a lock per remote
+path so two jobs cannot target one file. The verify-then-retry logic stays -
+it is good practice regardless - but it was treating a symptom.
+
+**Lesson recorded.** When a failure looks like an infrastructure race, check
+first whether your own orchestration created the race. Parallelism I
+introduced for speed cost several hours of retries tonight.
