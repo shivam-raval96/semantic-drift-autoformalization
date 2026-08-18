@@ -60,11 +60,17 @@
       "capability_margin_auroc": 0.6294,
       "representation_lawdisjoint_auroc": 0.6337,
       "site": "mean",
-      "fold_aurocs": [],
-      "fold_mean": null,
-      "fold_sd": null,
+      "fold_aurocs": [
+        0.6683,
+        0.607,
+        0.7327,
+        0.8137,
+        0.7056
+      ],
+      "fold_mean": 0.7055,
+      "fold_sd": 0.0686,
       "above_lexical_floor": 0.1307,
-      "in_distribution_auroc": 0.7649,
+      "in_distribution_auroc": 0.7648,
       "n_layers": 81
     },
     {
