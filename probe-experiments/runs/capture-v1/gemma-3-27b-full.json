@@ -1,0 +1,40 @@
+{
+  "stage": "capture",
+  "tag": "gemma-3-27b-full",
+  "model_key": "gemma-3-27b",
+  "model_id": "google/gemma-3-27b-it",
+  "adapter": null,
+  "gpu": "A100-80GB",
+  "limit": 0,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": false,
+  "gate_sample": false,
+  "prompt_file": null,
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/gemma-3-27b-full",
+  "n_texts": 2000,
+  "shape_per_item": [
+    63,
+    5376
+  ],
+  "token_len": {
+    "min": 151,
+    "max": 466,
+    "mean": 284.8
+  },
+  "answer_token_len": {
+    "min": 22,
+    "max": 68,
+    "mean": 42.3
+  },
+  "gpu_seconds": {
+    "load": 36.7,
+    "forward": 212.5,
+    "save": 363.8
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}
