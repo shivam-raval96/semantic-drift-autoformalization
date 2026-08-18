@@ -835,3 +835,51 @@ it is good practice regardless - but it was treating a symptom.
 **Lesson recorded.** When a failure looks like an infrastructure race, check
 first whether your own orchestration created the race. Parallelism I
 introduced for speed cost several hours of retries tonight.
+
+---
+
+## 20. Gemma-3-27B is unusable at float16 - diagnosed and confirmed
+
+**Symptom.** The Gemma-3-27B probe crashed inside sklearn with "Input X
+contains infinity or a value too large for dtype('float32')".
+
+**Hypothesis.** Our capture casts activations to float16 (ceiling 65504) to
+keep archives small. Gemma-3 is documented to carry unusually large activation
+magnitudes ("massive activations" acting as attention sinks - the model scout
+flagged this class of issue in its architecture warnings). If Gemma exceeds the
+float16 ceiling, values silently become inf at capture and only surface much
+later as a downstream error.
+
+**Test.** Counted non-finite values per site inside the remote probe rather
+than guessing. Result: **25,285 non-finite values at the `last` site and
+21,075 at `mean`** out of 2000 x 63 x 5376. Confirmed.
+
+**Consequences and actions.**
+- The Gemma-3-27B point is **excluded** from the co-emergence analysis. It is
+  not a null result about Gemma; it is a measurement failure on our side.
+- Added a hard assertion in `capture/modal_capture.py` that counts non-finite
+  values before writing, so this fails loudly at capture time.
+- To include Gemma later, recapture with `dtype=float32` (archives roughly
+  double in size). Not done tonight - Gemma was an optional roster point, not
+  a decisive one.
+
+**Why this matters beyond Gemma.** Every previously captured model was checked
+and is clean (an independent reviewer verified 0 NaN/Inf and an absmax of 2144
+for Qwen3-32B). But we had no guard: the pipeline would have silently produced
+corrupt activations for any future model with large activations. It has one now.
+
+---
+
+## 21. Engineering fix adopted: compute next to the data
+
+Repeated multi-GB downloads of activation archives were the single biggest
+time sink of the night (compounded by the self-inflicted concurrency issue in
+entry 19). The probe itself is cheap CPU work.
+
+`probing/remote_probe.py` now runs the probe **on Modal, against the volume**,
+and returns only the results JSON (a few KB). It also reports non-finite
+counts as a structured error rather than crashing - which is how the Gemma
+diagnosis above was confirmed cleanly.
+
+Rule for future work: move the computation to the data, not the data to the
+computation. Download only what a human needs to look at.

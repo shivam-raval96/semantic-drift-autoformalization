@@ -310,6 +310,15 @@ we can now measure the gaps between them mechanically.*
 3. FT v2 with the task in-distribution (story→RG pairs), measured on all three
    axes: behavior, representation, and verbal accessibility.
 
+## 7a. One model excluded, with cause
+
+**Gemma-3-27B is excluded from the co-emergence analysis.** Its activations
+contain 21,075-25,285 non-finite values caused by float16 overflow at capture
+(Gemma-3 carries unusually large activation magnitudes; float16 caps at
+65504). This is a measurement failure on our side, not a result about Gemma.
+A hard non-finite check now runs at capture time, and including Gemma later
+just needs a float32 recapture. All other models were verified clean.
+
 ## 7b. Self-audit of this report
 
 Every headline number in this document was re-read programmatically from its
