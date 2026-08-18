@@ -190,6 +190,17 @@ def capture(items: list, config: dict) -> dict:
     np.savez_compressed(f"{out_dir}/acts-mean.npz", **acts_mean)
     if acts_ansend:
         np.savez_compressed(f"{out_dir}/acts-ansend.npz", **acts_ansend)
+    # float16 overflow guard: some models (Gemma-3 family) carry activation
+    # magnitudes above float16's 65504 ceiling, which silently becomes inf and
+    # only surfaces much later as a sklearn error. Catch it at capture time.
+    _bad = sum(int(np.isinf(v).sum() + np.isnan(v).sum())
+               for v in list(acts_last.values())[:200])
+    _bad += sum(int(np.isinf(v).sum() + np.isnan(v).sum())
+                for v in list(acts_mean.values())[:200])
+    assert _bad == 0, (
+        f"{_bad} non-finite values in float16 activations for {model_id}: "
+        "this model overflows float16, recapture with dtype float32")
+
     lengths = [len(x) for x in ids_all]
     ans_lengths = [len(x) - s for x, s in zip(ids_all, span_starts)]
     meta = {

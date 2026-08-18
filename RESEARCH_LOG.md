@@ -754,3 +754,53 @@ was never load-bearing.
 Both are real; neither alone is the story. This is the version to put in the
 paper, and it exists only because the placebo control was run AND the
 comparison was made layer-resolved rather than at a single layer.
+
+---
+
+## 18. POSITION CONTROL (the 2x2) - the confound is refuted
+
+**Question.** The reader-vs-asked contrast differed in two ways at once:
+whether a question was present, and WHERE the activation was read (reader at
+the end of the RG mid-document; asked at the chat generation position). Which
+one does the work?
+
+**Method.** Capture the asked prompt at the *answer-end* position - the last
+token of the RG inside the chat-formatted prompt - so the comparison against
+reader mode is position-matched. n=2000. `analysis/site_margin.py` on the
+`ansend` site.
+
+**Result.**
+
+| | answer-end position | generation position |
+|---|---|---|
+| **no question** (bare text) | 0.499 final / 0.545 max | n/a |
+| **question present** | **0.6294** (best @L62) | 0.6889 (best @L53) |
+
+**Verdict: the positional confound is refuted.** Holding position fixed at the
+end of the RG, adding the verification question to the context moves the yes/no
+channel from chance (0.499-0.545) to **0.629**. Position contributes an
+additional increment (0.629 -> 0.689 when read at the generation position), but
+it explains none of the base effect.
+
+**Combining all three controls, the final picture:**
+
+1. No question, any position -> the yes/no axis carries nothing (0.50).
+2. Question in context, read mid-prompt -> 0.629. **The question does the
+   work, not the position.**
+3. Question in context, read at the answer position -> 0.689. Position adds
+   ~0.06.
+4. UNRELATED question at the answer position -> 0.637 overall, but **at chance
+   through blocks 48-57** where the real question reads 0.67-0.69. So the
+   question's *content* determines the mid-late-depth signal, while a generic
+   answer-position effect appears only in the final blocks.
+
+**What we can now say, fully controlled:**
+
+> Correctness information sits outside Qwen3-32B's verbal channel while it
+> reads. Posing a verification question routes it onto the yes/no axis from
+> about two-thirds depth - an effect that is not explained by readout position
+> (position-matched control: chance -> 0.629) and not explained by generic
+> answer-formatting (placebo control: at chance through the same blocks).
+
+That is the claim that survives every control we ran, and it is stronger than
+the version I first wrote AND stronger than the version I retracted.

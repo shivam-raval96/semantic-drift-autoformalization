@@ -274,9 +274,11 @@ middle band, taking n from 4 to 6 (P(perfect order) 0.042 -> 0.0014).
 
 ## 5. Controls still running (results will be appended)
 
-- **Position control (2×2).** Reader-mode reads at the end of the RG;
-  asked-mode read at the generation position. The `ansend` capture reads the
-  *asked* prompt at the end of the RG, making the comparison position-matched.
+- **Position control (2×2) — DONE, confound REFUTED.** Holding position fixed
+  at the end of the RG, adding the question moves the channel from chance
+  (0.499) to **0.6294**. Position adds a further increment (→0.689 at the
+  generation position) but explains none of the base effect.
+  `runs/lens-v1/asked_ansend.json`
 - **Placebo question — DONE, and it falsified the routing claim** (see 2.4).
   0.6366 with an unrelated question vs 0.6701 with the real one.
 - **Specificity control.** Does a probe for a task-irrelevant label (story
