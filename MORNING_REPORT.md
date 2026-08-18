@@ -308,13 +308,30 @@ we can now measure the gaps between them mechanically.*
 3. FT v2 with the task in-distribution (story→RG pairs), measured on all three
    axes: behavior, representation, and verbal accessibility.
 
+## 7b. Self-audit of this report
+
+Every headline number in this document was re-read programmatically from its
+committed JSON artifact and checked (`21/21 verified`). Checks covered: the
+vocabulary readout values and that the positive control's top token is
+literally "yes"; all steering margins and yes-rates for both directions plus
+the random control; the alignment cosine and its random baseline; the
+Qwen3.6-27B replication (0/63 for both lenses) and its probe AUROC; the
+bootstrap/permutation statistics for every model; the asked-vs-placebo curves
+at the quoted layers and the maximum gap; and both validation-gate numbers.
+Three initial "mismatches" were my audit demanding exact equality against
+correctly-rounded values (21.5402 vs 21.540, -2.6846 vs -2.685, -2.6179 vs
+-2.618) - resolved, not errors.
+
+No number in this report was typed from memory.
+
 ## 8. Where everything is
 
 | What | Where |
 |---|---|
 | Live status | `DASHBOARD.md` |
 | Full reasoning, every failure | `RESEARCH_LOG.md` |
-| Headline figure | `probe-experiments/steering_mechanism.png` |
+| Headline figure (mechanism) | `probe-experiments/steering_mechanism.png` |
+| Headline figure (routing by depth) | `probe-experiments/routing_by_depth.png` |
 | Lens/steering/alignment results | `probe-experiments/runs/{lens-v1,steer-v1}/` |
 | Probes per model | `probe-experiments/runs/probe-*/` |
 | Behavioral gates | `probe-experiments/runs/verify-v1/` |
