@@ -95,18 +95,24 @@ layer versus **0.6701** for the real question — which initially looked like th
 whole effect was format, not content. But the layer-resolved comparison shows
 that was an artifact of looking at one layer:
 
+Both conditions at **n=2000** (matched):
+
 | layer | real question | placebo | difference |
 |---|---|---|---|
-| 48 | 0.5744 | 0.5120 | +0.062 |
-| **53** | **0.6855** | **0.4831** | **+0.202** |
-| 56 | 0.6768 | 0.4929 | +0.184 |
-| 64 (final) | 0.6701 | 0.6366 | +0.034 |
+| 45 | 0.5037 | 0.5028 | +0.001 |
+| 48 | 0.5709 | 0.5120 | +0.059 |
+| 50 | 0.6685 | 0.5287 | +0.140 |
+| **53** | **0.6889** | **0.4831** | **+0.206** |
+| 54 | — | — | **+0.2115 (max gap)** |
+| 56 | 0.6777 | 0.4929 | +0.185 |
+| 64 (final) | 0.6677 | 0.6366 | +0.031 |
 
 **Two mechanisms, separable by depth.** (1) Question-specific routing is real
-at blocks ~48-57, where the real question yields 0.67-0.69 and the placebo is
-at chance — a ~5.6 sigma gap. (2) A weaker format/position effect appears only
-in the final blocks, where the placebo catches up and the gap is under one
-sigma. The honest version of 2.4:
+at blocks ~48-57, where the real question yields 0.67-0.69 and the placebo sits
+at chance — a +0.21 gap, roughly **11 sigma** at matched n=2000. (2) A weaker
+format/position effect appears only in the final blocks, where the placebo
+catches up (0.6366) and the remaining gap (+0.031) is ~1.7 sigma. The honest
+version of 2.4:
 
 > Reading bare text mid-document, the yes/no axis carries no correctness
 > information at any depth (max 0.545). Asking about correctness routes it onto
@@ -115,9 +121,9 @@ sigma. The honest version of 2.4:
 > effect appears only in the final blocks, where being in an answer position
 > surfaces correctness whatever was asked.
 
-Caveat: real-question curve is n=300 vs placebo n=2000; the mid-late gap is
-far too large to be an n artifact, but values refresh when the full capture
-lands. `runs/lens-v1/{margin_lens_asked,margin_lens_placebo}.json`.
+Both curves are now n=2000; the earlier n=300 values were within 0.004 of
+these, so nothing hinged on sample size.
+`runs/lens-v1/{asked_last_full,margin_lens_placebo}.json`.
 
 ### 2.4b REPLICATION on a second model, two independent lenses (HIGH confidence)
 

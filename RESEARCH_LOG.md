@@ -719,3 +719,38 @@ comparison before either writing the claim or withdrawing it.
 placebo is n=2000. The full 2000-text real-question capture exists on the
 volume and is being pulled; the mid-late gap is far too large to be an n
 artifact (5+ sigma), but the exact values will be refreshed when it lands.
+
+---
+
+## 17. Matched-n confirmation of the depth-separated placebo result
+
+The n=300 caveat from entry 16 is resolved. Re-ran the real-question curve on
+the full 2000-text capture; both conditions now n=2000, identical items.
+
+| layer | real (n=2000) | placebo (n=2000) | difference |
+|---|---|---|---|
+| 45 | 0.5037 | 0.5028 | +0.001 |
+| 48 | 0.5709 | 0.5120 | +0.059 |
+| 50 | 0.6685 | 0.5287 | +0.140 |
+| 53 | 0.6889 | 0.4831 | +0.206 |
+| 56 | 0.6777 | 0.4929 | +0.185 |
+| 58 | 0.6643 | 0.6121 | +0.052 |
+| 64 | 0.6677 | 0.6366 | +0.031 |
+
+Peak real 0.6889 @L53; peak placebo 0.6366 @L64 (its final layer). Maximum gap
+**+0.2115 at block 54**. With SE ~0.013 per curve at n=2000, that is roughly
+11 sigma - and the n=300 estimates were within 0.004 of these, so sample size
+was never load-bearing.
+
+**Final form of this result.** Two mechanisms, cleanly separated by depth:
+
+1. **Question-specific routing**, blocks ~48-57: asking about correctness puts
+   it on the yes/no axis at 0.67-0.69 while an unrelated yes/no question leaves
+   the axis at chance.
+2. **Question-independent answer-position effect**, final blocks only: the
+   placebo reaches 0.6366 by the last layer; the remaining gap (+0.031) is
+   ~1.7 sigma.
+
+Both are real; neither alone is the story. This is the version to put in the
+paper, and it exists only because the placebo control was run AND the
+comparison was made layer-resolved rather than at a single layer.
