@@ -50,6 +50,18 @@
       "perm_null_mean": 0.4962,
       "perm_null_sd": 0.017,
       "sigma_above_null": 18.68
+    },
+    "Llama-3.3-70B": {
+      "layer": 38,
+      "n_texts": 2000,
+      "auroc": 0.6337,
+      "ci95": [
+        0.6219,
+        0.6469
+      ],
+      "perm_null_mean": 0.5017,
+      "perm_null_sd": 0.0159,
+      "sigma_above_null": 8.32
     }
   },
   "paired_deltas": {
@@ -76,6 +88,14 @@
         0.2334
       ],
       "p_gt_0": 1.0
+    },
+    "Llama-3.3-70B - Qwen3.6-27B": {
+      "delta": -0.181,
+      "ci95": [
+        -0.1972,
+        -0.166
+      ],
+      "p_gt_0": 0.0
     }
   }
 }

@@ -179,7 +179,13 @@ over the 1000 problems, permutation null under the SAME law-disjoint grouping
 | Llama-3.1-8B | 0.522 | 0.5204 | [0.511, 0.530] | 1.91 (NOT clearly above chance) |
 | Qwen3.5-4B | 0.626 | 0.5490 | [0.537, 0.562] | 3.89 |
 | Qwen3-32B | 0.669 | 0.5985 | [0.586, 0.611] | 8.50 |
+| **Llama-3.3-70B** | **0.629** | **0.6337** | **[0.622, 0.647]** | 8.32 |
 | **Qwen3.6-27B** | **0.826** | **0.8146** | [0.801, 0.829] | **18.68** |
+
+**The dissociation is statistically clean.** At matched capability the CIs do
+not overlap: Qwen3.5-4B [0.537, 0.562] vs Llama-3.3-70B [0.622, 0.647]. The
+70B also beats the MORE capable Qwen3-32B [0.586, 0.611] with no overlap, so
+the rank inversion is real rather than noise. Gemma-3-27B is excluded (7a).
 
 Paired adjacent differences, same problems for both models, all **P(>0) = 1.0**:
 +0.0286 [0.016, 0.040], +0.0495 [0.035, 0.065], +0.2161 [0.199, 0.233].

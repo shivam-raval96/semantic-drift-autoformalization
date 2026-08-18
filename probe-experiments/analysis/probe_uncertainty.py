@@ -69,15 +69,28 @@ for label, acts_dir, probe_dir in MODELS:
     if not p.exists():
         print(f"[skip] {label}")
         continue
+    # Check the probe record BEFORE touching the archive: a model whose
+    # capture failed (float16 overflow) may also have an unreadable file.
+    pr_path = ROOT / "runs" / probe_dir / "probe_results.json"
+    if not pr_path.exists():
+        print(f"[skip] {label}: no probe result")
+        continue
+    site_rec = json.loads(pr_path.read_text())["sites"].get(SITE, {})
+    if "best_layer" not in site_rec:
+        print(f"[skip] {label}: {site_rec.get('error', 'no probe result')}")
+        continue
+    L = site_rec["best_layer"]
     meta = json.loads((ROOT / "capture" / acts_dir / "meta.json").read_text())
-    npz = np.load(p)
-    ids = [i for i in meta["ids"] if i in npz]
+    try:
+        npz = np.load(p)
+        ids = [i for i in meta["ids"] if i in npz]
+        acts = np.stack([npz[i] for i in ids]).astype(np.float32)
+    except Exception as e:
+        print(f"[skip] {label}: unreadable archive ({type(e).__name__})")
+        continue
     y = np.array([meta["labels"][i] for i in ids])
     pids = np.array([i.split("::")[0] for i in ids])
     groups = np.array([rows_meta[q]["group_lawcc"] for q in pids])
-    acts = np.stack([npz[i] for i in ids]).astype(np.float32)
-    pr = json.loads((ROOT / "runs" / probe_dir / "probe_results.json").read_text())
-    L = pr["sites"][SITE]["best_layer"]
     X = acts[:, L, :]
 
     sc = oof_scores(X, y, groups)
