@@ -89,24 +89,35 @@ at the same position* reads 0.62–0.64. Under the verification prompt the same
 readout climbs to 0.686 and ends at 0.6701 — which matches the independently
 measured behavioral gate (0.6694) to 0.0007.
 
-**IMPORTANT — the control landed and it changed this claim.** A placebo
-question ("Is the story written in English?"), identical in format and read at
-the identical position, still yields a yes/no margin that predicts correctness
-at **0.6366** (n=2000) versus **0.6701** for the real verification question.
+**The placebo control, and then a correction to my own correction.** A placebo
+question ("Is the story written in English?") reaches **0.6366** at the final
+layer versus **0.6701** for the real question — which initially looked like the
+whole effect was format, not content. But the layer-resolved comparison shows
+that was an artifact of looking at one layer:
 
-So the channel does NOT open because the model was asked about correctness. It
-opens because the model is in an answer position in a chat format. The honest
-version of 2.4:
+| layer | real question | placebo | difference |
+|---|---|---|---|
+| 48 | 0.5744 | 0.5120 | +0.062 |
+| **53** | **0.6855** | **0.4831** | **+0.202** |
+| 56 | 0.6768 | 0.4929 | +0.184 |
+| 64 (final) | 0.6701 | 0.6366 | +0.034 |
+
+**Two mechanisms, separable by depth.** (1) Question-specific routing is real
+at blocks ~48-57, where the real question yields 0.67-0.69 and the placebo is
+at chance — a ~5.6 sigma gap. (2) A weaker format/position effect appears only
+in the final blocks, where the placebo catches up and the gap is under one
+sigma. The honest version of 2.4:
 
 > Reading bare text mid-document, the yes/no axis carries no correctness
-> information at any depth (max 0.545). Put the same content in a chat prompt
-> and read at the position where the model is about to answer *any* yes/no
-> question, and that axis carries correctness at 0.64-0.67 — whether or not
-> the question is about correctness.
+> information at any depth (max 0.545). Asking about correctness routes it onto
+> that axis from about two-thirds depth (blocks ~48-57), where an unrelated
+> yes/no question leaves the axis at chance. A weaker, question-independent
+> effect appears only in the final blocks, where being in an answer position
+> surfaces correctness whatever was asked.
 
-That is still a real and interesting dissociation (format/position gates
-access to the verbal channel), but it is NOT "task framing routes correctness",
-and the earlier phrasing is withdrawn. `runs/lens-v1/placebo_last.json`.
+Caveat: real-question curve is n=300 vs placebo n=2000; the mid-late gap is
+far too large to be an n artifact, but values refresh when the full capture
+lands. `runs/lens-v1/{margin_lens_asked,margin_lens_placebo}.json`.
 
 ### 2.4b REPLICATION on a second model, two independent lenses (HIGH confidence)
 

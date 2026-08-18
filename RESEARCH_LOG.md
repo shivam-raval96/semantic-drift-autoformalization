@@ -662,3 +662,60 @@ more than it says" claim). Both were predicted in advance by the skeptic
 agent. The lesson I am recording: for any claim of the form "X causes the
 model to do Y", run the version of the experiment where X is replaced by a
 placebo BEFORE writing the interpretation down.
+
+---
+
+## 16. I OVER-RETRACTED. The layer-resolved placebo comparison restores a
+sharper version of the claim.
+
+**What happened.** In entry 15 I compared the placebo and real questions at the
+FINAL layer only (0.6366 vs 0.6701), concluded the effect was format/position
+rather than question content, and withdrew the routing claim. Then the full
+placebo curve finished and I compared them layer by layer. The single-number
+comparison was hiding the structure.
+
+| layer | real question (n=300) | placebo (n=2000) | difference |
+|---|---|---|---|
+| 40 | 0.5080 | 0.5042 | +0.004 |
+| 45 | 0.5112 | 0.5028 | +0.008 |
+| 48 | 0.5744 | 0.5120 | **+0.062** |
+| 50 | 0.6705 | 0.5287 | **+0.142** |
+| **53** | **0.6855** | **0.4831** | **+0.202** |
+| 56 | 0.6768 | 0.4929 | **+0.184** |
+| 58 | 0.6680 | 0.6121 | +0.056 |
+| 61 | 0.6658 | 0.5850 | +0.081 |
+| 64 (final) | 0.6701 | 0.6366 | +0.034 |
+
+First layer above 0.55: **real L48, placebo L58** - a ten-layer gap.
+Peak: real 0.6855 @L53; placebo 0.6366 @L64 (its final layer).
+
+**Two separable mechanisms, distinguished by depth.**
+
+1. **Question-specific routing is REAL, and it happens at mid-late layers.**
+   Between blocks ~47 and ~57 the real verification question puts correctness
+   on the yes/no axis at 0.67-0.69 while the placebo sits at chance
+   (0.48-0.53). The gap of +0.20 at L53 is roughly 5.6 sigma given the pooled
+   standard error (SE_real ~0.033 at n=300, SE_placebo ~0.013 at n=2000).
+2. **A format/position effect exists but only at the very end.** By the final
+   layer the placebo also reaches 0.6366, and the remaining gap (+0.034) is
+   under one sigma. Being in an answer position surfaces *some* correctness
+   signal regardless of what was asked - but only in the last few blocks.
+
+**Revised claim (replaces both the original and the retraction):**
+
+> Asking the model about correctness routes that information onto the yes/no
+> axis from about two-thirds depth onward (blocks ~48-57), where an unrelated
+> yes/no question leaves the axis at chance. A weaker, question-independent
+> effect appears only in the final blocks, where merely being in an answer
+> position surfaces correctness whatever was asked.
+
+**Process note, and the reason this entry exists.** I retracted on one number
+and un-retracted on the curve. The lesson is not "trust the first
+interpretation" - it is that a single-layer comparison was the wrong
+instrument for a claim about depth, and I should have run the layer-resolved
+comparison before either writing the claim or withdrawing it.
+
+**Caveat, stated plainly.** The real-question curve here is n=300 and the
+placebo is n=2000. The full 2000-text real-question capture exists on the
+volume and is being pulled; the mid-late gap is far too large to be an n
+artifact (5+ sigma), but the exact values will be refreshed when it lands.
