@@ -234,12 +234,28 @@ corrections are adopted:**
 - **"Co-emerges" does not mean "supports."** Our own steering result shows the
   direction is causally inert; no phrasing may imply it underlies the behavior.
 
-**Decisive follow-up now running:** capture + probe `llama-3.3-70b`. Its
-behavioral capability (0.629) is statistically identical to Qwen3.5-4B's
-(0.626, paired delta -0.004 [-0.045,+0.038]) while it is 17x larger and from a
-different family. Co-emergence predicts a probe near 0.55; a scale/quality
-story predicts 0.60+. `gemma-3-27b` (0.602) is also running to fill the empty
-middle band, taking n from 4 to 6 (P(perfect order) 0.042 -> 0.0014).
+**THE DECISIVE TEST RAN, AND IT REVISED THIS FINDING.** Llama-3.3-70B has
+capability 0.629 - statistically identical to Qwen3.5-4B's 0.626 - at 17x the
+size. Co-emergence predicted ~0.55; scale predicted 0.60+. **It came back
+0.6337.**
+
+| comparison | capability | representation |
+|---|---|---|
+| Qwen3.5-4B | 0.626 | 0.549 |
+| **Llama-3.3-70B** | **0.629 (+0.003)** | **0.634 (+0.085)** |
+
+The ordering also inverts once: the 70B (capability 0.629) out-reads Qwen3-32B
+(capability 0.669), 0.634 vs 0.599. Spearman falls 1.0 (n=4) -> **0.90 (n=5)**.
+
+**Revised claim:** representation strength is strongly associated with
+capability but **not determined by it** - at matched capability, 17x the
+parameters buys +0.085, and a less capable model can out-read a more capable
+one. Both capability and scale contribute. The earlier "co-emerge" framing
+overstated it.
+
+This does not touch findings 2.1-2.4b (geometry, verbal silence, steering,
+routing controls), which concern one model's direction and stand unchanged.
+(Gemma-3-27B was excluded for float16 overflow - see 7a.)
 
 ---
 

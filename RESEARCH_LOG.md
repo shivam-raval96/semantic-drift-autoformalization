@@ -883,3 +883,58 @@ diagnosis above was confirmed cleanly.
 
 Rule for future work: move the computation to the data, not the data to the
 computation. Download only what a human needs to look at.
+
+---
+
+## 22. THE DECISIVE TEST PARTIALLY REFUTES MY CO-EMERGENCE CLAIM
+
+**The prediction, registered before the run** (from the audit in entry 13's
+follow-up). Llama-3.3-70B has behavioral capability 0.629, statistically
+identical to Qwen3.5-4B's 0.626 (paired delta -0.004, CI [-0.045, +0.038]),
+while being 17x larger and from a different family.
+
+- **Co-emergence** (capability determines representation) predicts ~0.55.
+- **Scale/quality** (bigger models represent everything better) predicts 0.60+.
+
+**Result: 0.6337** (law-disjoint, mean site; 0.6263 at the `last` site;
+shuffled controls clean at 0.50-0.52). Probed remotely on Modal via
+`probing/remote_probe.py`.
+
+**The scale prediction wins.** Two ways to see it:
+
+| comparison | capability | representation |
+|---|---|---|
+| Qwen3.5-4B | 0.626 | 0.549 |
+| **Llama-3.3-70B** | **0.629 (+0.003)** | **0.634 (+0.085)** |
+
+At matched capability, 17x the parameters buys +0.085 AUROC of representation.
+
+And the ordering now inverts once: Llama-3.3-70B (capability 0.629)
+out-reads Qwen3-32B (capability 0.669) - 0.634 vs 0.599 - i.e. a LESS capable
+model has a STRONGER representation. Spearman falls from 1.0 (n=4) to
+**0.90 (n=5)**; Pearson 0.934.
+
+**Revised claim (replaces finding 2.6):**
+
+> Representation strength is strongly associated with behavioral capability
+> (Spearman 0.90, n=5) but is NOT determined by it. At matched capability, a
+> 17x larger model carries a substantially stronger correctness representation
+> (+0.085), and a less capable model can out-read a more capable one. Both
+> capability and scale contribute; our earlier "capability and representation
+> co-emerge" framing overstated the case.
+
+**What this does NOT touch.** The core results are about the geometry of one
+model's direction and are untouched by this: the orthogonality to the
+verbalization axis, the verbal silence, the steering null with its positive
+control, and the routing/placebo/position controls. Those stand.
+
+**What it costs and what it buys.** It costs the clean "co-emergence" headline.
+It buys a real dissociation: capability and scale are separable contributors to
+representational strength, measured on a frozen dataset with mechanical labels.
+That is a more interesting and more defensible claim than the one it replaces,
+and it exists only because a skeptic agent identified this exact model as the
+discriminating test and I ran it instead of reporting the tidy n=4 version.
+
+**Caveat retained.** The specificity control (a task-irrelevant label does not
+track capability, and anti-correlates at matched capacity) still holds, so
+neither axis is explained by generic linear decodability.

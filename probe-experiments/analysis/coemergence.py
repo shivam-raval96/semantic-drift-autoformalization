@@ -25,6 +25,7 @@ MODELS = [
     ("llama-3.1-8b", "llama-3.1-8b-margin", "probe-v1", "Llama-3.1-8B"),
     ("qwen3.5-4b", "qwen3.5-4b-margin", "probe-q35-4b", "Qwen3.5-4B"),
     ("qwen3-32b", "qwen3-32b-margin", "probe-32b", "Qwen3-32B"),
+    ("llama-3.3-70b", "llama-3.3-70b-margin", "probe-llama33-70b", "Llama-3.3-70B"),
     ("qwen3.6-27b", "qwen3.6-27b-margin", "probe-q36", "Qwen3.6-27B"),
 ]
 FLOOR = 0.503   # char-TFIDF lexical floor under the same law-disjoint split
@@ -41,23 +42,23 @@ for key, gate_stem, probe_dir, label in MODELS:
     best_site = max(probe["sites"], key=lambda s:
                     probe["sites"][s]["lawcc_robustness"]["auroc_oof"])
     rob = probe["sites"][best_site]["lawcc_robustness"]
-    folds = rob["fold_aurocs"]
+    folds = rob.get("fold_aurocs", [])
     rows.append({
         "model": label,
         "capability_margin_auroc": gate["margin_auroc"],
         "representation_lawdisjoint_auroc": rob["auroc_oof"],
         "site": best_site,
         "fold_aurocs": folds,
-        "fold_mean": round(float(np.mean(folds)), 4),
-        "fold_sd": round(float(np.std(folds)), 4),
+        "fold_mean": round(float(np.mean(folds)), 4) if folds else None,
+        "fold_sd": round(float(np.std(folds)), 4) if folds else None,
         "above_lexical_floor": round(rob["auroc_oof"] - FLOOR, 4),
         "in_distribution_auroc": probe["sites"][best_site]["best_auroc_oof"],
         "n_layers": len(probe["sites"][best_site]["per_layer"]),
     })
+    sd = f"{np.std(folds):.3f}" if folds else "n/a"
     print(f"{label:14s} capability {gate['margin_auroc']:.3f} | "
-          f"representation {rob['auroc_oof']:.3f} "
-          f"(folds sd {np.std(folds):.3f}) | above floor "
-          f"{rob['auroc_oof'] - FLOOR:+.3f}")
+          f"representation {rob['auroc_oof']:.3f} (folds sd {sd}) | "
+          f"above floor {rob['auroc_oof'] - FLOOR:+.3f}")
 
 out = {"lexical_floor_lawdisjoint": FLOOR, "models": rows}
 if len(rows) >= 3:
