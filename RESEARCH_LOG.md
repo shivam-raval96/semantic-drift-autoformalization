@@ -938,3 +938,29 @@ discriminating test and I ran it instead of reporting the tidy n=4 version.
 **Caveat retained.** The specificity control (a task-irrelevant label does not
 track capability, and anti-correlates at matched capacity) still holds, so
 neither axis is explained by generic linear decodability.
+
+---
+
+## 23. The decisive number was independently replicated
+
+The Llama-3.3-70B probe was computed twice by fully separate paths: once on
+Modal against the volume (`probing/remote_probe.py`, results preserved as
+`runs/probe-llama33-70b/probe_results_remote.json`) and once locally on the
+downloaded archives (`probing/fit_probes.py`). Different transfers, different
+code, different machines.
+
+| site | remote | local |
+|---|---|---|
+| **mean (the headline)** | **0.6337** | **0.6337** |
+| in-distribution (mean) | 0.7649 | 0.7648 |
+| last | 0.6263 @L74 | 0.6311 @L75 |
+
+The headline law-disjoint value is identical to four decimals. The `last`-site
+difference is layer selection landing on an adjacent layer (0.7280 vs 0.7283
+in-distribution) - a float-ordering artifact of argmax over near-equal values,
+not a discrepancy in the underlying fit, and it does not touch the reported
+number.
+
+This was unplanned - the local download finally verified after the remote
+probe had already answered the question - but it is the strongest form of
+verification available for the one number that changed a claim.

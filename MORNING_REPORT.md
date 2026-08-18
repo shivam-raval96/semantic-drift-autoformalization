@@ -237,7 +237,8 @@ corrections are adopted:**
 **THE DECISIVE TEST RAN, AND IT REVISED THIS FINDING.** Llama-3.3-70B has
 capability 0.629 - statistically identical to Qwen3.5-4B's 0.626 - at 17x the
 size. Co-emergence predicted ~0.55; scale predicted 0.60+. **It came back
-0.6337.**
+0.6337** - and was then independently replicated at 0.6337 by a separate
+computation path (remote-on-volume vs local-on-download; see log entry 23).
 
 | comparison | capability | representation |
 |---|---|---|
