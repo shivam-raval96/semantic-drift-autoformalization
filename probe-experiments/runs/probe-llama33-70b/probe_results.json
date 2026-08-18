@@ -531,7 +531,7 @@
           "var_sub": 0.7349
         }
       },
-      "seconds": 189.3
+      "seconds": 254.9
     },
     "mean": {
       "per_layer": [
@@ -1053,7 +1053,7 @@
           "var_sub": 0.7765
         }
       },
-      "seconds": 220.0
+      "seconds": 275.5
     }
   },
   "baselines": {
@@ -1064,5 +1064,5 @@
     "answer_length": 0.5045,
     "majority": 0.5
   },
-  "runtime_s": 409.4
+  "runtime_s": 530.5
 }
