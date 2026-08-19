@@ -6,7 +6,7 @@
 #   ./watch.sh ls         list available stage logs
 #
 # Stages appear as they start (e.g. train-8b, train-32b, eval-base-bfar-8b, ...).
-cd "$(dirname "$0")/../runs/ft-v2" || exit 1
+cd "$(dirname "$0")/runs/ft-v2" || exit 1
 case "$1" in
   ls) ls -t logs/ 2>/dev/null | sed 's/\.log$//'; exit 0 ;;
   "") clear

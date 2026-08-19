@@ -397,7 +397,7 @@ def main(
     source_field = "literal" if arm.startswith("literal") else "story"
     if arm in B_GRAMMAR:
         spec_g = importlib.util.spec_from_file_location(
-            "v2_grammars", here.parent / "v2" / "grammars.py")
+            "v2_grammars", here / "grammars.py")
         v2g = importlib.util.module_from_spec(spec_g)
         # dataclass creation inside the module needs it present in sys.modules
         sys.modules["v2_grammars"] = v2g

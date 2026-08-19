@@ -1,55 +1,11 @@
 #!/usr/bin/env python3
-"""Checkpoint-curve evals in ONE container: one vLLM engine, N LoRA adapters.
+"""Checkpoint sweeps in one container: load the engine once, hot-swap LoRA adapters.
 
-Problem this solves: run_curve.sh evaluates N checkpoints by launching N
-independent modal_eval runs, each paying the full engine-load cost (~6 min
-for 32B) for ~2 min of generation. This harness loads the base model ONCE
-(enable_lora=True) and iterates (checkpoint x arm) with vLLM's per-request
-LoRA (LoRARequest), so the GPU spends its time generating, not loading.
+Same prompts, same grading, same pinned templates as modal_eval.py — only the
+container lifecycle differs. Verified against it row-by-row (test_curve_eval.py).
 
-Everything protocol-critical is IDENTICAL to eval/modal_eval.py — prompts
-are built locally by the same helpers (checkform.build_prompt +
-benchmark.wrap_prompt), the pinned template-SHA gate runs first, grading is
-local via modal_eval's own _grade_chunk (imported by path), and each
-(checkpoint, arm) writes a standard-runner-shaped directory:
-
-    runs/<out-prefix>-<ckpt>/<model>-<arm>-limit<N>/
-        results.jsonl  summary.json  run_meta.json
-
-so base_table / compare_table / notebooks read curve points unchanged.
-run_meta.json additionally records produced_by + the adapter path.
-
-Usage (GPU run — one A100-80GB container for the whole curve):
-
-    modal run v2/curve_engine.py --model qwen3-32b --run-name v2-qwen3-32b-s0 \
-        --checkpoints step-0,step-100,step-300,step-500,step-700,step-900 \
-        --arms story,story-bfar --limit 200 \
-        --out-prefix curve-v2-v2-qwen3-32b-s0
-
-    (checkpoint, arm) pairs whose output dir already holds summary.json are
-    skipped, so a killed run resumes from where it stopped.
-
-Validation (local, no GPU, no Modal calls — also runs under plain python):
-
-    python v2/curve_engine.py --dry-run --model qwen3-32b
-        Simulates eval/modal_eval.py's ACTUAL main() (remote calls stubbed
-        with a recorder) at limit=5 for the A arm (story) and B arm
-        (story-bfar), then asserts: (a) this harness's prompts are
-        byte-equal to the conversations modal_eval sent, (b) the pinned
-        template SHAs hold, (c) output-dir naming matches the standard
-        runner's for the same inputs, (d) grading-path selection matches
-        (story -> checkform.grade, story-bfar -> grammars.grade_b b_far) —
-        proven by full-row-identical grading of canned well-formed and
-        garbage responses in both grammars.
-
-    python v2/curve_engine.py \
-        --equivalence-check runs/<std-tag>/<model>-<arm>-limitN/results.jsonl \
-        --equivalence-new runs/<curve-tag>/<model>-<arm>-limitN/results.jsonl
-        Post-first-GPU-use check: asserts the multi-adapter engine produced
-        row-by-row identical verdict statuses (and buckets) to a
-        standard-runner (modal_eval --adapter ...) run of the same
-        (checkpoint, arm). Run once after the first real curve to certify
-        the shared-engine LoRA path, then trust the harness.
+    modal run eval/curve_eval.py --model 8b --run-name v2-8b-s0 \
+      --checkpoints step-0,step-100,step-500 --arms story,story-bfar --limit 200
 """
 
 import modal

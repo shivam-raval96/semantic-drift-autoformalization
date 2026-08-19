@@ -1,44 +1,11 @@
 #!/usr/bin/env python3
-"""Task-pair LoRA fine-tuning on Modal (v2): story -> RG, completion-only loss.
+"""v2 fine-tune: story -> RG pairs, loss on the answer tokens only.
 
-Why v2 differs from v1 (training/train_lora.py): v1 taught the grammar
-alone — raw RG text, packed 1024-token blocks, loss on every token, no
-prompts. v2 teaches the TASK. Each sample is the frozen story-arm eval
-prompt, built byte-identically to eval/modal_eval.py's path
-(checkform.build_prompt on the sha-pinned formalize_prompt.md, then
-benchmark.wrap_prompt(base, "off", model_id, "story"), then the model's
-chat template with add_generation_prompt=True — no-think for Qwen3),
-followed by the reference RG as the assistant completion.
+v1 (train_lora.py) trained on bare grammar text with loss on everything. Here the
+prompt is the frozen eval template, so training and eval see byte-identical inputs.
 
-Objective changes that follow from that:
-  - Loss on completion tokens only (prompt labels -100): the story is
-    context to condition on, not text to model.
-  - EOS appended to the completion and trained, so generations stop.
-  - NO packing: samples are whole (prompt, completion) episodes; block
-    packing would splice unrelated stories into one context.
-  - Overlong rows (> MAX_LEN tokens) are DROPPED and counted, never
-    truncated — a clipped completion would train a malformed answer.
-
-LoRA recipe and schedule are v1's exactly (r=16, alpha=16, all layers
-q/k/v/o/gate/up/down, dropout 0, bias none, LR 2e-4 cosine 3% warmup,
-bf16, grad checkpointing) so v1-vs-v2 differ only in data + objective.
-
-Sanity probes (returned in the run record; asserted by the driver):
-  (a) mean completion-token loss on train_v2/holdout.jsonl, adapter on
-      vs off — FT must be lower;
-  (b) greedy generation from one holdout prompt (full chat prompt, as
-      trained) — the driver extracts ASSUME/ASK and parses them with
-      checkform's parser.
-
-Checkpoints (PEFT adapter format, vLLM-loadable) go to the shared
-volume under /models/checkpoints/<run_name>/step-N/.
-
-Usage:
-  python3 ft-experiments/v2/train_pairs.py --dry-run          # local, no GPU
-  modal run ft-experiments/v2/train_pairs.py --preset smoke-v2
-  modal run ft-experiments/v2/train_pairs.py --preset v2-8b
-  TRAIN_MODEL_ID="Qwen/Qwen3-32B" \
-    modal run ft-experiments/v2/train_pairs.py --preset v2-32b
+    python3 training/train_pairs.py --dry-run        # local, checks the masking
+    modal run training/train_pairs.py --preset v2-8b
 """
 
 import os

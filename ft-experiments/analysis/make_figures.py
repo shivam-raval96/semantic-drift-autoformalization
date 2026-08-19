@@ -119,5 +119,5 @@ def fig_dynamics(out):
 
 
 if __name__ == "__main__":
-    fig_transfer(ROOT / "v2_transfer.png")
-    fig_dynamics(ROOT / "v2_dynamics.png")
+    fig_transfer(ROOT / "assets" / "v2_transfer.png")
+    fig_dynamics(ROOT / "assets" / "v2_dynamics.png")

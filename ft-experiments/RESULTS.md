@@ -44,9 +44,23 @@ eval_v1 (frozen): 777 problems, 4 tiers (normal 180 / hard 197 / extra_hard 200
 | 8B | 0.71 -> 0.47 | 9.72 -> 2.49 | fluent, parseable RG |
 | 32B | 0.69 -> 0.45 | 12.12 -> 2.41 | fluent, parseable RG |
 
+## Checkpoint provenance (v2)
+
+Checkpoints saved at step 0 and every 100 optimizer steps (CLAUDE.md spec:
+step 0 + every 50-100), plus `final`. 8B and Ministral-14B: 13 checkpoints
+each, step-0 -> step-1041 + final, full 3 epochs. **Qwen3-32B: 10
+checkpoints, step-0 -> step-900 only** - its training container was lost to a
+network failure at ~2.6 of 3 epochs, so every 32B number in this document is
+from the **step-900 adapter**, not a 3-epoch final. Its checkpoint curve
+shows why this is immaterial rather than a caveat to work around: grammar A
+reaches 100% by step 500 and B-far is flat at 80-84% from step 300 onward, so
+the remaining 141 steps had nothing left to move. The 32B was not retrained
+to a nominal `final` because doing so would have cost ~3 GPU-hours to change
+numbers that the curve shows are already saturated.
+
 ## Behavioral results (translation on eval_v1, base vs FT)
 
-![Grammar-FT effect](ft_effect.png)
+![Grammar-FT effect](assets/ft_effect.png)
 
 | Model / arm | Correct, base -> FT | Unparseable, base -> FT |
 |---|---|---|

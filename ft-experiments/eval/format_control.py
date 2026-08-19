@@ -1,37 +1,10 @@
 #!/usr/bin/env python3
-"""Format-following control suite (v2): base vs FT on trivial in-context formats.
+"""Unrelated in-context format tasks — is a fine-tuned model just worse at following formats?
 
-DESIGN.md ("Format-following control"): if a fine-tuned model degrades on a
-never-trained output grammar (B), this suite separates grammar-specific
-lock-in from a GENERAL loss of in-context format-following. 60 deterministic
-items — 3 task families x 20 — each a 2-3 sentence text holding three trivial
-facts (a name, a count, a city) plus an explicit output-format instruction:
+60 items, 3 output formats, trivial content. If a model degrades on a new grammar
+but scores the same here, the loss is grammar-specific rather than general.
 
-  json       Answer as a JSON object with exactly the keys 'name', 'count', 'city'.
-  semicolon  Answer with exactly one line: ANSWER: <name>; <count>; <city>
-  keyword    Answer with three lines: NAME=..., COUNT=..., CITY=...
-
-Grading is fully mechanical and two-level, reported per family:
-  compliance%  the requested format was followed (parse/regex succeeds);
-  accuracy%    format followed AND all three values match the item's stored
-               expected triple (case-insensitive).
-Extraction repairs the same cosmetic damage the main graders repair (code
-fences, backtick/bold wrappers, trailing periods, label decoration; the last
-labeled line wins — checkform._LINE_RE's stance), so compliance here is
-comparable in tolerance to the main eval's parse path. Items are pure index
-arithmetic over fixed literal lists — no RNG anywhere, byte-identical on
-every build; the dry run asserts that plus positive/negative grader controls.
-
-Engine setup mirrors eval/modal_eval.py: same image/volume/secret, one
-container, vLLM bf16 greedy, A10G vs A100 routed off config.py MODELS,
---adapter loading a LoRA exactly as modal_eval does. Output goes to
-runs/ft-v2/format-control/{model}{-ft}.json with per-family compliance% and
-accuracy% plus every raw response for audit.
-
-    python3 ft-experiments/v2/format_control.py --dry-run        # local, no GPU
-    modal run ft-experiments/v2/format_control.py --model 8b
-    modal run ft-experiments/v2/format_control.py --model 8b \
-        --adapter /models/checkpoints/v2-8b-s0/final
+    modal run eval/format_control.py --model 8b --adapter /models/checkpoints/v2-8b-s0/final
 """
 
 import json
