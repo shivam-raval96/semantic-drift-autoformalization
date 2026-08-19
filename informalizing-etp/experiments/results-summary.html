@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Storyform — main results</title>
+<style>
+  :root {
+    --page: #f9f9f7; --surface: #fcfcfb; --ink: #0b0b0b; --ink-2: #52514e;
+    --muted: #898781; --grid: #e1e0d9; --border: rgba(11,11,11,0.10);
+    --s1: #2a78d6; --s2: #1baf7a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--page); color: var(--ink); }
+  body {
+    font: 9.4px/1.38 system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  @page { size: letter; margin: 0.48in 0.52in; }
+  h1 {
+    font-size: 18px; font-weight: 650; letter-spacing: -0.025em;
+    margin: 0 0 3px; line-height: 1.15;
+  }
+  .lede { color: var(--ink-2); font-size: 9.6px; margin: 0 0 4px; max-width: 88ch; }
+  .meta { color: var(--muted); font-size: 8px; margin: 0 0 12px; }
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin: 0 0 12px; }
+  .tile {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 10px 7px;
+  }
+  .tile .k { color: var(--ink-2); font-size: 7.8px; line-height: 1.25; }
+  .tile .v { font-size: 15px; font-weight: 650; margin-top: 2px; letter-spacing: -0.03em; }
+  .tile .n { color: var(--muted); font-size: 7.4px; margin-top: 2px; }
+  h2 {
+    font-size: 8.6px; font-weight: 650; color: var(--ink-2);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin: 0 0 6px; padding: 0 0 3px; border-bottom: 1px solid var(--grid);
+  }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .claim { margin: 0 0 10px; }
+  .claim p { margin: 0 0 6px; color: var(--ink); }
+  .claim strong { font-weight: 650; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 2px 6px 2px 0; border-bottom: 1px solid var(--grid); }
+  th { color: var(--muted); font-weight: 500; font-size: 7.6px; }
+  td { color: var(--ink-2); }
+  td.m { color: var(--ink); }
+  .hi { color: var(--s2); font-weight: 650; }
+  .cap { color: var(--muted); font-size: 7.6px; margin: 3px 0 0; }
+  footer {
+    color: var(--muted); font-size: 7.6px; margin-top: 10px;
+    border-top: 1px solid var(--grid); padding-top: 5px;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Formalizing informal mathematics — main results</h1>
+  <p class="lede">
+    Models recover an Equational Theories Project implication from natural language
+    into a rigid grammar (<code>ASSUME:</code> / <code>ASK:</code>), graded syntactically.
+    <em>Fuzzy</em> language is a themed Storyform narrative; <em>abstracted</em> language
+    is a structured literal description of the same pair. Vacuous laws (E1/E2) are excluded.
+  </p>
+  <p class="meta">informalizing-etp experiments 02, 05–08, 11 · seed 0 · OpenRouter</p>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="k">Story formalization needs thinking</div>
+      <div class="v">0–57% → 93–100%</div>
+      <div class="n">Exp 02 · 8 models, n=30 · off → on (gpt-4o-mini 70% on)</div>
+    </div>
+    <div class="tile">
+      <div class="k">Abstracted vs fuzzy NL (no-think)</div>
+      <div class="v">67% vs 50%</div>
+      <div class="n">Exp 07 · mean correct, 105 pairs · literal vs story</div>
+    </div>
+    <div class="tile">
+      <div class="k">Two-stage vs one-shot story</div>
+      <div class="v">66% vs 50%</div>
+      <div class="n">Exp 07 · abstract, then formalize · same 105 pairs</div>
+    </div>
+    <div class="tile">
+      <div class="k">Majority voting (story, no-think)</div>
+      <div class="v">26.1% → 27.8%</div>
+      <div class="n">Exp 11 · 4 open models · temp-0 vs vote@7</div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <section>
+      <h2>1–2 · Formalization requires thinking</h2>
+      <div class="claim">
+        <p><strong>With thinking on, open-weight and closed models look alike</strong> — seven of eight sit at 93–100% on the same 30 stories. <strong>With thinking off, the field spreads</strong> from 0% to 57%, and the frontier stays high: GPT-5.5 scores 92% on stories with reasoning fully off (exp 06/07), where smaller models fall into the teens and thirties.</p>
+      </div>
+      <table>
+        <thead><tr><th>model</th><th>think off</th><th>think on</th></tr></thead>
+        <tbody>
+          <tr><td class="m">deepseek-chat-v3.1</td><td>56.7</td><td class="hi">100</td></tr>
+          <tr><td class="m">gemini-2.5-flash</td><td>56.7</td><td class="hi">100</td></tr>
+          <tr><td class="m">claude-haiku-4.5</td><td>16.7</td><td class="hi">100</td></tr>
+          <tr><td class="m">gpt-5-mini</td><td>16.7</td><td class="hi">100</td></tr>
+          <tr><td class="m">qwen3-32b</td><td>3.3</td><td class="hi">100</td></tr>
+          <tr><td class="m">llama-3.3-70b</td><td>16.7</td><td class="hi">96.7</td></tr>
+          <tr><td class="m">mistral-small</td><td>6.7</td><td class="hi">93.3</td></tr>
+          <tr><td class="m">gpt-4o-mini</td><td>0.0</td><td>70.0</td></tr>
+          <tr><td class="m">gpt-5.5 (exp 06, strat. 24)</td><td class="hi">87.5</td><td class="hi">100</td></tr>
+        </tbody>
+      </table>
+      <p class="cap">Story → rigid grammar, correct%. Rows 1–8: exp 02, uniform n=30. GPT-5.5: exp 06, non-vacuous stratified pairs.</p>
+    </section>
+
+    <section>
+      <h2>3–4 · Abstracted language, and a two-stage pipeline</h2>
+      <div class="claim">
+        <p><strong>Models are far better at formalizing abstracted natural language than fuzzy narrative</strong> when they cannot think. Routing the story through an explicit abstraction step, then formalizing that description, captures most of that gap: two-stage matches the literal arm and beats one-shot story by ~16 mean points. Prompting the model to “abstract first” in a single call does not (exp 08: +0.5 / −3.2).</p>
+      </div>
+      <table>
+        <thead><tr><th>model</th><th>fuzzy (story)</th><th>abstracted</th><th>two-stage</th></tr></thead>
+        <tbody>
+          <tr><td class="m">gpt-5.5</td><td>92.4</td><td class="hi">99.0</td><td class="hi">99.0</td></tr>
+          <tr><td class="m">claude-haiku-4.5</td><td>48.6</td><td class="hi">82.9</td><td>81.9</td></tr>
+          <tr><td class="m">gemini-2.5-flash</td><td>75.2</td><td class="hi">84.8</td><td>74.3</td></tr>
+          <tr><td class="m">deepseek-chat-v3.1</td><td>75.2</td><td>73.3</td><td>74.3</td></tr>
+          <tr><td class="m">llama-3.3-70b</td><td>37.1</td><td>61.0</td><td class="hi">63.8</td></tr>
+          <tr><td class="m">mistral-small</td><td>23.8</td><td>57.1</td><td class="hi">58.1</td></tr>
+          <tr><td class="m">gpt-5-mini</td><td>45.7</td><td>55.2</td><td class="hi">58.1</td></tr>
+          <tr><td class="m">qwen3-32b</td><td>35.2</td><td class="hi">52.4</td><td>50.5</td></tr>
+          <tr><td class="m">gpt-4o-mini</td><td>16.2</td><td class="hi">36.2</td><td>29.5</td></tr>
+          <tr><td class="m">mean</td><td>49.9</td><td class="hi">66.9</td><td>65.5</td></tr>
+        </tbody>
+      </table>
+      <p class="cap">Exp 07, no-think, 105 non-vacuous pairs. Abstracted = structured literal. Two-stage = story → literal description → grammar.</p>
+    </section>
+  </div>
+
+  <section style="margin-top:12px">
+    <h2>5 · Majority voting does not improve formalization</h2>
+    <p class="claim" style="margin-bottom:6px">K-sample self-consistency on the hard story arm (temperature 0.7, no thinking) does not recover accuracy. Four open-weight models move from 26.1% at a single greedy pass to 27.8% at vote@7 — a +1.7 point change at 7× cost. Errors are stable misreadings, not sampling noise around a correct modal answer.</p>
+    <table>
+      <thead><tr><th>model</th><th>temp 0</th><th>vote@1</th><th>vote@3</th><th>vote@5</th><th>vote@7</th></tr></thead>
+      <tbody>
+        <tr><td class="m">deepseek-chat-v3.1</td><td>36.5</td><td>34.0</td><td>37.0</td><td>37.5</td><td>37.0</td></tr>
+        <tr><td class="m">llama-3.3-70b</td><td>25.5</td><td>25.5</td><td>26.0</td><td>27.0</td><td>27.5</td></tr>
+        <tr><td class="m">mistral-small</td><td>21.5</td><td>22.0</td><td>23.5</td><td>22.5</td><td>23.0</td></tr>
+        <tr><td class="m">qwen3-32b</td><td>21.0</td><td>20.5</td><td>22.5</td><td>22.5</td><td>23.5</td></tr>
+        <tr><td class="m">pooled</td><td>26.1</td><td>25.5</td><td>27.2</td><td>27.4</td><td>27.8</td></tr>
+      </tbody>
+    </table>
+    <p class="cap">Exp 11 · 200 synthetic pairs, story arm, reasoning off. Ballots pooled by grading-equivalence class (side-swap / dual count as the same vote).</p>
+  </section>
+
+  <footer>
+    Grading accepts variable renaming, side-swap, and consistent dualization. Thinking on/off is a uniform prompt wrapper plus the native reasoning toggle.
+  </footer>
+</main>
+</body>
+</html>

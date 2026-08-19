@@ -28,11 +28,15 @@ import sys
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-CORRECT_BUCKETS = ("exact", "correct-swapped", "correct-dualized")
+# "correct" is the truth-judgment task's single correct bucket
+# (experiment 13); formalization runs never emit it and truth runs never
+# emit the formalization buckets, so the union is safe for both.
+CORRECT_BUCKETS = ("exact", "correct-swapped", "correct-dualized", "correct")
 COMPOSITION = (
     ("exact", "var(--c-exact)"),
     ("correct-swapped", "var(--c-swap)"),
     ("correct-dualized", "var(--c-dual)"),
+    ("correct", "var(--c-exact)"),
     ("wrong", "var(--c-wrong)"),
     ("unparseable", "var(--c-unp)"),
 )
@@ -84,8 +88,17 @@ def group_runs(runs: List[dict]) -> List[List[dict]]:
 
 # Rendering arms in pipeline order; used to order and color cross-form
 # comparison figures (story blue, literal green, two-stage purple).
-FORM_ORDER = {"story": 0, "literal": 1, "two-stage": 2}
-FORM_COLORS = {"story": "var(--s1)", "literal": "var(--s2)", "two-stage": "var(--s3)"}
+FORM_ORDER = {"story": 0, "literal": 1, "two-stage": 2, "rigid grammar": 3}
+FORM_COLORS = {
+    "story": "var(--s1)",
+    "literal": "var(--s2)",
+    "two-stage": "var(--s3)",
+    "rigid grammar": "var(--s4)",
+}
+
+# Display names for rendering arms whose internal form key is not the
+# label the reports should carry (run_meta.json keys stay stable).
+FORM_LABELS = {"symbolic": "rigid grammar"}
 REGIME_ORDER = {"off": 0, "on": 1, None: 2}
 
 
@@ -102,16 +115,26 @@ DEFAULT_TEMPLATES = {
     "two-stage": "abstract_prompt.md",
 }
 
+# The truth-judgment task (experiment 13) uses its own default template
+# per form; recognize those too so its arms label as plain form names.
+TRUTH_TEMPLATES = {
+    "story": "prove_story_prompt.md",
+    "literal": "prove_literal_prompt.md",
+    "symbolic": "prove_symbolic_prompt.md",
+}
+
 
 def run_arm(run: dict) -> str:
     form = run_form(run)
+    label = FORM_LABELS.get(form, form)
     template = run["meta"].get("prompt_template")
-    if not template or template == DEFAULT_TEMPLATES.get(form):
-        return form
+    defaults = TRUTH_TEMPLATES if run["meta"].get("task") == "truth" else DEFAULT_TEMPLATES
+    if not template or template == defaults.get(form):
+        return label
     stem = Path(template).stem
     for affix in ("formalize_", "_prompt"):
         stem = stem.replace(affix, "")
-    return f"{form} + {stem.replace('_', ' + ')}"
+    return f"{label} + {stem.replace('_', ' + ')}"
 
 
 def arm_order_key(arm: str) -> Tuple[int, str]:
@@ -146,6 +169,12 @@ def experiment_title(group: List[dict]) -> str:
         bins = _ops_bins(group[0]["samples"])
         if bins and bins[0] > 1:
             how += f" minus vacuous-law pairs (bins {bins[0]}–{bins[-1]} remain)"
+    elif meta.get("task") == "truth":
+        bins = (meta.get("bins") or "2:8").replace(":", "–")
+        how = (
+            f"{pairs} pairs, {meta['per_bin']} per operation-count bin {bins}, "
+            "50/50 true/false"
+        )
     else:
         how = f"{pairs} uniformly sampled pairs"
     forms = sorted({run_arm(r) for r in group}, key=arm_order_key)
@@ -400,8 +429,11 @@ def stacked_bars(rows: List[dict]) -> str:
             f'<text x="{left + plot_w + 12}" y="{cy + 4:.1f}" class="value">{pct:.0f}%</text>'
         )
     svg = "".join(parts)
+    # Only chip the buckets this figure actually contains — truth runs
+    # never produce the formalization buckets and vice versa.
+    present = {b for row in rows for b, n in row["counts"].items() if n}
     return (
-        legend_chips([(name, color) for name, color in COMPOSITION])
+        legend_chips([(name, color) for name, color in COMPOSITION if name in present])
         + f'<svg viewBox="0 0 {VB_W} {height}" role="img">{svg}</svg>'
     )
 
@@ -477,7 +509,11 @@ def sample_tag(run: dict) -> str:
     pairs = len(run["samples"])
     if run["meta"].get("stratify_eq_ops"):
         return f"balanced {pairs}"
-    return f"stratified {pairs}" if run["meta"].get("stratify_ops") else f"uniform {pairs}"
+    if run["meta"].get("stratify_ops"):
+        return f"stratified {pairs}"
+    if run["meta"].get("task") == "truth":
+        return f"truth-balanced {pairs}"
+    return f"uniform {pairs}"
 
 
 def sample_note(run: dict) -> str:
@@ -503,6 +539,13 @@ def sample_note(run: dict) -> str:
         return (
             f"Sample: {pairs} pairs, {per_bin} per total-operation bin 1–8 — "
             "the full complexity range, including trivial laws."
+        )
+    if run["meta"].get("task") == "truth":
+        bins = (run["meta"].get("bins") or "2:8").replace(":", "–")
+        return (
+            f"Sample: {pairs} pairs, {run['meta'].get('per_bin')} per "
+            f"total-operation bin {bins}, each bin split 50/50 between "
+            "Lean-proved-true and proved-false implications."
         )
     return (
         f"Sample: {pairs} uniformly drawn pairs — almost entirely maximal "
@@ -644,11 +687,17 @@ def render_group(group: List[dict], fig_no: List[int]) -> str:
                 fig_no[0],
                 f"Verdict composition — {run['label']} · {sample_tag(run)}",
                 "How each model's answers grade out; the right-hand figure is the "
-                "correct rate (exact + swapped + dualized). " + sample_note(run),
+                + composition_note(run) + " " + sample_note(run),
                 stacked_bars(rows) + table,
             )
         )
     return "".join(sections)
+
+def composition_note(run: dict) -> str:
+    """The caption clause defining "correct" for this run's task."""
+    if run["meta"].get("task") == "truth":
+        return "correct rate (the ANSWER line matches the Lean-verified truth)."
+    return "correct rate (exact + swapped + dualized)."
 
 
 def render_form_group(group: List[dict], fig_no: List[int]) -> str:
@@ -748,7 +797,7 @@ def render_form_group(group: List[dict], fig_no: List[int]) -> str:
                 fig_no[0],
                 f"Verdict composition — {run_arm(run)} · {run['label']} · {sample_tag(run)}",
                 "How each model's answers grade out; the right-hand figure is the "
-                "correct rate (exact + swapped + dualized). " + sample_note(run),
+                + composition_note(run) + " " + sample_note(run),
                 stacked_bars(rows) + table,
             )
         )
@@ -907,18 +956,46 @@ def report_form(runs: List[dict]) -> Optional[str]:
     return forms.pop() if len(forms) == 1 else None
 
 
+def report_task(runs: List[dict]) -> Optional[str]:
+    tasks = {r["meta"].get("task") for r in runs}
+    return tasks.pop() if len(tasks) == 1 else None
+
+
+# Header lead sentence for the truth-judgment task (experiment 13),
+# where the model answers the implication instead of formalizing it.
+TRUTH_LEAD = (
+    "Equational Theories Project implications rendered per each run's form;\n"
+    "each model decides over OpenRouter whether the implication holds\n"
+    "(a final <code>ANSWER: True|False</code> line, <code>prove_*_prompt.md</code>),\n"
+    "graded against the ETP's Lean-verified outcome (<code>proveform.py</code>,\n"
+    "<code>truthdata.py</code>). Pairs are sampled 50/50 proved-true /\n"
+    "proved-false per operation bin, so chance — and any constant answerer —\n"
+    "scores 50%"
+)
+
+
 def render_report(runs: List[dict], title: str) -> str:
     total_rows = sum(len(r["rows"]) for r in runs)
     models = sorted({m for r in runs for m in r["models"]})
     stories = len({pid for r in runs for pid in r["pair_ids"]})
     overall = correct_pct([row for r in runs for row in r["rows"]])
+    truth_task = report_task(runs) == "truth"
+    if truth_task:
+        lead = TRUTH_LEAD
+    else:
+        lead = (
+            FORM_LEAD.get(report_form(runs), NEUTRAL_LEAD)
+            + ", and\ngraded syntactically (<code>checkform.py</code>). Correct = "
+            "exact, or an accepted\nsymmetry (sides swapped, or both equations "
+            "uniformly dualized)"
+        )
     tiles = "".join(
         f'<div class="tile"><div class="label">{esc(label)}</div>'
         f'<div class="value">{esc(value)}</div></div>'
         for label, value in (
             ("Runs", len(runs)),
             ("Models", len(models)),
-            ("Stories", stories),
+            ("Pairs" if truth_task else "Stories", stories),
             ("Graded calls", f"{total_rows:,}"),
             ("Overall correct", f"{overall:.0f}%"),
         )
@@ -931,9 +1008,7 @@ def render_report(runs: List[dict], title: str) -> str:
 <main>
 <header>
 <h1>{esc(title)}</h1>
-<p class="sub">{FORM_LEAD.get(report_form(runs), NEUTRAL_LEAD)}, and
-graded syntactically (<code>checkform.py</code>). Correct = exact, or an accepted
-symmetry (sides swapped, or both equations uniformly dualized).</p>
+<p class="sub">{lead}.</p>
 <p class="meta">{run_list}</p>
 </header>
 <div class="tiles">{tiles}</div>
@@ -995,9 +1070,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     args = cli.parse_args(argv)
 
     runs = [load_run(d) for d in args.run_dirs]
-    title = args.title or (
-        "ETP story-formalization benchmark" + FORM_TITLE_TAG.get(report_form(runs), "")
-    )
+    if report_task(runs) == "truth":
+        default_title = "ETP implication-truth benchmark"
+    else:
+        default_title = "ETP story-formalization benchmark" + FORM_TITLE_TAG.get(
+            report_form(runs), ""
+        )
+    title = args.title or default_title
     report = render_report(runs, title)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(report, encoding="utf-8")

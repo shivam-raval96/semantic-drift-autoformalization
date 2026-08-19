@@ -1,0 +1,118 @@
+{
+  "deepseek/deepseek-chat-v3.1": {
+    "counts": {
+      "correct": 62,
+      "wrong": 4,
+      "unparseable": 4,
+      "api-error": 0
+    },
+    "graded": 70,
+    "accuracy": 0.8857,
+    "true_accuracy": 0.8286,
+    "false_accuracy": 0.9429,
+    "answer_true_rate": 0.4697,
+    "accuracy_by_proof_kind": {
+      "explicit": 0.8333,
+      "implicit": 0.8906
+    },
+    "accuracy_by_ops_total": {
+      "2": 1.0,
+      "3": 0.9,
+      "4": 0.7,
+      "5": 1.0,
+      "6": 1.0,
+      "7": 0.9,
+      "8": 0.7
+    },
+    "median_response_len": 830,
+    "rows_with_reasoning": 66,
+    "median_reasoning_tokens": 2537
+  },
+  "qwen/qwen3-32b": {
+    "counts": {
+      "correct": 53,
+      "wrong": 10,
+      "unparseable": 7,
+      "api-error": 0
+    },
+    "graded": 70,
+    "accuracy": 0.7571,
+    "true_accuracy": 0.6286,
+    "false_accuracy": 0.8857,
+    "answer_true_rate": 0.4127,
+    "accuracy_by_proof_kind": {
+      "explicit": 0.8333,
+      "implicit": 0.75
+    },
+    "accuracy_by_ops_total": {
+      "2": 1.0,
+      "3": 0.7,
+      "4": 0.9,
+      "5": 0.8,
+      "6": 0.7,
+      "7": 0.6,
+      "8": 0.6
+    },
+    "median_response_len": 1626,
+    "rows_with_reasoning": 70,
+    "median_reasoning_tokens": 3840
+  },
+  "meta-llama/llama-3.3-70b-instruct": {
+    "counts": {
+      "correct": 36,
+      "wrong": 34,
+      "unparseable": 0,
+      "api-error": 0
+    },
+    "graded": 70,
+    "accuracy": 0.5143,
+    "true_accuracy": 0.1429,
+    "false_accuracy": 0.8857,
+    "answer_true_rate": 0.1286,
+    "accuracy_by_proof_kind": {
+      "explicit": 0.8333,
+      "implicit": 0.4844
+    },
+    "accuracy_by_ops_total": {
+      "2": 0.6,
+      "3": 0.5,
+      "4": 0.8,
+      "5": 0.3,
+      "6": 0.4,
+      "7": 0.5,
+      "8": 0.5
+    },
+    "median_response_len": 2936,
+    "rows_with_reasoning": 0,
+    "median_reasoning_tokens": 0
+  },
+  "openai/gpt-5-mini": {
+    "counts": {
+      "correct": 61,
+      "wrong": 8,
+      "unparseable": 1,
+      "api-error": 0
+    },
+    "graded": 70,
+    "accuracy": 0.8714,
+    "true_accuracy": 0.7714,
+    "false_accuracy": 0.9714,
+    "answer_true_rate": 0.4058,
+    "accuracy_by_proof_kind": {
+      "explicit": 0.8333,
+      "implicit": 0.875
+    },
+    "accuracy_by_ops_total": {
+      "2": 1.0,
+      "3": 0.9,
+      "4": 0.9,
+      "5": 0.8,
+      "6": 1.0,
+      "7": 0.9,
+      "8": 0.6
+    },
+    "median_response_len": 978,
+    "rows_with_reasoning": 70,
+    "median_reasoning_tokens": 1856
+  }
+}
