@@ -1,0 +1,303 @@
+{
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "tag": "ft8b-v2",
+  "n_texts": 2000,
+  "layers": 33,
+  "d_model": 4096,
+  "sites": {
+    "last": {
+      "per_layer": [
+        {
+          "layer": 0,
+          "auroc_oof": 0.5094
+        },
+        {
+          "layer": 1,
+          "auroc_oof": 0.5716
+        },
+        {
+          "layer": 2,
+          "auroc_oof": 0.5507
+        },
+        {
+          "layer": 3,
+          "auroc_oof": 0.5574
+        },
+        {
+          "layer": 4,
+          "auroc_oof": 0.551
+        },
+        {
+          "layer": 5,
+          "auroc_oof": 0.5611
+        },
+        {
+          "layer": 6,
+          "auroc_oof": 0.5434
+        },
+        {
+          "layer": 7,
+          "auroc_oof": 0.5509
+        },
+        {
+          "layer": 8,
+          "auroc_oof": 0.5558
+        },
+        {
+          "layer": 9,
+          "auroc_oof": 0.5663
+        },
+        {
+          "layer": 10,
+          "auroc_oof": 0.573
+        },
+        {
+          "layer": 11,
+          "auroc_oof": 0.5818
+        },
+        {
+          "layer": 12,
+          "auroc_oof": 0.5959
+        },
+        {
+          "layer": 13,
+          "auroc_oof": 0.6564
+        },
+        {
+          "layer": 14,
+          "auroc_oof": 0.6819
+        },
+        {
+          "layer": 15,
+          "auroc_oof": 0.7232
+        },
+        {
+          "layer": 16,
+          "auroc_oof": 0.7624
+        },
+        {
+          "layer": 17,
+          "auroc_oof": 0.7817
+        },
+        {
+          "layer": 18,
+          "auroc_oof": 0.7852
+        },
+        {
+          "layer": 19,
+          "auroc_oof": 0.7872
+        },
+        {
+          "layer": 20,
+          "auroc_oof": 0.7924
+        },
+        {
+          "layer": 21,
+          "auroc_oof": 0.7948
+        },
+        {
+          "layer": 22,
+          "auroc_oof": 0.8068
+        },
+        {
+          "layer": 23,
+          "auroc_oof": 0.8185
+        },
+        {
+          "layer": 24,
+          "auroc_oof": 0.8369
+        },
+        {
+          "layer": 25,
+          "auroc_oof": 0.8461
+        },
+        {
+          "layer": 26,
+          "auroc_oof": 0.8405
+        },
+        {
+          "layer": 27,
+          "auroc_oof": 0.8454
+        },
+        {
+          "layer": 28,
+          "auroc_oof": 0.8457
+        },
+        {
+          "layer": 29,
+          "auroc_oof": 0.8631
+        },
+        {
+          "layer": 30,
+          "auroc_oof": 0.8599
+        },
+        {
+          "layer": 31,
+          "auroc_oof": 0.9276
+        },
+        {
+          "layer": 32,
+          "auroc_oof": 0.9219
+        }
+      ],
+      "best_layer": 31,
+      "best_auroc_oof": 0.9276,
+      "lawcc_robustness": {
+        "auroc_oof": 0.8563
+      },
+      "shuffled_label_auroc": [
+        0.4992,
+        0.5101,
+        0.5163
+      ],
+      "n_texts_used": 1066
+    },
+    "mean": {
+      "per_layer": [
+        {
+          "layer": 0,
+          "auroc_oof": 0.5169
+        },
+        {
+          "layer": 1,
+          "auroc_oof": 0.5613
+        },
+        {
+          "layer": 2,
+          "auroc_oof": 0.5652
+        },
+        {
+          "layer": 3,
+          "auroc_oof": 0.5678
+        },
+        {
+          "layer": 4,
+          "auroc_oof": 0.5697
+        },
+        {
+          "layer": 5,
+          "auroc_oof": 0.5724
+        },
+        {
+          "layer": 6,
+          "auroc_oof": 0.5748
+        },
+        {
+          "layer": 7,
+          "auroc_oof": 0.5459
+        },
+        {
+          "layer": 8,
+          "auroc_oof": 0.5535
+        },
+        {
+          "layer": 9,
+          "auroc_oof": 0.6058
+        },
+        {
+          "layer": 10,
+          "auroc_oof": 0.633
+        },
+        {
+          "layer": 11,
+          "auroc_oof": 0.7112
+        },
+        {
+          "layer": 12,
+          "auroc_oof": 0.7616
+        },
+        {
+          "layer": 13,
+          "auroc_oof": 0.7809
+        },
+        {
+          "layer": 14,
+          "auroc_oof": 0.8593
+        },
+        {
+          "layer": 15,
+          "auroc_oof": 0.9191
+        },
+        {
+          "layer": 16,
+          "auroc_oof": 0.9309
+        },
+        {
+          "layer": 17,
+          "auroc_oof": 0.9398
+        },
+        {
+          "layer": 18,
+          "auroc_oof": 0.9418
+        },
+        {
+          "layer": 19,
+          "auroc_oof": 0.9417
+        },
+        {
+          "layer": 20,
+          "auroc_oof": 0.944
+        },
+        {
+          "layer": 21,
+          "auroc_oof": 0.9455
+        },
+        {
+          "layer": 22,
+          "auroc_oof": 0.9751
+        },
+        {
+          "layer": 23,
+          "auroc_oof": 0.975
+        },
+        {
+          "layer": 24,
+          "auroc_oof": 0.975
+        },
+        {
+          "layer": 25,
+          "auroc_oof": 0.9749
+        },
+        {
+          "layer": 26,
+          "auroc_oof": 0.9758
+        },
+        {
+          "layer": 27,
+          "auroc_oof": 0.9757
+        },
+        {
+          "layer": 28,
+          "auroc_oof": 0.9755
+        },
+        {
+          "layer": 29,
+          "auroc_oof": 0.9751
+        },
+        {
+          "layer": 30,
+          "auroc_oof": 0.984
+        },
+        {
+          "layer": 31,
+          "auroc_oof": 0.9855
+        },
+        {
+          "layer": 32,
+          "auroc_oof": 0.9811
+        }
+      ],
+      "best_layer": 31,
+      "best_auroc_oof": 0.9855,
+      "lawcc_robustness": {
+        "auroc_oof": 0.942
+      },
+      "shuffled_label_auroc": [
+        0.499,
+        0.5045,
+        0.5118
+      ],
+      "n_texts_used": 1066
+    }
+  }
+}

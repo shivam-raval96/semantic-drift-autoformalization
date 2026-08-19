@@ -42,7 +42,8 @@ def probe(tag: str, rows: list) -> dict:
            "layers": meta["layers"], "d_model": meta["d_model"], "sites": {}}
     for site in ("last", "mean"):
         npz = np.load(f"{base}/acts-{site}.npz")
-        ids = [i for i in meta["ids"] if i in npz]
+        # keep only texts whose problem was passed in `rows` (subset support)
+        ids = [i for i in meta["ids"] if i in npz and i.split("::")[0] in lawcc]
         y = np.array([meta["labels"][i] for i in ids])
         pid = np.array([i.split("::")[0] for i in ids])
         g_prob, g_law = pid, np.array([lawcc[p] for p in pid])
@@ -84,6 +85,8 @@ def probe(tag: str, rows: list) -> dict:
             "best_auroc_oof": best["auroc_oof"],
             "lawcc_robustness": {"auroc_oof": round(law, 4)},
             "shuffled_label_auroc": shuf,
+            # texts actually probed (differs from capture n_texts under --subset-file)
+            "n_texts_used": len(ids),
         }
         print(f"[{site}] best {best['auroc_oof']} @L{bL} | lawcc {law:.4f} | "
               f"shuffled {shuf}", flush=True)
@@ -91,9 +94,16 @@ def probe(tag: str, rows: list) -> dict:
 
 
 @app.local_entrypoint()
-def main(tag: str = "llama-3.3-70b-full", out: str = "probe-llama33-70b"):
+def main(tag: str = "llama-3.3-70b-full", out: str = "probe-llama33-70b",
+         subset_file: str = ""):
+    # subset_file: JSON list of problem_ids to KEEP (e.g. FT-exposure-clean
+    # problems, so 'law-disjoint' also means disjoint from the FT corpus).
     rows = [json.loads(l) for l in
             (PX_ROOT / "contrast_v1" / "contrast.jsonl").open()]
+    if subset_file:
+        keep = set(json.loads(Path(subset_file).read_text()))
+        rows = [r for r in rows if r["problem_id"] in keep]
+        print(f"= subset: {len(rows)} problems kept via {subset_file}")
     slim = [{"problem_id": r["problem_id"], "group_lawcc": r["group_lawcc"]}
             for r in rows]
     res = probe.remote(tag, slim)

@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-08-18T23:45:21.711687+00:00",
+  "phase": "3-base-eval",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "arm": "literal-bnear",
+  "regime": "off",
+  "eval_version": "v1",
+  "n": 777,
+  "limit": null,
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "greedy": true
+  },
+  "backend": {
+    "engine": "vllm",
+    "vllm_version": "0.25.1",
+    "torch_version": "2.11.0+cu130",
+    "gpu": "NVIDIA A10",
+    "dtype": "bfloat16",
+    "max_model_len": 8192,
+    "chat_template": "model default via llm.chat, add_generation_prompt"
+  },
+  "gpu_requested": "A10G",
+  "adapter": null,
+  "image": "nvidia/cuda:12.8.1-devel-ubuntu22.04 + python3.12 + uv:vllm",
+  "guardrails": {
+    "min_containers": 0,
+    "max_containers": 1,
+    "scaledown_window": 60,
+    "retries": 0,
+    "timeout": 900
+  },
+  "chunk_size": 100,
+  "max_model_len": 8192,
+  "prompt_template": "literal_prompt_bnear.md",
+  "prompt_template_sha256": "50bcf61265b8ae7e473b9bd7ff0c7185ec7165214903dfc1025fd4cec8c11db2",
+  "regime_suffix": "\n\nRespond with only the two required lines, and no other text before them.",
+  "timing": {
+    "model_load_s": 1269.8,
+    "generate_s": 1323.7,
+    "wall_s": 3525.1
+  }
+}

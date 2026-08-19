@@ -964,3 +964,119 @@ number.
 This was unplanned - the local download finally verified after the remote
 probe had already answered the question - but it is the strongest form of
 verification available for the one number that changed a claim.
+
+## 26. FT v2 design: the second-grammar test (2026-08-19)
+
+Mentor feedback on v1: "train on the pairs and then test on a different rigid
+grammar - then we are really seeing if the fine-tuning task generalizes."
+Adopted as the core of v2, not an add-on. Design locked before any run
+(ft-experiments/v2/DESIGN.md): train on story->RG pairs in grammar A only,
+eval the same frozen 777 problems in A, B-near (GIVEN:/SHOW:, f(a,b) - a
+surface re-skin) and B-far (LAW:/DERIVE:, parenthesized infix - a structural
+change), against base, three-way verdicts per tier. Predictions P1 (skill,
+transfers), P2 (format lock-in, does not), P3 (null) written down first.
+Two audits (grammar/grader surface; eval+training stages) found a transcode
+seam that lets the B grammars grade through the unchanged checkform core, so
+eval_v1 stayed frozen. Instrument-fairness bug caught in review: the B answer
+cleaner was stricter than checkform's (no trailing-period repair) - that
+asymmetry could have manufactured a fake lock-in verdict; fixed to
+byte-identical leniency before any FT eval ran. Denis's branch reviewed for
+collisions (none; his steering null and budget-bottleneck result adopted as
+interpretive frame).
+
+## 27. Task-pair FT is a phase change, and it transfers by structural distance
+
+8B row, base -> FT (pooled, n=777 per cell): story A 0.1 -> 96.8%, literal A
+0.4 -> 97.7%, B-near 96.3/93.7%, B-far 37.8/36.7% correct. Per-tier A story
+95-99% including order5 - law-general, not memorized (pair+law disjointness
+re-audited). Checkpoint curve: A saturates by step 300; B-far transfer RISES
+with it (23 -> 52% at step 500-600), settles 45.5% - no lock-in dynamic; the
+best-transfer checkpoint is not the final one. Format-following control
+(built with positive AND negative controls) intact: 100/90/100 vs base
+100/100/100 - so the B-far gap is a structural-generalization limit, not SFT
+narrowing. Failure autopsy on literal-bfar unparseables (478): all use the
+CORRECT new labels; they break by leaving literalform's "Value n" names
+unexpanded or dropping parens - a composition failure of two skills, not
+label confusion. v1's grammar-only FT taught none of this on the same
+equations; the delta between v1 and v2 is the task format alone.
+
+## 28. Task FT installs the internal representation grammar FT never touched
+
+Same instruments as the probing program (capture -> law-disjoint probe on
+contrast_v1): base 8B 0.520 (1.9 sigma, lexical floor), grammar-FT 8B (v1)
+0.52-0.53, task-FT 8B (v2) 0.899 last-site / 0.949 mean-site, shuffled
+labels ~0.51. The strongest natural representation we measured anywhere was
+Qwen3.6-27B's 0.815. Behavior, representation, and (v1-established) verbal
+channel now move together under task training - the three-axis measurement
+the probing thread was built for.
+
+## 29. Suite decision + infrastructure incidents, all with fixes
+
+Model research: Ministral-3-14B joins (limit-200 screen: story 11.1%, signal
+zone; new family; fills 8B-32B gap). Gemma-4-31B excluded - 72.8% base story,
+no FT headroom; recorded as the best base translator the lab has measured.
+Qwen3.8-27B rejected (week-old hybrid GDN attention, LoRA rough edges, family
+duplicate). Incidents: (1) 32B training hit the 3h Modal timeout at epoch
+2.17 - timeout raised to 6h, clean rerun (partial-trajectory checkpoints
+deleted so curves can never mix trajectories). (2) A local network blip
+killed both in-flight trainings and a capture chain - root cause is that
+plain `modal run` ties the remote app to the client connection; every long
+job now runs `--detach` with the run record also persisted server-side.
+(3) That persistence edit itself shipped a missing-import bug that crashed
+the 14B run at the very last line AFTER 13 checkpoints and full convergence
+were safely on the volume - import fixed, record reconstructed from the
+1,335-point log curve, nothing retrained. (4) Ministral-3 is a multimodal
+checkpoint (vision tower + language model): trainer and capture both patched
+to load the composite class and scope LoRA/hooks to language_model layers
+only, with a hard assert against vision-tower leakage.
+
+## 30. Full adversarial QC: 19,425 verdicts re-derived, two minor defects, both fixed
+
+Six independent auditors re-derived everything from raw artifacts (no stored
+verdict trusted): all FT and baseline verdicts re-graded exact-match, summary
+math 0.0pp everywhere, row order clean in all 25 run dirs, training loss
+provably completion-only with a sha-verified byte-bridge to the eval prompts,
+train/eval disjointness reconfirmed from scratch, grammar-B instrument passed
+leniency-parity fuzzing and 0% label-confusion, probe pipeline leak-free
+under attack. Confirmed defects, both minor: (1) the reconstructed 14B train
+record concatenated a Modal-preempted 294-step attempt with the clean 1041-
+step run - curve truncated to the completed attempt and the preemption
+documented; (2) my "law-disjoint" representation claim conflated probe-CV
+disjointness with FT-exposure disjointness (467/1000 contrast problems share
+a law with train_v2). Fix: subset probes on the 533 strictly FT-unseen
+problems (n_used verified 1066 texts): 14B 0.984, 8B 0.942 - the
+installation result holds at full strength on laws the FT models never saw.
+
+## 31. FT v2 complete: the full three-model table and the arc's closure
+
+Final numbers (pooled correct%, n=777/cell, base -> task-FT): grammar A
+0.1->96.8 / 14.0->89.4 / 18.8->99.7 (8B/14B/32B story); literal A 0.4->97.7 /
+26.8->99.4 / 34.4->99.9; B-near 93.7-100 everywhere; B-far 36.7-37.8 (8B),
+47.6-52.5 (14B), 77.5-81.5 (32B). Representation: law-disjoint probe
+0.520->0.949 (8B), 0.607->0.984 (14B), 0.599->0.921 (32B), holding at
+0.90-0.98 on the strictly FT-unseen 533-problem subset. Format controls
+intact in all three. P1 confirmed, P2 and P3 refuted.
+
+Three findings beyond the pre-registered predictions. (1) Far-grammar
+transfer SCALES with capacity (37/50/80%) and its failures are syntactic,
+not semantic - the structural ceiling is a capacity limit, not a limit of
+task-pair training. (2) Checkpoint curves show transfer peaking early and
+decaying as training specializes into the trained notation (8B -6 pts, 14B
+-15 pts from its step-300 peak of 74.5%), and that decay VANISHES at 32B -
+so "train longer" trades generality for specialization only while capacity
+is scarce. An endpoint-only design would have under-reported 14B transfer by
+~15 points. (3) The v1-vs-v2 contrast is now a controlled pair on identical
+equations, models and recipe, differing only in whether the task was in the
+training distribution: v1 bought syntax and cost semantics (32B 34->3%), v2
+bought the skill, the transfer and the representation (32B 34->99.9%).
+
+Infrastructure note: the one-engine curve harness (single vLLM load, LoRA
+hot-swap across checkpoints) passed a mandatory equivalence gate against the
+audited runner - 200/200 rows identical verdicts and buckets - before any of
+its numbers were admitted. It is now the right tool for future sweeps.
+Incident logged for discipline: releasing queued work early to fill idle GPU
+slots raced the orchestrator's own launch on three cells, producing 800 rows
+/ 500 unique in a shared append file. Greedy decoding made every duplicate
+verdict identical, so no result was corrupted, but the positional resume
+would have stalled short of 777; fixed by killing both writers, deduping to
+a verified in-order prefix, and finishing with a single writer per cell.

@@ -31,6 +31,11 @@ MODELS = {
         "tp": 2,
         "parked": True,  # gated: user go only
     },
+    # v2 third-model candidates (2026-08-19): join the FT suite only if the
+    # limit-200 signal screen lands them in the 10-60% base-correct band.
+    "gemma4-31b": {"hf_id": "google/gemma-4-31B-it", "gpu": "A100-80GB", "tp": 1},
+    "ministral-14b": {"hf_id": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+                      "gpu": "A100-80GB", "tp": 1},
 }
 
 PATHS = {
@@ -40,6 +45,7 @@ PATHS = {
     "sair_index": ROOT / "data" / "sair_index.json",
     "eval_v1": ROOT / "eval_v1",
     "train_v1": ROOT / "train_v1",
+    "train_v2": ROOT / "train_v2",
     "runs": ROOT / "runs",
     "checkpoints_volume": "/models/checkpoints",  # path inside Modal containers
 }
@@ -51,12 +57,22 @@ EVAL = {
     "max_model_len": {"single": 8192, "twostage": 12288},
     "timeouts": {"single": 900, "twostage": 1800},
     "tiers": ("normal", "hard", "extra_hard", "order5"),
-    "arms": ("story", "literal", "two-stage"),
+    # v2 grammar-B arms: same problems, answer asked in a never-trained
+    # grammar (bnear = keyword/op-symbol swap, bfar = parenthesized infix).
+    "arms": ("story", "literal", "two-stage",
+             "story-bnear", "story-bfar", "literal-bnear", "literal-bfar"),
     # Pinned template digests — eval scripts assert these before running.
     "template_shas": {
         "formalize_prompt.md": "ad33f6de859156b81be0d889abd3c56e4d9275bd855eb6d804d4e8ebcfe4983c",
         "literal_prompt.md": "089ffc52bb57c5aa7c2ead0e613ec7e73b11039aa79d729f8c80c63a0852f8b0",
         "abstract_prompt.md": "1aa038f2d13dbddcc5c7f803d9166d9e8a82ce9b981a3463fc59a3d44cce8733",
+        # v2 grammar-B templates (frozen 2026-08-19): byte-mirrors of the A
+        # templates with only the notation section, labels, and worked-example
+        # serializations changed.
+        "formalize_prompt_bnear.md": "a0cee84fcf01b28cf0f36b5bd71e4f6d3489005bab222f0ab545c5d29af690e8",
+        "formalize_prompt_bfar.md": "194eccce025a6125a49e401f6265ec7eb946e74445059a8573b1401bd79c1bfe",
+        "literal_prompt_bnear.md": "50bcf61265b8ae7e473b9bd7ff0c7185ec7165214903dfc1025fd4cec8c11db2",
+        "literal_prompt_bfar.md": "2c4b5bb41875230e49abac2a840a27eae8c68a9880ce41ee645f04ca49dc8b36",
     },
 }
 

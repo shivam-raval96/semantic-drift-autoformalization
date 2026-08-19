@@ -1,0 +1,70 @@
+{
+  "timestamp": "2026-08-19T10:24:58.323226+00:00",
+  "phase": "checkpoint-curve",
+  "model": "Qwen/Qwen3-32B",
+  "arm": "story-bfar",
+  "regime": "off",
+  "eval_version": "v1",
+  "n": 200,
+  "limit": 200,
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "greedy": true
+  },
+  "backend": {
+    "engine": "vllm",
+    "vllm_version": "0.25.1",
+    "torch_version": "2.11.0+cu130",
+    "gpu": "NVIDIA A100 80GB PCIe",
+    "dtype": "bfloat16",
+    "max_model_len": 8192,
+    "chat_template": "model default via llm.chat, add_generation_prompt",
+    "lora": {
+      "enable_lora": true,
+      "max_lora_rank": 16
+    }
+  },
+  "gpu_requested": "A100-80GB",
+  "adapter": {
+    "path": "/models/checkpoints/v2-qwen3-32b-s0/step-500",
+    "rank": 16
+  },
+  "image": "nvidia/cuda:12.8.1-devel-ubuntu22.04 + python3.12 + uv:vllm",
+  "guardrails": {
+    "min_containers": 0,
+    "max_containers": 1,
+    "scaledown_window": 60,
+    "retries": 0,
+    "timeout": 7200
+  },
+  "chunk_size": 200,
+  "max_model_len": 8192,
+  "prompt_template": "formalize_prompt_bfar.md",
+  "prompt_template_sha256": "194eccce025a6125a49e401f6265ec7eb946e74445059a8573b1401bd79c1bfe",
+  "regime_suffix": "\n\nRespond with only the two required lines, and no other text before them.",
+  "timing": {
+    "model_load_s": 404.6,
+    "generate_s": 30.7,
+    "wall_s": 924.5
+  },
+  "produced_by": "v2/curve_engine.py \u2014 one-container multi-adapter checkpoint-curve harness (shared vLLM engine, per-request LoRARequest)",
+  "curve": {
+    "run_name": "v2-qwen3-32b-s0",
+    "checkpoint": "step-500",
+    "out_prefix": "curve-v2-v2-qwen3-32b-s0",
+    "checkpoints_requested": [
+      "step-0",
+      "step-100",
+      "step-300",
+      "step-500",
+      "step-700",
+      "step-900"
+    ],
+    "arms_requested": [
+      "story",
+      "story-bfar"
+    ],
+    "engine_load_shared": true
+  }
+}

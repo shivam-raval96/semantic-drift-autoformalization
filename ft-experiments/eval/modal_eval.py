@@ -383,9 +383,31 @@ def main(
     # response, wrapped with the literal two-lines suffix.
     template = {
         "story": STORY_TEMPLATE, "literal": LITERAL_TEMPLATE, "two-stage": ABSTRACT_TEMPLATE,
+        "story-bnear": ftc.PATHS["prompts"] / "formalize_prompt_bnear.md",
+        "story-bfar": ftc.PATHS["prompts"] / "formalize_prompt_bfar.md",
+        "literal-bnear": ftc.PATHS["prompts"] / "literal_prompt_bnear.md",
+        "literal-bfar": ftc.PATHS["prompts"] / "literal_prompt_bfar.md",
     }[arm]
-    wrap_form = "abstract" if arm == "two-stage" else arm
-    source_field = "literal" if arm == "literal" else "story"
+    # B arms reuse the base form's regime suffix (its wording is label-agnostic)
+    # and the base form's eval-row source field; only template + grader differ.
+    B_GRAMMAR = {"story-bnear": "b_near", "story-bfar": "b_far",
+                 "literal-bnear": "b_near", "literal-bfar": "b_far"}
+    wrap_form = ("abstract" if arm == "two-stage"
+                 else "literal" if arm.startswith("literal") else "story")
+    source_field = "literal" if arm.startswith("literal") else "story"
+    if arm in B_GRAMMAR:
+        spec_g = importlib.util.spec_from_file_location(
+            "v2_grammars", here.parent / "v2" / "grammars.py")
+        v2g = importlib.util.module_from_spec(spec_g)
+        # dataclass creation inside the module needs it present in sys.modules
+        sys.modules["v2_grammars"] = v2g
+        spec_g.loader.exec_module(v2g)
+        b_key = B_GRAMMAR[arm]
+
+        def grade_fn(text, meta, _g=v2g, _k=b_key):
+            return _g.grade_b(text, _k, meta["canonical_e"], meta["canonical_f"])
+    else:
+        grade_fn = grade
 
     rows = []
     for tier in ftc.EVAL["tiers"]:
@@ -445,7 +467,7 @@ def main(
             timing["generate_s"] += result["timing"]["generate_s"]
             chunk_rows = _grade_chunk(rows[c0:c1], prompts[c0:c1], result, arm,
                                       model_id, stage2_template_text, stage2_suffix,
-                                      grade, bucket_of, hashlib)
+                                      grade_fn, bucket_of, hashlib)
             for row in chunk_rows:
                 out_fh.write(json.dumps(row, ensure_ascii=False) + "\n")
             out_fh.flush()

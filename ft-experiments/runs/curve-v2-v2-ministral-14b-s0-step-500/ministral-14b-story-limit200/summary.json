@@ -1,0 +1,26 @@
+{
+  "hard": {
+    "n": 20,
+    "exact": 14,
+    "correct-swapped": 0,
+    "correct-dualized": 0,
+    "wrong": 6,
+    "unparseable": 0,
+    "correct": 14,
+    "correct_pct": 70.0,
+    "unparseable_pct": 0.0,
+    "length_finishes": 0
+  },
+  "normal": {
+    "n": 180,
+    "exact": 172,
+    "correct-swapped": 0,
+    "correct-dualized": 0,
+    "wrong": 8,
+    "unparseable": 0,
+    "correct": 172,
+    "correct_pct": 95.6,
+    "unparseable_pct": 0.0,
+    "length_finishes": 0
+  }
+}

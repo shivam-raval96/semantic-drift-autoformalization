@@ -1,0 +1,718 @@
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:176                                                                      │
+│   @app.function(**_fn_common, **GUARDRAILS)                                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:191                                                                      │
+│   @app.function(**_fn_a100, **FT_GUARDRAILS)                                 │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:200                                                                      │
+│   @app.function(**_fn_a100, **FT_TWO_STAGE_GUARDRAILS)                       │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:220                                                                      │
+│   @app.function(**_fn_a100, **GUARDRAILS)                                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:231                                                                      │
+│   @app.function(**_fn_common, **FT_GUARDRAILS)                               │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:240                                                                      │
+│   @app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)                        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:260                                                                      │
+│   @app.function(**_fn_common, **FT_TWO_STAGE_GUARDRAILS)                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:280                                                                      │
+│   @app.function(**_fn_a100, **TWO_STAGE_GUARDRAILS)                          │
+╰──────────────────────────────────────────────────────────────────────────────╯
+✓ Initialized. View run at 
+https://modal.com/apps/order-evaluation/main/ap-LIoAQgnRuZKYGE9nQA0HCl
+✓ Created objects.
+├── 🔨 Created mount 
+│   /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval
+│   .py
+├── 🔨 Created function generate_a10g.
+├── 🔨 Created function generate_a100_ft.
+├── 🔨 Created function generate_a100_two_stage_ft.
+├── 🔨 Created function generate_a100.
+├── 🔨 Created function generate_a10g_ft.
+├── 🔨 Created function generate_a10g_two_stage.
+├── 🔨 Created function generate_a10g_two_stage_ft.
+└── 🔨 Created function generate_a100_two_stage.
+= resolved: model=mistralai/Ministral-3-14B-Instruct-2512-BF16 arm=story-bfar adapter=/models/checkpoints/v2-ministral-14b-s0/step-100 out=curve-v2-v2-ministral-14b-s0-step-100 limit=200
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+/root/modal_eval.py:176: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **GUARDRAILS)
+/root/modal_eval.py:191: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_GUARDRAILS)
+/root/modal_eval.py:200: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:220: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **GUARDRAILS)
+/root/modal_eval.py:231: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_GUARDRAILS)
+/root/modal_eval.py:240: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:260: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:280: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **TWO_STAGE_GUARDRAILS)
+/usr/local/lib/python3.12/site-packages/huggingface_hub/constants.py:298: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+INFO 08-19 06:21:39 [api_utils.py:273] non-default args: {'dtype': 'bfloat16', 'max_model_len': 8192, 'disable_log_stats': True, 'enable_lora': True, 'model': 'mistralai/Ministral-3-14B-Instruct-2512-BF16'}
+INFO 08-19 06:21:40 [config.py:351] Inferred from consolidated*.safetensors files torch.bfloat16 dtype.
+INFO 08-19 06:21:59 [model.py:619] Resolved architecture: PixtralForConditionalGeneration
+INFO 08-19 06:21:59 [model.py:1776] Using max model len 8192
+INFO 08-19 06:21:59 [scheduler.py:252] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 08-19 06:21:59 [vllm.py:1042] Asynchronous scheduling is enabled.
+INFO 08-19 06:21:59 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=38) INFO 08-19 06:22:03 [core.py:114] Initializing a V1 LLM engine (v0.25.1) with config: model='mistralai/Ministral-3-14B-Instruct-2512-BF16', speculative_config=None, tokenizer='mistralai/Ministral-3-14B-Instruct-2512-BF16', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=mistralai/Ministral-3-14B-Instruct-2512-BF16, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::qwen_gdn_attention_core', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=38) INFO 08-19 06:22:04 [parallel_state.py:1607] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://172.20.0.20:47065 backend=nccl
+(EngineCore pid=38) INFO 08-19 06:22:04 [parallel_state.py:1942] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=38) INFO 08-19 06:22:04 [gpu_worker.py:360] Using V2 Model Runner
+(EngineCore pid=38) INFO 08-19 06:22:06 [model_runner.py:281] Loading model from scratch...
+(EngineCore pid=38) INFO 08-19 06:22:06 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=38) INFO 08-19 06:22:08 [cuda.py:476] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=38) INFO 08-19 06:22:08 [flash_attn.py:718] Using FlashAttention version 2
+(EngineCore pid=38) INFO 08-19 06:22:11 [weight_utils.py:574] No consolidated.safetensors.index.json found in remote.
+(EngineCore pid=38) INFO 08-19 06:22:11 [weight_utils.py:849] Filesystem type for checkpoints: 9P. Checkpoint size: 25.97 GiB. Available RAM: 1018.02 GiB.
+(EngineCore pid=38) INFO 08-19 06:22:11 [weight_utils.py:872] Auto-prefetch is disabled because the filesystem (9P) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=38) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(EngineCore pid=38) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:18<00:00, 18.53s/it]
+(EngineCore pid=38) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:18<00:00, 18.53s/it]
+(EngineCore pid=38) 
+(EngineCore pid=38) INFO 08-19 06:22:30 [default_loader.py:430] Loading weights took 19.78 seconds
+(EngineCore pid=38) INFO 08-19 06:22:30 [punica_selector.py:20] Using PunicaWrapperGPU.
+(EngineCore pid=38) INFO 08-19 06:22:30 [model_manager.py:205] PixtralForConditionalGeneration supports adding LoRA to the tower modules. If needed, please set `enable_tower_connector_lora=True`.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.0.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.0.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.0.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.0.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.1.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.1.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.1.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.1.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.2.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.2.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.2.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.2.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.3.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.3.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.3.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.3.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.4.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.4.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.4.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.4.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.5.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.5.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.5.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.5.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.6.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.6.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.6.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.6.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.7.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.7.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.7.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.7.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.8.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.8.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.8.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.8.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.9.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.9.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.9.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.9.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.10.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.10.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.10.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.10.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.11.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.11.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.11.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.11.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.12.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.12.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.12.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.12.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.13.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.13.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.13.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.13.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.14.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.14.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.14.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.14.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.15.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.15.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.15.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.15.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.16.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.16.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.16.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.16.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.17.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.17.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.17.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.17.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.18.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.18.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.18.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.18.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.19.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.19.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.19.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.19.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.20.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.20.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.20.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.20.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.21.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.21.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.21.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.21.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.22.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.22.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.22.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.22.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.23.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.23.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.23.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.23.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; patch_merger.merging_layer will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_language_adapter.w_in will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:22:31 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_language_adapter.w_out will be ignored.
+(EngineCore pid=38) INFO 08-19 06:22:31 [model_runner.py:302] Model loading took 26.16 GiB and 26.366485 seconds
+(EngineCore pid=38) INFO 08-19 06:22:31 [topk_topp_sampler.py:55] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=38) INFO 08-19 06:23:15 [backends.py:1089] Using cache directory: /root/.cache/vllm/torch_compile_cache/b37cdf5550/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=38) INFO 08-19 06:23:15 [backends.py:1148] Dynamo bytecode transform time: 42.83 s
+(EngineCore pid=38) INFO 08-19 06:23:26 [backends.py:378] Cache the graph of compile range (1, 8192) for later use
+(EngineCore pid=38) INFO 08-19 06:23:46 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 26.56 s
+(EngineCore pid=38) INFO 08-19 06:24:07 [decorators.py:708] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/08890630d8b8099767ed8b8c95791bf304a9a68f67bcff88d35cb22d10322c8e/rank_0_0/model
+(EngineCore pid=38) INFO 08-19 06:24:07 [monitor.py:53] torch.compile took 95.00 s in total
+(EngineCore pid=38) WARNING 08-19 06:24:07 [utils.py:279] Using default LoRA kernel configs
+(EngineCore pid=38) INFO 08-19 06:24:13 [monitor.py:81] Initial profiling/warmup run took 6.00 s
+(EngineCore pid=38) INFO 08-19 06:24:16 [gpu_worker.py:538] Available KV cache memory: 45.66 GiB
+(EngineCore pid=38) INFO 08-19 06:24:16 [kv_cache_utils.py:2146] GPU KV cache size: 299,216 tokens
+(EngineCore pid=38) INFO 08-19 06:24:16 [kv_cache_utils.py:2147] Maximum concurrency for 8,192 tokens per request: 36.53x
+(EngineCore pid=38) INFO 08-19 06:24:16 [cutedsl_warmup.py:97] Skipping CuTeDSL warmup because no compile units were requested.
+(EngineCore pid=38) 
+[1ACapturing CUDA graphs (PIECEWISE):   0%|          | 0/102 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   1%|          | 1/102 [00:00<00:13,  7.26it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   2%|▏         | 2/102 [00:00<00:17,  5.70it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   3%|▎         | 3/102 [00:00<00:16,  5.90it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   4%|▍         | 4/102 [00:00<00:16,  5.89it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   5%|▍         | 5/102 [00:00<00:14,  6.62it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   6%|▌         | 6/102 [00:00<00:14,  6.41it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   7%|▋         | 7/102 [00:01<00:13,  6.99it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   8%|▊         | 8/102 [00:01<00:14,  6.63it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   9%|▉         | 9/102 [00:01<00:13,  7.07it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  10%|▉         | 10/102 [00:01<00:14,  6.57it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  11%|█         | 11/102 [00:01<00:12,  7.17it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  12%|█▏        | 12/102 [00:01<00:13,  6.84it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  13%|█▎        | 13/102 [00:01<00:11,  7.42it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  14%|█▎        | 14/102 [00:02<00:12,  6.98it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  15%|█▍        | 15/102 [00:02<00:11,  7.53it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  16%|█▌        | 16/102 [00:02<00:12,  7.06it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  17%|█▋        | 17/102 [00:02<00:10,  7.74it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  18%|█▊        | 18/102 [00:02<00:11,  7.14it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  19%|█▊        | 19/102 [00:02<00:10,  7.74it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  20%|█▉        | 20/102 [00:02<00:11,  7.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  21%|██        | 21/102 [00:02<00:10,  7.84it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  22%|██▏       | 22/102 [00:03<00:11,  7.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  23%|██▎       | 23/102 [00:03<00:10,  7.87it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  24%|██▎       | 24/102 [00:03<00:10,  7.35it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▍       | 25/102 [00:03<00:09,  7.84it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▌       | 26/102 [00:03<00:10,  7.10it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  27%|██▋       | 28/102 [00:03<00:09,  7.50it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  29%|██▉       | 30/102 [00:04<00:09,  7.74it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  30%|███       | 31/102 [00:04<00:08,  8.13it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  31%|███▏      | 32/102 [00:04<00:09,  7.39it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  33%|███▎      | 34/102 [00:04<00:08,  7.64it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  35%|███▌      | 36/102 [00:07<00:39,  1.67it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  37%|███▋      | 38/102 [00:07<00:27,  2.29it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  38%|███▊      | 39/102 [00:07<00:23,  2.69it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  39%|███▉      | 40/102 [00:08<00:20,  3.08it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  41%|████      | 42/102 [00:08<00:14,  4.01it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  43%|████▎     | 44/102 [00:08<00:12,  4.82it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  45%|████▌     | 46/102 [00:08<00:10,  5.50it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  47%|████▋     | 48/102 [00:09<00:08,  6.10it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  49%|████▉     | 50/102 [00:09<00:07,  6.53it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  51%|█████     | 52/102 [00:09<00:07,  6.75it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  53%|█████▎    | 54/102 [00:09<00:06,  7.01it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  55%|█████▍    | 56/102 [00:10<00:06,  7.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  56%|█████▌    | 57/102 [00:10<00:05,  7.53it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  57%|█████▋    | 58/102 [00:10<00:06,  7.13it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  58%|█████▊    | 59/102 [00:10<00:05,  7.58it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  59%|█████▉    | 60/102 [00:10<00:05,  7.09it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  60%|█████▉    | 61/102 [00:10<00:05,  7.55it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  61%|██████    | 62/102 [00:10<00:05,  7.16it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  62%|██████▏   | 63/102 [00:11<00:05,  7.72it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  63%|██████▎   | 64/102 [00:11<00:05,  7.18it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  65%|██████▍   | 66/102 [00:11<00:04,  7.48it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  67%|██████▋   | 68/102 [00:13<00:16,  2.11it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  69%|██████▊   | 70/102 [00:15<00:21,  1.48it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  71%|███████   | 72/102 [00:15<00:14,  2.04it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  72%|███████▏  | 73/102 [00:15<00:12,  2.38it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  73%|███████▎  | 74/102 [00:16<00:10,  2.74it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  74%|███████▎  | 75/102 [00:16<00:08,  3.29it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  75%|███████▍  | 76/102 [00:16<00:07,  3.64it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  76%|███████▋  | 78/102 [00:16<00:05,  4.60it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  77%|███████▋  | 79/102 [00:16<00:04,  5.25it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  78%|███████▊  | 80/102 [00:16<00:04,  5.45it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  80%|████████  | 82/102 [00:17<00:03,  6.26it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  82%|████████▏ | 84/102 [00:17<00:02,  6.75it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  84%|████████▍ | 86/102 [00:17<00:02,  7.10it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  86%|████████▋ | 88/102 [00:17<00:01,  7.37it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  88%|████████▊ | 90/102 [00:18<00:01,  7.55it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  90%|█████████ | 92/102 [00:18<00:01,  7.75it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  92%|█████████▏| 94/102 [00:18<00:01,  7.88it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  94%|█████████▍| 96/102 [00:18<00:00,  8.00it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  96%|█████████▌| 98/102 [00:19<00:00,  8.15it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  98%|█████████▊| 100/102 [00:19<00:00,  8.29it/s]
+[1ACapturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:24<00:00,  1.16it/s]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:24<00:00,  4.15it/s]
+(EngineCore pid=38) 
+[1ACapturing CUDA graphs (FULL):   0%|          | 0/70 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (FULL):   1%|▏         | 1/70 [00:00<00:07,  9.03it/s]
+[1ACapturing CUDA graphs (FULL):   3%|▎         | 2/70 [00:00<00:09,  7.21it/s]
+[1ACapturing CUDA graphs (FULL):   6%|▌         | 4/70 [00:00<00:08,  7.76it/s]
+[1ACapturing CUDA graphs (FULL):   9%|▊         | 6/70 [00:00<00:07,  8.03it/s]
+[1ACapturing CUDA graphs (FULL):  11%|█▏        | 8/70 [00:00<00:07,  8.14it/s]
+[1ACapturing CUDA graphs (FULL):  14%|█▍        | 10/70 [00:01<00:07,  8.19it/s]
+[1ACapturing CUDA graphs (FULL):  17%|█▋        | 12/70 [00:01<00:07,  8.22it/s]
+[1ACapturing CUDA graphs (FULL):  20%|██        | 14/70 [00:01<00:06,  8.21it/s]
+[1ACapturing CUDA graphs (FULL):  23%|██▎       | 16/70 [00:01<00:06,  8.23it/s]
+[1ACapturing CUDA graphs (FULL):  26%|██▌       | 18/70 [00:02<00:06,  8.27it/s]
+[1ACapturing CUDA graphs (FULL):  29%|██▊       | 20/70 [00:02<00:05,  8.41it/s]
+[1ACapturing CUDA graphs (FULL):  31%|███▏      | 22/70 [00:02<00:05,  8.44it/s]
+[1ACapturing CUDA graphs (FULL):  34%|███▍      | 24/70 [00:02<00:05,  8.54it/s]
+[1ACapturing CUDA graphs (FULL):  37%|███▋      | 26/70 [00:03<00:05,  8.53it/s]
+[1ACapturing CUDA graphs (FULL):  40%|████      | 28/70 [00:03<00:04,  8.60it/s]
+[1ACapturing CUDA graphs (FULL):  43%|████▎     | 30/70 [00:03<00:04,  8.65it/s]
+[1ACapturing CUDA graphs (FULL):  46%|████▌     | 32/70 [00:03<00:04,  8.59it/s]
+[1ACapturing CUDA graphs (FULL):  49%|████▊     | 34/70 [00:04<00:04,  8.48it/s]
+[1ACapturing CUDA graphs (FULL):  51%|█████▏    | 36/70 [00:04<00:04,  8.44it/s]
+[1ACapturing CUDA graphs (FULL):  54%|█████▍    | 38/70 [00:04<00:03,  8.54it/s]
+[1ACapturing CUDA graphs (FULL):  57%|█████▋    | 40/70 [00:04<00:03,  8.56it/s]
+[1ACapturing CUDA graphs (FULL):  60%|██████    | 42/70 [00:04<00:03,  8.62it/s]
+[1ACapturing CUDA graphs (FULL):  63%|██████▎   | 44/70 [00:05<00:03,  8.65it/s]
+[1ACapturing CUDA graphs (FULL):  66%|██████▌   | 46/70 [00:05<00:02,  8.70it/s]
+[1ACapturing CUDA graphs (FULL):  69%|██████▊   | 48/70 [00:05<00:02,  8.72it/s]
+[1ACapturing CUDA graphs (FULL):  71%|███████▏  | 50/70 [00:05<00:02,  8.71it/s]
+[1ACapturing CUDA graphs (FULL):  74%|███████▍  | 52/70 [00:06<00:02,  8.77it/s]
+[1ACapturing CUDA graphs (FULL):  77%|███████▋  | 54/70 [00:06<00:01,  8.87it/s]
+[1ACapturing CUDA graphs (FULL):  80%|████████  | 56/70 [00:06<00:01,  8.91it/s]
+[1ACapturing CUDA graphs (FULL):  83%|████████▎ | 58/70 [00:06<00:01,  8.85it/s]
+[1ACapturing CUDA graphs (FULL):  86%|████████▌ | 60/70 [00:07<00:01,  8.86it/s]
+[1ACapturing CUDA graphs (FULL):  89%|████████▊ | 62/70 [00:07<00:00,  8.92it/s]
+[1ACapturing CUDA graphs (FULL):  91%|█████████▏| 64/70 [00:07<00:00,  9.06it/s]
+[1ACapturing CUDA graphs (FULL):  94%|█████████▍| 66/70 [00:07<00:00,  9.14it/s]
+[1ACapturing CUDA graphs (FULL):  97%|█████████▋| 68/70 [00:07<00:00,  9.11it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:08<00:00,  9.17it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:08<00:00,  8.63it/s]
+(EngineCore pid=38) INFO 08-19 06:24:50 [model_runner.py:722] Graph capturing finished in 33 secs, took 1.39 GiB
+(EngineCore pid=38) INFO 08-19 06:26:29 [jit_monitor.py:73] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(EngineCore pid=38) INFO 08-19 06:26:30 [core.py:337] init engine (profile, create kv cache, warmup model) took 238.13 s (compilation: 95.00 s)
+(EngineCore pid=38) INFO 08-19 06:26:30 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+
+WARNING 08-19 06:26:30 [input_processor.py:157] vLLM has deprecated support for supporting different tokenizers for different LoRAs. By default, vLLM uses base model's tokenizer. If you are using a LoRA with its own tokenizer, consider specifying `--tokenizer [lora_path]` to use the LoRA tokenizer.
+[1ARendering conversations:   0%|          | 0/100 [00:00<?, ?it/s]
+[1ARendering conversations:  37%|███▋      | 37/100 [00:00<00:00, 367.63it/s]
+[1ARendering conversations:  92%|█████████▏| 92/100 [00:00<00:00, 470.57it/s]
+[1ARendering conversations: 100%|██████████| 100/100 [00:00<00:00, 461.20it/s]
+
+[1AProcessed prompts:   0%|          | 0/100 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]
+[1AProcessed prompts:   1%|          | 1/100 [00:05<09:52,  5.99s/it, est. speed input: 187.63 toks/s, output: 5.85 toks/s]
+[1AProcessed prompts:  10%|█         | 10/100 [00:06<00:39,  2.25it/s, est. speed input: 1833.17 toks/s, output: 58.37 toks/s]
+[1AProcessed prompts:  15%|█▌        | 15/100 [00:06<00:22,  3.77it/s, est. speed input: 2720.23 toks/s, output: 89.21 toks/s]
+[1AProcessed prompts:  21%|██        | 21/100 [00:06<00:12,  6.21it/s, est. speed input: 3780.35 toks/s, output: 127.71 toks/s]
+[1AProcessed prompts:  36%|███▌      | 36/100 [00:06<00:04, 14.60it/s, est. speed input: 6486.77 toks/s, output: 228.70 toks/s]
+[1AProcessed prompts:  76%|███████▌  | 76/100 [00:06<00:00, 43.41it/s, est. speed input: 13660.49 toks/s, output: 515.14 toks/s]
+[1AProcessed prompts:  93%|█████████▎| 93/100 [00:06<00:00, 53.52it/s, est. speed input: 16426.52 toks/s, output: 631.33 toks/s]
+[1AProcessed prompts: 100%|██████████| 100/100 [00:07<00:00, 53.52it/s, est. speed input: 16827.93 toks/s, output: 659.42 toks/s]Processed prompts: 100%|██████████| 100/100 [00:07<00:00, 14.21it/s, est. speed input: 16827.93 toks/s, output: 659.42 toks/s]
+(EngineCore pid=38) INFO 08-19 06:26:37 [core.py:1214] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=38) INFO 08-19 06:26:37 [core.py:1333] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=38) INFO 08-19 06:26:37 [core.py:1364] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=38) INFO 08-19 06:26:37 [core.py:1227] [shutdown] EngineCore: exiting busy loop
+= chunk 0-100 written (100/200, gen 7.3s)
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+/root/modal_eval.py:176: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **GUARDRAILS)
+/root/modal_eval.py:191: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_GUARDRAILS)
+/root/modal_eval.py:200: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:220: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **GUARDRAILS)
+/root/modal_eval.py:231: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_GUARDRAILS)
+/root/modal_eval.py:240: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:260: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:280: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **TWO_STAGE_GUARDRAILS)
+/usr/local/lib/python3.12/site-packages/huggingface_hub/constants.py:298: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+INFO 08-19 06:27:43 [api_utils.py:273] non-default args: {'dtype': 'bfloat16', 'max_model_len': 8192, 'disable_log_stats': True, 'enable_lora': True, 'model': 'mistralai/Ministral-3-14B-Instruct-2512-BF16'}
+INFO 08-19 06:27:44 [config.py:351] Inferred from consolidated*.safetensors files torch.bfloat16 dtype.
+INFO 08-19 06:28:05 [model.py:619] Resolved architecture: PixtralForConditionalGeneration
+INFO 08-19 06:28:05 [model.py:1776] Using max model len 8192
+INFO 08-19 06:28:05 [scheduler.py:252] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 08-19 06:28:05 [vllm.py:1042] Asynchronous scheduling is enabled.
+INFO 08-19 06:28:05 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=38) INFO 08-19 06:28:08 [core.py:114] Initializing a V1 LLM engine (v0.25.1) with config: model='mistralai/Ministral-3-14B-Instruct-2512-BF16', speculative_config=None, tokenizer='mistralai/Ministral-3-14B-Instruct-2512-BF16', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=mistralai/Ministral-3-14B-Instruct-2512-BF16, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::qwen_gdn_attention_core', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=38) INFO 08-19 06:28:10 [parallel_state.py:1607] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://172.20.1.73:47859 backend=nccl
+(EngineCore pid=38) INFO 08-19 06:28:10 [parallel_state.py:1942] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=38) INFO 08-19 06:28:10 [gpu_worker.py:360] Using V2 Model Runner
+(EngineCore pid=38) INFO 08-19 06:28:11 [model_runner.py:281] Loading model from scratch...
+(EngineCore pid=38) INFO 08-19 06:28:11 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=38) INFO 08-19 06:28:14 [cuda.py:476] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=38) INFO 08-19 06:28:14 [flash_attn.py:718] Using FlashAttention version 2
+(EngineCore pid=38) INFO 08-19 06:28:15 [weight_utils.py:574] No consolidated.safetensors.index.json found in remote.
+(EngineCore pid=38) INFO 08-19 06:28:15 [weight_utils.py:849] Filesystem type for checkpoints: 9P. Checkpoint size: 25.97 GiB. Available RAM: 1018.02 GiB.
+(EngineCore pid=38) INFO 08-19 06:28:15 [weight_utils.py:872] Auto-prefetch is disabled because the filesystem (9P) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=38) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(EngineCore pid=38) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:18<00:00, 18.01s/it]
+(EngineCore pid=38) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:18<00:00, 18.01s/it]
+(EngineCore pid=38) 
+(EngineCore pid=38) INFO 08-19 06:28:35 [default_loader.py:430] Loading weights took 19.30 seconds
+(EngineCore pid=38) INFO 08-19 06:28:35 [punica_selector.py:20] Using PunicaWrapperGPU.
+(EngineCore pid=38) INFO 08-19 06:28:35 [model_manager.py:205] PixtralForConditionalGeneration supports adding LoRA to the tower modules. If needed, please set `enable_tower_connector_lora=True`.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.0.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.0.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.0.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.0.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.1.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.1.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.1.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.1.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.2.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.2.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.2.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.2.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.3.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.3.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.3.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.3.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.4.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.4.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.4.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.4.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.5.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.5.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.5.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.5.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.6.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.6.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.6.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.6.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.7.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.7.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.7.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.7.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.8.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.8.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.8.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.8.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.9.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.9.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.9.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.9.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.10.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.10.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.10.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.10.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.11.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.11.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.11.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.11.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.12.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.12.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.12.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.12.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.13.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.13.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.13.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.13.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.14.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.14.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.14.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.14.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.15.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.15.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.15.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.15.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.16.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.16.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.16.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.16.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.17.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.17.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.17.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.17.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.18.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.18.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.18.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.18.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.19.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.19.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.19.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.19.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.20.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.20.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.20.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.20.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.21.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.21.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.21.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.21.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.22.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.22.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.22.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.22.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.23.attention.qkv_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.23.attention.o_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.23.feed_forward.gate_up_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_encoder.transformer.layers.23.feed_forward.down_proj will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; patch_merger.merging_layer will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_language_adapter.w_in will be ignored.
+(EngineCore pid=38) WARNING 08-19 06:28:35 [model_manager.py:404] Regarding PixtralForConditionalGeneration, no matching PunicaWrapper is found; vision_language_adapter.w_out will be ignored.
+(EngineCore pid=38) INFO 08-19 06:28:36 [model_runner.py:302] Model loading took 26.16 GiB and 25.302924 seconds
+(EngineCore pid=38) INFO 08-19 06:28:36 [topk_topp_sampler.py:55] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=38) INFO 08-19 06:29:25 [backends.py:1089] Using cache directory: /root/.cache/vllm/torch_compile_cache/b37cdf5550/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=38) INFO 08-19 06:29:25 [backends.py:1148] Dynamo bytecode transform time: 47.55 s
+(EngineCore pid=38) INFO 08-19 06:29:37 [backends.py:378] Cache the graph of compile range (1, 8192) for later use
+(EngineCore pid=38) INFO 08-19 06:30:01 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 31.33 s
+(EngineCore pid=38) INFO 08-19 06:30:23 [decorators.py:708] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/08890630d8b8099767ed8b8c95791bf304a9a68f67bcff88d35cb22d10322c8e/rank_0_0/model
+(EngineCore pid=38) INFO 08-19 06:30:23 [monitor.py:53] torch.compile took 106.14 s in total
+(EngineCore pid=38) WARNING 08-19 06:30:23 [utils.py:279] Using default LoRA kernel configs
+(EngineCore pid=38) INFO 08-19 06:30:29 [monitor.py:81] Initial profiling/warmup run took 6.22 s
+(EngineCore pid=38) INFO 08-19 06:30:32 [gpu_worker.py:538] Available KV cache memory: 45.66 GiB
+(EngineCore pid=38) INFO 08-19 06:30:32 [kv_cache_utils.py:2146] GPU KV cache size: 299,216 tokens
+(EngineCore pid=38) INFO 08-19 06:30:32 [kv_cache_utils.py:2147] Maximum concurrency for 8,192 tokens per request: 36.53x
+(EngineCore pid=38) INFO 08-19 06:30:33 [cutedsl_warmup.py:97] Skipping CuTeDSL warmup because no compile units were requested.
+(EngineCore pid=38) 
+[1ACapturing CUDA graphs (PIECEWISE):   0%|          | 0/102 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   1%|          | 1/102 [00:00<00:16,  6.23it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   2%|▏         | 2/102 [00:00<00:18,  5.30it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   3%|▎         | 3/102 [00:00<00:15,  6.36it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   4%|▍         | 4/102 [00:00<00:16,  6.01it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   5%|▍         | 5/102 [00:00<00:14,  6.78it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   6%|▌         | 6/102 [00:00<00:15,  6.36it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   7%|▋         | 7/102 [00:01<00:13,  7.02it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   8%|▊         | 8/102 [00:01<00:14,  6.57it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   9%|▉         | 9/102 [00:01<00:12,  7.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  10%|▉         | 10/102 [00:01<00:13,  6.71it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  11%|█         | 11/102 [00:01<00:12,  7.31it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  12%|█▏        | 12/102 [00:01<00:13,  6.77it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  13%|█▎        | 13/102 [00:01<00:12,  7.32it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  14%|█▎        | 14/102 [00:02<00:12,  6.81it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  15%|█▍        | 15/102 [00:02<00:12,  7.25it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  16%|█▌        | 16/102 [00:02<00:12,  6.69it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  17%|█▋        | 17/102 [00:02<00:11,  7.30it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  18%|█▊        | 18/102 [00:02<00:12,  6.76it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  19%|█▊        | 19/102 [00:02<00:11,  7.38it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  20%|█▉        | 20/102 [00:02<00:11,  6.88it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  21%|██        | 21/102 [00:03<00:10,  7.48it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  22%|██▏       | 22/102 [00:03<00:11,  7.01it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  23%|██▎       | 23/102 [00:03<00:10,  7.51it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  24%|██▎       | 24/102 [00:03<00:11,  7.00it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▍       | 25/102 [00:03<00:10,  7.61it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▌       | 26/102 [00:03<00:10,  6.96it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  26%|██▋       | 27/102 [00:03<00:09,  7.58it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  27%|██▋       | 28/102 [00:04<00:10,  7.03it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  29%|██▉       | 30/102 [00:04<00:09,  7.24it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  30%|███       | 31/102 [00:04<00:09,  7.66it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  31%|███▏      | 32/102 [00:04<00:09,  7.09it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  33%|███▎      | 34/102 [00:04<00:09,  7.35it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  35%|███▌      | 36/102 [00:07<00:41,  1.61it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  36%|███▋      | 37/102 [00:07<00:33,  1.95it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  37%|███▋      | 38/102 [00:07<00:27,  2.31it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  38%|███▊      | 39/102 [00:08<00:22,  2.84it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  39%|███▉      | 40/102 [00:08<00:18,  3.28it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  40%|████      | 41/102 [00:08<00:15,  3.84it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  41%|████      | 42/102 [00:08<00:14,  4.17it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  43%|████▎     | 44/102 [00:08<00:11,  5.18it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  44%|████▍     | 45/102 [00:08<00:09,  5.84it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  45%|████▌     | 46/102 [00:09<00:09,  5.82it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  47%|████▋     | 48/102 [00:09<00:08,  6.43it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  49%|████▉     | 50/102 [00:09<00:07,  6.87it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  51%|█████     | 52/102 [00:09<00:07,  7.08it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  53%|█████▎    | 54/102 [00:10<00:06,  7.27it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  55%|█████▍    | 56/102 [00:10<00:06,  7.41it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  57%|█████▋    | 58/102 [00:10<00:05,  7.54it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  59%|█████▉    | 60/102 [00:10<00:05,  7.55it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  61%|██████    | 62/102 [00:11<00:05,  7.68it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  63%|██████▎   | 64/102 [00:11<00:04,  7.67it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  65%|██████▍   | 66/102 [00:11<00:04,  7.54it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  67%|██████▋   | 68/102 [00:13<00:13,  2.46it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  69%|██████▊   | 70/102 [00:15<00:19,  1.65it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  71%|███████   | 72/102 [00:16<00:13,  2.16it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  72%|███████▏  | 73/102 [00:16<00:11,  2.47it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  73%|███████▎  | 74/102 [00:16<00:10,  2.80it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  75%|███████▍  | 76/102 [00:16<00:07,  3.63it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  75%|███████▌  | 77/102 [00:16<00:05,  4.18it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  76%|███████▋  | 78/102 [00:17<00:05,  4.46it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  78%|███████▊  | 80/102 [00:17<00:04,  5.30it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  80%|████████  | 82/102 [00:17<00:03,  5.93it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  82%|████████▏ | 84/102 [00:17<00:02,  6.44it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  84%|████████▍ | 86/102 [00:18<00:02,  6.82it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  86%|████████▋ | 88/102 [00:18<00:02,  6.97it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  88%|████████▊ | 90/102 [00:18<00:01,  7.12it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  90%|█████████ | 92/102 [00:18<00:01,  7.29it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  91%|█████████ | 93/102 [00:19<00:01,  7.59it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  92%|█████████▏| 94/102 [00:19<00:01,  7.19it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  94%|█████████▍| 96/102 [00:19<00:00,  7.39it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  96%|█████████▌| 98/102 [00:19<00:00,  7.52it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  98%|█████████▊| 100/102 [00:19<00:00,  7.57it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  99%|█████████▉| 101/102 [00:20<00:00,  7.91it/s]
+[1ACapturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:25<00:00,  1.20s/it]
+[1ACapturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:25<00:00,  4.05it/s]
+(EngineCore pid=38) 
+[1ACapturing CUDA graphs (FULL):   0%|          | 0/70 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (FULL):   1%|▏         | 1/70 [00:00<00:09,  7.46it/s]
+[1ACapturing CUDA graphs (FULL):   3%|▎         | 2/70 [00:00<00:10,  6.66it/s]
+[1ACapturing CUDA graphs (FULL):   6%|▌         | 4/70 [00:00<00:08,  7.53it/s]
+[1ACapturing CUDA graphs (FULL):   9%|▊         | 6/70 [00:00<00:08,  7.95it/s]
+[1ACapturing CUDA graphs (FULL):  11%|█▏        | 8/70 [00:01<00:07,  8.09it/s]
+[1ACapturing CUDA graphs (FULL):  14%|█▍        | 10/70 [00:01<00:07,  8.17it/s]
+[1ACapturing CUDA graphs (FULL):  17%|█▋        | 12/70 [00:01<00:07,  8.07it/s]
+[1ACapturing CUDA graphs (FULL):  20%|██        | 14/70 [00:01<00:06,  8.20it/s]
+[1ACapturing CUDA graphs (FULL):  23%|██▎       | 16/70 [00:01<00:06,  8.27it/s]
+[1ACapturing CUDA graphs (FULL):  26%|██▌       | 18/70 [00:02<00:06,  8.29it/s]
+[1ACapturing CUDA graphs (FULL):  29%|██▊       | 20/70 [00:02<00:05,  8.34it/s]
+[1ACapturing CUDA graphs (FULL):  31%|███▏      | 22/70 [00:02<00:05,  8.30it/s]
+[1ACapturing CUDA graphs (FULL):  34%|███▍      | 24/70 [00:02<00:05,  8.12it/s]
+[1ACapturing CUDA graphs (FULL):  37%|███▋      | 26/70 [00:03<00:05,  8.21it/s]
+[1ACapturing CUDA graphs (FULL):  40%|████      | 28/70 [00:03<00:05,  8.29it/s]
+[1ACapturing CUDA graphs (FULL):  43%|████▎     | 30/70 [00:03<00:04,  8.36it/s]
+[1ACapturing CUDA graphs (FULL):  46%|████▌     | 32/70 [00:03<00:04,  8.33it/s]
+[1ACapturing CUDA graphs (FULL):  49%|████▊     | 34/70 [00:04<00:04,  8.17it/s]
+[1ACapturing CUDA graphs (FULL):  51%|█████▏    | 36/70 [00:04<00:04,  8.18it/s]
+[1ACapturing CUDA graphs (FULL):  54%|█████▍    | 38/70 [00:04<00:03,  8.23it/s]
+[1ACapturing CUDA graphs (FULL):  57%|█████▋    | 40/70 [00:04<00:03,  8.24it/s]
+[1ACapturing CUDA graphs (FULL):  60%|██████    | 42/70 [00:05<00:03,  8.27it/s]
+[1ACapturing CUDA graphs (FULL):  63%|██████▎   | 44/70 [00:05<00:03,  8.22it/s]
+[1ACapturing CUDA graphs (FULL):  66%|██████▌   | 46/70 [00:05<00:02,  8.26it/s]
+[1ACapturing CUDA graphs (FULL):  69%|██████▊   | 48/70 [00:05<00:02,  8.19it/s]
+[1ACapturing CUDA graphs (FULL):  71%|███████▏  | 50/70 [00:06<00:02,  8.21it/s]
+[1ACapturing CUDA graphs (FULL):  74%|███████▍  | 52/70 [00:06<00:02,  8.24it/s]
+[1ACapturing CUDA graphs (FULL):  77%|███████▋  | 54/70 [00:06<00:01,  8.40it/s]
+[1ACapturing CUDA graphs (FULL):  80%|████████  | 56/70 [00:06<00:01,  8.57it/s]
+[1ACapturing CUDA graphs (FULL):  83%|████████▎ | 58/70 [00:07<00:01,  8.60it/s]
+[1ACapturing CUDA graphs (FULL):  86%|████████▌ | 60/70 [00:07<00:01,  8.57it/s]
+[1ACapturing CUDA graphs (FULL):  89%|████████▊ | 62/70 [00:07<00:00,  8.60it/s]
+[1ACapturing CUDA graphs (FULL):  91%|█████████▏| 64/70 [00:07<00:00,  8.69it/s]
+[1ACapturing CUDA graphs (FULL):  94%|█████████▍| 66/70 [00:07<00:00,  8.78it/s]
+[1ACapturing CUDA graphs (FULL):  97%|█████████▋| 68/70 [00:08<00:00,  8.92it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:08<00:00,  9.01it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:08<00:00,  8.35it/s]
+(EngineCore pid=38) INFO 08-19 06:31:07 [model_runner.py:722] Graph capturing finished in 34 secs, took 1.39 GiB
+(EngineCore pid=38) INFO 08-19 06:32:48 [jit_monitor.py:73] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(EngineCore pid=38) INFO 08-19 06:32:48 [core.py:337] init engine (profile, create kv cache, warmup model) took 252.46 s (compilation: 106.14 s)
+(EngineCore pid=38) INFO 08-19 06:32:49 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+
+WARNING 08-19 06:32:49 [input_processor.py:157] vLLM has deprecated support for supporting different tokenizers for different LoRAs. By default, vLLM uses base model's tokenizer. If you are using a LoRA with its own tokenizer, consider specifying `--tokenizer [lora_path]` to use the LoRA tokenizer.
+[1ARendering conversations:   0%|          | 0/100 [00:00<?, ?it/s]
+[1ARendering conversations:  34%|███▍      | 34/100 [00:00<00:00, 336.58it/s]
+[1ARendering conversations:  86%|████████▌ | 86/100 [00:00<00:00, 440.75it/s]
+[1ARendering conversations: 100%|██████████| 100/100 [00:00<00:00, 436.79it/s]
+
+[1AProcessed prompts:   0%|          | 0/100 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]
+[1AProcessed prompts:   1%|          | 1/100 [00:04<07:34,  4.59s/it, est. speed input: 249.45 toks/s, output: 6.75 toks/s]
+[1AProcessed prompts:   6%|▌         | 6/100 [00:04<00:57,  1.63it/s, est. speed input: 1393.27 toks/s, output: 40.57 toks/s]
+[1AProcessed prompts:  17%|█▋        | 17/100 [00:04<00:14,  5.85it/s, est. speed input: 3915.49 toks/s, output: 129.40 toks/s]
+[1AProcessed prompts:  25%|██▌       | 25/100 [00:05<00:07,  9.73it/s, est. speed input: 5669.97 toks/s, output: 195.34 toks/s]
+[1AProcessed prompts:  76%|███████▌  | 76/100 [00:05<00:00, 43.85it/s, est. speed input: 17223.49 toks/s, output: 655.93 toks/s]
+[1AProcessed prompts:  95%|█████████▌| 95/100 [00:05<00:00, 50.40it/s, est. speed input: 20627.47 toks/s, output: 806.52 toks/s]
+[1AProcessed prompts: 100%|██████████| 100/100 [00:05<00:00, 50.40it/s, est. speed input: 21306.65 toks/s, output: 844.71 toks/s]
+[1AProcessed prompts: 100%|██████████| 100/100 [00:05<00:00, 17.93it/s, est. speed input: 21306.65 toks/s, output: 844.71 toks/s]
+(EngineCore pid=38) INFO 08-19 06:32:55 [core.py:1214] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=38) INFO 08-19 06:32:55 [core.py:1333] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=38) INFO 08-19 06:32:55 [core.py:1364] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=38) INFO 08-19 06:32:55 [core.py:1227] [shutdown] EngineCore: exiting busy loop
+= chunk 100-200 written (200/200, gen 5.8s)
+
+mistralai/Ministral-3-14B-Instruct-2512-BF16 · story-bfar · n=200 · wall 739s (load 597s, gen 13s)
+  hard         n= 20  correct  70.0%  exact  14  swapped   0  dual  0  wrong   6  unparseable   0 (0.0%)  len-cap 0
+  normal       n=180  correct  60.0%  exact 108  swapped   0  dual  0  wrong  24  unparseable  48 (26.7%)  len-cap 0
+Stopping app - local entrypoint completed.
+Runner terminated.
+✓ App completed. View run at 
+https://modal.com/apps/order-evaluation/main/ap-LIoAQgnRuZKYGE9nQA0HCl
+EXIT:0

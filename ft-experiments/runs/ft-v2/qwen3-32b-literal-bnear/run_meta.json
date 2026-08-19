@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-08-19T09:43:09.780546+00:00",
+  "phase": "3-base-eval",
+  "model": "Qwen/Qwen3-32B",
+  "arm": "literal-bnear",
+  "regime": "off",
+  "eval_version": "v1",
+  "n": 777,
+  "limit": null,
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "greedy": true
+  },
+  "backend": {
+    "engine": "vllm",
+    "vllm_version": "0.25.1",
+    "torch_version": "2.11.0+cu130",
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "dtype": "bfloat16",
+    "max_model_len": 8192,
+    "chat_template": "model default via llm.chat, add_generation_prompt"
+  },
+  "gpu_requested": "A10G",
+  "adapter": {
+    "path": "/models/checkpoints/v2-qwen3-32b-s0/step-900",
+    "rank": 16
+  },
+  "image": "nvidia/cuda:12.8.1-devel-ubuntu22.04 + python3.12 + uv:vllm",
+  "guardrails": {
+    "min_containers": 0,
+    "max_containers": 1,
+    "scaledown_window": 60,
+    "retries": 0,
+    "timeout": 2700
+  },
+  "chunk_size": 100,
+  "max_model_len": 8192,
+  "prompt_template": "literal_prompt_bnear.md",
+  "prompt_template_sha256": "50bcf61265b8ae7e473b9bd7ff0c7185ec7165214903dfc1025fd4cec8c11db2",
+  "regime_suffix": "\n\nRespond with only the two required lines, and no other text before them.",
+  "timing": {
+    "model_load_s": 1271.5,
+    "generate_s": 45.4,
+    "wall_s": 1593.7
+  }
+}

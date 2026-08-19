@@ -1,0 +1,117 @@
+✓ Initialized. View run at 
+https://modal.com/apps/order-evaluation/main/ap-LvKxHO8RkgNLOCjH9wYSN4
+✓ Created objects.
+├── 🔨 Created mount 
+│   /Users/harsh/semantic-drift-autoformalization/probe-experiments/capture/moda
+│   l_capture.py
+└── 🔨 Created function capture.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+/usr/local/lib/python3.12/site-packages/huggingface_hub/constants.py:310: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+
+[1ALoading weights:   0%|          | 0/291 [00:00<?, ?it/s]
+[1ALoading weights:   0%|          | 1/291 [00:00<04:20,  1.11it/s]
+[1ALoading weights:   2%|▏         | 6/291 [00:01<00:39,  7.26it/s]
+[1ALoading weights:   3%|▎         | 10/291 [00:01<00:24, 11.66it/s]
+[1ALoading weights:   6%|▌         | 18/291 [00:01<00:12, 22.25it/s]
+[1ALoading weights:   8%|▊         | 23/291 [00:01<00:09, 27.32it/s]
+[1ALoading weights:  10%|▉         | 29/291 [00:01<00:08, 29.75it/s]
+[1ALoading weights:  12%|█▏        | 36/291 [00:01<00:07, 35.10it/s]
+[1ALoading weights:  14%|█▍        | 42/291 [00:01<00:06, 36.37it/s]
+[1ALoading weights:  17%|█▋        | 50/291 [00:02<00:05, 44.42it/s]
+[1ALoading weights:  19%|█▉        | 56/291 [00:02<00:05, 45.01it/s]
+[1ALoading weights:  21%|██        | 61/291 [00:02<00:05, 38.68it/s]
+[1ALoading weights:  23%|██▎       | 68/291 [00:02<00:05, 39.98it/s]
+[1ALoading weights:  26%|██▋       | 77/291 [00:02<00:04, 46.44it/s]
+[1ALoading weights:  28%|██▊       | 82/291 [00:02<00:05, 41.34it/s]
+[1ALoading weights:  30%|███       | 88/291 [00:02<00:04, 44.74it/s]
+[1ALoading weights:  33%|███▎      | 95/291 [00:03<00:04, 43.67it/s]
+[1ALoading weights:  36%|███▌      | 104/291 [00:03<00:03, 50.52it/s]
+[1ALoading weights:  38%|███▊      | 110/291 [00:03<00:03, 50.94it/s]
+[1ALoading weights:  40%|███▉      | 116/291 [00:03<00:03, 44.63it/s]
+[1ALoading weights:  42%|████▏     | 122/291 [00:03<00:04, 41.09it/s]
+[1ALoading weights:  44%|████▍     | 128/291 [00:03<00:03, 42.24it/s]
+[1ALoading weights:  47%|████▋     | 136/291 [00:03<00:03, 49.69it/s]
+[1ALoading weights:  49%|████▉     | 142/291 [00:04<00:03, 46.77it/s]
+[1ALoading weights:  51%|█████     | 149/291 [00:04<00:02, 50.21it/s]
+[1ALoading weights:  53%|█████▎    | 155/291 [00:04<00:02, 49.16it/s]
+[1ALoading weights:  55%|█████▌    | 161/291 [00:04<00:02, 44.49it/s]
+[1ALoading weights:  57%|█████▋    | 166/291 [00:04<00:03, 40.51it/s]
+[1ALoading weights:  59%|█████▉    | 173/291 [00:04<00:02, 44.58it/s]
+[1ALoading weights:  61%|██████    | 178/291 [00:04<00:02, 44.87it/s]
+[1ALoading weights:  63%|██████▎   | 184/291 [00:04<00:02, 47.66it/s]
+[1ALoading weights:  65%|██████▍   | 189/291 [00:05<00:02, 45.66it/s]
+[1ALoading weights:  67%|██████▋   | 194/291 [00:05<00:02, 43.75it/s]
+[1ALoading weights:  69%|██████▊   | 200/291 [00:05<00:01, 46.39it/s]
+[1ALoading weights:  70%|███████   | 205/291 [00:05<00:01, 45.01it/s]
+[1ALoading weights:  73%|███████▎  | 212/291 [00:05<00:01, 48.05it/s]
+[1ALoading weights:  75%|███████▍  | 217/291 [00:05<00:01, 44.59it/s]
+[1ALoading weights:  76%|███████▋  | 222/291 [00:05<00:01, 43.29it/s]
+[1ALoading weights:  79%|███████▉  | 230/291 [00:05<00:01, 49.76it/s]
+[1ALoading weights:  81%|████████  | 236/291 [00:06<00:01, 48.97it/s]
+[1ALoading weights:  83%|████████▎ | 241/291 [00:06<00:01, 45.10it/s]
+[1ALoading weights:  85%|████████▍ | 247/291 [00:06<00:00, 47.82it/s]
+[1ALoading weights:  87%|████████▋ | 252/291 [00:06<00:00, 43.32it/s]
+[1ALoading weights:  88%|████████▊ | 257/291 [00:06<00:00, 34.94it/s]
+[1ALoading weights:  91%|█████████▏| 266/291 [00:06<00:00, 46.00it/s]
+[1ALoading weights:  93%|█████████▎| 272/291 [00:06<00:00, 47.71it/s]
+[1ALoading weights:  96%|█████████▌| 278/291 [00:07<00:00, 45.83it/s]
+[1ALoading weights:  98%|█████████▊| 284/291 [00:07<00:00, 47.32it/s]
+[1ALoading weights: 100%|██████████| 291/291 [00:07<00:00, 40.15it/s]
+{
+  "stage": "capture",
+  "tag": "ft8b-v2",
+  "model_key": "llama-3.1-8b",
+  "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+  "adapter": "/models/checkpoints/v2-8b-s0/final",
+  "gpu": "A10G",
+  "limit": 0,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": false,
+  "gate_sample": false,
+  "prompt_file": null,
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/ft8b-v2",
+  "n_texts": 2000,
+  "shape_per_item": [
+    33,
+    4096
+  ],
+  "token_len": {
+    "min": 146,
+    "max": 460,
+    "mean": 285.8
+  },
+  "answer_token_len": {
+    "min": 19,
+    "max": 54,
+    "mean": 34.4
+  },
+  "gpu_seconds": {
+    "load": 14.3,
+    "forward": 152.5,
+    "save": 176.9
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}
+Stopping app - local entrypoint completed.
+✓ App completed. View run at 
+https://modal.com/apps/order-evaluation/main/ap-LvKxHO8RkgNLOCjH9wYSN4

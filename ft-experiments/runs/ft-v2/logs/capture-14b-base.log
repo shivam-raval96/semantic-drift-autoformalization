@@ -1,0 +1,131 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/order-evaluation/main/ap-efW2IFcZX4bWQPYRHIouk8
+✓ Created objects.
+├── 🔨 Created mount 
+│   /Users/harsh/semantic-drift-autoformalization/probe-experiments/capture/moda
+│   l_capture.py
+└── 🔨 Created function capture.
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+/usr/local/lib/python3.12/site-packages/huggingface_hub/constants.py:310: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+[transformers] The tokenizer you are loading from 'mistralai/Ministral-3-14B-Instruct-2512-BF16' with an incorrect regex pattern: https://huggingface.co/mistralai/Mistral-Small-3.1-24B-Instruct-2503/discussions/84#69121093e8b480e709447d5e. This will lead to incorrect tokenization. You should set the `fix_mistral_regex=True` flag when loading this tokenizer to fix this issue.
+
+[1ALoading weights:   0%|          | 0/585 [00:00<?, ?it/s]
+[1ALoading weights:   0%|          | 1/585 [00:00<08:31,  1.14it/s]
+[1ALoading weights:   1%|          | 6/585 [00:01<01:19,  7.25it/s]
+[1ALoading weights:   2%|▏         | 14/585 [00:01<00:32, 17.75it/s]
+[1ALoading weights:   3%|▎         | 19/585 [00:01<00:24, 22.94it/s]
+[1ALoading weights:   4%|▍         | 24/585 [00:01<00:21, 25.75it/s]
+[1ALoading weights:   5%|▌         | 32/585 [00:01<00:15, 34.98it/s]
+[1ALoading weights:   6%|▋         | 37/585 [00:01<00:16, 33.97it/s]
+[1ALoading weights:   7%|▋         | 42/585 [00:01<00:15, 35.76it/s]
+[1ALoading weights:   9%|▊         | 50/585 [00:01<00:12, 42.32it/s]
+[1ALoading weights:   9%|▉         | 55/585 [00:02<00:12, 43.36it/s]
+[1ALoading weights:  10%|█         | 60/585 [00:02<00:13, 39.66it/s]
+[1ALoading weights:  12%|█▏        | 68/585 [00:02<00:11, 45.88it/s]
+[1ALoading weights:  13%|█▎        | 76/585 [00:02<00:09, 50.91it/s]
+[1ALoading weights:  14%|█▍        | 82/585 [00:02<00:10, 48.62it/s]
+[1ALoading weights:  15%|█▌        | 88/585 [00:02<00:11, 44.55it/s]
+[1ALoading weights:  16%|█▌        | 95/585 [00:02<00:11, 42.08it/s]
+[1ALoading weights:  18%|█▊        | 104/585 [00:03<00:10, 44.09it/s]
+[1ALoading weights:  19%|█▉        | 111/585 [00:03<00:10, 45.37it/s]
+[1ALoading weights:  21%|██        | 121/585 [00:03<00:08, 55.18it/s]
+[1ALoading weights:  22%|██▏       | 127/585 [00:03<00:08, 51.79it/s]
+[1ALoading weights:  23%|██▎       | 133/585 [00:03<00:09, 46.82it/s]
+[1ALoading weights:  24%|██▍       | 140/585 [00:03<00:08, 49.78it/s]
+[1ALoading weights:  25%|██▍       | 146/585 [00:03<00:08, 51.46it/s]
+[1ALoading weights:  26%|██▌       | 152/585 [00:04<00:09, 45.76it/s]
+[1ALoading weights:  27%|██▋       | 158/585 [00:04<00:09, 46.23it/s]
+[1ALoading weights:  28%|██▊       | 164/585 [00:04<00:08, 49.06it/s]
+[1ALoading weights:  29%|██▉       | 170/585 [00:04<00:09, 45.87it/s]
+[1ALoading weights:  30%|███       | 176/585 [00:04<00:08, 46.74it/s]
+[1ALoading weights:  31%|███▏      | 184/585 [00:04<00:08, 49.22it/s]
+[1ALoading weights:  32%|███▏      | 189/585 [00:04<00:08, 49.01it/s]
+[1ALoading weights:  33%|███▎      | 194/585 [00:05<00:08, 46.13it/s]
+[1ALoading weights:  35%|███▍      | 202/585 [00:05<00:07, 51.23it/s]
+[1ALoading weights:  36%|███▌      | 208/585 [00:05<00:07, 47.65it/s]
+[1ALoading weights:  36%|███▋      | 213/585 [00:05<00:08, 42.03it/s]
+[1ALoading weights:  38%|███▊      | 221/585 [00:05<00:07, 47.53it/s]
+[1ALoading weights:  39%|███▉      | 227/585 [00:05<00:07, 49.83it/s]
+[1ALoading weights:  40%|███▉      | 233/585 [00:05<00:07, 46.75it/s]
+[1ALoading weights:  41%|████      | 239/585 [00:05<00:07, 47.99it/s]
+[1ALoading weights:  42%|████▏     | 245/585 [00:06<00:06, 50.56it/s]
+[1ALoading weights:  43%|████▎     | 251/585 [00:06<00:07, 46.93it/s]
+[1ALoading weights:  44%|████▍     | 257/585 [00:06<00:07, 42.24it/s]
+[1ALoading weights:  45%|████▌     | 266/585 [00:06<00:06, 49.64it/s]
+[1ALoading weights:  47%|████▋     | 274/585 [00:06<00:05, 53.92it/s]
+[1ALoading weights:  48%|████▊     | 280/585 [00:06<00:05, 51.19it/s]
+[1ALoading weights:  49%|████▉     | 286/585 [00:06<00:06, 46.88it/s]
+[1ALoading weights:  50%|█████     | 293/585 [00:07<00:05, 49.94it/s]
+[1ALoading weights:  51%|█████     | 299/585 [00:07<00:06, 46.37it/s]
+[1ALoading weights:  52%|█████▏    | 307/585 [00:07<00:05, 51.62it/s]
+[1ALoading weights:  54%|█████▎    | 313/585 [00:07<00:05, 46.48it/s]
+[1ALoading weights:  55%|█████▍    | 320/585 [00:07<00:06, 43.42it/s]
+[1ALoading weights:  56%|█████▌    | 328/585 [00:07<00:05, 49.17it/s]
+[1ALoading weights:  57%|█████▋    | 334/585 [00:07<00:05, 47.61it/s]
+[1ALoading weights:  58%|█████▊    | 339/585 [00:08<00:05, 47.99it/s]
+[1ALoading weights:  59%|█████▉    | 347/585 [00:08<00:04, 50.91it/s]
+[1ALoading weights:  61%|██████    | 355/585 [00:08<00:04, 54.55it/s]
+[1ALoading weights:  62%|██████▏   | 361/585 [00:08<00:04, 53.25it/s]
+[1ALoading weights:  70%|██████▉   | 407/585 [00:08<00:01, 155.29it/s]
+[1ALoading weights:  83%|████████▎ | 485/585 [00:08<00:00, 319.47it/s]
+[1ALoading weights:  97%|█████████▋| 569/585 [00:08<00:00, 461.00it/s]
+[1ALoading weights: 100%|██████████| 585/585 [00:08<00:00, 67.11it/s] 
+[transformers] The tied weights mapping and config for this model specifies to tie model.language_model.embed_tokens.weight to lm_head.weight, but both are present in the checkpoints with different values, so we will NOT tie them. You should update the config with `tie_word_embeddings=False` to silence this warning.
+{
+  "stage": "capture",
+  "tag": "min14b-base",
+  "model_key": "ministral-14b",
+  "model_id": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+  "adapter": null,
+  "gpu": "A100-80GB",
+  "limit": 0,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": false,
+  "gate_sample": false,
+  "prompt_file": null,
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/min14b-base",
+  "n_texts": 2000,
+  "shape_per_item": [
+    41,
+    5120
+  ],
+  "token_len": {
+    "min": 147,
+    "max": 476,
+    "mean": 290.1
+  },
+  "answer_token_len": {
+    "min": 20,
+    "max": 58,
+    "mean": 35.6
+  },
+  "gpu_seconds": {
+    "load": 12.2,
+    "forward": 96.0,
+    "save": 239.0
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}
+✓ App completed. View run at 
+https://modal.com/apps/order-evaluation/main/ap-efW2IFcZX4bWQPYRHIouk8

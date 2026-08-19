@@ -1,0 +1,47 @@
+{
+  "timestamp": "2026-08-19T01:00:13.807824+00:00",
+  "phase": "3-base-eval",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "arm": "story-bfar",
+  "regime": "off",
+  "eval_version": "v1",
+  "n": 200,
+  "limit": 200,
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "greedy": true
+  },
+  "backend": {
+    "engine": "vllm",
+    "vllm_version": "0.25.1",
+    "torch_version": "2.11.0+cu130",
+    "gpu": "NVIDIA A10G",
+    "dtype": "bfloat16",
+    "max_model_len": 8192,
+    "chat_template": "model default via llm.chat, add_generation_prompt"
+  },
+  "gpu_requested": "A10G",
+  "adapter": {
+    "path": "/models/checkpoints/v2-8b-s0/step-400",
+    "rank": 16
+  },
+  "image": "nvidia/cuda:12.8.1-devel-ubuntu22.04 + python3.12 + uv:vllm",
+  "guardrails": {
+    "min_containers": 0,
+    "max_containers": 1,
+    "scaledown_window": 60,
+    "retries": 0,
+    "timeout": 2700
+  },
+  "chunk_size": 100,
+  "max_model_len": 8192,
+  "prompt_template": "formalize_prompt_bfar.md",
+  "prompt_template_sha256": "194eccce025a6125a49e401f6265ec7eb946e74445059a8573b1401bd79c1bfe",
+  "regime_suffix": "\n\nRespond with only the two required lines, and no other text before them.",
+  "timing": {
+    "model_load_s": 453.8,
+    "generate_s": 27.3,
+    "wall_s": 559.6
+  }
+}

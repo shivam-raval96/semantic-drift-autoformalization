@@ -53,6 +53,9 @@ MODELS = {
     "qwen3.6-27b": {"id": "Qwen/Qwen3.6-27B", "gpu": "A100-80GB"},
     "qwen3.5-4b": {"id": "Qwen/Qwen3.5-4B", "gpu": "A10G"},
     "gemma-3-27b": {"id": "google/gemma-3-27b-it", "gpu": "A100-80GB"},
+    # v2 third FT model (joined 2026-08-19, signal screen 11.1% story)
+    "ministral-14b": {"id": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+                      "gpu": "A100-80GB"},
 }
 
 # Behavioral verification gate.
