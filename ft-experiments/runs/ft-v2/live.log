@@ -82,3 +82,4 @@
 16:13:58 [QC] one-engine harness EQUIVALENCE PASS: 200/200 rows identical verdicts+buckets vs audited runner (0 response-text diffs). 32B curve numbers admissible
 16:13:58 [RESULT] 32B curve: A 99% by step-100, 100% from step-500; B-far 77.5->84% and FLAT (no decay). Decay-with-training shrinks with capacity: 8B -6pts, 14B -15pts, 32B none
 17:49:35 [RESULT] 32B representation: 0.599 -> 0.921 law-disjoint (0.904 on FT-unseen subset). ALL THREE MODELS confirm installation. Experiment COMPLETE
+00:11:31 [RESULT] theme holdout: FT creates input-side overfitting (8B -12.5, 14B -43.2, 32B -1.1) — base control shows tea is NOT harder (0 to -2.6). Mirrors the grammar-side finding on the same capacity gradient

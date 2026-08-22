@@ -23,13 +23,14 @@ import numpy as np
 from safetensors import safe_open
 
 VOLUME = "harsh-ft-grammar-weights"
-RUNS = [
-    "v2-8b-s0",              # v2 task-pair, Llama-3.1-8B
-    "v2-ministral-14b-s0",   # v2 task-pair, Ministral-3-14B
-    "v2-qwen3-32b-s0",       # v2 task-pair, Qwen3-32B (step-900 is its last)
-    "phase5a-r16-all",       # v1 grammar-only, 8B
-    "phase5a-32b-r16-all",   # v1 grammar-only, 32B
-]
+# volume dir -> the name we publish it under (model + what it was trained on)
+RUNS = {
+    "v2-8b-s0": "llama-3.1-8b_task-pairs",
+    "v2-ministral-14b-s0": "ministral-3-14b_task-pairs",
+    "v2-qwen3-32b-s0": "qwen3-32b_task-pairs",
+    "phase5a-r16-all": "llama-3.1-8b_grammar-only",
+    "phase5a-32b-r16-all": "qwen3-32b_grammar-only",
+}
 
 
 def steps_on_volume(run: str) -> list:
@@ -70,7 +71,7 @@ def export(run: str, out: Path):
     if not steps:
         print(f"[skip] {run}: nothing on the volume")
         return
-    run_dir = out / run
+    run_dir = out / RUNS.get(run, run)
     print(f"{run}: {len(steps)} checkpoints")
 
     traj, modules = {}, None
@@ -97,5 +98,5 @@ if __name__ == "__main__":
     args = ap.parse_args()
 
     out = Path(args.out).expanduser()
-    for run in (RUNS if args.all else [args.run or RUNS[0]]):
+    for run in (RUNS if args.all else [args.run or next(iter(RUNS))]):
         export(run, out)

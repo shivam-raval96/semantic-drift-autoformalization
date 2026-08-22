@@ -193,6 +193,29 @@ Findings (8B + 14B, independently re-graded from raw responses):
    uninformative at base). 32B: 100/100/100 base AND FT — the model that
    ends near-perfect on three grammars loses nothing elsewhere.
 
+## Held-out story theme (input-side generalization)
+
+train_v2 renders stories in 3 of the 4 themes; `tea` is never trained on.
+eval_v1 keeps its natural 4-theme mix, so 190 of its 777 problems are told in
+the unseen theme. Story arm, correct%:
+
+| model | base: trained themes / tea | FT: trained themes / tea | FT gap |
+|---|---|---|---|
+| Llama-3.1-8B | 0.2 / 0.0 | 99.8 / 87.4 | -12.5 |
+| Ministral-3-14B | 14.1 / 13.7 | 100.0 / 56.8 | **-43.2** |
+| Qwen3-32B | 19.4 / 16.8 | 100.0 / 98.9 | -1.1 |
+
+The base columns are the control: `tea` is not intrinsically harder (base gap
+0.0 to -2.6 points). The FT gap is therefore *created by fine-tuning* — models
+overfit to the surface vocabulary of the themes they trained on, exactly
+mirroring the output-side grammar result, and on the same capacity gradient:
+the 32B is nearly immune (-1.1) while the 14B loses 43 points. Pooled
+story-arm numbers understate trained-theme performance (all three models are
+99.8-100% there) and overstate unseen-theme performance.
+
+The 14B is the most specialization-prone model on both axes: it also shows the
+sharpest checkpoint-curve decay (74.5% -> 59% on the unseen grammar).
+
 ## Representation results (law-disjoint linear probe on contrast_v1)
 
 | model | base | after task FT | FT-unseen-laws subset (533 problems) |

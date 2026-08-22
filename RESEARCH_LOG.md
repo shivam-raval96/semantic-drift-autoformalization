@@ -1080,3 +1080,34 @@ slots raced the orchestrator's own launch on three cells, producing 800 rows
 verdict identical, so no result was corrupted, but the positional resume
 would have stalled short of 777; fixed by killing both writers, deduping to
 a verified in-order prefix, and finishing with a single writer per cell.
+
+## 32. Theme holdout: fine-tuning overfits to story vocabulary, and the mechanism
+
+Found 2026-08-23 from a plain-language question ("did we try different story
+themes?"), on data that had existed since train_v2 was frozen but was never
+analyzed. train_v2 trains on 3 of 4 themes; `tea` is held out; 190 of eval_v1's
+777 problems are tea stories. Story arm, correct%: 8B 99.8 trained vs 87.4 tea;
+14B 100 vs 56.8; 32B 100 vs 98.9. The base models are the control and settle the
+confound - they score the same on tea as elsewhere (gap 0 to -2.6, CIs overlap),
+so tea is not intrinsically harder and the gap is created by fine-tuning. Note
+this is a group comparison within one eval run, not a before/after drop.
+
+Mechanism, diagnosed rather than assumed: the three trained themes all phrase the
+operation as verb-A-short-prep-B ("pours {a} into {b}", "grafts {a} onto {b}",
+"feeds {a} through {b}"); tea alone nests a noun phrase ("pours {a} over the
+leaves of {b}"). The 14B's tea failures are 42% wrong / 2% unparseable - valid
+grammar, wrong meaning - and 77 of 79 wrong answers have a different op-count than
+the reference, systematically inserting operations (bare `y` becomes `op(y, y)`).
+"The leaves of rooibos" reads as something DERIVED from rooibos, and the only way
+to express that in this grammar is an operation, so the model hallucinates one.
+The 8B loses 12 points, the 14B 43, the 32B 1 - the same capacity gradient as the
+output-side grammar result, now on the input side.
+
+Two lessons. (1) Pooled numbers hid this completely: the 14B's headline 89.4% is
+100% on trained themes and 56.8% on the unseen one. (2) Harsh's "explain it simply"
+questions have now produced two real findings; they are worth treating as research
+directions, not just comprehension checks. Follow-ups designed in CLAUDE.md:
+4-fold leave-one-theme-out (this is one held-out theme, so it cannot separate
+"overfits to vocabulary" from "tea is odd for the 14B"), and a phrasing-vs-
+vocabulary probe (new words in the trained sentence shape should barely hurt; a
+nested noun phrase should hurt a lot).
