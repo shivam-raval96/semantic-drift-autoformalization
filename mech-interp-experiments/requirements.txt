@@ -1,0 +1,28 @@
+# Everything the experiments in this directory import.
+#
+# The vendored checkout in informalizing-etp/ needs nothing beyond the standard
+# library, so it is absent from this list on purpose.
+#
+# Only the analysis half of an experiment -- anything run with --analyze-only --
+# needs the last three lines. Iterating on a figure therefore needs no GPU, no
+# PyTorch and no model download; a laptop with numpy and matplotlib is enough.
+
+# Llama 3.1 needs transformers 4.43 or newer for its rotary position scaling;
+# older versions load the weights and quietly produce wrong activations.
+transformers>=4.43
+torch>=2.1
+
+# The fine-tuning checkpoints are LoRA adapters, which peft attaches to a frozen
+# base model. accelerate is what makes device_map="auto" work; peft pulls it in
+# anyway, but an experiment fails at model-loading time without it, so it is
+# named rather than left to chance.
+peft>=0.11
+accelerate>=0.26
+
+numpy>=1.24
+matplotlib>=3.5
+tqdm>=4.60
+
+# Last verified together on CPU with a tiny stand-in model:
+#   torch 2.13.0, transformers 5.15.1, peft 0.20.0, accelerate 1.14.0,
+#   numpy 2.5.2, matplotlib 3.11.1, tqdm 4.70.0

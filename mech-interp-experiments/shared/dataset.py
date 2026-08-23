@@ -49,7 +49,7 @@ import argparse
 import random
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from .vendor import ensure_on_path
 
@@ -225,8 +225,17 @@ def sample_depth_balanced(
     form: str = "story",
     template_path: Optional[Path] = None,
     label_prefix: str = LABEL_PREFIX,
+    allowed: Optional[Set[int]] = None,
 ) -> List[dict]:
     """Draw per_cell pairs from each cell, both laws taken from that cell.
+
+    `allowed`, if given, restricts the draw to those equation numbers. It
+    exists so an experiment can screen laws out before sampling rather than
+    filtering afterwards — dropping pairs after the fact leaves a cell short
+    and makes the sample size depend on which pairs happened to be drawn. The
+    screen this was added for is excluding laws a model was fine-tuned on,
+    where reading activations for a memorized law measures something other than
+    what the experiment is asking about.
 
     Every pair therefore has ops_total = 2 * (minor + major) and exactly the
     cell's depth, and pairs within a family render to identical length. Cells
@@ -241,6 +250,11 @@ def sample_depth_balanced(
     """
     rng = random.Random(seed)
     by_shape = index_by_shape(equations)
+    if allowed is not None:
+        by_shape = {
+            shape: [n for n in pool if n in allowed]
+            for shape, pool in by_shape.items()
+        }
     if cells is None:
         cells = tuple(
             sorted(

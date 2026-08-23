@@ -112,25 +112,42 @@ class Generator:
             self.pad_id = tokenizer.eos_token_id
         self.eos_id = tokenizer.eos_token_id
         self.think_end_id = tokenizer.convert_tokens_to_ids(THINK_END)
-        if self.think_end_id is None or self.think_end_id == tokenizer.unk_token_id:
-            raise ValueError(
-                "this tokenizer has no {} token, so a thinking budget cannot "
-                "be forced".format(THINK_END)
-            )
         # The separator the chat template puts after a closed think block.
         self.close_ids = tokenizer(THINK_END + "\n\n", add_special_tokens=False)[
             "input_ids"
         ]
 
+    def _require_thinking(self) -> None:
+        """Fail on budget forcing for a model that has no reasoning block.
+
+        Checked here rather than in the constructor: a model with no
+        end-of-reasoning token can still be prompted and can still generate,
+        and experiments on models that never reason need exactly that. Only
+        budget forcing genuinely requires the token, so only budget forcing
+        refuses.
+        """
+        if self.think_end_id is None or self.think_end_id == self.tokenizer.unk_token_id:
+            raise ValueError(
+                "this tokenizer has no {} token, so a thinking budget cannot "
+                "be forced".format(THINK_END)
+            )
+
     # ----------------------------------------------------------------- prompts
 
-    def build_chat(self, prompt_text: str, thinking: bool) -> str:
-        """Chat-formatted prompt. `thinking=False` pre-closes an empty block."""
+    def build_chat(self, prompt_text: str, thinking: Optional[bool] = None) -> str:
+        """Chat-formatted prompt. `thinking=False` pre-closes an empty block.
+
+        `thinking=None` leaves the flag off the call entirely, which is what a
+        model with no reasoning mode needs: passing a toggle its chat template
+        has never heard of is at best ignored and at worst an error, and either
+        way it misdescribes what was asked for in the run's provenance.
+        """
+        extra = {} if thinking is None else {"enable_thinking": thinking}
         return self.tokenizer.apply_chat_template(
             [{"role": "user", "content": prompt_text}],
             tokenize=False,
             add_generation_prompt=True,
-            enable_thinking=thinking,
+            **extra
         )
 
     # -------------------------------------------------------------- generation
@@ -174,6 +191,7 @@ class Generator:
         fresh context manager (see hooks.py) and is active in *both* passes, so
         a steering vector applies to the answer as well as to the reasoning.
         """
+        self._require_thinking()
         out: List[Completion] = []
         for batch in _batches(prompts, self.batch_size, progress):
             if budget <= 0:

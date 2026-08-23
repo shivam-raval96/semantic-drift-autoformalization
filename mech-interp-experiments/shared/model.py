@@ -14,7 +14,7 @@ referred to rather than restated.
 
 from __future__ import annotations
 
-from typing import Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -43,12 +43,20 @@ def load(
     Loading a 4-billion-parameter model takes long enough that an experiment
     doing several passes should not repeat it, and two copies would not fit on
     a single card anyway.
+
+    The cache key must name everything that changes what comes back. Anything
+    added here that alters the weights — an adapter, a revision — belongs in
+    the key too, or the second caller silently receives the first caller's
+    model. That failure is invisible: an experiment sweeping checkpoints would
+    read the same weights every time and report a perfectly flat trajectory.
+    Adapters are therefore not handled here at all, but by `load_adapters`,
+    which keeps its own cache and never wraps the model cached here.
     """
     key = (model_name, str(dtype), device_map)
     if key in _LOADED:
         return _LOADED[key]
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer = _ensure_pad_token(AutoTokenizer.from_pretrained(model_name))
     model = AutoModelForCausalLM.from_pretrained(
         model_name,
         torch_dtype=best_dtype() if dtype is None else dtype,
@@ -57,6 +65,22 @@ def load(
     model.eval()
     _LOADED[key] = (model, tokenizer)
     return model, tokenizer
+
+
+def _ensure_pad_token(tokenizer):
+    """Give the tokenizer a padding token if it has none.
+
+    Activation capture pads a batch to a common length, which fails outright on
+    a tokenizer without a padding token — Llama ships without one, where Qwen
+    has one. Reusing the end-of-sequence token is the ordinary remedy and
+    changes nothing about the reading: padded positions are excluded by the
+    attention mask, and every position this project reads is located by the
+    mask's own length. Tokenizers that already have a padding token are left
+    exactly as they are, so no earlier run's numbers can shift.
+    """
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token = tokenizer.eos_token
+    return tokenizer
 
 
 def set_seed(seed: int) -> None:
@@ -71,8 +95,21 @@ def set_seed(seed: int) -> None:
         torch.cuda.manual_seed_all(seed)
 
 
+def base_model(model):
+    """The underlying transformer, whether or not adapters are attached.
+
+    An adapter-wrapped model nests the original one, so anything reaching for
+    `model.model.layers` has to unwrap first or it silently addresses the
+    wrapper's own attribute.
+    """
+    inner = getattr(model, "base_model", None)
+    if inner is None:
+        return model
+    return getattr(inner, "model", inner)
+
+
 def n_layers(model) -> int:
-    return model.config.num_hidden_layers
+    return base_model(model).config.num_hidden_layers
 
 
 def check_layers(model, layers) -> None:
@@ -82,4 +119,82 @@ def check_layers(model, layers) -> None:
     if bad:
         raise ValueError(
             "layers {} are outside 0..{} for this model".format(sorted(bad), limit)
+        )
+
+
+# --------------------------------------------------------- Adapter checkpoints
+
+_ADAPTED: dict = {}
+
+
+def load_adapters(
+    base_model_name: str,
+    repo_id: str,
+    subfolders: Dict[str, str],
+    dtype: Optional["torch.dtype"] = None,
+    device_map: str = "auto",
+) -> Tuple[object, object]:
+    """Load one base model and attach every checkpoint to it as a named adapter.
+
+    `subfolders` maps the name an experiment wants to use for a checkpoint to
+    the directory holding its adapter inside `repo_id`.
+
+    A sweep over checkpoints is cheap for a reason worth stating: the base
+    weights are identical at every checkpoint and only a small low-rank
+    correction differs, so twenty checkpoints are one base model plus twenty
+    small corrections held alongside it, and moving between them is
+    `select_adapter`, not a reload. That same fact is what makes activations
+    comparable across checkpoints at all.
+
+    This deliberately does not reuse `load`. Attaching adapters rewrites the
+    model's layers in place, so wrapping the cached base would hand a modified
+    model to every later caller expecting a clean one.
+    """
+    from peft import PeftModel  # optional dependency, only this path needs it
+
+    if not subfolders:
+        raise ValueError("no checkpoints given")
+
+    key = (
+        base_model_name,
+        repo_id,
+        tuple(sorted(subfolders.items())),
+        str(dtype),
+        device_map,
+    )
+    if key in _ADAPTED:
+        return _ADAPTED[key]
+
+    tokenizer = _ensure_pad_token(AutoTokenizer.from_pretrained(base_model_name))
+    base = AutoModelForCausalLM.from_pretrained(
+        base_model_name,
+        torch_dtype=best_dtype() if dtype is None else dtype,
+        device_map=device_map,
+    )
+
+    names = list(subfolders)
+    model = PeftModel.from_pretrained(
+        base, repo_id, subfolder=subfolders[names[0]], adapter_name=names[0]
+    )
+    for name in names[1:]:
+        model.load_adapter(repo_id, subfolder=subfolders[name], adapter_name=name)
+    model.eval()
+
+    _ADAPTED[key] = (model, tokenizer)
+    return model, tokenizer
+
+
+def select_adapter(model, name: str) -> None:
+    """Make one checkpoint the active one.
+
+    Verified rather than assumed: a silently ignored name would make every
+    checkpoint read the same weights and produce a perfectly flat trajectory,
+    which looks like a finding rather than a bug.
+    """
+    model.set_adapter(name)
+    active = getattr(model, "active_adapters", None)
+    active = active if active is not None else [getattr(model, "active_adapter", None)]
+    if name not in list(active):
+        raise RuntimeError(
+            "asked for adapter {!r} but the model reports {!r}".format(name, active)
         )
