@@ -1,0 +1,17 @@
+# Bulk corpus data is regenerated deterministically by build_train.py;
+# the committed generator + synthetic-laws.txt + manifest (with sha256s)
+# pin it exactly (repo convention: commit generator + hash manifest,
+# not bulk data).
+train_v1/train.jsonl
+train_v1/holdout.jsonl
+__pycache__/
+# artifact-exclusion discipline: bulky outputs never enter git — committed
+# artifacts are manifests + small tables (run dirs under runs/ are the
+# curated exception, added explicitly per run).
+outputs*/
+wandb/
+checkpoints/
+*.ckpt
+.venv/
+.ipynb_checkpoints/
+runs/ft-v1/logs/

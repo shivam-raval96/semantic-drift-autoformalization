@@ -1,0 +1,37 @@
+{
+  "stage": "capture",
+  "tag": "ft8b-full",
+  "model_key": "llama-3.1-8b",
+  "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+  "adapter": "/models/checkpoints/phase5a-r16-all/final",
+  "gpu": "A10G",
+  "limit": 0,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/ft8b-full",
+  "n_texts": 2000,
+  "shape_per_item": [
+    33,
+    4096
+  ],
+  "token_len": {
+    "min": 146,
+    "max": 460,
+    "mean": 285.8
+  },
+  "answer_token_len": {
+    "min": 19,
+    "max": 54,
+    "mean": 34.4
+  },
+  "gpu_seconds": {
+    "load": 10.7,
+    "forward": 150.6,
+    "save": 156.9
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}

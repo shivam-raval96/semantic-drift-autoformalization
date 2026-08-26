@@ -1,0 +1,121 @@
+{
+  "contrast_version": "v1",
+  "generator": "probe-experiments/data-gen/build_contrast.py",
+  "repo_commit": "b624dcb833faecec28a7d7f969631a8e6e5893d8",
+  "sampler_seed": 0,
+  "genform": {
+    "seed": 7,
+    "bins": [
+      5,
+      8
+    ],
+    "per_bin": 60,
+    "laws": 240
+  },
+  "etp_equations_sha256": "e30e1a6735011ff36fdb228d37b232eb7cda9d4a836cbbefc69c07e6871c8010",
+  "perturbation": {
+    "types": [
+      "arg_swap",
+      "var_sub",
+      "prune",
+      "grow"
+    ],
+    "attempts_per_type": 10,
+    "counts": {
+      "by_type": {
+        "arg_swap": 226,
+        "var_sub": 274,
+        "prune": 247,
+        "grow": 253
+      },
+      "by_target": {
+        "assume": 463,
+        "ask": 537
+      }
+    }
+  },
+  "pool_sizes": {
+    "etp": {
+      "1": 5,
+      "2": 39,
+      "3": 364,
+      "4": 4284
+    },
+    "genform": {
+      "5": 60,
+      "6": 60,
+      "7": 60,
+      "8": 60
+    }
+  },
+  "pool_exclusions": {
+    "etp_laws_vacuous": 2
+  },
+  "stats": {
+    "perturb_orbit_collisions": 193,
+    "perturb_dropped_problems": 0
+  },
+  "tiers": {
+    "easy": {
+      "source": "etp",
+      "quotas": {
+        "2": 112,
+        "3": 111,
+        "4": 111
+      },
+      "achieved_per_ops_total": {
+        "2": 13,
+        "3": 210,
+        "4": 111
+      },
+      "n": 334
+    },
+    "medium": {
+      "source": "etp",
+      "quotas": {
+        "5": 84,
+        "6": 83,
+        "7": 83,
+        "8": 83
+      },
+      "achieved_per_ops_total": {
+        "5": 84,
+        "6": 83,
+        "7": 83,
+        "8": 83
+      },
+      "n": 333
+    },
+    "hard": {
+      "source": "genform",
+      "quotas": {
+        "10": 111,
+        "11": 111,
+        "12": 111
+      },
+      "achieved_per_ops_total": {
+        "10": 111,
+        "11": 111,
+        "12": 111
+      },
+      "n": 333
+    }
+  },
+  "n_problems": 1000,
+  "n_texts": 2000,
+  "n_lawcc_groups": 92,
+  "themes": [
+    "graft",
+    "paint",
+    "signal",
+    "tea"
+  ],
+  "eval_v1_overlap_info_only": {
+    "rows_sharing_a_law_with_eval_v1": 452,
+    "rows_whose_pair_is_a_sair_pair": 1
+  },
+  "files": {
+    "contrast.jsonl": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+    "synthetic-laws.txt": "25c15668e43315fe7a557eabd984b34497d8ea83d6cc11231825e49a31758af2"
+  }
+}

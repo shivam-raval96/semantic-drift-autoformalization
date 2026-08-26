@@ -1,0 +1,40 @@
+{
+  "stage": "capture",
+  "tag": "llama-3.3-70b-full",
+  "model_key": "llama-3.3-70b",
+  "model_id": "meta-llama/Llama-3.3-70B-Instruct",
+  "adapter": null,
+  "gpu": "H100:2",
+  "limit": 0,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": false,
+  "gate_sample": false,
+  "prompt_file": null,
+  "batch_size": 4,
+  "out_dir": "/acts/contrast_v1/llama-3.3-70b-full",
+  "n_texts": 2000,
+  "shape_per_item": [
+    81,
+    8192
+  ],
+  "token_len": {
+    "min": 146,
+    "max": 460,
+    "mean": 285.8
+  },
+  "answer_token_len": {
+    "min": 19,
+    "max": 54,
+    "mean": 34.4
+  },
+  "gpu_seconds": {
+    "load": 100.7,
+    "forward": 185.1,
+    "save": 569.9
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}

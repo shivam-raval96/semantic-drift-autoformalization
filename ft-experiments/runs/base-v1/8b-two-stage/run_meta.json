@@ -1,0 +1,45 @@
+{
+  "timestamp": "2026-07-24T21:48:41.150963+00:00",
+  "phase": "3-base-eval",
+  "model": "meta-llama/Llama-3.1-8B-Instruct",
+  "arm": "two-stage",
+  "regime": "off",
+  "eval_version": "v1",
+  "n": 777,
+  "limit": null,
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 4096,
+    "greedy": true
+  },
+  "backend": {
+    "engine": "vllm",
+    "vllm_version": "0.25.1",
+    "torch_version": "2.11.0+cu130",
+    "gpu": "NVIDIA A10",
+    "dtype": "bfloat16",
+    "max_model_len": 12288,
+    "chat_template": "model default via llm.chat, add_generation_prompt"
+  },
+  "gpu_requested": "A10G",
+  "image": "nvidia/cuda:12.8.1-devel-ubuntu22.04 + python3.12 + uv:vllm",
+  "guardrails": {
+    "min_containers": 0,
+    "max_containers": 1,
+    "scaledown_window": 60,
+    "retries": 0,
+    "timeout": 1800
+  },
+  "max_model_len": 12288,
+  "prompt_template": "abstract_prompt.md",
+  "prompt_template_sha256": "1aa038f2d13dbddcc5c7f803d9166d9e8a82ce9b981a3463fc59a3d44cce8733",
+  "regime_suffix": "\n\nRespond with only the rewritten description, and no other text before it.",
+  "stage2_template": "literal_prompt.md",
+  "stage2_template_sha256": "089ffc52bb57c5aa7c2ead0e613ec7e73b11039aa79d729f8c80c63a0852f8b0",
+  "stage2_regime_suffix": "\n\nRespond with only the two required lines, and no other text before them.",
+  "timing": {
+    "model_load_s": 154.8,
+    "generate_s": 890.4,
+    "wall_s": 1070.0
+  }
+}

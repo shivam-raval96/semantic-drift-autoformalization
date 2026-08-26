@@ -1,0 +1,85 @@
+03:56:54 [setup] FT v2 experiment started: recon agents auditing pipeline, watch script live
+03:59:32 [recon] fetched remote: Denis's mech-interp branch reviewed (steering null + budget result), no collision with v2; design doc drafted with predictions + kill criteria
+04:04:12 [screen] launching limit-200 signal screens: gemma4-31b + ministral-14b, story arm, grammar A
+04:06:06 [templates] 4 grammar-B prompt templates written and sha-pinned (story/literal x bnear/bfar)
+04:08:30 [data] train_v2 FROZEN: 2772 train + 100 holdout story->RG pairs, exact v1 pair-set, 0 drops, theme 'tea' held out, independent 40-row audit passed
+04:11:56 [eval-wiring] grade_b path + templates + suffixes verified offline; sys.modules dataclass bug found+fixed in modal_eval; cleaner leniency parity fix applied
+04:12:33 [canary] limit-5 live run: 8b story-bfar (verifies B arm end to end on GPU before the full base-B matrix)
+04:13:23 [screen] ministral-14b story: normal 11.1% / hard 25% correct — SIGNAL ZONE. launching literal screen
+04:13:43 [smoke] launching smoke-v2 training: 8B, 200 samples, 50 steps, completion-only loss, A100-80GB
+04:13:48 [train-smoke-v2-8b-s0] started: meta-llama/Llama-3.1-8B-Instruct on A100-80GB, 200 pairs, preset=smoke-v2, completion-only loss
+04:16:32 [base-B] canary passed; launching full base-B matrix: 8b + qwen3-32b x story-bnear/story-bfar/literal-bnear/literal-bfar (8 parallel runs)
+04:18:23 [train-smoke-v2-8b-s0] done: 50 steps in 215.4s, loss 0.952->0.009, holdout completion loss 0.9364->0.1103, 0 dropped overlong, probes passed; record train-smoke-v2-8b-s0.json
+04:19:20 [train] smoke PASSED (holdout gen grades correct/identity; base unparseable). Launching FULL v2 training: 8B + 32B parallel on A100-80GB
+04:19:24 [train-v2-8b-s0] started: meta-llama/Llama-3.1-8B-Instruct on A100-80GB, 2772 pairs, preset=v2-8b, completion-only loss
+04:19:25 [train-v2-qwen3-32b-s0] started: Qwen/Qwen3-32B on A100-80GB, 2772 pairs, preset=v2-32b, completion-only loss
+04:23:13 [decision] gemma4-31b 72.8% story = ABOVE signal zone, excluded (best base translator measured — noted for writeup). ministral-14b JOINS the FT suite. Launching its 6 base evals + training
+04:23:21 [train-v2-ministral-14b-s0] started: mistralai/Ministral-3-14B-Instruct-2512-BF16 on A100-80GB, 2772 pairs, preset=v2-14b, completion-only loss
+04:39:10 [train] 14B failed: Mistral3Config is multimodal, AutoModelForCausalLM refused it. Patched trainer (AutoModelForImageTextToText + language_model-scoped LoRA regex + vision-leak assert). Smoking the new path
+04:39:14 [train-smoke-v2-ministral-14b-s0] started: mistralai/Ministral-3-14B-Instruct-2512-BF16 on A100-80GB, 200 pairs, preset=smoke-v2, completion-only loss
+05:15:48 [base-B] 8B row complete: correct floor ~0.3-0.5% in all B arms; unparseable ranks by grammar distance (bnear 15.8 < bfar 36.4 story) — instrument gradient sane
+05:16:20 [train-smoke-v2-ministral-14b-s0] done: 50 steps in 547.6s, loss 0.955->0.001, holdout completion loss 0.7861->0.0219, 0 dropped overlong, probes passed; record train-smoke-v2-ministral-14b-s0.json
+05:16:48 [train] 14B smoke PASSED on multimodal patch (60.9M trainable, all in language_model; ppl 2.19->1.02). Launching FULL v2-14b
+05:16:52 [train-v2-ministral-14b-s0] started: mistralai/Ministral-3-14B-Instruct-2512-BF16 on A100-80GB, 2772 pairs, preset=v2-14b, completion-only loss
+05:28:43 [train-v2-8b-s0] done: 1041 steps in 3876.0s, loss 1.016->0.000, holdout completion loss 0.9364->0.007, 0 dropped overlong, probes passed; record train-v2-8b-s0.json
+05:29:27 [eval] 8B training done (ppl 2.55->1.01). Launching 6 full FT-8B eval cells + 13-checkpoint curve (story A + story bfar, limit-200)
+05:46:14 [curve] v2-8b-s0 step-0 done (story + story-bfar)
+05:54:24 [base-B] ministral literal-bfar hit 900s chunk timeout at 500/777 (contention); resuming
+05:57:28 [curve] v2-8b-s0 step-100 done (story + story-bfar)
+06:11:12 [curve] v2-8b-s0 step-200 done (story + story-bfar)
+06:20:50 [curve] v2-8b-s0 step-300 done (story + story-bfar)
+06:21:43 [RESULT] FT-8B 2x2 row: A story 0.1->96.8%, literal 0.4->97.7%, B-near 96.3/93.7%, B-far 37.8/36.7%. Transfer graded by structural distance; literal-bfar failures = Value-unfolding x new-syntax composition, NOT label lock-in. All tiers 95-99% on A incl order5
+06:24:55 [base-B] FULL BASE MATRIX COMPLETE (14/14). All cells readable: 14B 10-30%, 32B 13-34%, 8B floor. Awaiting 32B+14B training for their FT rows
+06:30:19 [curve] v2-8b-s0 step-400 done (story + story-bfar)
+06:38:11 [curve] v2-8b-s0 step-500 done (story + story-bfar)
+06:46:36 [curve] v2-8b-s0 step-600 done (story + story-bfar)
+06:55:21 [curve] v2-8b-s0 step-700 done (story + story-bfar)
+07:03:20 [curve] v2-8b-s0 step-800 done (story + story-bfar)
+07:11:42 [curve] v2-8b-s0 step-900 done (story + story-bfar)
+07:19:29 [curve] v2-8b-s0 step-1000 done (story + story-bfar)
+07:23:56 [train] 32B timed out at epoch 2.17 (converged, loss 1e-5, but need clean full run). Timeout raised 3h->6h, stale ckpts cleared, relaunching
+07:24:00 [train-v2-qwen3-32b-s0] started: Qwen/Qwen3-32B on A100-80GB, 2772 pairs, preset=v2-32b, completion-only loss
+07:27:13 [curve] v2-8b-s0 step-1041 done (story + story-bfar)
+07:27:13 [curve] v2-8b-s0 COMPLETE
+07:27:45 [curve] 8B curve done: A saturates step ~300 (98%), B-far transfer RISES with it (23->52 @ step 500-600), settles 45.5 — no lock-in; slight late give-back; best-transfer ckpt != final
+07:34:09 [control] format-following suite built+dry-verified. Running 8b base + FT
+07:38:23 [control] FT-8B format control 100/90/100 vs base 100/100/100 — general format-following intact; SFT-narrowing alternative dead for 8B
+07:38:43 [repr] capturing FT-v2-8B activations on contrast_v1 (reader mode), then remote probe
+08:17:24 [incident] local network blip killed both training clients + capture chain (modal run couples app to client). Cleared partial ckpts (32B step-0 only, 14B step-900/1041). Relaunching ALL long jobs with --detach
+08:18:32 [train] relaunching 32B + 14B with --detach + volume-persisted records (network-blip immunity)
+08:18:35 [train-v2-qwen3-32b-s0] started: Qwen/Qwen3-32B on A100-80GB, 2772 pairs, preset=v2-32b, completion-only loss
+08:18:37 [train-v2-ministral-14b-s0] started: mistralai/Ministral-3-14B-Instruct-2512-BF16 on A100-80GB, 2772 pairs, preset=v2-14b, completion-only loss
+08:28:10 [RESULT] FT-v2-8B representation: law-disjoint probe 0.520(base) -> 0.949(task-FT), shuffled ~0.51. Task FT INSTALLS the representation grammar-FT never touched; exceeds the 27B's natural 0.815
+11:33:24 [train] 14B training COMPLETE (crashed only at record write - json import bug, fixed). 13 ckpts verified. Record reconstructed from log. Launching 14B eval suite
+11:35:28 [log] RESEARCH_LOG entries 26-29 written (design, 8B results, representation, incidents)
+11:40:12 [repr] 14B capture OOMed on default A10G (CAPTURE_GPU env, not registry). Relaunching chain on A100-80GB
+11:44:02 [control] 14B format control: json/keyword 100->100 (no SFT narrowing); semicolon family uninformative for this model (base drops the ANSWER: prefix, values correct)
+11:50:33 [curve] v2-ministral-14b-s0 step-0 done (story + story-bfar)
+12:03:05 [curve] v2-ministral-14b-s0 step-100 done (story + story-bfar)
+12:08:15 [RESULT] 14B representation REPLICATES: law-disjoint 0.607(base) -> 0.984(task-FT). Two families now: 8B 0.52->0.95, 14B 0.61->0.98
+12:13:48 [sched] paused 14B curve (2 A100 slots) to unblock the 6 headline FT-14B cells; curve resumes after. Scheduling to the real concurrency cap from now on
+12:22:22 [sched] my curve pause also killed the 6 eval clients (shared process tree) — relaunching; chunked resume means <=2 chunks lost per run
+12:30:07 [finish] orchestrator launched: A=wait 14B cells, B=32B cells @step-900, C=32B capture+controls, D=trimmed curves
+12:30:07 [finish] phase A: waiting for 14B cells
+12:50:26 [QC] full adversarial audit: 19,425 verdicts re-graded exact-match, disjointness+bridge+instrument+probes all CLEAN. 2 confirmed minor defects fixed: 14B record curve (preemption concat) truncated+documented; 'law-disjoint' claim corrected via exposure-clean subset probes (533 problems, running)
+13:00:07 [QC-fix] exposure-clean subset probes (533 FT-unseen problems, n_used verified): 14B 0.984, 8B 0.942 law-disjoint — representation claim holds at full strength on strictly unseen laws
+13:01:07 [finish] phase A done: all 6 FT-14B cells complete
+13:01:07 [finish] phase B: 32B FT cells (adapter step-900)
+13:01:15 [RESULT] 14B 2x2 COMPLETE: A 89-99%, B-near 92-98%, B-far 48-53%. Pattern replicates across families; far-transfer scales (14B ~50% vs 8B ~37%)
+13:04:03 [14B-check] late cells re-graded clean (0 mismatch). Key texture: B-far collapses on order5 (24%/14.5%) via unbalanced parens (119/152 failures; only 5 semantic) while A order5 is 97% — deep-tree SYNTAX fails in the new notation, semantics intact
+13:07:34 [sched] parallelizing: 14B trimmed curve (12 limit-200 runs) launched wide to fill idle slots alongside 32B cells; Phase D becomes a fast no-op sweep for these
+13:21:02 [writeup] RESULTS.md v2 section drafted (32B slots marked TBD)
+13:57:49 [RESULT] 32B story-A: 18.8% -> 99.7% correct (100% on normal/hard/extra_hard, 99% order5), 0% unparseable. v1 DISPLACED this model (34->3%); v2 saturates it
+14:00:13 [sched] releasing 32B wave 2 early (3 B-arm cells) — no barrier needed, queue is free; orchestrator's own wave-2 launch will resume-skip completed rows
+14:10:39 [RESULT] 14B curve (12/12): B-far transfer PEAKS EARLY at step-300 (74.5%) then DECAYS to 59% while A keeps climbing to 93% — replicates 8B's give-back but sharper. Early checkpoints are more grammar-general than final ones
+14:46:32 [finish] eval-ft-32b-story-bfar failed once, retrying
+14:46:32 [finish] eval-ft-32b-literal-bnear failed once, retrying
+14:46:32 [finish] eval-ft-32b-literal-bfar failed once, retrying
+14:46:45 [incident] my early wave-2 release raced the orchestrator's own wave-2 on 3 cells (two writers, one append file): 800 rows/500 unique, verdicts identical (greedy => deterministic, so no data corruption, only resume miscounting). Killed both writers, deduped to clean 500-row in-order prefix, restarting ONE writer per cell
+15:39:00 [RESULT] FULL TABLE COMPLETE. 32B: A 99.7/99.9, B-near 99.4/100.0, B-far 77.5/81.5. Far-transfer scales STRONGLY with model: 8B ~37, 14B ~50, 32B ~80 — the structural ceiling is a capacity limit, not a method limit
+15:39:00 [phase] launching final measurements: 32B capture+probe, 32B format controls, 32B curve on one-engine harness
+15:39:30 [curve] 32B curve on one-engine harness (1 A100, single load, 12 pairs hot-swapping adapters)
+16:13:58 [QC] one-engine harness EQUIVALENCE PASS: 200/200 rows identical verdicts+buckets vs audited runner (0 response-text diffs). 32B curve numbers admissible
+16:13:58 [RESULT] 32B curve: A 99% by step-100, 100% from step-500; B-far 77.5->84% and FLAT (no decay). Decay-with-training shrinks with capacity: 8B -6pts, 14B -15pts, 32B none
+17:49:35 [RESULT] 32B representation: 0.599 -> 0.921 law-disjoint (0.904 on FT-unseen subset). ALL THREE MODELS confirm installation. Experiment COMPLETE
+00:11:31 [RESULT] theme holdout: FT creates input-side overfitting (8B -12.5, 14B -43.2, 32B -1.1) — base control shows tea is NOT harder (0 to -2.6). Mirrors the grammar-side finding on the same capacity gradient

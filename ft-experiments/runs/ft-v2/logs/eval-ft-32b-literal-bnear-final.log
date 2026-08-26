@@ -1,0 +1,961 @@
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:176                                                                      │
+│   @app.function(**_fn_common, **GUARDRAILS)                                  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:191                                                                      │
+│   @app.function(**_fn_a100, **FT_GUARDRAILS)                                 │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:200                                                                      │
+│   @app.function(**_fn_a100, **FT_TWO_STAGE_GUARDRAILS)                       │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:220                                                                      │
+│   @app.function(**_fn_a100, **GUARDRAILS)                                    │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:231                                                                      │
+│   @app.function(**_fn_common, **FT_GUARDRAILS)                               │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:240                                                                      │
+│   @app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)                        │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:260                                                                      │
+│   @app.function(**_fn_common, **FT_TWO_STAGE_GUARDRAILS)                     │
+╰──────────────────────────────────────────────────────────────────────────────╯
+╭─ Modal Deprecation Warning (2025-12-16) ─────────────────────────────────────╮
+│ The `max_inputs` parameter is deprecated. Please set                         │
+│ `single_use_containers=True` instead.                                        │
+│                                                                              │
+│ Source:                                                                      │
+│ /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval │
+│ .py:280                                                                      │
+│   @app.function(**_fn_a100, **TWO_STAGE_GUARDRAILS)                          │
+╰──────────────────────────────────────────────────────────────────────────────╯
+✓ Initialized. View run at 
+https://modal.com/apps/order-evaluation/main/ap-U33u3HgiooNePCgoYCu8LD
+✓ Created objects.
+├── 🔨 Created mount 
+│   /Users/harsh/semantic-drift-autoformalization/ft-experiments/eval/modal_eval
+│   .py
+├── 🔨 Created function generate_a10g.
+├── 🔨 Created function generate_a100_ft.
+├── 🔨 Created function generate_a100_two_stage_ft.
+├── 🔨 Created function generate_a100.
+├── 🔨 Created function generate_a10g_ft.
+├── 🔨 Created function generate_a10g_two_stage.
+├── 🔨 Created function generate_a10g_two_stage_ft.
+└── 🔨 Created function generate_a100_two_stage.
+= resolved: model=Qwen/Qwen3-32B arm=literal-bnear adapter=/models/checkpoints/v2-qwen3-32b-s0/step-900 out=ft-v2 limit=full
+= resuming: 500/777 rows already on disk
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+/root/modal_eval.py:176: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **GUARDRAILS)
+/root/modal_eval.py:191: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_GUARDRAILS)
+/root/modal_eval.py:200: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:220: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **GUARDRAILS)
+/root/modal_eval.py:231: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_GUARDRAILS)
+/root/modal_eval.py:240: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:260: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:280: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **TWO_STAGE_GUARDRAILS)
+/usr/local/lib/python3.12/site-packages/huggingface_hub/constants.py:298: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+INFO 08-19 09:17:35 [api_utils.py:273] non-default args: {'dtype': 'bfloat16', 'max_model_len': 8192, 'disable_log_stats': True, 'enable_lora': True, 'model': 'Qwen/Qwen3-32B'}
+INFO 08-19 09:17:55 [model.py:619] Resolved architecture: Qwen3ForCausalLM
+INFO 08-19 09:17:55 [model.py:1776] Using max model len 8192
+INFO 08-19 09:17:55 [scheduler.py:252] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 08-19 09:17:55 [vllm.py:1042] Asynchronous scheduling is enabled.
+INFO 08-19 09:17:55 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=37) INFO 08-19 09:18:01 [core.py:114] Initializing a V1 LLM engine (v0.25.1) with config: model='Qwen/Qwen3-32B', speculative_config=None, tokenizer='Qwen/Qwen3-32B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=Qwen/Qwen3-32B, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::qwen_gdn_attention_core', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=37) INFO 08-19 09:18:02 [parallel_state.py:1607] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://172.20.0.120:22583 backend=nccl
+(EngineCore pid=37) INFO 08-19 09:18:03 [parallel_state.py:1942] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=37) INFO 08-19 09:18:03 [gpu_worker.py:360] Using V2 Model Runner
+(EngineCore pid=37) INFO 08-19 09:18:04 [model_runner.py:281] Loading model from scratch...
+(EngineCore pid=37) INFO 08-19 09:18:05 [cuda.py:476] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=37) INFO 08-19 09:18:05 [flash_attn.py:718] Using FlashAttention version 2
+(EngineCore pid=37) INFO 08-19 09:18:08 [weight_utils.py:849] Filesystem type for checkpoints: 9P. Checkpoint size: 61.02 GiB. Available RAM: 1017.79 GiB.
+(EngineCore pid=37) INFO 08-19 09:18:08 [weight_utils.py:872] Auto-prefetch is disabled because the filesystem (9P) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=37) Loading safetensors checkpoint shards:   0% Completed | 0/17 [00:00<?, ?it/s]
+(EngineCore pid=37) Loading safetensors checkpoint shards:   6% Completed | 1/17 [00:02<00:38,  2.42s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  12% Completed | 2/17 [00:05<00:37,  2.52s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  18% Completed | 3/17 [00:07<00:35,  2.53s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  24% Completed | 4/17 [00:10<00:33,  2.54s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  29% Completed | 5/17 [00:12<00:31,  2.62s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  35% Completed | 6/17 [00:15<00:28,  2.63s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  41% Completed | 7/17 [00:18<00:25,  2.60s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  47% Completed | 8/17 [00:20<00:23,  2.59s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  53% Completed | 9/17 [00:23<00:20,  2.59s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  59% Completed | 10/17 [00:25<00:17,  2.57s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  65% Completed | 11/17 [00:28<00:15,  2.56s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  71% Completed | 12/17 [00:30<00:12,  2.54s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  76% Completed | 13/17 [00:33<00:10,  2.54s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  82% Completed | 14/17 [00:35<00:07,  2.56s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  88% Completed | 15/17 [00:38<00:05,  2.59s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  94% Completed | 16/17 [00:41<00:02,  2.59s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards: 100% Completed | 17/17 [00:43<00:00,  2.43s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards: 100% Completed | 17/17 [00:43<00:00,  2.54s/it]
+(EngineCore pid=37) 
+(EngineCore pid=37) INFO 08-19 09:18:51 [default_loader.py:430] Loading weights took 43.41 seconds
+(EngineCore pid=37) INFO 08-19 09:18:51 [punica_selector.py:20] Using PunicaWrapperGPU.
+(EngineCore pid=37) INFO 08-19 09:18:52 [model_runner.py:302] Model loading took 61.3 GiB and 49.046980 seconds
+(EngineCore pid=37) INFO 08-19 09:18:52 [topk_topp_sampler.py:55] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=37) INFO 08-19 09:20:17 [backends.py:1089] Using cache directory: /root/.cache/vllm/torch_compile_cache/3f8ba0d0d1/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=37) INFO 08-19 09:20:17 [backends.py:1148] Dynamo bytecode transform time: 83.90 s
+(EngineCore pid=37) INFO 08-19 09:20:38 [backends.py:378] Cache the graph of compile range (1, 8192) for later use
+(EngineCore pid=37) INFO 08-19 09:21:09 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 44.10 s
+(EngineCore pid=37) INFO 08-19 09:21:49 [decorators.py:708] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/809efe52390f3c2c947ca3604bf527be66e9170a044c66c06b31c3c1d7ee3c4d/rank_0_0/model
+(EngineCore pid=37) INFO 08-19 09:21:49 [monitor.py:53] torch.compile took 176.01 s in total
+(EngineCore pid=37) WARNING 08-19 09:21:49 [utils.py:279] Using default LoRA kernel configs
+(EngineCore pid=37) INFO 08-19 09:21:57 [monitor.py:81] Initial profiling/warmup run took 8.10 s
+(EngineCore pid=37) INFO 08-19 09:22:01 [gpu_worker.py:538] Available KV cache memory: 9.93 GiB
+(EngineCore pid=37) INFO 08-19 09:22:01 [kv_cache_utils.py:2146] GPU KV cache size: 40,672 tokens
+(EngineCore pid=37) INFO 08-19 09:22:01 [kv_cache_utils.py:2147] Maximum concurrency for 8,192 tokens per request: 4.96x
+(EngineCore pid=37) INFO 08-19 09:22:01 [cutedsl_warmup.py:97] Skipping CuTeDSL warmup because no compile units were requested.
+(EngineCore pid=37) 
+[1ACapturing CUDA graphs (PIECEWISE):   0%|          | 0/102 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   1%|          | 1/102 [00:00<00:30,  3.35it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   2%|▏         | 2/102 [00:00<00:34,  2.92it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   3%|▎         | 3/102 [00:00<00:29,  3.39it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   4%|▍         | 4/102 [00:01<00:30,  3.20it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   5%|▍         | 5/102 [00:01<00:27,  3.47it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   6%|▌         | 6/102 [00:01<00:30,  3.16it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   7%|▋         | 7/102 [00:02<00:29,  3.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   8%|▊         | 8/102 [00:02<00:32,  2.88it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   9%|▉         | 9/102 [00:02<00:32,  2.85it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  10%|▉         | 10/102 [00:03<00:36,  2.55it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  11%|█         | 11/102 [00:03<00:35,  2.59it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  12%|█▏        | 12/102 [00:04<00:34,  2.61it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  13%|█▎        | 13/102 [00:04<00:30,  2.93it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  14%|█▎        | 14/102 [00:04<00:30,  2.92it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  15%|█▍        | 15/102 [00:05<00:27,  3.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  16%|█▌        | 16/102 [00:05<00:28,  3.06it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  17%|█▋        | 17/102 [00:05<00:25,  3.37it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  18%|█▊        | 18/102 [00:05<00:25,  3.28it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  19%|█▊        | 19/102 [00:06<00:22,  3.62it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  20%|█▉        | 20/102 [00:06<00:24,  3.39it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  21%|██        | 21/102 [00:06<00:22,  3.64it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  22%|██▏       | 22/102 [00:07<00:23,  3.35it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  23%|██▎       | 23/102 [00:07<00:22,  3.51it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  24%|██▎       | 24/102 [00:07<00:24,  3.25it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▍       | 25/102 [00:07<00:22,  3.47it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▌       | 26/102 [00:08<00:22,  3.33it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  26%|██▋       | 27/102 [00:08<00:20,  3.62it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  27%|██▋       | 28/102 [00:08<00:22,  3.28it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  28%|██▊       | 29/102 [00:09<00:20,  3.55it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  29%|██▉       | 30/102 [00:09<00:21,  3.41it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  30%|███       | 31/102 [00:09<00:20,  3.41it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  31%|███▏      | 32/102 [00:10<00:21,  3.29it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  32%|███▏      | 33/102 [00:10<00:18,  3.72it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  33%|███▎      | 34/102 [00:10<00:18,  3.68it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  34%|███▍      | 35/102 [00:10<00:16,  4.08it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  35%|███▌      | 36/102 [00:14<01:27,  1.33s/it]
+[1ACapturing CUDA graphs (PIECEWISE):  36%|███▋      | 37/102 [00:14<01:04,  1.01it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  37%|███▋      | 38/102 [00:15<00:50,  1.28it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  38%|███▊      | 39/102 [00:15<00:38,  1.66it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  39%|███▉      | 40/102 [00:15<00:31,  1.96it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  40%|████      | 41/102 [00:15<00:25,  2.42it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  41%|████      | 42/102 [00:15<00:22,  2.64it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  42%|████▏     | 43/102 [00:16<00:18,  3.11it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  43%|████▎     | 44/102 [00:16<00:18,  3.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  44%|████▍     | 45/102 [00:16<00:15,  3.60it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  45%|████▌     | 46/102 [00:16<00:16,  3.43it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  46%|████▌     | 47/102 [00:17<00:14,  3.82it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  47%|████▋     | 48/102 [00:17<00:14,  3.73it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  48%|████▊     | 49/102 [00:17<00:12,  4.16it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  49%|████▉     | 50/102 [00:17<00:13,  3.83it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  50%|█████     | 51/102 [00:18<00:12,  4.06it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  51%|█████     | 52/102 [00:18<00:13,  3.64it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  52%|█████▏    | 53/102 [00:18<00:12,  4.01it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  53%|█████▎    | 54/102 [00:18<00:12,  3.75it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  54%|█████▍    | 55/102 [00:19<00:11,  4.06it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  55%|█████▍    | 56/102 [00:19<00:12,  3.76it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  56%|█████▌    | 57/102 [00:19<00:11,  3.92it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  57%|█████▋    | 58/102 [00:20<00:12,  3.63it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  58%|█████▊    | 59/102 [00:20<00:10,  4.00it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  59%|█████▉    | 60/102 [00:20<00:11,  3.76it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  60%|█████▉    | 61/102 [00:20<00:10,  4.09it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  61%|██████    | 62/102 [00:21<00:10,  3.77it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  62%|██████▏   | 63/102 [00:21<00:09,  4.12it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  63%|██████▎   | 64/102 [00:21<00:09,  3.82it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  64%|██████▎   | 65/102 [00:21<00:08,  4.17it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  65%|██████▍   | 66/102 [00:22<00:09,  3.79it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  66%|██████▌   | 67/102 [00:22<00:08,  4.19it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  67%|██████▋   | 68/102 [00:24<00:25,  1.36it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  68%|██████▊   | 69/102 [00:24<00:18,  1.75it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  69%|██████▊   | 70/102 [00:26<00:30,  1.05it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  70%|██████▉   | 71/102 [00:26<00:22,  1.39it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  71%|███████   | 72/102 [00:26<00:17,  1.69it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  72%|███████▏  | 73/102 [00:26<00:13,  2.08it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  73%|███████▎  | 74/102 [00:27<00:11,  2.36it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  74%|███████▎  | 75/102 [00:27<00:09,  2.86it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  75%|███████▍  | 76/102 [00:27<00:08,  2.96it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  75%|███████▌  | 77/102 [00:27<00:07,  3.47it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  76%|███████▋  | 78/102 [00:28<00:07,  3.40it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  77%|███████▋  | 79/102 [00:28<00:06,  3.81it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  78%|███████▊  | 80/102 [00:28<00:05,  3.69it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  79%|███████▉  | 81/102 [00:28<00:05,  4.16it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  80%|████████  | 82/102 [00:29<00:05,  3.57it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  81%|████████▏ | 83/102 [00:29<00:04,  3.97it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  82%|████████▏ | 84/102 [00:29<00:05,  3.60it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  83%|████████▎ | 85/102 [00:29<00:04,  3.99it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  84%|████████▍ | 86/102 [00:30<00:04,  3.77it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  85%|████████▌ | 87/102 [00:30<00:03,  4.13it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  86%|████████▋ | 88/102 [00:30<00:03,  3.86it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  87%|████████▋ | 89/102 [00:30<00:03,  4.13it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  88%|████████▊ | 90/102 [00:31<00:03,  3.61it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  89%|████████▉ | 91/102 [00:31<00:02,  4.07it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  90%|█████████ | 92/102 [00:31<00:02,  3.57it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  91%|█████████ | 93/102 [00:31<00:02,  3.90it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  92%|█████████▏| 94/102 [00:32<00:02,  3.74it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  93%|█████████▎| 95/102 [00:32<00:01,  4.23it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  94%|█████████▍| 96/102 [00:32<00:01,  3.86it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  95%|█████████▌| 97/102 [00:32<00:01,  4.14it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  96%|█████████▌| 98/102 [00:33<00:01,  3.79it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  97%|█████████▋| 99/102 [00:33<00:00,  4.19it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  98%|█████████▊| 100/102 [00:33<00:00,  3.87it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  99%|█████████▉| 101/102 [00:33<00:00,  4.28it/s]
+[1ACapturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:39<00:00,  1.92s/it]
+[1ACapturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:39<00:00,  2.57it/s]
+(EngineCore pid=37) 
+[1ACapturing CUDA graphs (FULL):   0%|          | 0/70 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (FULL):   1%|▏         | 1/70 [00:00<00:13,  5.13it/s]
+[1ACapturing CUDA graphs (FULL):   3%|▎         | 2/70 [00:00<00:15,  4.27it/s]
+[1ACapturing CUDA graphs (FULL):   4%|▍         | 3/70 [00:00<00:13,  5.06it/s]
+[1ACapturing CUDA graphs (FULL):   6%|▌         | 4/70 [00:00<00:14,  4.47it/s]
+[1ACapturing CUDA graphs (FULL):   7%|▋         | 5/70 [00:01<00:12,  5.06it/s]
+[1ACapturing CUDA graphs (FULL):   9%|▊         | 6/70 [00:01<00:14,  4.54it/s]
+[1ACapturing CUDA graphs (FULL):  10%|█         | 7/70 [00:01<00:12,  5.03it/s]
+[1ACapturing CUDA graphs (FULL):  11%|█▏        | 8/70 [00:01<00:13,  4.53it/s]
+[1ACapturing CUDA graphs (FULL):  13%|█▎        | 9/70 [00:01<00:12,  5.02it/s]
+[1ACapturing CUDA graphs (FULL):  14%|█▍        | 10/70 [00:02<00:13,  4.56it/s]
+[1ACapturing CUDA graphs (FULL):  16%|█▌        | 11/70 [00:02<00:11,  5.03it/s]
+[1ACapturing CUDA graphs (FULL):  17%|█▋        | 12/70 [00:02<00:12,  4.52it/s]
+[1ACapturing CUDA graphs (FULL):  19%|█▊        | 13/70 [00:02<00:11,  4.95it/s]
+[1ACapturing CUDA graphs (FULL):  20%|██        | 14/70 [00:02<00:12,  4.49it/s]
+[1ACapturing CUDA graphs (FULL):  21%|██▏       | 15/70 [00:03<00:11,  4.92it/s]
+[1ACapturing CUDA graphs (FULL):  23%|██▎       | 16/70 [00:03<00:11,  4.51it/s]
+[1ACapturing CUDA graphs (FULL):  24%|██▍       | 17/70 [00:03<00:10,  5.03it/s]
+[1ACapturing CUDA graphs (FULL):  26%|██▌       | 18/70 [00:03<00:11,  4.56it/s]
+[1ACapturing CUDA graphs (FULL):  27%|██▋       | 19/70 [00:03<00:10,  5.06it/s]
+[1ACapturing CUDA graphs (FULL):  29%|██▊       | 20/70 [00:04<00:11,  4.51it/s]
+[1ACapturing CUDA graphs (FULL):  30%|███       | 21/70 [00:04<00:09,  4.99it/s]
+[1ACapturing CUDA graphs (FULL):  31%|███▏      | 22/70 [00:04<00:10,  4.58it/s]
+[1ACapturing CUDA graphs (FULL):  33%|███▎      | 23/70 [00:04<00:09,  5.06it/s]
+[1ACapturing CUDA graphs (FULL):  34%|███▍      | 24/70 [00:05<00:09,  4.64it/s]
+[1ACapturing CUDA graphs (FULL):  36%|███▌      | 25/70 [00:05<00:08,  5.06it/s]
+[1ACapturing CUDA graphs (FULL):  37%|███▋      | 26/70 [00:05<00:09,  4.58it/s]
+[1ACapturing CUDA graphs (FULL):  39%|███▊      | 27/70 [00:05<00:08,  5.05it/s]
+[1ACapturing CUDA graphs (FULL):  40%|████      | 28/70 [00:05<00:09,  4.56it/s]
+[1ACapturing CUDA graphs (FULL):  41%|████▏     | 29/70 [00:06<00:08,  4.97it/s]
+[1ACapturing CUDA graphs (FULL):  43%|████▎     | 30/70 [00:06<00:09,  4.33it/s]
+[1ACapturing CUDA graphs (FULL):  44%|████▍     | 31/70 [00:06<00:08,  4.76it/s]
+[1ACapturing CUDA graphs (FULL):  46%|████▌     | 32/70 [00:06<00:08,  4.25it/s]
+[1ACapturing CUDA graphs (FULL):  47%|████▋     | 33/70 [00:06<00:07,  4.79it/s]
+[1ACapturing CUDA graphs (FULL):  49%|████▊     | 34/70 [00:07<00:08,  4.37it/s]
+[1ACapturing CUDA graphs (FULL):  50%|█████     | 35/70 [00:07<00:07,  4.97it/s]
+[1ACapturing CUDA graphs (FULL):  51%|█████▏    | 36/70 [00:07<00:07,  4.54it/s]
+[1ACapturing CUDA graphs (FULL):  53%|█████▎    | 37/70 [00:07<00:06,  5.08it/s]
+[1ACapturing CUDA graphs (FULL):  54%|█████▍    | 38/70 [00:08<00:06,  4.67it/s]
+[1ACapturing CUDA graphs (FULL):  56%|█████▌    | 39/70 [00:08<00:05,  5.27it/s]
+[1ACapturing CUDA graphs (FULL):  57%|█████▋    | 40/70 [00:08<00:06,  4.74it/s]
+[1ACapturing CUDA graphs (FULL):  59%|█████▊    | 41/70 [00:08<00:05,  5.09it/s]
+[1ACapturing CUDA graphs (FULL):  60%|██████    | 42/70 [00:08<00:06,  4.63it/s]
+[1ACapturing CUDA graphs (FULL):  61%|██████▏   | 43/70 [00:09<00:05,  5.10it/s]
+[1ACapturing CUDA graphs (FULL):  63%|██████▎   | 44/70 [00:09<00:05,  4.60it/s]
+[1ACapturing CUDA graphs (FULL):  64%|██████▍   | 45/70 [00:09<00:04,  5.17it/s]
+[1ACapturing CUDA graphs (FULL):  66%|██████▌   | 46/70 [00:09<00:05,  4.67it/s]
+[1ACapturing CUDA graphs (FULL):  67%|██████▋   | 47/70 [00:09<00:04,  5.28it/s]
+[1ACapturing CUDA graphs (FULL):  69%|██████▊   | 48/70 [00:10<00:04,  4.75it/s]
+[1ACapturing CUDA graphs (FULL):  70%|███████   | 49/70 [00:10<00:03,  5.30it/s]
+[1ACapturing CUDA graphs (FULL):  71%|███████▏  | 50/70 [00:10<00:04,  4.76it/s]
+[1ACapturing CUDA graphs (FULL):  73%|███████▎  | 51/70 [00:10<00:03,  5.37it/s]
+[1ACapturing CUDA graphs (FULL):  74%|███████▍  | 52/70 [00:10<00:03,  4.78it/s]
+[1ACapturing CUDA graphs (FULL):  76%|███████▌  | 53/70 [00:10<00:03,  5.35it/s]
+[1ACapturing CUDA graphs (FULL):  77%|███████▋  | 54/70 [00:11<00:03,  4.78it/s]
+[1ACapturing CUDA graphs (FULL):  79%|███████▊  | 55/70 [00:11<00:02,  5.26it/s]
+[1ACapturing CUDA graphs (FULL):  80%|████████  | 56/70 [00:11<00:02,  4.75it/s]
+[1ACapturing CUDA graphs (FULL):  81%|████████▏ | 57/70 [00:11<00:02,  5.33it/s]
+[1ACapturing CUDA graphs (FULL):  83%|████████▎ | 58/70 [00:12<00:02,  4.80it/s]
+[1ACapturing CUDA graphs (FULL):  84%|████████▍ | 59/70 [00:12<00:02,  5.40it/s]
+[1ACapturing CUDA graphs (FULL):  86%|████████▌ | 60/70 [00:12<00:02,  4.82it/s]
+[1ACapturing CUDA graphs (FULL):  87%|████████▋ | 61/70 [00:12<00:01,  5.43it/s]
+[1ACapturing CUDA graphs (FULL):  89%|████████▊ | 62/70 [00:12<00:01,  4.90it/s]
+[1ACapturing CUDA graphs (FULL):  90%|█████████ | 63/70 [00:12<00:01,  5.50it/s]
+[1ACapturing CUDA graphs (FULL):  91%|█████████▏| 64/70 [00:13<00:01,  4.92it/s]
+[1ACapturing CUDA graphs (FULL):  93%|█████████▎| 65/70 [00:13<00:00,  5.52it/s]
+[1ACapturing CUDA graphs (FULL):  94%|█████████▍| 66/70 [00:13<00:00,  4.92it/s]
+[1ACapturing CUDA graphs (FULL):  96%|█████████▌| 67/70 [00:13<00:00,  5.53it/s]
+[1ACapturing CUDA graphs (FULL):  97%|█████████▋| 68/70 [00:13<00:00,  4.92it/s]
+[1ACapturing CUDA graphs (FULL):  99%|█████████▊| 69/70 [00:14<00:00,  5.59it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:14<00:00,  5.02it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:14<00:00,  4.88it/s]
+(EngineCore pid=37) INFO 08-19 09:22:56 [model_runner.py:722] Graph capturing finished in 55 secs, took 2.28 GiB
+(EngineCore pid=37) INFO 08-19 09:24:36 [jit_monitor.py:73] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(EngineCore pid=37) INFO 08-19 09:24:36 [core.py:337] init engine (profile, create kv cache, warmup model) took 344.10 s (compilation: 176.01 s)
+(EngineCore pid=37) INFO 08-19 09:24:37 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+
+INFO 08-19 09:24:39 [hf.py:548] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+WARNING 08-19 09:24:39 [input_processor.py:157] vLLM has deprecated support for supporting different tokenizers for different LoRAs. By default, vLLM uses base model's tokenizer. If you are using a LoRA with its own tokenizer, consider specifying `--tokenizer [lora_path]` to use the LoRA tokenizer.
+[1ARendering conversations:   0%|          | 0/100 [00:00<?, ?it/s]
+[1ARendering conversations:   1%|          | 1/100 [00:02<03:57,  2.40s/it]
+[1ARendering conversations:  22%|██▏       | 22/100 [00:02<00:06, 12.18it/s]
+[1ARendering conversations:  47%|████▋     | 47/100 [00:02<00:01, 29.81it/s]
+[1ARendering conversations:  69%|██████▉   | 69/100 [00:02<00:00, 47.98it/s]
+[1ARendering conversations:  93%|█████████▎| 93/100 [00:02<00:00, 70.78it/s]
+[1ARendering conversations: 100%|██████████| 100/100 [00:02<00:00, 35.30it/s]
+
+[1AProcessed prompts:   0%|          | 0/100 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]
+[1AProcessed prompts:   1%|          | 1/100 [00:09<15:21,  9.31s/it, est. speed input: 135.85 toks/s, output: 3.11 toks/s]
+[1AProcessed prompts:   3%|▎         | 3/100 [00:09<04:02,  2.50s/it, est. speed input: 401.41 toks/s, output: 9.44 toks/s]
+[1AProcessed prompts:  13%|█▎        | 13/100 [00:09<00:36,  2.41it/s, est. speed input: 1724.60 toks/s, output: 42.39 toks/s]
+[1AProcessed prompts:  27%|██▋       | 27/100 [00:09<00:11,  6.22it/s, est. speed input: 3570.45 toks/s, output: 92.07 toks/s]
+[1AProcessed prompts:  78%|███████▊  | 78/100 [00:10<00:00, 22.67it/s, est. speed input: 9969.35 toks/s, output: 269.27 toks/s]
+[1AProcessed prompts: 100%|██████████| 100/100 [00:10<00:00, 22.67it/s, est. speed input: 12900.33 toks/s, output: 361.21 toks/s]Processed prompts: 100%|██████████| 100/100 [00:10<00:00,  9.65it/s, est. speed input: 12900.33 toks/s, output: 361.21 toks/s]
+(EngineCore pid=37) INFO 08-19 09:24:50 [core.py:1214] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=37) INFO 08-19 09:24:50 [core.py:1333] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=37) INFO 08-19 09:24:50 [core.py:1364] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=37) INFO 08-19 09:24:50 [core.py:1227] [shutdown] EngineCore: exiting busy loop
+= chunk 500-600 written (600/777, gen 13.2s)
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+/root/modal_eval.py:176: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **GUARDRAILS)
+/root/modal_eval.py:191: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_GUARDRAILS)
+/root/modal_eval.py:200: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:220: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **GUARDRAILS)
+/root/modal_eval.py:231: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_GUARDRAILS)
+/root/modal_eval.py:240: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:260: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:280: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **TWO_STAGE_GUARDRAILS)
+/usr/local/lib/python3.12/site-packages/huggingface_hub/constants.py:298: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+INFO 08-19 09:25:38 [api_utils.py:273] non-default args: {'dtype': 'bfloat16', 'max_model_len': 8192, 'disable_log_stats': True, 'enable_lora': True, 'model': 'Qwen/Qwen3-32B'}
+INFO 08-19 09:25:58 [model.py:619] Resolved architecture: Qwen3ForCausalLM
+INFO 08-19 09:25:58 [model.py:1776] Using max model len 8192
+INFO 08-19 09:25:58 [scheduler.py:252] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 08-19 09:25:58 [vllm.py:1042] Asynchronous scheduling is enabled.
+INFO 08-19 09:25:58 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=37) INFO 08-19 09:26:04 [core.py:114] Initializing a V1 LLM engine (v0.25.1) with config: model='Qwen/Qwen3-32B', speculative_config=None, tokenizer='Qwen/Qwen3-32B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=Qwen/Qwen3-32B, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::qwen_gdn_attention_core', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=37) INFO 08-19 09:26:05 [parallel_state.py:1607] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://172.20.1.123:51233 backend=nccl
+(EngineCore pid=37) INFO 08-19 09:26:05 [parallel_state.py:1942] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=37) INFO 08-19 09:26:05 [gpu_worker.py:360] Using V2 Model Runner
+(EngineCore pid=37) INFO 08-19 09:26:06 [model_runner.py:281] Loading model from scratch...
+(EngineCore pid=37) INFO 08-19 09:26:08 [cuda.py:476] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=37) INFO 08-19 09:26:08 [flash_attn.py:718] Using FlashAttention version 2
+(EngineCore pid=37) INFO 08-19 09:26:10 [weight_utils.py:849] Filesystem type for checkpoints: 9P. Checkpoint size: 61.02 GiB. Available RAM: 1017.81 GiB.
+(EngineCore pid=37) INFO 08-19 09:26:10 [weight_utils.py:872] Auto-prefetch is disabled because the filesystem (9P) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=37) Loading safetensors checkpoint shards:   0% Completed | 0/17 [00:00<?, ?it/s]
+(EngineCore pid=37) Loading safetensors checkpoint shards:   6% Completed | 1/17 [00:02<00:35,  2.23s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  12% Completed | 2/17 [00:04<00:35,  2.35s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  18% Completed | 3/17 [00:07<00:33,  2.36s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  24% Completed | 4/17 [00:09<00:30,  2.37s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  29% Completed | 5/17 [00:11<00:28,  2.36s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  35% Completed | 6/17 [00:14<00:26,  2.37s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  41% Completed | 7/17 [00:16<00:23,  2.39s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  47% Completed | 8/17 [00:18<00:21,  2.38s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  53% Completed | 9/17 [00:21<00:19,  2.38s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  59% Completed | 10/17 [00:23<00:16,  2.37s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  65% Completed | 11/17 [00:26<00:14,  2.37s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  71% Completed | 12/17 [00:28<00:11,  2.36s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  76% Completed | 13/17 [00:30<00:09,  2.36s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  82% Completed | 14/17 [00:33<00:07,  2.36s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  88% Completed | 15/17 [00:35<00:04,  2.37s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  94% Completed | 16/17 [00:37<00:02,  2.37s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards: 100% Completed | 17/17 [00:39<00:00,  2.23s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards: 100% Completed | 17/17 [00:39<00:00,  2.34s/it]
+(EngineCore pid=37) 
+(EngineCore pid=37) INFO 08-19 09:26:50 [default_loader.py:430] Loading weights took 39.91 seconds
+(EngineCore pid=37) INFO 08-19 09:26:50 [punica_selector.py:20] Using PunicaWrapperGPU.
+(EngineCore pid=37) INFO 08-19 09:26:51 [model_runner.py:302] Model loading took 61.3 GiB and 45.307550 seconds
+(EngineCore pid=37) INFO 08-19 09:26:51 [topk_topp_sampler.py:55] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=37) INFO 08-19 09:28:15 [backends.py:1089] Using cache directory: /root/.cache/vllm/torch_compile_cache/3f8ba0d0d1/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=37) INFO 08-19 09:28:15 [backends.py:1148] Dynamo bytecode transform time: 82.59 s
+(EngineCore pid=37) INFO 08-19 09:28:37 [backends.py:378] Cache the graph of compile range (1, 8192) for later use
+(EngineCore pid=37) INFO 08-19 09:29:07 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 44.05 s
+(EngineCore pid=37) INFO 08-19 09:29:47 [decorators.py:708] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/809efe52390f3c2c947ca3604bf527be66e9170a044c66c06b31c3c1d7ee3c4d/rank_0_0/model
+(EngineCore pid=37) INFO 08-19 09:29:47 [monitor.py:53] torch.compile took 174.95 s in total
+(EngineCore pid=37) WARNING 08-19 09:29:47 [utils.py:279] Using default LoRA kernel configs
+(EngineCore pid=37) INFO 08-19 09:29:55 [monitor.py:81] Initial profiling/warmup run took 7.98 s
+(EngineCore pid=37) INFO 08-19 09:29:58 [gpu_worker.py:538] Available KV cache memory: 9.93 GiB
+(EngineCore pid=37) INFO 08-19 09:29:58 [kv_cache_utils.py:2146] GPU KV cache size: 40,672 tokens
+(EngineCore pid=37) INFO 08-19 09:29:58 [kv_cache_utils.py:2147] Maximum concurrency for 8,192 tokens per request: 4.96x
+(EngineCore pid=37) INFO 08-19 09:29:59 [cutedsl_warmup.py:97] Skipping CuTeDSL warmup because no compile units were requested.
+(EngineCore pid=37) 
+[1ACapturing CUDA graphs (PIECEWISE):   0%|          | 0/102 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   1%|          | 1/102 [00:00<00:28,  3.50it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   2%|▏         | 2/102 [00:00<00:34,  2.91it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   3%|▎         | 3/102 [00:00<00:29,  3.31it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   4%|▍         | 4/102 [00:01<00:30,  3.18it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   5%|▍         | 5/102 [00:01<00:28,  3.42it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   6%|▌         | 6/102 [00:01<00:30,  3.11it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   7%|▋         | 7/102 [00:02<00:28,  3.32it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   8%|▊         | 8/102 [00:02<00:30,  3.10it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   9%|▉         | 9/102 [00:02<00:28,  3.31it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  10%|▉         | 10/102 [00:03<00:29,  3.09it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  11%|█         | 11/102 [00:03<00:27,  3.33it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  12%|█▏        | 12/102 [00:03<00:28,  3.11it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  13%|█▎        | 13/102 [00:04<00:26,  3.33it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  14%|█▎        | 14/102 [00:04<00:27,  3.15it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  15%|█▍        | 15/102 [00:04<00:25,  3.40it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  16%|█▌        | 16/102 [00:04<00:26,  3.22it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  17%|█▋        | 17/102 [00:05<00:25,  3.30it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  18%|█▊        | 18/102 [00:05<00:26,  3.17it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  19%|█▊        | 19/102 [00:05<00:23,  3.47it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  20%|█▉        | 20/102 [00:06<00:24,  3.36it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  21%|██        | 21/102 [00:06<00:22,  3.64it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  22%|██▏       | 22/102 [00:06<00:22,  3.49it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  23%|██▎       | 23/102 [00:06<00:21,  3.76it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  24%|██▎       | 24/102 [00:07<00:21,  3.56it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▍       | 25/102 [00:07<00:20,  3.83it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▌       | 26/102 [00:07<00:21,  3.61it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  26%|██▋       | 27/102 [00:07<00:19,  3.87it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  27%|██▋       | 28/102 [00:08<00:20,  3.65it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  28%|██▊       | 29/102 [00:08<00:18,  3.89it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  29%|██▉       | 30/102 [00:08<00:19,  3.64it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  30%|███       | 31/102 [00:09<00:18,  3.86it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  31%|███▏      | 32/102 [00:09<00:19,  3.61it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  32%|███▏      | 33/102 [00:09<00:17,  4.03it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  33%|███▎      | 34/102 [00:09<00:17,  3.86it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  34%|███▍      | 35/102 [00:09<00:15,  4.28it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  35%|███▌      | 36/102 [00:13<01:21,  1.23s/it]
+[1ACapturing CUDA graphs (PIECEWISE):  36%|███▋      | 37/102 [00:13<00:59,  1.09it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  37%|███▋      | 38/102 [00:14<00:46,  1.37it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  38%|███▊      | 39/102 [00:14<00:35,  1.77it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  39%|███▉      | 40/102 [00:14<00:29,  2.08it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  40%|████      | 41/102 [00:14<00:23,  2.55it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  41%|████      | 42/102 [00:14<00:21,  2.78it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  42%|████▏     | 43/102 [00:15<00:18,  3.27it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  43%|████▎     | 44/102 [00:15<00:17,  3.36it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  44%|████▍     | 45/102 [00:15<00:15,  3.79it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  45%|████▌     | 46/102 [00:15<00:15,  3.68it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  46%|████▌     | 47/102 [00:16<00:13,  4.10it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  47%|████▋     | 48/102 [00:16<00:13,  3.92it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  48%|████▊     | 49/102 [00:16<00:12,  4.33it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  49%|████▉     | 50/102 [00:16<00:12,  4.05it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  50%|█████     | 51/102 [00:16<00:11,  4.43it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  51%|█████     | 52/102 [00:17<00:12,  4.10it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  52%|█████▏    | 53/102 [00:17<00:11,  4.43it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  53%|█████▎    | 54/102 [00:17<00:11,  4.09it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  54%|█████▍    | 55/102 [00:17<00:10,  4.43it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  55%|█████▍    | 56/102 [00:18<00:11,  4.14it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  56%|█████▌    | 57/102 [00:18<00:10,  4.45it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  57%|█████▋    | 58/102 [00:18<00:10,  4.13it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  58%|█████▊    | 59/102 [00:18<00:09,  4.46it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  59%|█████▉    | 60/102 [00:19<00:10,  4.13it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  60%|█████▉    | 61/102 [00:19<00:09,  4.49it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  61%|██████    | 62/102 [00:19<00:09,  4.17it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  62%|██████▏   | 63/102 [00:19<00:08,  4.53it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  63%|██████▎   | 64/102 [00:20<00:09,  4.19it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  64%|██████▎   | 65/102 [00:20<00:07,  4.68it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  65%|██████▍   | 66/102 [00:20<00:08,  4.27it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  66%|██████▌   | 67/102 [00:20<00:07,  4.70it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  67%|██████▋   | 68/102 [00:22<00:24,  1.37it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  68%|██████▊   | 69/102 [00:22<00:18,  1.78it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  69%|██████▊   | 70/102 [00:24<00:31,  1.03it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  70%|██████▉   | 71/102 [00:24<00:22,  1.36it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  71%|███████   | 72/102 [00:25<00:18,  1.66it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  72%|███████▏  | 73/102 [00:25<00:14,  2.06it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  73%|███████▎  | 74/102 [00:25<00:12,  2.31it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  74%|███████▎  | 75/102 [00:25<00:09,  2.82it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  75%|███████▍  | 76/102 [00:26<00:08,  2.95it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  75%|███████▌  | 77/102 [00:26<00:07,  3.43it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  76%|███████▋  | 78/102 [00:26<00:08,  2.87it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  77%|███████▋  | 79/102 [00:26<00:06,  3.36it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  78%|███████▊  | 80/102 [00:27<00:06,  3.19it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  79%|███████▉  | 81/102 [00:27<00:05,  3.58it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  80%|████████  | 82/102 [00:27<00:06,  3.30it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  81%|████████▏ | 83/102 [00:28<00:05,  3.73it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  82%|████████▏ | 84/102 [00:28<00:05,  3.59it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  83%|████████▎ | 85/102 [00:28<00:04,  4.03it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  84%|████████▍ | 86/102 [00:28<00:04,  3.72it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  85%|████████▌ | 87/102 [00:29<00:03,  4.09it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  86%|████████▋ | 88/102 [00:29<00:03,  3.69it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  87%|████████▋ | 89/102 [00:29<00:03,  3.98it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  88%|████████▊ | 90/102 [00:29<00:03,  3.59it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  89%|████████▉ | 91/102 [00:30<00:02,  3.86it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  90%|█████████ | 92/102 [00:30<00:02,  3.37it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  91%|█████████ | 93/102 [00:30<00:02,  3.76it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  92%|█████████▏| 94/102 [00:31<00:02,  3.62it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  93%|█████████▎| 95/102 [00:31<00:01,  4.10it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  94%|█████████▍| 96/102 [00:31<00:01,  3.79it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  95%|█████████▌| 97/102 [00:31<00:01,  4.23it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  96%|█████████▌| 98/102 [00:31<00:01,  3.90it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  97%|█████████▋| 99/102 [00:32<00:00,  4.37it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  98%|█████████▊| 100/102 [00:32<00:00,  4.04it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  99%|█████████▉| 101/102 [00:32<00:00,  4.46it/s]
+[1ACapturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:38<00:00,  1.91s/it]
+[1ACapturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:38<00:00,  2.65it/s]
+(EngineCore pid=37) 
+[1ACapturing CUDA graphs (FULL):   0%|          | 0/70 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (FULL):   1%|▏         | 1/70 [00:00<00:15,  4.33it/s]
+[1ACapturing CUDA graphs (FULL):   3%|▎         | 2/70 [00:00<00:17,  3.86it/s]
+[1ACapturing CUDA graphs (FULL):   4%|▍         | 3/70 [00:00<00:14,  4.63it/s]
+[1ACapturing CUDA graphs (FULL):   6%|▌         | 4/70 [00:00<00:15,  4.22it/s]
+[1ACapturing CUDA graphs (FULL):   7%|▋         | 5/70 [00:01<00:13,  4.76it/s]
+[1ACapturing CUDA graphs (FULL):   9%|▊         | 6/70 [00:01<00:14,  4.33it/s]
+[1ACapturing CUDA graphs (FULL):  10%|█         | 7/70 [00:01<00:13,  4.77it/s]
+[1ACapturing CUDA graphs (FULL):  11%|█▏        | 8/70 [00:01<00:14,  4.32it/s]
+[1ACapturing CUDA graphs (FULL):  13%|█▎        | 9/70 [00:01<00:12,  4.84it/s]
+[1ACapturing CUDA graphs (FULL):  14%|█▍        | 10/70 [00:02<00:13,  4.30it/s]
+[1ACapturing CUDA graphs (FULL):  16%|█▌        | 11/70 [00:02<00:12,  4.78it/s]
+[1ACapturing CUDA graphs (FULL):  17%|█▋        | 12/70 [00:02<00:13,  4.34it/s]
+[1ACapturing CUDA graphs (FULL):  19%|█▊        | 13/70 [00:02<00:11,  4.83it/s]
+[1ACapturing CUDA graphs (FULL):  20%|██        | 14/70 [00:03<00:13,  4.28it/s]
+[1ACapturing CUDA graphs (FULL):  21%|██▏       | 15/70 [00:03<00:11,  4.75it/s]
+[1ACapturing CUDA graphs (FULL):  23%|██▎       | 16/70 [00:03<00:12,  4.37it/s]
+[1ACapturing CUDA graphs (FULL):  24%|██▍       | 17/70 [00:03<00:10,  4.86it/s]
+[1ACapturing CUDA graphs (FULL):  26%|██▌       | 18/70 [00:03<00:11,  4.46it/s]
+[1ACapturing CUDA graphs (FULL):  27%|██▋       | 19/70 [00:04<00:10,  4.94it/s]
+[1ACapturing CUDA graphs (FULL):  29%|██▊       | 20/70 [00:04<00:11,  4.45it/s]
+[1ACapturing CUDA graphs (FULL):  30%|███       | 21/70 [00:04<00:09,  4.94it/s]
+[1ACapturing CUDA graphs (FULL):  31%|███▏      | 22/70 [00:04<00:10,  4.43it/s]
+[1ACapturing CUDA graphs (FULL):  33%|███▎      | 23/70 [00:05<00:09,  4.92it/s]
+[1ACapturing CUDA graphs (FULL):  34%|███▍      | 24/70 [00:05<00:10,  4.54it/s]
+[1ACapturing CUDA graphs (FULL):  36%|███▌      | 25/70 [00:05<00:09,  4.99it/s]
+[1ACapturing CUDA graphs (FULL):  37%|███▋      | 26/70 [00:05<00:09,  4.52it/s]
+[1ACapturing CUDA graphs (FULL):  39%|███▊      | 27/70 [00:05<00:08,  4.98it/s]
+[1ACapturing CUDA graphs (FULL):  40%|████      | 28/70 [00:06<00:09,  4.46it/s]
+[1ACapturing CUDA graphs (FULL):  41%|████▏     | 29/70 [00:06<00:08,  4.91it/s]
+[1ACapturing CUDA graphs (FULL):  43%|████▎     | 30/70 [00:06<00:09,  4.38it/s]
+[1ACapturing CUDA graphs (FULL):  44%|████▍     | 31/70 [00:06<00:08,  4.74it/s]
+[1ACapturing CUDA graphs (FULL):  46%|████▌     | 32/70 [00:07<00:09,  4.08it/s]
+[1ACapturing CUDA graphs (FULL):  47%|████▋     | 33/70 [00:07<00:07,  4.64it/s]
+[1ACapturing CUDA graphs (FULL):  49%|████▊     | 34/70 [00:07<00:08,  4.12it/s]
+[1ACapturing CUDA graphs (FULL):  50%|█████     | 35/70 [00:07<00:07,  4.62it/s]
+[1ACapturing CUDA graphs (FULL):  51%|█████▏    | 36/70 [00:07<00:07,  4.25it/s]
+[1ACapturing CUDA graphs (FULL):  53%|█████▎    | 37/70 [00:08<00:06,  4.74it/s]
+[1ACapturing CUDA graphs (FULL):  54%|█████▍    | 38/70 [00:08<00:07,  4.21it/s]
+[1ACapturing CUDA graphs (FULL):  56%|█████▌    | 39/70 [00:08<00:06,  4.58it/s]
+[1ACapturing CUDA graphs (FULL):  57%|█████▋    | 40/70 [00:08<00:07,  3.95it/s]
+[1ACapturing CUDA graphs (FULL):  59%|█████▊    | 41/70 [00:09<00:06,  4.40it/s]
+[1ACapturing CUDA graphs (FULL):  60%|██████    | 42/70 [00:09<00:07,  3.69it/s]
+[1ACapturing CUDA graphs (FULL):  61%|██████▏   | 43/70 [00:09<00:06,  3.99it/s]
+[1ACapturing CUDA graphs (FULL):  63%|██████▎   | 44/70 [00:10<00:07,  3.49it/s]
+[1ACapturing CUDA graphs (FULL):  64%|██████▍   | 45/70 [00:10<00:06,  3.98it/s]
+[1ACapturing CUDA graphs (FULL):  66%|██████▌   | 46/70 [00:10<00:06,  3.57it/s]
+[1ACapturing CUDA graphs (FULL):  67%|██████▋   | 47/70 [00:10<00:05,  4.10it/s]
+[1ACapturing CUDA graphs (FULL):  69%|██████▊   | 48/70 [00:11<00:05,  3.78it/s]
+[1ACapturing CUDA graphs (FULL):  70%|███████   | 49/70 [00:11<00:05,  4.14it/s]
+[1ACapturing CUDA graphs (FULL):  71%|███████▏  | 50/70 [00:11<00:05,  3.84it/s]
+[1ACapturing CUDA graphs (FULL):  73%|███████▎  | 51/70 [00:11<00:04,  4.18it/s]
+[1ACapturing CUDA graphs (FULL):  74%|███████▍  | 52/70 [00:11<00:04,  3.98it/s]
+[1ACapturing CUDA graphs (FULL):  76%|███████▌  | 53/70 [00:12<00:03,  4.63it/s]
+[1ACapturing CUDA graphs (FULL):  77%|███████▋  | 54/70 [00:12<00:03,  4.36it/s]
+[1ACapturing CUDA graphs (FULL):  79%|███████▊  | 55/70 [00:12<00:03,  4.93it/s]
+[1ACapturing CUDA graphs (FULL):  80%|████████  | 56/70 [00:12<00:03,  4.55it/s]
+[1ACapturing CUDA graphs (FULL):  81%|████████▏ | 57/70 [00:12<00:02,  5.18it/s]
+[1ACapturing CUDA graphs (FULL):  83%|████████▎ | 58/70 [00:13<00:02,  4.69it/s]
+[1ACapturing CUDA graphs (FULL):  84%|████████▍ | 59/70 [00:13<00:02,  5.28it/s]
+[1ACapturing CUDA graphs (FULL):  86%|████████▌ | 60/70 [00:13<00:02,  4.68it/s]
+[1ACapturing CUDA graphs (FULL):  87%|████████▋ | 61/70 [00:13<00:01,  5.22it/s]
+[1ACapturing CUDA graphs (FULL):  89%|████████▊ | 62/70 [00:13<00:01,  4.72it/s]
+[1ACapturing CUDA graphs (FULL):  90%|█████████ | 63/70 [00:14<00:01,  5.33it/s]
+[1ACapturing CUDA graphs (FULL):  91%|█████████▏| 64/70 [00:14<00:01,  4.72it/s]
+[1ACapturing CUDA graphs (FULL):  93%|█████████▎| 65/70 [00:14<00:00,  5.30it/s]
+[1ACapturing CUDA graphs (FULL):  94%|█████████▍| 66/70 [00:14<00:00,  4.76it/s]
+[1ACapturing CUDA graphs (FULL):  96%|█████████▌| 67/70 [00:14<00:00,  5.39it/s]
+[1ACapturing CUDA graphs (FULL):  97%|█████████▋| 68/70 [00:15<00:00,  4.83it/s]
+[1ACapturing CUDA graphs (FULL):  99%|█████████▊| 69/70 [00:15<00:00,  5.54it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:15<00:00,  4.97it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:15<00:00,  4.51it/s]
+(EngineCore pid=37) INFO 08-19 09:30:54 [model_runner.py:722] Graph capturing finished in 55 secs, took 2.28 GiB
+(EngineCore pid=37) INFO 08-19 09:32:39 [jit_monitor.py:73] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(EngineCore pid=37) INFO 08-19 09:32:40 [core.py:337] init engine (profile, create kv cache, warmup model) took 348.79 s (compilation: 174.95 s)
+(EngineCore pid=37) INFO 08-19 09:32:40 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+
+INFO 08-19 09:32:43 [hf.py:548] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+WARNING 08-19 09:32:43 [input_processor.py:157] vLLM has deprecated support for supporting different tokenizers for different LoRAs. By default, vLLM uses base model's tokenizer. If you are using a LoRA with its own tokenizer, consider specifying `--tokenizer [lora_path]` to use the LoRA tokenizer.
+[1ARendering conversations:   0%|          | 0/100 [00:00<?, ?it/s]
+[1ARendering conversations:   1%|          | 1/100 [00:02<03:50,  2.33s/it]
+[1ARendering conversations:  21%|██        | 21/100 [00:02<00:06, 11.95it/s]
+[1ARendering conversations:  41%|████      | 41/100 [00:02<00:02, 26.18it/s]
+[1ARendering conversations:  64%|██████▍   | 64/100 [00:02<00:00, 46.06it/s]
+[1ARendering conversations:  86%|████████▌ | 86/100 [00:02<00:00, 67.29it/s]
+[1ARendering conversations: 100%|██████████| 100/100 [00:02<00:00, 35.75it/s]
+
+[1AProcessed prompts:   0%|          | 0/100 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]
+[1AProcessed prompts:   1%|          | 1/100 [00:14<23:41, 14.36s/it, est. speed input: 98.19 toks/s, output: 3.06 toks/s]
+[1AProcessed prompts:  25%|██▌       | 25/100 [00:14<00:30,  2.42it/s, est. speed input: 2422.79 toks/s, output: 75.79 toks/s]
+[1AProcessed prompts:  73%|███████▎  | 73/100 [00:14<00:03,  8.98it/s, est. speed input: 7010.34 toks/s, output: 219.50 toks/s]
+[1AProcessed prompts: 100%|██████████| 100/100 [00:14<00:00,  8.98it/s, est. speed input: 9569.72 toks/s, output: 299.57 toks/s]
+[1AProcessed prompts: 100%|██████████| 100/100 [00:14<00:00,  6.80it/s, est. speed input: 9569.72 toks/s, output: 299.57 toks/s]
+(EngineCore pid=37) INFO 08-19 09:32:58 [core.py:1214] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=37) INFO 08-19 09:32:58 [core.py:1333] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=37) INFO 08-19 09:32:58 [core.py:1364] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=37) INFO 08-19 09:32:58 [core.py:1227] [shutdown] EngineCore: exiting busy loop
+= chunk 600-700 written (700/777, gen 17.5s)
+
+==========
+== CUDA ==
+==========
+
+CUDA Version 12.8.1
+
+Container image Copyright (c) 2016-2023, NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+
+This container image and its contents are governed by the NVIDIA Deep Learning Container License.
+By pulling and using the container, you accept the terms and conditions of this license:
+https://developer.nvidia.com/ngc/nvidia-deep-learning-container-license
+
+A copy of this license is made available in this container at /NGC-DL-CONTAINER-LICENSE for your convenience.
+
+/root/modal_eval.py:176: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **GUARDRAILS)
+/root/modal_eval.py:191: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_GUARDRAILS)
+/root/modal_eval.py:200: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:220: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **GUARDRAILS)
+/root/modal_eval.py:231: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_GUARDRAILS)
+/root/modal_eval.py:240: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:260: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_common, **FT_TWO_STAGE_GUARDRAILS)
+/root/modal_eval.py:280: PendingDeprecationError: 2025-12-16: The `max_inputs` parameter is deprecated. Please set `single_use_containers=True` instead.
+  @app.function(**_fn_a100, **TWO_STAGE_GUARDRAILS)
+/usr/local/lib/python3.12/site-packages/huggingface_hub/constants.py:298: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+INFO 08-19 09:33:47 [api_utils.py:273] non-default args: {'dtype': 'bfloat16', 'max_model_len': 8192, 'disable_log_stats': True, 'enable_lora': True, 'model': 'Qwen/Qwen3-32B'}
+INFO 08-19 09:34:06 [model.py:619] Resolved architecture: Qwen3ForCausalLM
+INFO 08-19 09:34:06 [model.py:1776] Using max model len 8192
+INFO 08-19 09:34:06 [scheduler.py:252] Chunked prefill is enabled with max_num_batched_tokens=8192.
+INFO 08-19 09:34:06 [vllm.py:1042] Asynchronous scheduling is enabled.
+INFO 08-19 09:34:06 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+(EngineCore pid=37) INFO 08-19 09:34:12 [core.py:114] Initializing a V1 LLM engine (v0.25.1) with config: model='Qwen/Qwen3-32B', speculative_config=None, tokenizer='Qwen/Qwen3-32B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=None, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=Qwen/Qwen3-32B, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::linear_attention', 'vllm::plamo2_mamba_mixer', 'vllm::qwen_gdn_attention_core', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::kda_attention', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'size_asserts': False, 'alignment_asserts': False, 'scalar_asserts': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=37) INFO 08-19 09:34:14 [parallel_state.py:1607] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://172.20.1.139:58974 backend=nccl
+(EngineCore pid=37) INFO 08-19 09:34:14 [parallel_state.py:1942] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=37) INFO 08-19 09:34:14 [gpu_worker.py:360] Using V2 Model Runner
+(EngineCore pid=37) INFO 08-19 09:34:15 [model_runner.py:281] Loading model from scratch...
+(EngineCore pid=37) INFO 08-19 09:34:16 [cuda.py:476] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=37) INFO 08-19 09:34:16 [flash_attn.py:718] Using FlashAttention version 2
+(EngineCore pid=37) INFO 08-19 09:34:19 [weight_utils.py:849] Filesystem type for checkpoints: 9P. Checkpoint size: 61.02 GiB. Available RAM: 1017.81 GiB.
+(EngineCore pid=37) INFO 08-19 09:34:19 [weight_utils.py:872] Auto-prefetch is disabled because the filesystem (9P) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=37) Loading safetensors checkpoint shards:   0% Completed | 0/17 [00:00<?, ?it/s]
+(EngineCore pid=37) Loading safetensors checkpoint shards:   6% Completed | 1/17 [00:02<00:37,  2.37s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  12% Completed | 2/17 [00:04<00:36,  2.46s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  18% Completed | 3/17 [00:07<00:34,  2.48s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  24% Completed | 4/17 [00:09<00:32,  2.50s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  29% Completed | 5/17 [00:12<00:30,  2.50s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  35% Completed | 6/17 [00:14<00:27,  2.51s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  41% Completed | 7/17 [00:17<00:25,  2.51s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  47% Completed | 8/17 [00:19<00:22,  2.50s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  53% Completed | 9/17 [00:22<00:20,  2.51s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  59% Completed | 10/17 [00:24<00:17,  2.51s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  65% Completed | 11/17 [00:27<00:15,  2.51s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  71% Completed | 12/17 [00:30<00:12,  2.52s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  76% Completed | 13/17 [00:32<00:10,  2.60s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  82% Completed | 14/17 [00:35<00:07,  2.59s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  88% Completed | 15/17 [00:37<00:05,  2.58s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards:  94% Completed | 16/17 [00:40<00:02,  2.58s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards: 100% Completed | 17/17 [00:42<00:00,  2.41s/it]
+(EngineCore pid=37) Loading safetensors checkpoint shards: 100% Completed | 17/17 [00:42<00:00,  2.50s/it]
+(EngineCore pid=37) 
+(EngineCore pid=37) INFO 08-19 09:35:01 [default_loader.py:430] Loading weights took 42.69 seconds
+(EngineCore pid=37) INFO 08-19 09:35:01 [punica_selector.py:20] Using PunicaWrapperGPU.
+(EngineCore pid=37) INFO 08-19 09:35:02 [model_runner.py:302] Model loading took 61.3 GiB and 47.784817 seconds
+(EngineCore pid=37) INFO 08-19 09:35:02 [topk_topp_sampler.py:55] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=37) INFO 08-19 09:36:26 [backends.py:1089] Using cache directory: /root/.cache/vllm/torch_compile_cache/3f8ba0d0d1/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=37) INFO 08-19 09:36:26 [backends.py:1148] Dynamo bytecode transform time: 82.87 s
+(EngineCore pid=37) INFO 08-19 09:36:47 [backends.py:378] Cache the graph of compile range (1, 8192) for later use
+(EngineCore pid=37) INFO 08-19 09:37:20 [backends.py:393] Compiling a graph for compile range (1, 8192) takes 45.45 s
+(EngineCore pid=37) INFO 08-19 09:37:59 [decorators.py:708] saved AOT compiled function to /root/.cache/vllm/torch_compile_cache/torch_aot_compile/809efe52390f3c2c947ca3604bf527be66e9170a044c66c06b31c3c1d7ee3c4d/rank_0_0/model
+(EngineCore pid=37) INFO 08-19 09:37:59 [monitor.py:53] torch.compile took 175.59 s in total
+(EngineCore pid=37) WARNING 08-19 09:37:59 [utils.py:279] Using default LoRA kernel configs
+(EngineCore pid=37) INFO 08-19 09:38:07 [monitor.py:81] Initial profiling/warmup run took 7.96 s
+(EngineCore pid=37) INFO 08-19 09:38:10 [gpu_worker.py:538] Available KV cache memory: 9.93 GiB
+(EngineCore pid=37) INFO 08-19 09:38:10 [kv_cache_utils.py:2146] GPU KV cache size: 40,672 tokens
+(EngineCore pid=37) INFO 08-19 09:38:10 [kv_cache_utils.py:2147] Maximum concurrency for 8,192 tokens per request: 4.96x
+(EngineCore pid=37) INFO 08-19 09:38:10 [cutedsl_warmup.py:97] Skipping CuTeDSL warmup because no compile units were requested.
+(EngineCore pid=37) 
+[1ACapturing CUDA graphs (PIECEWISE):   0%|          | 0/102 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   1%|          | 1/102 [00:00<00:32,  3.15it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   2%|▏         | 2/102 [00:00<00:35,  2.80it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   3%|▎         | 3/102 [00:00<00:29,  3.33it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   4%|▍         | 4/102 [00:01<00:30,  3.19it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   5%|▍         | 5/102 [00:01<00:27,  3.49it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   6%|▌         | 6/102 [00:01<00:29,  3.26it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   7%|▋         | 7/102 [00:02<00:27,  3.51it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   8%|▊         | 8/102 [00:02<00:29,  3.19it/s]
+[1ACapturing CUDA graphs (PIECEWISE):   9%|▉         | 9/102 [00:02<00:28,  3.30it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  10%|▉         | 10/102 [00:03<00:28,  3.20it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  11%|█         | 11/102 [00:03<00:26,  3.42it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  12%|█▏        | 12/102 [00:03<00:27,  3.24it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  13%|█▎        | 13/102 [00:03<00:25,  3.47it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  14%|█▎        | 14/102 [00:04<00:26,  3.28it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  15%|█▍        | 15/102 [00:04<00:24,  3.54it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  16%|█▌        | 16/102 [00:04<00:25,  3.33it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  17%|█▋        | 17/102 [00:05<00:23,  3.68it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  18%|█▊        | 18/102 [00:05<00:23,  3.54it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  19%|█▊        | 19/102 [00:05<00:21,  3.85it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  20%|█▉        | 20/102 [00:05<00:22,  3.66it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  21%|██        | 21/102 [00:06<00:20,  3.92it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  22%|██▏       | 22/102 [00:06<00:21,  3.64it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  23%|██▎       | 23/102 [00:06<00:20,  3.85it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  24%|██▎       | 24/102 [00:06<00:21,  3.67it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▍       | 25/102 [00:07<00:19,  3.94it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  25%|██▌       | 26/102 [00:07<00:20,  3.72it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  26%|██▋       | 27/102 [00:07<00:18,  3.97it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  27%|██▋       | 28/102 [00:07<00:19,  3.74it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  28%|██▊       | 29/102 [00:08<00:18,  4.00it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  29%|██▉       | 30/102 [00:08<00:19,  3.78it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  30%|███       | 31/102 [00:08<00:17,  3.99it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  31%|███▏      | 32/102 [00:08<00:18,  3.76it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  32%|███▏      | 33/102 [00:09<00:16,  4.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  33%|███▎      | 34/102 [00:09<00:16,  4.01it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  34%|███▍      | 35/102 [00:09<00:15,  4.40it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  35%|███▌      | 36/102 [00:13<01:21,  1.24s/it]
+[1ACapturing CUDA graphs (PIECEWISE):  36%|███▋      | 37/102 [00:13<00:59,  1.08it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  37%|███▋      | 38/102 [00:13<00:47,  1.36it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  38%|███▊      | 39/102 [00:13<00:36,  1.72it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  39%|███▉      | 40/102 [00:14<00:30,  2.03it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  40%|████      | 41/102 [00:14<00:24,  2.50it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  41%|████      | 42/102 [00:14<00:21,  2.73it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  42%|████▏     | 43/102 [00:14<00:18,  3.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  43%|████▎     | 44/102 [00:15<00:17,  3.29it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  44%|████▍     | 45/102 [00:15<00:15,  3.78it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  45%|████▌     | 46/102 [00:15<00:15,  3.68it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  46%|████▌     | 47/102 [00:15<00:13,  4.06it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  47%|████▋     | 48/102 [00:16<00:14,  3.81it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  48%|████▊     | 49/102 [00:16<00:12,  4.19it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  49%|████▉     | 50/102 [00:16<00:13,  3.97it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  50%|█████     | 51/102 [00:16<00:11,  4.32it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  51%|█████     | 52/102 [00:17<00:12,  4.07it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  52%|█████▏    | 53/102 [00:17<00:11,  4.42it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  53%|█████▎    | 54/102 [00:17<00:11,  4.18it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  54%|█████▍    | 55/102 [00:17<00:10,  4.54it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  55%|█████▍    | 56/102 [00:17<00:10,  4.21it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  56%|█████▌    | 57/102 [00:18<00:10,  4.48it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  57%|█████▋    | 58/102 [00:18<00:11,  3.99it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  58%|█████▊    | 59/102 [00:18<00:09,  4.33it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  59%|█████▉    | 60/102 [00:18<00:10,  3.94it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  60%|█████▉    | 61/102 [00:19<00:09,  4.25it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  61%|██████    | 62/102 [00:19<00:10,  3.96it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  62%|██████▏   | 63/102 [00:19<00:09,  4.32it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  63%|██████▎   | 64/102 [00:19<00:09,  4.06it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  64%|██████▎   | 65/102 [00:20<00:08,  4.52it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  65%|██████▍   | 66/102 [00:20<00:08,  4.18it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  66%|██████▌   | 67/102 [00:20<00:07,  4.57it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  67%|██████▋   | 68/102 [00:22<00:23,  1.42it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  68%|██████▊   | 69/102 [00:22<00:17,  1.86it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  69%|██████▊   | 70/102 [00:24<00:29,  1.07it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  70%|██████▉   | 71/102 [00:24<00:21,  1.41it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  71%|███████   | 72/102 [00:24<00:17,  1.71it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  72%|███████▏  | 73/102 [00:25<00:13,  2.11it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  73%|███████▎  | 74/102 [00:25<00:11,  2.39it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  74%|███████▎  | 75/102 [00:25<00:09,  2.90it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  75%|███████▍  | 76/102 [00:25<00:08,  3.02it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  75%|███████▌  | 77/102 [00:25<00:07,  3.50it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  76%|███████▋  | 78/102 [00:26<00:07,  3.24it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  77%|███████▋  | 79/102 [00:26<00:06,  3.62it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  78%|███████▊  | 80/102 [00:26<00:06,  3.44it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  79%|███████▉  | 81/102 [00:27<00:05,  3.86it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  80%|████████  | 82/102 [00:27<00:05,  3.66it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  81%|████████▏ | 83/102 [00:27<00:04,  4.09it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  82%|████████▏ | 84/102 [00:27<00:04,  3.79it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  83%|████████▎ | 85/102 [00:27<00:03,  4.29it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  84%|████████▍ | 86/102 [00:28<00:04,  3.82it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  85%|████████▌ | 87/102 [00:28<00:03,  4.06it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  86%|████████▋ | 88/102 [00:28<00:03,  3.72it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  87%|████████▋ | 89/102 [00:29<00:03,  4.13it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  88%|████████▊ | 90/102 [00:29<00:03,  3.80it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  89%|████████▉ | 91/102 [00:29<00:02,  4.29it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  90%|█████████ | 92/102 [00:29<00:02,  4.02it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  91%|█████████ | 93/102 [00:29<00:02,  4.43it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  92%|█████████▏| 94/102 [00:30<00:02,  3.89it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  93%|█████████▎| 95/102 [00:30<00:01,  4.20it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  94%|█████████▍| 96/102 [00:30<00:01,  3.94it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  95%|█████████▌| 97/102 [00:30<00:01,  4.35it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  96%|█████████▌| 98/102 [00:31<00:01,  3.96it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  97%|█████████▋| 99/102 [00:31<00:00,  4.37it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  98%|█████████▊| 100/102 [00:31<00:00,  4.07it/s]
+[1ACapturing CUDA graphs (PIECEWISE):  99%|█████████▉| 101/102 [00:31<00:00,  4.59it/s]
+[1ACapturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:37<00:00,  1.89s/it]Capturing CUDA graphs (PIECEWISE): 100%|██████████| 102/102 [00:37<00:00,  2.71it/s]
+(EngineCore pid=37) 
+[1ACapturing CUDA graphs (FULL):   0%|          | 0/70 [00:00<?, ?it/s]
+[1ACapturing CUDA graphs (FULL):   1%|▏         | 1/70 [00:00<00:14,  4.92it/s]
+[1ACapturing CUDA graphs (FULL):   3%|▎         | 2/70 [00:00<00:17,  3.98it/s]
+[1ACapturing CUDA graphs (FULL):   4%|▍         | 3/70 [00:00<00:14,  4.77it/s]
+[1ACapturing CUDA graphs (FULL):   6%|▌         | 4/70 [00:00<00:15,  4.31it/s]
+[1ACapturing CUDA graphs (FULL):   7%|▋         | 5/70 [00:01<00:13,  4.85it/s]
+[1ACapturing CUDA graphs (FULL):   9%|▊         | 6/70 [00:01<00:14,  4.31it/s]
+[1ACapturing CUDA graphs (FULL):  10%|█         | 7/70 [00:01<00:12,  4.85it/s]
+[1ACapturing CUDA graphs (FULL):  11%|█▏        | 8/70 [00:01<00:14,  4.38it/s]
+[1ACapturing CUDA graphs (FULL):  13%|█▎        | 9/70 [00:01<00:12,  4.84it/s]
+[1ACapturing CUDA graphs (FULL):  14%|█▍        | 10/70 [00:02<00:13,  4.46it/s]
+[1ACapturing CUDA graphs (FULL):  16%|█▌        | 11/70 [00:02<00:11,  4.96it/s]
+[1ACapturing CUDA graphs (FULL):  17%|█▋        | 12/70 [00:02<00:12,  4.48it/s]
+[1ACapturing CUDA graphs (FULL):  19%|█▊        | 13/70 [00:02<00:11,  4.89it/s]
+[1ACapturing CUDA graphs (FULL):  20%|██        | 14/70 [00:03<00:12,  4.51it/s]
+[1ACapturing CUDA graphs (FULL):  21%|██▏       | 15/70 [00:03<00:10,  5.03it/s]
+[1ACapturing CUDA graphs (FULL):  23%|██▎       | 16/70 [00:03<00:11,  4.70it/s]
+[1ACapturing CUDA graphs (FULL):  24%|██▍       | 17/70 [00:03<00:10,  5.19it/s]
+[1ACapturing CUDA graphs (FULL):  26%|██▌       | 18/70 [00:03<00:10,  4.79it/s]
+[1ACapturing CUDA graphs (FULL):  27%|██▋       | 19/70 [00:03<00:09,  5.29it/s]
+[1ACapturing CUDA graphs (FULL):  29%|██▊       | 20/70 [00:04<00:10,  4.76it/s]
+[1ACapturing CUDA graphs (FULL):  30%|███       | 21/70 [00:04<00:09,  5.24it/s]
+[1ACapturing CUDA graphs (FULL):  31%|███▏      | 22/70 [00:04<00:09,  4.81it/s]
+[1ACapturing CUDA graphs (FULL):  33%|███▎      | 23/70 [00:04<00:08,  5.22it/s]
+[1ACapturing CUDA graphs (FULL):  34%|███▍      | 24/70 [00:05<00:09,  4.80it/s]
+[1ACapturing CUDA graphs (FULL):  36%|███▌      | 25/70 [00:05<00:08,  5.27it/s]
+[1ACapturing CUDA graphs (FULL):  37%|███▋      | 26/70 [00:05<00:09,  4.68it/s]
+[1ACapturing CUDA graphs (FULL):  39%|███▊      | 27/70 [00:05<00:08,  5.16it/s]
+[1ACapturing CUDA graphs (FULL):  40%|████      | 28/70 [00:05<00:08,  4.73it/s]
+[1ACapturing CUDA graphs (FULL):  41%|████▏     | 29/70 [00:05<00:07,  5.25it/s]
+[1ACapturing CUDA graphs (FULL):  43%|████▎     | 30/70 [00:06<00:08,  4.84it/s]
+[1ACapturing CUDA graphs (FULL):  44%|████▍     | 31/70 [00:06<00:07,  5.30it/s]
+[1ACapturing CUDA graphs (FULL):  46%|████▌     | 32/70 [00:06<00:07,  4.79it/s]
+[1ACapturing CUDA graphs (FULL):  47%|████▋     | 33/70 [00:06<00:06,  5.40it/s]
+[1ACapturing CUDA graphs (FULL):  49%|████▊     | 34/70 [00:07<00:07,  4.81it/s]
+[1ACapturing CUDA graphs (FULL):  50%|█████     | 35/70 [00:07<00:06,  5.44it/s]
+[1ACapturing CUDA graphs (FULL):  51%|█████▏    | 36/70 [00:07<00:06,  4.96it/s]
+[1ACapturing CUDA graphs (FULL):  53%|█████▎    | 37/70 [00:07<00:06,  5.49it/s]
+[1ACapturing CUDA graphs (FULL):  54%|█████▍    | 38/70 [00:07<00:06,  4.95it/s]
+[1ACapturing CUDA graphs (FULL):  56%|█████▌    | 39/70 [00:07<00:05,  5.55it/s]
+[1ACapturing CUDA graphs (FULL):  57%|█████▋    | 40/70 [00:08<00:06,  4.83it/s]
+[1ACapturing CUDA graphs (FULL):  59%|█████▊    | 41/70 [00:08<00:05,  5.40it/s]
+[1ACapturing CUDA graphs (FULL):  60%|██████    | 42/70 [00:08<00:05,  4.81it/s]
+[1ACapturing CUDA graphs (FULL):  61%|██████▏   | 43/70 [00:08<00:05,  5.27it/s]
+[1ACapturing CUDA graphs (FULL):  63%|██████▎   | 44/70 [00:08<00:05,  4.79it/s]
+[1ACapturing CUDA graphs (FULL):  64%|██████▍   | 45/70 [00:09<00:04,  5.36it/s]
+[1ACapturing CUDA graphs (FULL):  66%|██████▌   | 46/70 [00:09<00:04,  4.84it/s]
+[1ACapturing CUDA graphs (FULL):  67%|██████▋   | 47/70 [00:09<00:04,  5.45it/s]
+[1ACapturing CUDA graphs (FULL):  69%|██████▊   | 48/70 [00:09<00:04,  4.92it/s]
+[1ACapturing CUDA graphs (FULL):  70%|███████   | 49/70 [00:09<00:03,  5.49it/s]
+[1ACapturing CUDA graphs (FULL):  71%|███████▏  | 50/70 [00:10<00:04,  4.93it/s]
+[1ACapturing CUDA graphs (FULL):  73%|███████▎  | 51/70 [00:10<00:03,  5.55it/s]
+[1ACapturing CUDA graphs (FULL):  74%|███████▍  | 52/70 [00:10<00:03,  4.99it/s]
+[1ACapturing CUDA graphs (FULL):  76%|███████▌  | 53/70 [00:10<00:03,  5.55it/s]
+[1ACapturing CUDA graphs (FULL):  77%|███████▋  | 54/70 [00:10<00:03,  4.98it/s]
+[1ACapturing CUDA graphs (FULL):  79%|███████▊  | 55/70 [00:11<00:02,  5.51it/s]
+[1ACapturing CUDA graphs (FULL):  80%|████████  | 56/70 [00:11<00:02,  4.96it/s]
+[1ACapturing CUDA graphs (FULL):  81%|████████▏ | 57/70 [00:11<00:02,  5.56it/s]
+[1ACapturing CUDA graphs (FULL):  83%|████████▎ | 58/70 [00:11<00:02,  5.01it/s]
+[1ACapturing CUDA graphs (FULL):  84%|████████▍ | 59/70 [00:11<00:01,  5.63it/s]
+[1ACapturing CUDA graphs (FULL):  86%|████████▌ | 60/70 [00:12<00:02,  4.90it/s]
+[1ACapturing CUDA graphs (FULL):  87%|████████▋ | 61/70 [00:12<00:01,  5.55it/s]
+[1ACapturing CUDA graphs (FULL):  89%|████████▊ | 62/70 [00:12<00:01,  4.98it/s]
+[1ACapturing CUDA graphs (FULL):  90%|█████████ | 63/70 [00:12<00:01,  5.63it/s]
+[1ACapturing CUDA graphs (FULL):  91%|█████████▏| 64/70 [00:12<00:01,  5.06it/s]
+[1ACapturing CUDA graphs (FULL):  93%|█████████▎| 65/70 [00:12<00:00,  5.68it/s]
+[1ACapturing CUDA graphs (FULL):  94%|█████████▍| 66/70 [00:13<00:00,  5.04it/s]
+[1ACapturing CUDA graphs (FULL):  96%|█████████▌| 67/70 [00:13<00:00,  5.66it/s]
+[1ACapturing CUDA graphs (FULL):  97%|█████████▋| 68/70 [00:13<00:00,  5.09it/s]
+[1ACapturing CUDA graphs (FULL):  99%|█████████▊| 69/70 [00:13<00:00,  5.77it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:13<00:00,  5.21it/s]
+[1ACapturing CUDA graphs (FULL): 100%|██████████| 70/70 [00:13<00:00,  5.04it/s]
+(EngineCore pid=37) INFO 08-19 09:39:02 [model_runner.py:722] Graph capturing finished in 52 secs, took 2.28 GiB
+(EngineCore pid=37) INFO 08-19 09:40:43 [jit_monitor.py:73] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(EngineCore pid=37) INFO 08-19 09:40:44 [core.py:337] init engine (profile, create kv cache, warmup model) took 341.52 s (compilation: 175.59 s)
+(EngineCore pid=37) INFO 08-19 09:40:44 [kernel.py:292] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'])
+
+INFO 08-19 09:40:46 [hf.py:548] Detected the chat template content format to be 'string'. You can set `--chat-template-content-format` to override this.
+WARNING 08-19 09:40:46 [input_processor.py:157] vLLM has deprecated support for supporting different tokenizers for different LoRAs. By default, vLLM uses base model's tokenizer. If you are using a LoRA with its own tokenizer, consider specifying `--tokenizer [lora_path]` to use the LoRA tokenizer.
+[1ARendering conversations:   0%|          | 0/77 [00:00<?, ?it/s]
+[1ARendering conversations:   1%|▏         | 1/77 [00:02<02:47,  2.21s/it]
+[1ARendering conversations:  29%|██▊       | 22/77 [00:02<00:04, 13.18it/s]
+[1ARendering conversations:  53%|█████▎    | 41/77 [00:02<00:01, 27.28it/s]
+[1ARendering conversations:  81%|████████  | 62/77 [00:02<00:00, 45.94it/s]
+[1ARendering conversations: 100%|██████████| 77/77 [00:02<00:00, 29.71it/s]
+
+[1AProcessed prompts:   0%|          | 0/77 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]
+[1AProcessed prompts:   1%|▏         | 1/77 [00:11<14:55, 11.78s/it, est. speed input: 119.13 toks/s, output: 3.74 toks/s]
+[1AProcessed prompts:  32%|███▏      | 25/77 [00:11<00:17,  2.95it/s, est. speed input: 2951.68 toks/s, output: 92.30 toks/s]
+[1AProcessed prompts:  95%|█████████▍| 73/77 [00:12<00:00, 10.91it/s, est. speed input: 8532.04 toks/s, output: 266.99 toks/s]
+[1AProcessed prompts: 100%|██████████| 77/77 [00:12<00:00, 10.91it/s, est. speed input: 8962.56 toks/s, output: 280.53 toks/s]Processed prompts: 100%|██████████| 77/77 [00:12<00:00,  6.37it/s, est. speed input: 8962.56 toks/s, output: 280.53 toks/s]
+(EngineCore pid=37) INFO 08-19 09:40:59 [core.py:1214] [shutdown] EngineCore: trigger received signal=SIGTERM
+(EngineCore pid=37) INFO 08-19 09:40:59 [core.py:1333] [shutdown] EngineCore: start mode=abort timeout=0s
+(EngineCore pid=37) INFO 08-19 09:40:59 [core.py:1364] [shutdown] EngineCore: request processing complete; starting resource teardown
+(EngineCore pid=37) INFO 08-19 09:40:59 [core.py:1227] [shutdown] EngineCore: exiting busy loop
+= chunk 700-777 written (777/777, gen 14.7s)
+
+Qwen/Qwen3-32B · literal-bnear · n=777 · wall 1447s (load 1262s, gen 45s)
+  extra_hard   n=277  correct 100.0%  exact 277  swapped   0  dual  0  wrong   0  unparseable   0 (0.0%)  len-cap 0
+  hard         n=197  correct 100.0%  exact 197  swapped   0  dual  0  wrong   0  unparseable   0 (0.0%)  len-cap 0
+  normal       n=180  correct 100.0%  exact 180  swapped   0  dual  0  wrong   0  unparseable   0 (0.0%)  len-cap 0
+  order5       n=323  correct 100.0%  exact 323  swapped   0  dual  0  wrong   0  unparseable   0 (0.0%)  len-cap 0
+Stopping app - local entrypoint completed.
+[modal-client] 2026-08-19T15:11:11+0530 Timed out waiting for final app logs.
+✓ App completed. View run at 
+https://modal.com/apps/order-evaluation/main/ap-U33u3HgiooNePCgoYCu8LD
+EXIT:0

@@ -1,0 +1,253 @@
+{
+  "run_name": "smoke-r1-L16-oproj",
+  "config": {
+    "run_name": "smoke-r1-L16-oproj",
+    "seed": 0,
+    "rank": 1,
+    "lora_alpha": 1,
+    "target_modules": [
+      "o_proj"
+    ],
+    "layers_to_transform": [
+      16
+    ],
+    "batch_size": 1,
+    "lr": 0.0002,
+    "max_steps": 50,
+    "save_steps": 25
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.14.1",
+    "peft": "0.19.1",
+    "gpu": "NVIDIA A10",
+    "quantized_fallback_4bit": false
+  },
+  "dataset": {
+    "samples": 200,
+    "holdout_samples": 100,
+    "total_tokens": 7387,
+    "blocks_1024": 7
+  },
+  "trainable_param_count": 8192,
+  "trainable_param_names_sample": [
+    "base_model.model.model.layers.16.self_attn.o_proj.lora_A.default.weight",
+    "base_model.model.model.layers.16.self_attn.o_proj.lora_B.default.weight"
+  ],
+  "steps": 50,
+  "train_loss_final": 0.7207888686656951,
+  "loss_curve": [
+    {
+      "step": 1,
+      "loss": 0.7027336359024048
+    },
+    {
+      "step": 2,
+      "loss": 0.7248774170875549
+    },
+    {
+      "step": 3,
+      "loss": 0.762711763381958
+    },
+    {
+      "step": 4,
+      "loss": 0.7819640636444092
+    },
+    {
+      "step": 5,
+      "loss": 0.673324465751648
+    },
+    {
+      "step": 6,
+      "loss": 0.7183800339698792
+    },
+    {
+      "step": 7,
+      "loss": 0.7675079703330994
+    },
+    {
+      "step": 8,
+      "loss": 0.7225663065910339
+    },
+    {
+      "step": 9,
+      "loss": 0.7171090245246887
+    },
+    {
+      "step": 10,
+      "loss": 0.7640342116355896
+    },
+    {
+      "step": 11,
+      "loss": 0.7780408263206482
+    },
+    {
+      "step": 12,
+      "loss": 0.7591760158538818
+    },
+    {
+      "step": 13,
+      "loss": 0.6699821949005127
+    },
+    {
+      "step": 14,
+      "loss": 0.6994335651397705
+    },
+    {
+      "step": 15,
+      "loss": 0.6684753894805908
+    },
+    {
+      "step": 16,
+      "loss": 0.6976354122161865
+    },
+    {
+      "step": 17,
+      "loss": 0.7742342948913574
+    },
+    {
+      "step": 18,
+      "loss": 0.7162204384803772
+    },
+    {
+      "step": 19,
+      "loss": 0.7107925415039062
+    },
+    {
+      "step": 20,
+      "loss": 0.7566735148429871
+    },
+    {
+      "step": 21,
+      "loss": 0.7514097094535828
+    },
+    {
+      "step": 22,
+      "loss": 0.7505237460136414
+    },
+    {
+      "step": 23,
+      "loss": 0.7661106586456299
+    },
+    {
+      "step": 24,
+      "loss": 0.6933574080467224
+    },
+    {
+      "step": 25,
+      "loss": 0.7055067420005798
+    },
+    {
+      "step": 26,
+      "loss": 0.7083647847175598
+    },
+    {
+      "step": 27,
+      "loss": 0.6568320393562317
+    },
+    {
+      "step": 28,
+      "loss": 0.7513971924781799
+    },
+    {
+      "step": 29,
+      "loss": 0.7619283199310303
+    },
+    {
+      "step": 30,
+      "loss": 0.7507239580154419
+    },
+    {
+      "step": 31,
+      "loss": 0.7038499116897583
+    },
+    {
+      "step": 32,
+      "loss": 0.6884245872497559
+    },
+    {
+      "step": 33,
+      "loss": 0.6538212299346924
+    },
+    {
+      "step": 34,
+      "loss": 0.7396591305732727
+    },
+    {
+      "step": 35,
+      "loss": 0.6995195746421814
+    },
+    {
+      "step": 36,
+      "loss": 0.7478154301643372
+    },
+    {
+      "step": 37,
+      "loss": 0.7023037075996399
+    },
+    {
+      "step": 38,
+      "loss": 0.6865866184234619
+    },
+    {
+      "step": 39,
+      "loss": 0.6522040367126465
+    },
+    {
+      "step": 40,
+      "loss": 0.6983950138092041
+    },
+    {
+      "step": 41,
+      "loss": 0.7390041351318359
+    },
+    {
+      "step": 42,
+      "loss": 0.7555257678031921
+    },
+    {
+      "step": 43,
+      "loss": 0.6507152318954468
+    },
+    {
+      "step": 44,
+      "loss": 0.6858609318733215
+    },
+    {
+      "step": 45,
+      "loss": 0.7375224828720093
+    },
+    {
+      "step": 46,
+      "loss": 0.755734920501709
+    },
+    {
+      "step": 47,
+      "loss": 0.7000598907470703
+    },
+    {
+      "step": 48,
+      "loss": 0.6987667679786682
+    },
+    {
+      "step": 49,
+      "loss": 0.7452751994132996
+    },
+    {
+      "step": 50,
+      "loss": 0.7363712191581726
+    }
+  ],
+  "probes": {
+    "holdout_loss_base": 2.2747,
+    "holdout_loss_ft": 2.2194,
+    "holdout_ppl_base": 9.72,
+    "holdout_ppl_ft": 9.2,
+    "raw_completion_base": " op(x, y) = op(x, op(y, y))\nASSUME: op(x, y) = op(op(y, y), x)\nASK: op(x, y) = op(x, op(y, y))\nASS",
+    "raw_completion_ft": " op(x, y) = op(x, op(y, y))\nASSUME: op(x, y) = op(op(y, y), x)\nASK: op(x, y) = op(x, op(y, y))\nASS"
+  },
+  "checkpoints_dir": "/models/checkpoints/smoke-r1-L16-oproj",
+  "train_seconds": 56.7,
+  "wall_seconds": 83.0,
+  "timestamp": "2026-07-24T22:44:57.706213+00:00"
+}

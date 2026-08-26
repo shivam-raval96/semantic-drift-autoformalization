@@ -1,0 +1,39 @@
+{
+  "stage": "capture",
+  "tag": "asked-qwen3.6-27b-full",
+  "model_key": "qwen3.6-27b",
+  "model_id": "Qwen/Qwen3.6-27B",
+  "adapter": null,
+  "gpu": "A100-80GB",
+  "limit": 0,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": true,
+  "gate_sample": false,
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/asked-qwen3.6-27b-full",
+  "n_texts": 2000,
+  "shape_per_item": [
+    65,
+    5120
+  ],
+  "token_len": {
+    "min": 286,
+    "max": 597,
+    "mean": 424.7
+  },
+  "answer_token_len": {
+    "min": 145,
+    "max": 312,
+    "mean": 217.9
+  },
+  "gpu_seconds": {
+    "load": 29.9,
+    "forward": 411.7,
+    "save": 524.7
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}

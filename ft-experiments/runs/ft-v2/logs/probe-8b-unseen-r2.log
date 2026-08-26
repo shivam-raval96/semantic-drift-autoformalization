@@ -1,0 +1,16 @@
+✓ Initialized. View run at 
+https://modal.com/apps/order-evaluation/main/ap-01SOxGRNIEK6s6zhAsVAuT
+✓ Created objects.
+├── 🔨 Created mount 
+│   /Users/harsh/semantic-drift-autoformalization/probe-experiments/probing/remo
+│   te_probe.py
+└── 🔨 Created function probe.
+= subset: 533 problems kept via contrast_v1/ft_unseen_problem_ids.json
+[last] best 0.9276 @L31 | lawcc 0.8563 | shuffled [0.4992, 0.5101, 0.5163]
+[last] best 0.9276 @L31 | lawcc 0.8563 | shuffled [0.4992, 0.5101, 0.5163]
+[mean] best 0.9855 @L31 | lawcc 0.942 | shuffled [0.499, 0.5045, 0.5118]
+-> /Users/harsh/semantic-drift-autoformalization/probe-experiments/runs/probe-ft8b-v2-unseen/probe_results.json
+[mean] best 0.9855 @L31 | lawcc 0.9420 | shuffled [0.499, 0.5045, 0.5118]
+Stopping app - local entrypoint completed.
+✓ App completed. View run at 
+https://modal.com/apps/order-evaluation/main/ap-01SOxGRNIEK6s6zhAsVAuT

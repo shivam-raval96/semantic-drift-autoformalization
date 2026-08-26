@@ -1,0 +1,271 @@
+{
+  "run_name": "smoke-v2-ministral-14b-s0",
+  "config": {
+    "run_name": "smoke-v2-ministral-14b-s0",
+    "model_id": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+    "seed": 0,
+    "rank": 16,
+    "lora_alpha": 16,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "batch_size": 4,
+    "grad_accum": 2,
+    "lr": 0.0002,
+    "save_steps": 25,
+    "max_len": 2048,
+    "template_sha": "ad33f6de859156b81be0d889abd3c56e4d9275bd855eb6d804d4e8ebcfe4983c",
+    "max_steps": 50
+  },
+  "objective": "completion-only",
+  "template_sha": "ad33f6de859156b81be0d889abd3c56e4d9275bd855eb6d804d4e8ebcfe4983c",
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.14.1",
+    "peft": "0.19.1",
+    "gpu": "NVIDIA A100 80GB PCIe",
+    "quantized_fallback_4bit": false
+  },
+  "dataset": {
+    "pairs": 200,
+    "kept": 200,
+    "n_dropped_overlong": 0,
+    "holdout_pairs": 100,
+    "holdout_kept": 100,
+    "holdout_dropped_overlong": 0,
+    "seq_len_max": 1817,
+    "seq_len_mean": 1684.5
+  },
+  "trainable_param_count": 60948480,
+  "trainable_param_names_sample": [
+    "base_model.model.model.language_model.layers.0.self_attn.q_proj.lora_A.default.weight",
+    "base_model.model.model.language_model.layers.0.self_attn.q_proj.lora_B.default.weight",
+    "base_model.model.model.language_model.layers.0.self_attn.k_proj.lora_A.default.weight",
+    "base_model.model.model.language_model.layers.0.self_attn.k_proj.lora_B.default.weight",
+    "base_model.model.model.language_model.layers.0.self_attn.v_proj.lora_A.default.weight",
+    "base_model.model.model.language_model.layers.0.self_attn.v_proj.lora_B.default.weight"
+  ],
+  "steps": 50,
+  "train_loss_final": 0.08689514651778155,
+  "loss_curve": [
+    {
+      "step": 1,
+      "loss": 0.9553020596504211
+    },
+    {
+      "step": 2,
+      "loss": 1.0185279846191406
+    },
+    {
+      "step": 3,
+      "loss": 0.7041879892349243
+    },
+    {
+      "step": 4,
+      "loss": 0.33778905868530273
+    },
+    {
+      "step": 5,
+      "loss": 0.2950439453125
+    },
+    {
+      "step": 6,
+      "loss": 0.16551418602466583
+    },
+    {
+      "step": 7,
+      "loss": 0.126240074634552
+    },
+    {
+      "step": 8,
+      "loss": 0.05352788791060448
+    },
+    {
+      "step": 9,
+      "loss": 0.05292673408985138
+    },
+    {
+      "step": 10,
+      "loss": 0.05193183571100235
+    },
+    {
+      "step": 11,
+      "loss": 0.0758625864982605
+    },
+    {
+      "step": 12,
+      "loss": 0.05355635657906532
+    },
+    {
+      "step": 13,
+      "loss": 0.04881175607442856
+    },
+    {
+      "step": 14,
+      "loss": 0.03252916783094406
+    },
+    {
+      "step": 15,
+      "loss": 0.026001369580626488
+    },
+    {
+      "step": 16,
+      "loss": 0.021777445450425148
+    },
+    {
+      "step": 17,
+      "loss": 0.01698899455368519
+    },
+    {
+      "step": 18,
+      "loss": 0.012982029467821121
+    },
+    {
+      "step": 19,
+      "loss": 0.026237905025482178
+    },
+    {
+      "step": 20,
+      "loss": 0.02851138636469841
+    },
+    {
+      "step": 21,
+      "loss": 0.004517206456512213
+    },
+    {
+      "step": 22,
+      "loss": 0.017732298001646996
+    },
+    {
+      "step": 23,
+      "loss": 0.04734191298484802
+    },
+    {
+      "step": 24,
+      "loss": 0.006677557248622179
+    },
+    {
+      "step": 25,
+      "loss": 0.0028762375004589558
+    },
+    {
+      "step": 26,
+      "loss": 0.004398082382977009
+    },
+    {
+      "step": 27,
+      "loss": 0.007273389957845211
+    },
+    {
+      "step": 28,
+      "loss": 0.0012351376935839653
+    },
+    {
+      "step": 29,
+      "loss": 0.0025101667270064354
+    },
+    {
+      "step": 30,
+      "loss": 0.004084846470504999
+    },
+    {
+      "step": 31,
+      "loss": 0.0021330639719963074
+    },
+    {
+      "step": 32,
+      "loss": 0.04468865692615509
+    },
+    {
+      "step": 33,
+      "loss": 0.0011204173788428307
+    },
+    {
+      "step": 34,
+      "loss": 0.021231908351182938
+    },
+    {
+      "step": 35,
+      "loss": 0.0020156647078692913
+    },
+    {
+      "step": 36,
+      "loss": 0.0034284256398677826
+    },
+    {
+      "step": 37,
+      "loss": 0.00041491404408589005
+    },
+    {
+      "step": 38,
+      "loss": 0.0011278120800852776
+    },
+    {
+      "step": 39,
+      "loss": 0.002981483470648527
+    },
+    {
+      "step": 40,
+      "loss": 0.01765812747180462
+    },
+    {
+      "step": 41,
+      "loss": 0.0004814543353859335
+    },
+    {
+      "step": 42,
+      "loss": 0.010751985013484955
+    },
+    {
+      "step": 43,
+      "loss": 0.014527864754199982
+    },
+    {
+      "step": 44,
+      "loss": 0.004807645455002785
+    },
+    {
+      "step": 45,
+      "loss": 0.0002664266503416002
+    },
+    {
+      "step": 46,
+      "loss": 0.001569073647260666
+    },
+    {
+      "step": 47,
+      "loss": 0.000360527919838205
+    },
+    {
+      "step": 48,
+      "loss": 0.00947989895939827
+    },
+    {
+      "step": 49,
+      "loss": 0.001682470552623272
+    },
+    {
+      "step": 50,
+      "loss": 0.0011319158365949988
+    }
+  ],
+  "probes": {
+    "holdout_completion_loss_base": 0.7861,
+    "holdout_completion_loss_ft": 0.0219,
+    "holdout_completion_ppl_base": 2.19,
+    "holdout_completion_ppl_ft": 1.02,
+    "generation_reference": "ASSUME: op(x, op(y, op(op(x, y), y))) = op(x, op(z, op(op(w, u), v)))\nASK: op(x, x) = op(op(y, op(y, y)), op(z, op(w, z)))",
+    "generation_base": "```\nASSUME: op(op(op(op(quince, medlar), medlar), medlar), quince) = op(op(op(op(mulberry, persimmon), loquat), damson), quince)\nASK: op(quince, quince) = op(op(op(op(medlar, medlar), medlar), mulberry), op(op(medlar, medlar), op(op(damson, mulberry), damson)))\n```",
+    "generation_ft": "ASSUME: op(x, op(y, op(op(x, y), y))) = op(x, op(z, op(op(w, u), u)))\nASK: op(x, x) = op(op(y, op(y, y)), op(z, op(w, z)))"
+  },
+  "checkpoints_dir": "/models/checkpoints/smoke-v2-ministral-14b-s0",
+  "train_seconds": 547.6,
+  "wall_seconds": 2225.9,
+  "timestamp": "2026-08-18T23:46:20.808625+00:00"
+}

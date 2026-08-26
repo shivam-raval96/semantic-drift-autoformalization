@@ -1,0 +1,362 @@
+{
+  "run_name": "phase5a-r16-all",
+  "config": {
+    "run_name": "phase5a-r16-all",
+    "seed": 0,
+    "rank": 16,
+    "lora_alpha": 16,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "layers_to_transform": null,
+    "batch_size": 1,
+    "grad_accum": 4,
+    "lr": 0.0002,
+    "save_steps": 10,
+    "epochs": 3
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.14.1",
+    "peft": "0.19.1",
+    "gpu": "NVIDIA A10",
+    "quantized_fallback_4bit": false
+  },
+  "dataset": {
+    "samples": 2772,
+    "holdout_samples": 100,
+    "total_tokens": 102662,
+    "blocks_1024": 100
+  },
+  "trainable_param_count": 41943040,
+  "trainable_param_names_sample": [
+    "base_model.model.model.layers.0.self_attn.q_proj.lora_A.default.weight",
+    "base_model.model.model.layers.0.self_attn.q_proj.lora_B.default.weight",
+    "base_model.model.model.layers.0.self_attn.k_proj.lora_A.default.weight",
+    "base_model.model.model.layers.0.self_attn.k_proj.lora_B.default.weight",
+    "base_model.model.model.layers.0.self_attn.v_proj.lora_A.default.weight",
+    "base_model.model.model.layers.0.self_attn.v_proj.lora_B.default.weight"
+  ],
+  "steps": 75,
+  "train_loss_final": 0.46654918233553566,
+  "loss_curve": [
+    {
+      "step": 1,
+      "loss": 0.7128567099571228
+    },
+    {
+      "step": 2,
+      "loss": 0.7432074546813965
+    },
+    {
+      "step": 3,
+      "loss": 0.7278897166252136
+    },
+    {
+      "step": 4,
+      "loss": 0.7103787064552307
+    },
+    {
+      "step": 5,
+      "loss": 0.7228119373321533
+    },
+    {
+      "step": 6,
+      "loss": 0.5776308178901672
+    },
+    {
+      "step": 7,
+      "loss": 0.5617318153381348
+    },
+    {
+      "step": 8,
+      "loss": 0.5707586407661438
+    },
+    {
+      "step": 9,
+      "loss": 0.5172826647758484
+    },
+    {
+      "step": 10,
+      "loss": 0.5587780475616455
+    },
+    {
+      "step": 11,
+      "loss": 0.5430370569229126
+    },
+    {
+      "step": 12,
+      "loss": 0.475957989692688
+    },
+    {
+      "step": 13,
+      "loss": 0.4806175231933594
+    },
+    {
+      "step": 14,
+      "loss": 0.45927315950393677
+    },
+    {
+      "step": 15,
+      "loss": 0.5401997566223145
+    },
+    {
+      "step": 16,
+      "loss": 0.49478477239608765
+    },
+    {
+      "step": 17,
+      "loss": 0.4021483063697815
+    },
+    {
+      "step": 18,
+      "loss": 0.4762367010116577
+    },
+    {
+      "step": 19,
+      "loss": 0.502250075340271
+    },
+    {
+      "step": 20,
+      "loss": 0.5011829137802124
+    },
+    {
+      "step": 21,
+      "loss": 0.42677557468414307
+    },
+    {
+      "step": 22,
+      "loss": 0.4308604300022125
+    },
+    {
+      "step": 23,
+      "loss": 0.49232521653175354
+    },
+    {
+      "step": 24,
+      "loss": 0.44714412093162537
+    },
+    {
+      "step": 25,
+      "loss": 0.5133662819862366
+    },
+    {
+      "step": 26,
+      "loss": 0.4528292715549469
+    },
+    {
+      "step": 27,
+      "loss": 0.4452812671661377
+    },
+    {
+      "step": 28,
+      "loss": 0.5113075971603394
+    },
+    {
+      "step": 29,
+      "loss": 0.4095366895198822
+    },
+    {
+      "step": 30,
+      "loss": 0.39343130588531494
+    },
+    {
+      "step": 31,
+      "loss": 0.4677426815032959
+    },
+    {
+      "step": 32,
+      "loss": 0.4191879332065582
+    },
+    {
+      "step": 33,
+      "loss": 0.4104732871055603
+    },
+    {
+      "step": 34,
+      "loss": 0.4780210256576538
+    },
+    {
+      "step": 35,
+      "loss": 0.4666461646556854
+    },
+    {
+      "step": 36,
+      "loss": 0.4444050192832947
+    },
+    {
+      "step": 37,
+      "loss": 0.43418896198272705
+    },
+    {
+      "step": 38,
+      "loss": 0.459516704082489
+    },
+    {
+      "step": 39,
+      "loss": 0.4496871829032898
+    },
+    {
+      "step": 40,
+      "loss": 0.3842145800590515
+    },
+    {
+      "step": 41,
+      "loss": 0.43906694650650024
+    },
+    {
+      "step": 42,
+      "loss": 0.43563148379325867
+    },
+    {
+      "step": 43,
+      "loss": 0.4414565861225128
+    },
+    {
+      "step": 44,
+      "loss": 0.3926963210105896
+    },
+    {
+      "step": 45,
+      "loss": 0.4209785759449005
+    },
+    {
+      "step": 46,
+      "loss": 0.37986811995506287
+    },
+    {
+      "step": 47,
+      "loss": 0.44181886315345764
+    },
+    {
+      "step": 48,
+      "loss": 0.42634427547454834
+    },
+    {
+      "step": 49,
+      "loss": 0.5135676860809326
+    },
+    {
+      "step": 50,
+      "loss": 0.4499892294406891
+    },
+    {
+      "step": 51,
+      "loss": 0.44325000047683716
+    },
+    {
+      "step": 52,
+      "loss": 0.40836718678474426
+    },
+    {
+      "step": 53,
+      "loss": 0.4140310287475586
+    },
+    {
+      "step": 54,
+      "loss": 0.44689053297042847
+    },
+    {
+      "step": 55,
+      "loss": 0.4390401542186737
+    },
+    {
+      "step": 56,
+      "loss": 0.4242522716522217
+    },
+    {
+      "step": 57,
+      "loss": 0.42560243606567383
+    },
+    {
+      "step": 58,
+      "loss": 0.436328262090683
+    },
+    {
+      "step": 59,
+      "loss": 0.419435054063797
+    },
+    {
+      "step": 60,
+      "loss": 0.4440799951553345
+    },
+    {
+      "step": 61,
+      "loss": 0.416352242231369
+    },
+    {
+      "step": 62,
+      "loss": 0.4001234471797943
+    },
+    {
+      "step": 63,
+      "loss": 0.38478922843933105
+    },
+    {
+      "step": 64,
+      "loss": 0.4188620448112488
+    },
+    {
+      "step": 65,
+      "loss": 0.40792036056518555
+    },
+    {
+      "step": 66,
+      "loss": 0.35725459456443787
+    },
+    {
+      "step": 67,
+      "loss": 0.365864634513855
+    },
+    {
+      "step": 68,
+      "loss": 0.42116039991378784
+    },
+    {
+      "step": 69,
+      "loss": 0.4234512448310852
+    },
+    {
+      "step": 70,
+      "loss": 0.45150381326675415
+    },
+    {
+      "step": 71,
+      "loss": 0.427543044090271
+    },
+    {
+      "step": 72,
+      "loss": 0.37725281715393066
+    },
+    {
+      "step": 73,
+      "loss": 0.42224401235580444
+    },
+    {
+      "step": 74,
+      "loss": 0.4208019971847534
+    },
+    {
+      "step": 75,
+      "loss": 0.4374137222766876
+    }
+  ],
+  "probes": {
+    "holdout_loss_base": 2.2747,
+    "holdout_loss_ft": 0.9141,
+    "holdout_ppl_base": 9.72,
+    "holdout_ppl_ft": 2.49,
+    "raw_completion_base": " op(x, y) = op(x, op(y, y))\nASSUME: op(x, y) = op(op(y, y), x)\nASK: op(x, y) = op(x, op(y, y))\nASS",
+    "raw_completion_ft": " x = op(op(y, op(z, w)), op(w, u))"
+  },
+  "checkpoints_dir": "/models/checkpoints/phase5a-r16-all",
+  "train_seconds": 362.6,
+  "wall_seconds": 390.7,
+  "timestamp": "2026-07-24T23:30:30.754821+00:00"
+}

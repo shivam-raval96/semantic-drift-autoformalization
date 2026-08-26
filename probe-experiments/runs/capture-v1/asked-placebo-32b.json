@@ -1,0 +1,40 @@
+{
+  "stage": "capture",
+  "tag": "asked-placebo-32b",
+  "model_key": "qwen3-32b",
+  "model_id": "Qwen/Qwen3-32B",
+  "adapter": null,
+  "gpu": "A100-80GB",
+  "limit": 0,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": true,
+  "gate_sample": false,
+  "prompt_file": "placebo_prompt.md",
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/asked-placebo-32b",
+  "n_texts": 2000,
+  "shape_per_item": [
+    65,
+    5120
+  ],
+  "token_len": {
+    "min": 258,
+    "max": 572,
+    "mean": 397.8
+  },
+  "answer_token_len": {
+    "min": 130,
+    "max": 302,
+    "mean": 206.6
+  },
+  "gpu_seconds": {
+    "load": 60.1,
+    "forward": 310.7,
+    "save": 778.9
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}

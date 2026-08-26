@@ -1,0 +1,99 @@
+{
+  "lexical_floor_lawdisjoint": 0.503,
+  "models": [
+    {
+      "model": "Llama-3.1-8B",
+      "capability_margin_auroc": 0.5216,
+      "representation_lawdisjoint_auroc": 0.5274,
+      "site": "last",
+      "fold_aurocs": [
+        0.5287,
+        0.5248,
+        0.5508,
+        0.5793,
+        0.4704
+      ],
+      "fold_mean": 0.5308,
+      "fold_sd": 0.0359,
+      "above_lexical_floor": 0.0244,
+      "in_distribution_auroc": 0.599,
+      "n_layers": 33
+    },
+    {
+      "model": "Qwen3.5-4B",
+      "capability_margin_auroc": 0.626,
+      "representation_lawdisjoint_auroc": 0.549,
+      "site": "mean",
+      "fold_aurocs": [
+        0.5726,
+        0.5216,
+        0.5435,
+        0.5676,
+        0.5383
+      ],
+      "fold_mean": 0.5487,
+      "fold_sd": 0.019,
+      "above_lexical_floor": 0.046,
+      "in_distribution_auroc": 0.6361,
+      "n_layers": 33
+    },
+    {
+      "model": "Qwen3-32B",
+      "capability_margin_auroc": 0.6694,
+      "representation_lawdisjoint_auroc": 0.5985,
+      "site": "mean",
+      "fold_aurocs": [
+        0.6217,
+        0.5835,
+        0.6063,
+        0.6413,
+        0.588
+      ],
+      "fold_mean": 0.6082,
+      "fold_sd": 0.0214,
+      "above_lexical_floor": 0.0955,
+      "in_distribution_auroc": 0.7046,
+      "n_layers": 65
+    },
+    {
+      "model": "Llama-3.3-70B",
+      "capability_margin_auroc": 0.6294,
+      "representation_lawdisjoint_auroc": 0.6337,
+      "site": "mean",
+      "fold_aurocs": [
+        0.6683,
+        0.607,
+        0.7327,
+        0.8137,
+        0.7056
+      ],
+      "fold_mean": 0.7055,
+      "fold_sd": 0.0686,
+      "above_lexical_floor": 0.1307,
+      "in_distribution_auroc": 0.7648,
+      "n_layers": 81
+    },
+    {
+      "model": "Qwen3.6-27B",
+      "capability_margin_auroc": 0.8258,
+      "representation_lawdisjoint_auroc": 0.8146,
+      "site": "mean",
+      "fold_aurocs": [
+        0.8394,
+        0.756,
+        0.8203,
+        0.9167,
+        0.8539
+      ],
+      "fold_mean": 0.8373,
+      "fold_sd": 0.0519,
+      "above_lexical_floor": 0.3116,
+      "in_distribution_auroc": 0.8699,
+      "n_layers": 65
+    }
+  ],
+  "pearson_r": 0.9341,
+  "spearman_r": 0.9,
+  "n_models": 5,
+  "caveat": "n is small; correlation is descriptive, not inferential. Fold SDs are the honest uncertainty on each point."
+}

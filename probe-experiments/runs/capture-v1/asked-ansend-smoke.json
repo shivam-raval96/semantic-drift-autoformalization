@@ -1,0 +1,39 @@
+{
+  "stage": "capture",
+  "tag": "asked-ansend-smoke",
+  "model_key": "qwen3-32b",
+  "model_id": "Qwen/Qwen3-32B",
+  "adapter": null,
+  "gpu": "A100-80GB",
+  "limit": 4,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "chat_mode": true,
+  "gate_sample": false,
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/asked-ansend-smoke",
+  "n_texts": 8,
+  "shape_per_item": [
+    65,
+    5120
+  ],
+  "token_len": {
+    "min": 282,
+    "max": 316,
+    "mean": 292.0
+  },
+  "answer_token_len": {
+    "min": 139,
+    "max": 159,
+    "mean": 144.9
+  },
+  "gpu_seconds": {
+    "load": 41.4,
+    "forward": 2.8,
+    "save": 4.0
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}

@@ -1,0 +1,4 @@
+# Local driver dependencies only — GPU-side deps live in the Modal
+# images (eval/modal_eval.py, training/train_lora.py).
+modal
+datasets

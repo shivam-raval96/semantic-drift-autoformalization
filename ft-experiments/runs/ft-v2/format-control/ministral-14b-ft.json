@@ -1,0 +1,1091 @@
+{
+  "timestamp": "2026-08-19T06:13:25.468026+00:00",
+  "purpose": "format-following control (v2 DESIGN.md): separates grammar-specific lock-in from general loss of in-context format following",
+  "model": "mistralai/Ministral-3-14B-Instruct-2512-BF16",
+  "model_key": "ministral-14b",
+  "adapter": {
+    "path": "/models/checkpoints/v2-ministral-14b-s0/final",
+    "rank": 16
+  },
+  "n_items": 60,
+  "suite_sha256": "d8b0d5e888f980e66084b2954119baacb3320b033126def964d96dab1bb9ba48",
+  "instructions": {
+    "json": "Answer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+    "semicolon": "Answer with exactly one line: ANSWER: <name>; <count>; <city>",
+    "keyword": "Answer with three lines: NAME=..., COUNT=..., CITY=..."
+  },
+  "sampling": {
+    "temperature": 0.0,
+    "max_tokens": 200,
+    "greedy": true
+  },
+  "chat_template_kwargs": null,
+  "gpu_requested": "A100-80GB",
+  "backend": {
+    "engine": "vllm",
+    "vllm_version": "0.25.1",
+    "torch_version": "2.11.0+cu130",
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "dtype": "bfloat16",
+    "max_model_len": 4096,
+    "chat_template": "model default via llm.chat, add_generation_prompt"
+  },
+  "image": "nvidia/cuda:12.8.1-devel-ubuntu22.04 + python3.12 + uv:vllm",
+  "guardrails": {
+    "min_containers": 0,
+    "max_containers": 1,
+    "scaledown_window": 60,
+    "retries": 0,
+    "timeout": 900
+  },
+  "timing": {
+    "model_load_s": 306.3,
+    "generate_s": 1.9,
+    "wall_s": 397.8
+  },
+  "summary": {
+    "json": {
+      "n": 20,
+      "compliant": 20,
+      "compliance_pct": 100.0,
+      "accurate": 20,
+      "accuracy_pct": 100.0
+    },
+    "semicolon": {
+      "n": 20,
+      "compliant": 0,
+      "compliance_pct": 0.0,
+      "accurate": 0,
+      "accuracy_pct": 0.0
+    },
+    "keyword": {
+      "n": 20,
+      "compliant": 20,
+      "compliance_pct": 100.0,
+      "accurate": 20,
+      "accuracy_pct": 100.0
+    }
+  },
+  "items": [
+    {
+      "id": "json-00",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: Amara moved to Lisbon three winters ago. Since the move, Amara has catalogued 3 postcards.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Amara",
+        "count": 3,
+        "city": "Lisbon"
+      },
+      "response": "```json\n{\n  \"name\": \"Amara\",\n  \"count\": 3,\n  \"city\": \"Lisbon\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 31,
+      "prompt_tokens": 70,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-01",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: Bruno runs a small shop in Oslo. The back shelf holds exactly 19 lanterns. Regulars stop by every morning to look at them.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Bruno",
+        "count": 19,
+        "city": "Oslo"
+      },
+      "response": "```json\n{\n  \"name\": \"Bruno\",\n  \"count\": 19,\n  \"city\": \"Oslo\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 31,
+      "prompt_tokens": 77,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-02",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: Every spring, Celine travels to Kyoto for the market season. This year's trip produced 34 teapots, all carefully labelled.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Celine",
+        "count": 34,
+        "city": "Kyoto"
+      },
+      "response": "```json\n{\n  \"name\": \"Celine\",\n  \"count\": 34,\n  \"city\": \"Kyoto\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 31,
+      "prompt_tokens": 77,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-03",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: A collection of 47 brass keys fills the workshop that Dmitri keeps. The workshop stands on a quiet street in Valparaiso.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Dmitri",
+        "count": 47,
+        "city": "Valparaiso"
+      },
+      "response": "```json\n{\n  \"name\": \"Dmitri\",\n  \"count\": 47,\n  \"city\": \"Valparaiso\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 34,
+      "prompt_tokens": 75,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-04",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: Esther moved to Marrakesh three winters ago. Since the move, Esther has catalogued 63 maps.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Esther",
+        "count": 63,
+        "city": "Marrakesh"
+      },
+      "response": "```json\n{\n  \"name\": \"Esther\",\n  \"count\": 63,\n  \"city\": \"Marrakesh\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 32,
+      "prompt_tokens": 69,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-05",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: Farid runs a small shop in Tallinn. The back shelf holds exactly 79 postcards. Regulars stop by every morning to look at them.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Farid",
+        "count": 79,
+        "city": "Tallinn"
+      },
+      "response": "```json\n{\n  \"name\": \"Farid\",\n  \"count\": 79,\n  \"city\": \"Tallinn\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 32,
+      "prompt_tokens": 78,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-06",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: Every spring, Greta travels to Cusco for the market season. This year's trip produced 91 lanterns, all carefully labelled.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Greta",
+        "count": 91,
+        "city": "Cusco"
+      },
+      "response": "```json\n{\n  \"name\": \"Greta\",\n  \"count\": 91,\n  \"city\": \"Cusco\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 32,
+      "prompt_tokens": 75,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-07",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: A collection of 7 teapots fills the workshop that Hiroshi keeps. The workshop stands on a quiet street in Bruges.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Hiroshi",
+        "count": 7,
+        "city": "Bruges"
+      },
+      "response": "```json\n{\n  \"name\": \"Hiroshi\",\n  \"count\": 7,\n  \"city\": \"Bruges\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 31,
+      "prompt_tokens": 74,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-08",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: Ines moved to Adelaide three winters ago. Since the move, Ines has catalogued 21 brass keys.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Ines",
+        "count": 21,
+        "city": "Adelaide"
+      },
+      "response": "```json\n{\n  \"name\": \"Ines\",\n  \"count\": 21,\n  \"city\": \"Adelaide\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 32,
+      "prompt_tokens": 71,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-09",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: Jonas runs a small shop in Windhoek. The back shelf holds exactly 38 maps. Regulars stop by every morning to look at them.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Jonas",
+        "count": 38,
+        "city": "Windhoek"
+      },
+      "response": "```json\n{\n  \"name\": \"Jonas\",\n  \"count\": 38,\n  \"city\": \"Windhoek\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 31,
+      "prompt_tokens": 76,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-10",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: Every spring, Katya travels to Quebec for the market season. This year's trip produced 52 postcards, all carefully labelled.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Katya",
+        "count": 52,
+        "city": "Quebec"
+      },
+      "response": "```json\n{\n  \"name\": \"Katya\",\n  \"count\": 52,\n  \"city\": \"Quebec\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 31,
+      "prompt_tokens": 75,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-11",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: A collection of 67 lanterns fills the workshop that Leandro keeps. The workshop stands on a quiet street in Sarajevo.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Leandro",
+        "count": 67,
+        "city": "Sarajevo"
+      },
+      "response": "```json\n{\n  \"name\": \"Leandro\",\n  \"count\": 67,\n  \"city\": \"Sarajevo\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 33,
+      "prompt_tokens": 72,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-12",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: Mireille moved to Galway three winters ago. Since the move, Mireille has catalogued 82 teapots.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Mireille",
+        "count": 82,
+        "city": "Galway"
+      },
+      "response": "```json\n{\n  \"name\": \"Mireille\",\n  \"count\": 82,\n  \"city\": \"Galway\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 32,
+      "prompt_tokens": 73,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-13",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: Nadia runs a small shop in Vientiane. The back shelf holds exactly 96 brass keys. Regulars stop by every morning to look at them.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Nadia",
+        "count": 96,
+        "city": "Vientiane"
+      },
+      "response": "```json\n{\n  \"name\": \"Nadia\",\n  \"count\": 96,\n  \"city\": \"Vientiane\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 32,
+      "prompt_tokens": 79,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-14",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: Every spring, Omar travels to Cartagena for the market season. This year's trip produced 12 maps, all carefully labelled.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Omar",
+        "count": 12,
+        "city": "Cartagena"
+      },
+      "response": "```json\n{\n  \"name\": \"Omar\",\n  \"count\": 12,\n  \"city\": \"Cartagena\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 31,
+      "prompt_tokens": 72,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-15",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: A collection of 26 postcards fills the workshop that Priya keeps. The workshop stands on a quiet street in Timisoara.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Priya",
+        "count": 26,
+        "city": "Timisoara"
+      },
+      "response": "```json\n{\n  \"name\": \"Priya\",\n  \"count\": 26,\n  \"city\": \"Timisoara\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 32,
+      "prompt_tokens": 75,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-16",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: Quentin moved to Bergen three winters ago. Since the move, Quentin has catalogued 41 lanterns.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Quentin",
+        "count": 41,
+        "city": "Bergen"
+      },
+      "response": "```json\n{\n  \"name\": \"Quentin\",\n  \"count\": 41,\n  \"city\": \"Bergen\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 31,
+      "prompt_tokens": 69,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-17",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: Rosa runs a small shop in Matera. The back shelf holds exactly 58 teapots. Regulars stop by every morning to look at them.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Rosa",
+        "count": 58,
+        "city": "Matera"
+      },
+      "response": "```json\n{\n  \"name\": \"Rosa\",\n  \"count\": 58,\n  \"city\": \"Matera\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 30,
+      "prompt_tokens": 80,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-18",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: Every spring, Stefan travels to Fremantle for the market season. This year's trip produced 74 brass keys, all carefully labelled.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Stefan",
+        "count": 74,
+        "city": "Fremantle"
+      },
+      "response": "```json\n{\n  \"name\": \"Stefan\",\n  \"count\": 74,\n  \"city\": \"Fremantle\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 32,
+      "prompt_tokens": 75,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "json-19",
+      "family": "json",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: A collection of 88 maps fills the workshop that Tomoko keeps. The workshop stands on a quiet street in Mombasa.\n\nAnswer as a JSON object with exactly the keys 'name', 'count', 'city'.",
+      "expected": {
+        "name": "Tomoko",
+        "count": 88,
+        "city": "Mombasa"
+      },
+      "response": "```json\n{\n  \"name\": \"Tomoko\",\n  \"count\": 88,\n  \"city\": \"Mombasa\"\n}\n```",
+      "finish_reason": "stop",
+      "completion_tokens": 32,
+      "prompt_tokens": 73,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "semicolon-00",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: Hiroshi runs a small shop in Vientiane. The back shelf holds exactly 7 lanterns. Regulars stop by every morning to look at them.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Hiroshi",
+        "count": 7,
+        "city": "Vientiane"
+      },
+      "response": "Hiroshi; 7; Vientiane",
+      "finish_reason": "stop",
+      "completion_tokens": 11,
+      "prompt_tokens": 81,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-01",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: Every spring, Ines travels to Cartagena for the market season. This year's trip produced 21 teapots, all carefully labelled.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Ines",
+        "count": 21,
+        "city": "Cartagena"
+      },
+      "response": "Ines; 21; Cartagena",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 80,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-02",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: A collection of 38 brass keys fills the workshop that Jonas keeps. The workshop stands on a quiet street in Timisoara.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Jonas",
+        "count": 38,
+        "city": "Timisoara"
+      },
+      "response": "Jonas; 38; Timisoara",
+      "finish_reason": "stop",
+      "completion_tokens": 11,
+      "prompt_tokens": 77,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-03",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: Katya moved to Bergen three winters ago. Since the move, Katya has catalogued 52 maps.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Katya",
+        "count": 52,
+        "city": "Bergen"
+      },
+      "response": "Katya; 52; Bergen",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 72,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-04",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: Leandro runs a small shop in Matera. The back shelf holds exactly 67 postcards. Regulars stop by every morning to look at them.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Leandro",
+        "count": 67,
+        "city": "Matera"
+      },
+      "response": "Leandro; 67; Matera",
+      "finish_reason": "stop",
+      "completion_tokens": 10,
+      "prompt_tokens": 81,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-05",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: Every spring, Mireille travels to Fremantle for the market season. This year's trip produced 82 lanterns, all carefully labelled.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Mireille",
+        "count": 82,
+        "city": "Fremantle"
+      },
+      "response": "Mireille; 82; Fremantle",
+      "finish_reason": "stop",
+      "completion_tokens": 11,
+      "prompt_tokens": 79,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-06",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: A collection of 96 teapots fills the workshop that Nadia keeps. The workshop stands on a quiet street in Mombasa.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Nadia",
+        "count": 96,
+        "city": "Mombasa"
+      },
+      "response": "Nadia; 96; Mombasa",
+      "finish_reason": "stop",
+      "completion_tokens": 11,
+      "prompt_tokens": 79,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-07",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: Omar moved to Lisbon three winters ago. Since the move, Omar has catalogued 12 brass keys.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Omar",
+        "count": 12,
+        "city": "Lisbon"
+      },
+      "response": "Omar; 12; Lisbon",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 72,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-08",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: Priya runs a small shop in Oslo. The back shelf holds exactly 26 maps. Regulars stop by every morning to look at them.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Priya",
+        "count": 26,
+        "city": "Oslo"
+      },
+      "response": "Priya; 26; Oslo",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 79,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-09",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: Every spring, Quentin travels to Kyoto for the market season. This year's trip produced 41 postcards, all carefully labelled.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Quentin",
+        "count": 41,
+        "city": "Kyoto"
+      },
+      "response": "Quentin; 41; Kyoto",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 77,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-10",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: A collection of 58 lanterns fills the workshop that Rosa keeps. The workshop stands on a quiet street in Valparaiso.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Rosa",
+        "count": 58,
+        "city": "Valparaiso"
+      },
+      "response": "Rosa; 58; Valparaiso",
+      "finish_reason": "stop",
+      "completion_tokens": 11,
+      "prompt_tokens": 78,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-11",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: Stefan moved to Marrakesh three winters ago. Since the move, Stefan has catalogued 74 teapots.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Stefan",
+        "count": 74,
+        "city": "Marrakesh"
+      },
+      "response": "Stefan; 74; Marrakesh",
+      "finish_reason": "stop",
+      "completion_tokens": 11,
+      "prompt_tokens": 76,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-12",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: Tomoko runs a small shop in Tallinn. The back shelf holds exactly 88 brass keys. Regulars stop by every morning to look at them.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Tomoko",
+        "count": 88,
+        "city": "Tallinn"
+      },
+      "response": "Tomoko; 88; Tallinn",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 81,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-13",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: Every spring, Amara travels to Cusco for the market season. This year's trip produced 3 maps, all carefully labelled.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Amara",
+        "count": 3,
+        "city": "Cusco"
+      },
+      "response": "Amara; 3; Cusco",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 76,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-14",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: A collection of 19 postcards fills the workshop that Bruno keeps. The workshop stands on a quiet street in Bruges.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Bruno",
+        "count": 19,
+        "city": "Bruges"
+      },
+      "response": "Bruno; 19; Bruges",
+      "finish_reason": "stop",
+      "completion_tokens": 10,
+      "prompt_tokens": 76,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-15",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: Celine moved to Adelaide three winters ago. Since the move, Celine has catalogued 34 lanterns.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Celine",
+        "count": 34,
+        "city": "Adelaide"
+      },
+      "response": "Celine; 34; Adelaide",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 74,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-16",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: Dmitri runs a small shop in Windhoek. The back shelf holds exactly 47 teapots. Regulars stop by every morning to look at them.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Dmitri",
+        "count": 47,
+        "city": "Windhoek"
+      },
+      "response": "Dmitri; 47; Windhoek",
+      "finish_reason": "stop",
+      "completion_tokens": 11,
+      "prompt_tokens": 83,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-17",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: Every spring, Esther travels to Quebec for the market season. This year's trip produced 63 brass keys, all carefully labelled.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Esther",
+        "count": 63,
+        "city": "Quebec"
+      },
+      "response": "Esther; 63; Quebec",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 77,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-18",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: A collection of 79 maps fills the workshop that Farid keeps. The workshop stands on a quiet street in Sarajevo.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Farid",
+        "count": 79,
+        "city": "Sarajevo"
+      },
+      "response": "Farid; 79; Sarajevo",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 74,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "semicolon-19",
+      "family": "semicolon",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: Greta moved to Galway three winters ago. Since the move, Greta has catalogued 91 postcards.\n\nAnswer with exactly one line: ANSWER: <name>; <count>; <city>",
+      "expected": {
+        "name": "Greta",
+        "count": 91,
+        "city": "Galway"
+      },
+      "response": "Greta; 91; Galway",
+      "finish_reason": "stop",
+      "completion_tokens": 9,
+      "prompt_tokens": 72,
+      "compliant": false,
+      "accurate": false,
+      "detail": "no 'ANSWER:' line"
+    },
+    {
+      "id": "keyword-00",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: Every spring, Omar travels to Cusco for the market season. This year's trip produced 12 teapots, all carefully labelled.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Omar",
+        "count": 12,
+        "city": "Cusco"
+      },
+      "response": "NAME=Omar\nCOUNT=12\nCITY=Cusco",
+      "finish_reason": "stop",
+      "completion_tokens": 16,
+      "prompt_tokens": 74,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-01",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: A collection of 26 brass keys fills the workshop that Priya keeps. The workshop stands on a quiet street in Bruges.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Priya",
+        "count": 26,
+        "city": "Bruges"
+      },
+      "response": "NAME=Priya\nCOUNT=26\nCITY=Bruges",
+      "finish_reason": "stop",
+      "completion_tokens": 16,
+      "prompt_tokens": 71,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-02",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: Quentin moved to Adelaide three winters ago. Since the move, Quentin has catalogued 41 maps.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Quentin",
+        "count": 41,
+        "city": "Adelaide"
+      },
+      "response": "NAME=Quentin\nCOUNT=41\nCITY=Adelaide",
+      "finish_reason": "stop",
+      "completion_tokens": 17,
+      "prompt_tokens": 64,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-03",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: Rosa runs a small shop in Windhoek. The back shelf holds exactly 58 postcards. Regulars stop by every morning to look at them.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Rosa",
+        "count": 58,
+        "city": "Windhoek"
+      },
+      "response": "NAME=Rosa\nCOUNT=58\nCITY=Windhoek",
+      "finish_reason": "stop",
+      "completion_tokens": 15,
+      "prompt_tokens": 75,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-04",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: Every spring, Stefan travels to Quebec for the market season. This year's trip produced 74 lanterns, all carefully labelled.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Stefan",
+        "count": 74,
+        "city": "Quebec"
+      },
+      "response": "NAME=Stefan\nCOUNT=74\nCITY=Quebec",
+      "finish_reason": "stop",
+      "completion_tokens": 16,
+      "prompt_tokens": 71,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-05",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: A collection of 88 teapots fills the workshop that Tomoko keeps. The workshop stands on a quiet street in Sarajevo.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Tomoko",
+        "count": 88,
+        "city": "Sarajevo"
+      },
+      "response": "NAME=Tomoko\nCOUNT=88\nCITY=Sarajevo",
+      "finish_reason": "stop",
+      "completion_tokens": 18,
+      "prompt_tokens": 72,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-06",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: Amara moved to Galway three winters ago. Since the move, Amara has catalogued 3 brass keys.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Amara",
+        "count": 3,
+        "city": "Galway"
+      },
+      "response": "NAME=Amara\nCOUNT=3\nCITY=Galway",
+      "finish_reason": "stop",
+      "completion_tokens": 15,
+      "prompt_tokens": 67,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-07",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: Bruno runs a small shop in Vientiane. The back shelf holds exactly 19 maps. Regulars stop by every morning to look at them.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Bruno",
+        "count": 19,
+        "city": "Vientiane"
+      },
+      "response": "NAME=Bruno\nCOUNT=19\nCITY=Vientiane",
+      "finish_reason": "stop",
+      "completion_tokens": 17,
+      "prompt_tokens": 74,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-08",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: Every spring, Celine travels to Cartagena for the market season. This year's trip produced 34 postcards, all carefully labelled.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Celine",
+        "count": 34,
+        "city": "Cartagena"
+      },
+      "response": "NAME=Celine\nCOUNT=34\nCITY=Cartagena",
+      "finish_reason": "stop",
+      "completion_tokens": 15,
+      "prompt_tokens": 72,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-09",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: A collection of 47 lanterns fills the workshop that Dmitri keeps. The workshop stands on a quiet street in Timisoara.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Dmitri",
+        "count": 47,
+        "city": "Timisoara"
+      },
+      "response": "NAME=Dmitri\nCOUNT=47\nCITY=Timisoara",
+      "finish_reason": "stop",
+      "completion_tokens": 18,
+      "prompt_tokens": 71,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-10",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: Esther moved to Bergen three winters ago. Since the move, Esther has catalogued 63 teapots.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Esther",
+        "count": 63,
+        "city": "Bergen"
+      },
+      "response": "NAME=Esther\nCOUNT=63\nCITY=Bergen",
+      "finish_reason": "stop",
+      "completion_tokens": 16,
+      "prompt_tokens": 68,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-11",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: Farid runs a small shop in Matera. The back shelf holds exactly 79 brass keys. Regulars stop by every morning to look at them.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Farid",
+        "count": 79,
+        "city": "Matera"
+      },
+      "response": "NAME=Farid\nCOUNT=79\nCITY=Matera",
+      "finish_reason": "stop",
+      "completion_tokens": 16,
+      "prompt_tokens": 76,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-12",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: Every spring, Greta travels to Fremantle for the market season. This year's trip produced 91 maps, all carefully labelled.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Greta",
+        "count": 91,
+        "city": "Fremantle"
+      },
+      "response": "NAME=Greta\nCOUNT=91\nCITY=Fremantle",
+      "finish_reason": "stop",
+      "completion_tokens": 17,
+      "prompt_tokens": 70,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-13",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: A collection of 7 postcards fills the workshop that Hiroshi keeps. The workshop stands on a quiet street in Mombasa.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Hiroshi",
+        "count": 7,
+        "city": "Mombasa"
+      },
+      "response": "NAME=Hiroshi\nCOUNT=7\nCITY=Mombasa",
+      "finish_reason": "stop",
+      "completion_tokens": 17,
+      "prompt_tokens": 70,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-14",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: Ines moved to Lisbon three winters ago. Since the move, Ines has catalogued 21 lanterns.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Ines",
+        "count": 21,
+        "city": "Lisbon"
+      },
+      "response": "NAME=Ines\nCOUNT=21\nCITY=Lisbon",
+      "finish_reason": "stop",
+      "completion_tokens": 17,
+      "prompt_tokens": 68,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-15",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many teapots there are, and the city.\n\nText: Jonas runs a small shop in Oslo. The back shelf holds exactly 38 teapots. Regulars stop by every morning to look at them.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Jonas",
+        "count": 38,
+        "city": "Oslo"
+      },
+      "response": "NAME=Jonas\nCOUNT=38\nCITY=Oslo",
+      "finish_reason": "stop",
+      "completion_tokens": 16,
+      "prompt_tokens": 76,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-16",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many brass keys there are, and the city.\n\nText: Every spring, Katya travels to Kyoto for the market season. This year's trip produced 52 brass keys, all carefully labelled.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Katya",
+        "count": 52,
+        "city": "Kyoto"
+      },
+      "response": "NAME=Katya\nCOUNT=52\nCITY=Kyoto",
+      "finish_reason": "stop",
+      "completion_tokens": 16,
+      "prompt_tokens": 72,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-17",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many maps there are, and the city.\n\nText: A collection of 67 maps fills the workshop that Leandro keeps. The workshop stands on a quiet street in Valparaiso.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Leandro",
+        "count": 67,
+        "city": "Valparaiso"
+      },
+      "response": "NAME=Leandro\nCOUNT=67\nCITY=Valparaiso",
+      "finish_reason": "stop",
+      "completion_tokens": 18,
+      "prompt_tokens": 70,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-18",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many postcards there are, and the city.\n\nText: Mireille moved to Marrakesh three winters ago. Since the move, Mireille has catalogued 82 postcards.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Mireille",
+        "count": 82,
+        "city": "Marrakesh"
+      },
+      "response": "NAME=Mireille\nCOUNT=82\nCITY=Marrakesh",
+      "finish_reason": "stop",
+      "completion_tokens": 18,
+      "prompt_tokens": 70,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    },
+    {
+      "id": "keyword-19",
+      "family": "keyword",
+      "prompt": "Read the text and extract three facts: the person's name, how many lanterns there are, and the city.\n\nText: Nadia runs a small shop in Tallinn. The back shelf holds exactly 96 lanterns. Regulars stop by every morning to look at them.\n\nAnswer with three lines: NAME=..., COUNT=..., CITY=...",
+      "expected": {
+        "name": "Nadia",
+        "count": 96,
+        "city": "Tallinn"
+      },
+      "response": "NAME=Nadia\nCOUNT=96\nCITY=Tallinn",
+      "finish_reason": "stop",
+      "completion_tokens": 15,
+      "prompt_tokens": 74,
+      "compliant": true,
+      "accurate": true,
+      "detail": null
+    }
+  ]
+}

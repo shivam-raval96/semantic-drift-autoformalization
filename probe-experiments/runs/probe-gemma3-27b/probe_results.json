@@ -1,0 +1,15 @@
+{
+  "model": "google/gemma-3-27b-it",
+  "tag": "gemma-3-27b-full",
+  "n_texts": 2000,
+  "layers": 63,
+  "d_model": 5376,
+  "sites": {
+    "last": {
+      "error": "25285 non-finite values (float16 overflow at capture)"
+    },
+    "mean": {
+      "error": "21075 non-finite values (float16 overflow at capture)"
+    }
+  }
+}

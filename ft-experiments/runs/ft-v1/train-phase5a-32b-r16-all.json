@@ -1,0 +1,363 @@
+{
+  "run_name": "phase5a-32b-r16-all",
+  "config": {
+    "run_name": "phase5a-32b-r16-all",
+    "model_id": "Qwen/Qwen3-32B",
+    "seed": 0,
+    "rank": 16,
+    "lora_alpha": 16,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "layers_to_transform": null,
+    "batch_size": 1,
+    "grad_accum": 4,
+    "lr": 0.0002,
+    "save_steps": 10,
+    "epochs": 3
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.14.1",
+    "peft": "0.19.1",
+    "gpu": "NVIDIA A100-SXM4-80GB",
+    "quantized_fallback_4bit": false
+  },
+  "dataset": {
+    "samples": 2772,
+    "holdout_samples": 100,
+    "total_tokens": 102662,
+    "blocks_1024": 100
+  },
+  "trainable_param_count": 134217728,
+  "trainable_param_names_sample": [
+    "base_model.model.model.layers.0.self_attn.q_proj.lora_A.default.weight",
+    "base_model.model.model.layers.0.self_attn.q_proj.lora_B.default.weight",
+    "base_model.model.model.layers.0.self_attn.k_proj.lora_A.default.weight",
+    "base_model.model.model.layers.0.self_attn.k_proj.lora_B.default.weight",
+    "base_model.model.model.layers.0.self_attn.v_proj.lora_A.default.weight",
+    "base_model.model.model.layers.0.self_attn.v_proj.lora_B.default.weight"
+  ],
+  "steps": 75,
+  "train_loss_final": 0.454967401822408,
+  "loss_curve": [
+    {
+      "step": 1,
+      "loss": 0.6907392740249634
+    },
+    {
+      "step": 2,
+      "loss": 0.7065073847770691
+    },
+    {
+      "step": 3,
+      "loss": 0.6885303258895874
+    },
+    {
+      "step": 4,
+      "loss": 0.7088390588760376
+    },
+    {
+      "step": 5,
+      "loss": 0.6325587630271912
+    },
+    {
+      "step": 6,
+      "loss": 0.5733420848846436
+    },
+    {
+      "step": 7,
+      "loss": 0.5390143394470215
+    },
+    {
+      "step": 8,
+      "loss": 0.5524796843528748
+    },
+    {
+      "step": 9,
+      "loss": 0.501578152179718
+    },
+    {
+      "step": 10,
+      "loss": 0.546319305896759
+    },
+    {
+      "step": 11,
+      "loss": 0.5273324251174927
+    },
+    {
+      "step": 12,
+      "loss": 0.4628016948699951
+    },
+    {
+      "step": 13,
+      "loss": 0.4743831753730774
+    },
+    {
+      "step": 14,
+      "loss": 0.4520934522151947
+    },
+    {
+      "step": 15,
+      "loss": 0.5121158957481384
+    },
+    {
+      "step": 16,
+      "loss": 0.4836525321006775
+    },
+    {
+      "step": 17,
+      "loss": 0.41031742095947266
+    },
+    {
+      "step": 18,
+      "loss": 0.4612673223018646
+    },
+    {
+      "step": 19,
+      "loss": 0.4961116313934326
+    },
+    {
+      "step": 20,
+      "loss": 0.4774750769138336
+    },
+    {
+      "step": 21,
+      "loss": 0.41149601340293884
+    },
+    {
+      "step": 22,
+      "loss": 0.4349794089794159
+    },
+    {
+      "step": 23,
+      "loss": 0.47971197962760925
+    },
+    {
+      "step": 24,
+      "loss": 0.43445438146591187
+    },
+    {
+      "step": 25,
+      "loss": 0.5140939950942993
+    },
+    {
+      "step": 26,
+      "loss": 0.4464094042778015
+    },
+    {
+      "step": 27,
+      "loss": 0.4319312870502472
+    },
+    {
+      "step": 28,
+      "loss": 0.5066769123077393
+    },
+    {
+      "step": 29,
+      "loss": 0.40438634157180786
+    },
+    {
+      "step": 30,
+      "loss": 0.38233497738838196
+    },
+    {
+      "step": 31,
+      "loss": 0.4641333520412445
+    },
+    {
+      "step": 32,
+      "loss": 0.4186002016067505
+    },
+    {
+      "step": 33,
+      "loss": 0.40527811646461487
+    },
+    {
+      "step": 34,
+      "loss": 0.4719979763031006
+    },
+    {
+      "step": 35,
+      "loss": 0.4538589119911194
+    },
+    {
+      "step": 36,
+      "loss": 0.43461501598358154
+    },
+    {
+      "step": 37,
+      "loss": 0.4234716594219208
+    },
+    {
+      "step": 38,
+      "loss": 0.44813138246536255
+    },
+    {
+      "step": 39,
+      "loss": 0.4444892704486847
+    },
+    {
+      "step": 40,
+      "loss": 0.37486836314201355
+    },
+    {
+      "step": 41,
+      "loss": 0.4284140467643738
+    },
+    {
+      "step": 42,
+      "loss": 0.41727501153945923
+    },
+    {
+      "step": 43,
+      "loss": 0.4295981526374817
+    },
+    {
+      "step": 44,
+      "loss": 0.3867610692977905
+    },
+    {
+      "step": 45,
+      "loss": 0.41322124004364014
+    },
+    {
+      "step": 46,
+      "loss": 0.3657104969024658
+    },
+    {
+      "step": 47,
+      "loss": 0.43422093987464905
+    },
+    {
+      "step": 48,
+      "loss": 0.4167789816856384
+    },
+    {
+      "step": 49,
+      "loss": 0.49884337186813354
+    },
+    {
+      "step": 50,
+      "loss": 0.44205349683761597
+    },
+    {
+      "step": 51,
+      "loss": 0.43158358335494995
+    },
+    {
+      "step": 52,
+      "loss": 0.3954697251319885
+    },
+    {
+      "step": 53,
+      "loss": 0.4041808247566223
+    },
+    {
+      "step": 54,
+      "loss": 0.4362674355506897
+    },
+    {
+      "step": 55,
+      "loss": 0.4302738904953003
+    },
+    {
+      "step": 56,
+      "loss": 0.4183296263217926
+    },
+    {
+      "step": 57,
+      "loss": 0.4115822911262512
+    },
+    {
+      "step": 58,
+      "loss": 0.4313856065273285
+    },
+    {
+      "step": 59,
+      "loss": 0.40706533193588257
+    },
+    {
+      "step": 60,
+      "loss": 0.4376488924026489
+    },
+    {
+      "step": 61,
+      "loss": 0.4070909321308136
+    },
+    {
+      "step": 62,
+      "loss": 0.38981351256370544
+    },
+    {
+      "step": 63,
+      "loss": 0.38009369373321533
+    },
+    {
+      "step": 64,
+      "loss": 0.40991392731666565
+    },
+    {
+      "step": 65,
+      "loss": 0.3963647186756134
+    },
+    {
+      "step": 66,
+      "loss": 0.34862905740737915
+    },
+    {
+      "step": 67,
+      "loss": 0.35765308141708374
+    },
+    {
+      "step": 68,
+      "loss": 0.4048246741294861
+    },
+    {
+      "step": 69,
+      "loss": 0.4177149534225464
+    },
+    {
+      "step": 70,
+      "loss": 0.4428837299346924
+    },
+    {
+      "step": 71,
+      "loss": 0.4202323853969574
+    },
+    {
+      "step": 72,
+      "loss": 0.3711799383163452
+    },
+    {
+      "step": 73,
+      "loss": 0.4126802682876587
+    },
+    {
+      "step": 74,
+      "loss": 0.41361966729164124
+    },
+    {
+      "step": 75,
+      "loss": 0.42981863021850586
+    }
+  ],
+  "probes": {
+    "holdout_loss_base": 2.4947,
+    "holdout_loss_ft": 0.8812,
+    "holdout_ppl_base": 12.12,
+    "holdout_ppl_ft": 2.41,
+    "raw_completion_base": " What is the value of op(1, 2)?\nThe problem gives a recursive definition for the function $ op(x, y) $, which is defined as:\n\n$$\nop(x, y) = op(op(y, y),",
+    "raw_completion_ft": " x = op(op(op(y, y), z), op(z, w))"
+  },
+  "checkpoints_dir": "/models/checkpoints/phase5a-32b-r16-all",
+  "train_seconds": 582.4,
+  "wall_seconds": 670.1,
+  "timestamp": "2026-08-17T12:29:29.621733+00:00"
+}

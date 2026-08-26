@@ -1,0 +1,37 @@
+{
+  "stage": "capture",
+  "tag": "ft8b-smoke",
+  "model_key": "llama-3.1-8b",
+  "model_id": "meta-llama/Llama-3.1-8B-Instruct",
+  "adapter": "/models/checkpoints/phase5a-r16-all/final",
+  "gpu": "A10G",
+  "limit": 4,
+  "contrast_version": "v1",
+  "contrast_sha256": "66d89b16aa925f7fd57e36c170eb7274df3636a0f599c63c210867ee5cca4c00",
+  "batch_size": 8,
+  "out_dir": "/acts/contrast_v1/ft8b-smoke",
+  "n_texts": 8,
+  "shape_per_item": [
+    33,
+    4096
+  ],
+  "token_len": {
+    "min": 153,
+    "max": 187,
+    "mean": 163.0
+  },
+  "answer_token_len": {
+    "min": 19,
+    "max": 22,
+    "mean": 19.8
+  },
+  "gpu_seconds": {
+    "load": 14.2,
+    "forward": 2.3,
+    "save": 2.9
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.0"
+  }
+}

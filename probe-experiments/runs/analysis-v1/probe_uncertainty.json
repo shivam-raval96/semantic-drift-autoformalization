@@ -1,0 +1,101 @@
+{
+  "site": "mean",
+  "n_boot": 400,
+  "n_perm": 40,
+  "models": {
+    "Llama-3.1-8B": {
+      "layer": 28,
+      "n_texts": 2000,
+      "auroc": 0.5204,
+      "ci95": [
+        0.5112,
+        0.5298
+      ],
+      "perm_null_mean": 0.4997,
+      "perm_null_sd": 0.0108,
+      "sigma_above_null": 1.91
+    },
+    "Qwen3.5-4B": {
+      "layer": 17,
+      "n_texts": 2000,
+      "auroc": 0.549,
+      "ci95": [
+        0.5371,
+        0.5617
+      ],
+      "perm_null_mean": 0.5017,
+      "perm_null_sd": 0.0122,
+      "sigma_above_null": 3.89
+    },
+    "Qwen3-32B": {
+      "layer": 61,
+      "n_texts": 2000,
+      "auroc": 0.5985,
+      "ci95": [
+        0.5855,
+        0.6113
+      ],
+      "perm_null_mean": 0.5001,
+      "perm_null_sd": 0.0116,
+      "sigma_above_null": 8.5
+    },
+    "Qwen3.6-27B": {
+      "layer": 49,
+      "n_texts": 2000,
+      "auroc": 0.8146,
+      "ci95": [
+        0.8006,
+        0.8289
+      ],
+      "perm_null_mean": 0.4962,
+      "perm_null_sd": 0.017,
+      "sigma_above_null": 18.68
+    },
+    "Llama-3.3-70B": {
+      "layer": 38,
+      "n_texts": 2000,
+      "auroc": 0.6337,
+      "ci95": [
+        0.6219,
+        0.6469
+      ],
+      "perm_null_mean": 0.5017,
+      "perm_null_sd": 0.0159,
+      "sigma_above_null": 8.32
+    }
+  },
+  "paired_deltas": {
+    "Qwen3.5-4B - Llama-3.1-8B": {
+      "delta": 0.0286,
+      "ci95": [
+        0.0164,
+        0.0402
+      ],
+      "p_gt_0": 1.0
+    },
+    "Qwen3-32B - Qwen3.5-4B": {
+      "delta": 0.0495,
+      "ci95": [
+        0.0352,
+        0.0651
+      ],
+      "p_gt_0": 1.0
+    },
+    "Qwen3.6-27B - Qwen3-32B": {
+      "delta": 0.2161,
+      "ci95": [
+        0.1993,
+        0.2334
+      ],
+      "p_gt_0": 1.0
+    },
+    "Llama-3.3-70B - Qwen3.6-27B": {
+      "delta": -0.181,
+      "ci95": [
+        -0.1972,
+        -0.166
+      ],
+      "p_gt_0": 0.0
+    }
+  }
+}

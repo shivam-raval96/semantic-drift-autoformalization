@@ -1,0 +1,58 @@
+{
+  "corpus_version": "train_v2",
+  "generator": "ft-experiments/v2/build_train_v2.py",
+  "repo_commit": "52e9ffb2a84147527ed08028ed66a559f56b36dd",
+  "source": "train_v1 pairs re-rendered",
+  "train_v1_files_sha256": {
+    "train.jsonl": "2bf10222898b45398d9f304a8484601cf2caacfeee49b61f88c47e6c0f79e94d",
+    "holdout.jsonl": "20567e13e69de9c1ed6229089b1ad49d6f09560f1a16a9796a61662184c2750c",
+    "synthetic-laws.txt": "729734b1bfa7fceff467390747dd53171b17a00cbe760fdf851fe111284c690a"
+  },
+  "theme_holdout": "tea",
+  "train_themes": [
+    "graft",
+    "paint",
+    "signal"
+  ],
+  "theme_distribution": {
+    "graft": 931,
+    "paint": 922,
+    "signal": 1019
+  },
+  "disjointness_gate": {
+    "pair_hashes_vs": "all 9 SAIR subsets (2,669 rows)",
+    "law_hashes_vs": "eval_v1 evaluation subsets only (decision 2026-07-24)",
+    "pair_provenance": "every pair_hash present in its train_v1 file"
+  },
+  "render_drops_per_tier": {
+    "easy": 0,
+    "medium": 0,
+    "hard": 0,
+    "holdout": 0
+  },
+  "tiers": {
+    "easy": {
+      "n": 772,
+      "render_drops": 0
+    },
+    "medium": {
+      "n": 1000,
+      "render_drops": 0
+    },
+    "hard": {
+      "n": 1000,
+      "render_drops": 0
+    },
+    "holdout": {
+      "n": 100,
+      "render_drops": 0
+    }
+  },
+  "n_train": 2772,
+  "n_holdout": 100,
+  "files": {
+    "train.jsonl": "e51ee631c7bec93f7a192f67442e1d4a224cac5f419ea8880e1c0da6fe51b748",
+    "holdout.jsonl": "f44a4b498995fee80d26ce90cc6db3eeb9e5ba65c8fd9ad51eaf1573345082a4",
+    "synthetic-laws.txt": "729734b1bfa7fceff467390747dd53171b17a00cbe760fdf851fe111284c690a"
+  }
+}
