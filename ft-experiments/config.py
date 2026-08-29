@@ -33,6 +33,7 @@ PATHS = {
     "eval_v1": ROOT / "eval_v1",
     "train_v1": ROOT / "train_v1",
     "train_v2": ROOT / "train_v2",
+    "stage1": ROOT / "stage1",
     "runs": ROOT / "runs",
     "checkpoints_volume": "/models/checkpoints",  # path inside Modal containers
 }

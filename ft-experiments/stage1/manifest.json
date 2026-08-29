@@ -1,0 +1,114 @@
+{
+  "corpus_version": "stage1",
+  "generator": "ft-experiments/data-gen/build_stage1.py",
+  "purpose": "opaque-label rigid-grammar familiarity (recognition only)",
+  "task_types": [
+    "identify",
+    "validate"
+  ],
+  "labels": {
+    "RG-1": "a",
+    "RG-2": "b_near",
+    "RG-3": "b_far"
+  },
+  "grammar_family": {
+    "a": "prefix",
+    "b_near": "prefix",
+    "b_far": "infix"
+  },
+  "prompt_sha16": "3d6aa0774d140e1b",
+  "source": "train_v2 pairs (train+holdout), deduped by pair class",
+  "train_v2_manifest_sha256": "886d6730f49c941ac0c18a19c1ef96583044f56a121a998787f6b892e367b088",
+  "train_v2_files_sha256": {
+    "train.jsonl": "e51ee631c7bec93f7a192f67442e1d4a224cac5f419ea8880e1c0da6fe51b748",
+    "holdout.jsonl": "f44a4b498995fee80d26ce90cc6db3eeb9e5ba65c8fd9ad51eaf1573345082a4",
+    "synthetic-laws.txt": "729734b1bfa7fceff467390747dd53171b17a00cbe760fdf851fe111284c690a"
+  },
+  "seed": 0,
+  "eval_law_threshold_mod10": 3,
+  "quotas_per_grammar": {
+    "train": {
+      "identify": 300,
+      "validate_pos": 150,
+      "validate_neg": 150
+    },
+    "eval": {
+      "identify": 81,
+      "validate_pos": 42,
+      "validate_neg": 42
+    }
+  },
+  "neg_types": [
+    "wrong_grammar",
+    "malformed",
+    "mismatched_labels"
+  ],
+  "pools": {
+    "unique_pairs": 2872,
+    "train_pool": 1369,
+    "eval_pool": 280,
+    "held_out_law_classes": 316
+  },
+  "disjointness": {
+    "train_eval_law_overlap": 0,
+    "train_eval_pair_overlap": 0
+  },
+  "splits": {
+    "train": {
+      "n": 1800,
+      "by_task": {
+        "identify": 900,
+        "validate": 900
+      },
+      "by_label": {
+        "RG-1": 300,
+        "RG-2": 300,
+        "RG-3": 300
+      },
+      "validate_by_polarity": {
+        "yes": 450,
+        "no": 450
+      },
+      "validate_neg_by_corruption": {
+        "wrong_grammar": 150,
+        "malformed": 150,
+        "mismatched_labels": 150
+      },
+      "by_grammar": {
+        "a": 600,
+        "b_near": 600,
+        "b_far": 600
+      }
+    },
+    "eval": {
+      "n": 495,
+      "by_task": {
+        "identify": 243,
+        "validate": 252
+      },
+      "by_label": {
+        "RG-1": 81,
+        "RG-2": 81,
+        "RG-3": 81
+      },
+      "validate_by_polarity": {
+        "yes": 126,
+        "no": 126
+      },
+      "validate_neg_by_corruption": {
+        "wrong_grammar": 42,
+        "malformed": 42,
+        "mismatched_labels": 42
+      },
+      "by_grammar": {
+        "a": 165,
+        "b_near": 165,
+        "b_far": 165
+      }
+    }
+  },
+  "files": {
+    "train.jsonl": "451f573bd1e74e495482b9342bb5d03f6a2798509b740f1be7687e9ce8237bdf",
+    "eval.jsonl": "67da8f1db974da556373c597164f17befb314cdc8f6d5e747b077820d46d180a"
+  }
+}

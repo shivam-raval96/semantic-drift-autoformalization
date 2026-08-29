@@ -281,6 +281,18 @@ GRAMMARS = {
 }
 
 
+# ------------------------------------------------- Opaque label layer (stage 1)
+
+# Stage 1 teaches a model to associate an opaque label with each grammar's
+# surface form. The label is deliberately meaningless so the association is
+# learned rather than read off a descriptive name; the structural key and
+# family stay code-side (never shown to the model). This is a thin view over
+# GRAMMARS — the frozen v2 keys are untouched.
+RG_LABELS = {"RG-1": "a", "RG-2": "b_near", "RG-3": "b_far"}
+GRAMMAR_TO_LABEL = {key: label for label, key in RG_LABELS.items()}
+GRAMMAR_FAMILY = {"a": "prefix", "b_near": "prefix", "b_far": "infix"}
+
+
 # ----------------------------------------------------------------- Grading
 
 

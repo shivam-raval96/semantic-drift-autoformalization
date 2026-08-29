@@ -1,0 +1,11 @@
+# GPU-box deps for running stage 1 on Lambda (train + eval in-process).
+# On Modal these live in the container images; on a raw Lambda instance
+# install them into the box's env:  pip install -r requirements-lambda.txt
+torch
+transformers
+peft
+accelerate
+bitsandbytes
+huggingface_hub[hf_transfer]
+vllm
+datasets
