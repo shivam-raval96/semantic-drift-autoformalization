@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stage 1 — Learning to recognize a formal notation by name</title>
+<style>
+  :root { --ink:#1a1a1a; --mut:#666; --line:#e4e4e4; --accent:#0b6; --bad:#c33; --bg:#fafafa; }
+  * { box-sizing:border-box; }
+  body { font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+         color:var(--ink); max-width:780px; margin:48px auto; padding:0 22px; }
+  h1 { font-size:25px; line-height:1.25; margin:0 0 6px; }
+  .sub { color:var(--mut); margin:0 0 30px; }
+  h2 { font-size:13px; letter-spacing:.07em; text-transform:uppercase;
+       color:var(--mut); margin:30px 0 10px; }
+  p { margin:0 0 12px; }
+  ul { margin:0 0 12px; padding-left:20px; }
+  li { margin:0 0 6px; }
+  table { border-collapse:collapse; width:100%; margin:6px 0; }
+  th,td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); }
+  th { font-size:13px; color:var(--mut); font-weight:600; }
+  td.n { text-align:right; font-variant-numeric:tabular-nums; }
+  .before { color:var(--bad); font-weight:600; }
+  .after { color:var(--accent); font-weight:700; }
+  code { background:var(--bg); border:1px solid var(--line); border-radius:4px;
+         padding:1px 5px; font:14px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .specs { display:grid; grid-template-columns:170px 1fr; gap:6px 16px;
+           background:var(--bg); border:1px solid var(--line); border-radius:8px;
+           padding:16px 18px; }
+  .specs dt { color:var(--mut); font-size:14px; }
+  .specs dd { margin:0; font-size:14px; }
+  .headline { font-size:18px; line-height:1.4; border-left:3px solid var(--accent);
+              padding:2px 0 2px 16px; margin:8px 0; }
+  .note { color:var(--mut); font-size:14px; }
+</style>
+</head>
+<body>
+
+  <h1>Learning to recognize a formal notation by name</h1>
+  <p class="sub">Stage 1 &middot; Llama&#8209;3.1&#8209;8B &middot; recognition only (no translation)</p>
+
+  <h2>Question</h2>
+  <p>
+    We took three different formal notations for writing the same kind of math and
+    gave each a meaningless name. Nothing in the model's input says what the names
+    mean. Can the model learn, from examples alone, to tell the notations apart by
+    name and to check whether a statement really belongs to a named notation?
+  </p>
+
+  <h2>The three notations and their labels</h2>
+  <p>
+    Each notation is referred to only by an arbitrary label &mdash; <code>RG-1</code>,
+    <code>RG-2</code>, <code>RG-3</code> &mdash; chosen so the model cannot guess
+    meaning from the name and must learn it from examples.
+  </p>
+  <ul>
+    <li><code>RG-1</code> and <code>RG-2</code> are two prefix-style notations (the operation is written before its inputs).</li>
+    <li><code>RG-3</code> is an infix-style notation (the operation is written between its inputs).</li>
+  </ul>
+
+  <h2>How we built the dataset</h2>
+  <ul>
+    <li>We started from a fixed bank of formal statements whose correct notation and validity are known exactly &mdash; a deterministic program writes each statement, so no human or model ever labels anything.</li>
+    <li>Each statement is rendered into all three notations, giving matched examples across <code>RG-1</code>, <code>RG-2</code>, <code>RG-3</code>.</li>
+    <li>We split by underlying problem: a problem's statements go <em>entirely</em> to training or <em>entirely</em> to the test. The test therefore uses problems the model never saw in training, so it cannot succeed by memorizing.</li>
+    <li><strong>1,800 training examples</strong> and <strong>495 test examples</strong>, balanced evenly across the three labels and across valid/invalid answers.</li>
+  </ul>
+
+  <h2>The two tasks</h2>
+  <ul>
+    <li><strong>Name the notation.</strong> Given a statement, output its label (<code>RG-1</code>, <code>RG-2</code>, or <code>RG-3</code>).</li>
+    <li><strong>Judge validity.</strong> Given a statement and a label, answer <em>Yes</em> or <em>No</em>: is this a genuine example of that notation? Invalid cases were built three ways &mdash; a statement from a different notation, broken syntax, or the right notation carrying the wrong internal labels.</li>
+  </ul>
+
+  <h2>Setup</h2>
+  <dl class="specs">
+    <dt>Base model</dt><dd>Llama-3.1-8B-Instruct</dd>
+    <dt>Fine-tuning</dt><dd>LoRA, rank 16, all layers</dd>
+    <dt>Learning rate</dt><dd>2e-4, cosine schedule, 3% warmup</dd>
+    <dt>Training length</dt><dd>3 epochs (~675 steps), effective batch size 8</dd>
+    <dt>Objective</dt><dd>loss on the answer only (the question is masked)</dd>
+    <dt>Evaluation</dt><dd>greedy decoding on the 495 held-out examples</dd>
+  </dl>
+
+  <h2>Result</h2>
+  <table>
+    <thead>
+      <tr><th>Test</th><th class="n">Untrained</th><th class="n">After training</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Overall</td><td class="n before">14.9%</td><td class="n after">100%</td></tr>
+      <tr><td>Name the notation</td><td class="n before">0%</td><td class="n after">100%</td></tr>
+      <tr><td>Judge validity</td><td class="n before">29.4%</td><td class="n after">100%</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Same questions and same scoring for both columns, so the gain is learned, not given away by the test. The untrained model is the control.</p>
+
+  <h2>What it means</h2>
+  <p class="headline">
+    A model can learn to attach an arbitrary name to a formal notation from examples
+    alone, and does so completely &mdash; every held-out case correct, including the
+    hardest ones (well-formed statements labelled with the wrong notation).
+  </p>
+  <p>
+    Because accuracy reaches 100%, recognition is easy once taught. The open question
+    it sets up: does teaching this familiarity first help the model do the harder job
+    of faithful translation, and does it carry over to notations never trained on?
+  </p>
+
+</body>
+</html>

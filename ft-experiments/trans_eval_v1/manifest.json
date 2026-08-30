@@ -1,0 +1,46 @@
+{
+  "corpus_version": "trans_eval_v1",
+  "generator": "ft-experiments/data-gen/build_trans_eval.py",
+  "purpose": "translation eval: eval_v1 problems rendered into all four RGs",
+  "source": "eval_v1 (777 problems, law-disjoint from train_v2)",
+  "labels": {
+    "RG-1": "a",
+    "RG-2": "b_near",
+    "RG-3": "b_far",
+    "RG-4": "sexpr"
+  },
+  "grammar_family": {
+    "a": "prefix",
+    "b_near": "prefix",
+    "b_far": "infix",
+    "sexpr": "prefix"
+  },
+  "ref_fields": {
+    "RG-1": "ref_rg1",
+    "RG-2": "ref_rg2",
+    "RG-3": "ref_rg3",
+    "RG-4": "ref_rg4"
+  },
+  "eval_v1_files_sha256": {
+    "eval_normal.jsonl": "a1600e911c86a04c7723668a53b3a46affcf16017ef6db109a7c2af96c9aa252",
+    "eval_hard.jsonl": "93208602d7105a04b0e5c745e058ef43160b097ab9701b3709a0a42372516243",
+    "eval_extra_hard.jsonl": "4fb6d6970ab3c608480d11ae9fdd2544bd7720f26b27ce3727351048688a417e",
+    "eval_order5.jsonl": "d12d3db085d58de58815d66fc0920a2fd2db433d8332139c81bc7249538cd8d0"
+  },
+  "n": 777,
+  "by_tier": {
+    "extra_hard": 200,
+    "hard": 197,
+    "normal": 180,
+    "order5": 200
+  },
+  "by_theme": {
+    "graft": 213,
+    "paint": 176,
+    "signal": 198,
+    "tea": 190
+  },
+  "files": {
+    "eval.jsonl": "b3a838c5e31b275aca71ff31c4ec39d18fdc8f5223a3382b4fac63eb9bd111b5"
+  }
+}

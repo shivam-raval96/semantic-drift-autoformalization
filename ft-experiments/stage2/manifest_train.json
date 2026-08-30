@@ -1,0 +1,23 @@
+{
+  "corpus_version": "stage2_train",
+  "generator": "ft-experiments/data-gen/build_stage2.py",
+  "source": "train_v2/train.jsonl",
+  "train_v2_train_sha256": "e51ee631c7bec93f7a192f67442e1d4a224cac5f419ea8880e1c0da6fe51b748",
+  "rg1_reuses": "train_v2/train.jsonl (no re-render; used as-is for T1/D0)",
+  "rg2": {
+    "n": 2772,
+    "grammar": "b_near",
+    "label": "RG-2"
+  },
+  "singletheme": {
+    "theme": "signal",
+    "pool": 984,
+    "upsampled_to": 2772,
+    "grammar": "a",
+    "label": "RG-1"
+  },
+  "files": {
+    "train_v2_rg2.jsonl": "9d84093c1673ce8cf614ef17c0d164aa509701c8682b76c7e8e75a93c6219ee8",
+    "train_v2_rg1_singletheme.jsonl": "31be660f0421df89501db6ffc974529cb7be21840bfbccb73c6b2b171c83d307"
+  }
+}

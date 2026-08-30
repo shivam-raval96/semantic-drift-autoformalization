@@ -274,10 +274,112 @@ def _parse_answer_b_far(text: str) -> Tuple[Equation, Equation]:
     return _parse_infix_equation(law_text), _parse_infix_equation(derive_text)
 
 
+# ------------------------------------------------ S-expression (RG-4, sexpr)
+
+# A fourth surface, held out of stage-1 familiarity and stage-2 translation
+# training: fully parenthesized PREFIX with the operator first inside the
+# parens and no comma — (⋆ left right). Distinct from a/b_near (op(a, b),
+# function-call with comma) and b_far ((a ∘ b), infix). Same ASTs, same
+# first-appearance variable renaming.
+_SEXPR_OP = "⋆"
+
+
+def sexpr_equation(lhs: Term, rhs: Term, op_token: str = _SEXPR_OP) -> str:
+    """One equation as fully parenthesized prefix S-expression text
+    (`(⋆ left right)`), variables renamed as in prefix_equation."""
+    renaming = _renaming(lhs, rhs)
+
+    def go(t: Term) -> str:
+        if isinstance(t, Var):
+            return renaming[t.name]
+        return f"({op_token} {go(t.left)} {go(t.right)})"
+
+    return f"{go(lhs)} = {go(rhs)}"
+
+
+def _tokenize_sexpr(text: str) -> List[str]:
+    """`()=` and the op symbol are single tokens; a name is a letter then
+    letters/digits/underscores."""
+    tokens: List[str] = []
+    i = 0
+    while i < len(text):
+        c = text[i]
+        if c.isspace():
+            i += 1
+        elif c in "()=" or c == _SEXPR_OP:
+            tokens.append(c)
+            i += 1
+        elif c.isalpha():
+            j = i
+            while j < len(text) and (text[j].isalnum() or text[j] == "_"):
+                j += 1
+            tokens.append(text[i:j])
+            i = j
+        else:
+            raise BAnswerParseError(f"unexpected character {c!r}")
+    return tokens
+
+
+class _SexprParser:
+    """term := variable | '(' OP term term ')' — prefix, operator-first."""
+
+    def __init__(self, tokens: List[str]):
+        self.tokens = tokens
+        self.pos = 0
+
+    def peek(self) -> Optional[str]:
+        return self.tokens[self.pos] if self.pos < len(self.tokens) else None
+
+    def take(self) -> Optional[str]:
+        token = self.peek()
+        self.pos += 1
+        return token
+
+    def expect(self, token: str) -> None:
+        got = self.take()
+        if got != token:
+            raise BAnswerParseError(f"expected {token!r}, got {got!r}")
+
+    def parse_term(self, depth: int = 0) -> Term:
+        if depth > _MAX_TERM_DEPTH:
+            raise BAnswerParseError(f"term nested deeper than {_MAX_TERM_DEPTH}")
+        token = self.take()
+        if token == "(":
+            self.expect(_SEXPR_OP)
+            left = self.parse_term(depth + 1)
+            right = self.parse_term(depth + 1)
+            self.expect(")")
+            return Op(left, right)
+        if token is None or token in "()=" or token == _SEXPR_OP:
+            raise BAnswerParseError(
+                f"expected a variable or '(' + {_SEXPR_OP!r}, got {token!r}")
+        return Var(token)
+
+
+def parse_sexpr_equation(text: str) -> Equation:
+    parser = _SexprParser(_tokenize_sexpr(text))
+    lhs = parser.parse_term()
+    parser.expect("=")
+    rhs = parser.parse_term()
+    if parser.peek() is not None:
+        raise BAnswerParseError(f"trailing tokens in {text!r}")
+    return lhs, rhs
+
+
+def _serialize_sexpr(e: Equation, f: Equation) -> str:
+    return f"PREMISE: {sexpr_equation(*e)}\nCLAIM: {sexpr_equation(*f)}"
+
+
+def _parse_answer_sexpr(text: str) -> Tuple[Equation, Equation]:
+    premise_text, claim_text = _extract(text, ("PREMISE", "CLAIM"))
+    return parse_sexpr_equation(premise_text), parse_sexpr_equation(claim_text)
+
+
 GRAMMARS = {
     "a": Grammar("a", ("ASSUME", "ASK"), _serialize_a, _parse_answer_a),
     "b_near": Grammar("b_near", ("GIVEN", "SHOW"), _serialize_b_near, _parse_answer_b_near),
     "b_far": Grammar("b_far", ("LAW", "DERIVE"), _serialize_b_far, _parse_answer_b_far),
+    "sexpr": Grammar("sexpr", ("PREMISE", "CLAIM"), _serialize_sexpr, _parse_answer_sexpr),
 }
 
 
@@ -288,9 +390,9 @@ GRAMMARS = {
 # learned rather than read off a descriptive name; the structural key and
 # family stay code-side (never shown to the model). This is a thin view over
 # GRAMMARS — the frozen v2 keys are untouched.
-RG_LABELS = {"RG-1": "a", "RG-2": "b_near", "RG-3": "b_far"}
+RG_LABELS = {"RG-1": "a", "RG-2": "b_near", "RG-3": "b_far", "RG-4": "sexpr"}
 GRAMMAR_TO_LABEL = {key: label for label, key in RG_LABELS.items()}
-GRAMMAR_FAMILY = {"a": "prefix", "b_near": "prefix", "b_far": "infix"}
+GRAMMAR_FAMILY = {"a": "prefix", "b_near": "prefix", "b_far": "infix", "sexpr": "prefix"}
 
 
 # ----------------------------------------------------------------- Grading

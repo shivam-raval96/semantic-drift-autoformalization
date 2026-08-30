@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+"""Shared pieces for stage 2: translation prompts + grading across the RGs.
+
+Both train_stage2_lambda.py and eval/stage2_eval_lambda.py import this so a
+story is turned into the SAME prompt at train and eval time (byte-identical),
+and every grammar grades through the one seam (grammars.grade_b). Prompts are
+built with the repo's own build_prompt + wrap_prompt, exactly as train_pairs
+and modal_eval do. RG-1/2/3 use the frozen repo templates; RG-4 uses the
+held-out template under stage2/prompts/.
+"""
+
+from __future__ import annotations
+
+import hashlib
+import sys
+
+import stage1lib as s1
+from ftlib import ftc
+
+grammars = s1.grammars
+GRAMMARS = s1.GRAMMARS
+RG_LABELS = dict(s1.RG_LABELS)               # RG-N -> grammar key
+GRAMMAR_TO_LABEL = dict(s1.GRAMMAR_TO_LABEL)  # grammar key -> RG-N
+
+REPO = ftc.REPO
+if str(REPO) not in sys.path:
+    sys.path.insert(0, str(REPO))
+from benchmark import wrap_prompt          # noqa: E402
+from checkform import build_prompt         # noqa: E402
+
+PROMPTS = ftc.PATHS["prompts"]                    # informalizing-etp/prompts
+STAGE2_PROMPTS = ftc.PATHS["stage2"] / "prompts"  # our tree (RG-4)
+
+# grammar key -> translation prompt template
+TEMPLATE_PATHS = {
+    "a": PROMPTS / "formalize_prompt.md",
+    "b_near": PROMPTS / "formalize_prompt_bnear.md",
+    "b_far": PROMPTS / "formalize_prompt_bfar.md",
+    "sexpr": STAGE2_PROMPTS / "formalize_prompt_rg4.md",
+}
+
+# frozen digests for the repo templates (config.EVAL); RG-4 is ours (unpinned)
+_FROZEN_SHAS = ftc.EVAL["template_shas"]
+_TEMPLATE_FILE = {
+    "a": "formalize_prompt.md",
+    "b_near": "formalize_prompt_bnear.md",
+    "b_far": "formalize_prompt_bfar.md",
+}
+
+
+def key_for(label_or_key: str) -> str:
+    """Accept 'RG-1'/'rg1'/'a' and return the grammar key."""
+    token = label_or_key.strip()
+    if token in GRAMMARS:
+        return token
+    up = token.upper().replace("RG", "RG-").replace("--", "-")
+    if up in RG_LABELS:
+        return RG_LABELS[up]
+    raise KeyError(f"unknown grammar {label_or_key!r}")
+
+
+def template_sha(key: str) -> str:
+    return hashlib.sha256(TEMPLATE_PATHS[key].read_bytes()).hexdigest()
+
+
+def assert_frozen_templates() -> None:
+    """The three repo templates must match their pinned digests; RG-4 is
+    ours and only recorded."""
+    for key, fname in _TEMPLATE_FILE.items():
+        got = template_sha(key)
+        want = _FROZEN_SHAS[fname]
+        assert got == want, f"frozen template changed on disk: {fname} {got}"
+
+
+def build_translation_prompt(story: str, key: str, model_id: str) -> str:
+    base = build_prompt({"story": story}, template_path=TEMPLATE_PATHS[key])
+    return wrap_prompt(base, "off", model_id, "story")
+
+
+def grade(response: str, key: str, canonical_e: str, canonical_f: str) -> dict:
+    return grammars.grade_b(response, key, canonical_e, canonical_f)

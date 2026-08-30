@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stage 2 — Does familiarity help a model translate, and how far does it carry?</title>
+<style>
+  :root { --ink:#1a1a1a; --mut:#666; --line:#e4e4e4; --accent:#0b6; --bad:#c33; --bg:#fafafa; }
+  * { box-sizing:border-box; }
+  body { font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+         color:var(--ink); max-width:800px; margin:48px auto; padding:0 22px; }
+  h1 { font-size:25px; line-height:1.25; margin:0 0 6px; }
+  .sub { color:var(--mut); margin:0 0 30px; }
+  h2 { font-size:13px; letter-spacing:.07em; text-transform:uppercase;
+       color:var(--mut); margin:30px 0 10px; }
+  p { margin:0 0 12px; }
+  ul { margin:0 0 12px; padding-left:20px; }
+  li { margin:0 0 6px; }
+  table { border-collapse:collapse; width:100%; margin:6px 0; }
+  th,td { text-align:left; padding:9px 12px; border-bottom:1px solid var(--line); }
+  th { font-size:13px; color:var(--mut); font-weight:600; }
+  td.n { text-align:right; font-variant-numeric:tabular-nums; }
+  .before { color:var(--bad); font-weight:600; }
+  .after { color:var(--accent); font-weight:700; }
+  .pending { color:var(--mut); }
+  code { background:var(--bg); border:1px solid var(--line); border-radius:4px;
+         padding:1px 5px; font:14px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .specs { display:grid; grid-template-columns:170px 1fr; gap:6px 16px;
+           background:var(--bg); border:1px solid var(--line); border-radius:8px;
+           padding:16px 18px; }
+  .specs dt { color:var(--mut); font-size:14px; }
+  .specs dd { margin:0; font-size:14px; }
+  .headline { font-size:18px; line-height:1.4; border-left:3px solid var(--accent);
+              padding:2px 0 2px 16px; margin:8px 0; }
+  .note { color:var(--mut); font-size:14px; }
+</style>
+</head>
+<body>
+
+  <h1>Does learning a notation's name first help a model translate into it?</h1>
+  <p class="sub">Stage 2 &middot; Llama&#8209;3.1&#8209;8B &middot; translation (story &rarr; formal notation)</p>
+
+  <h2>Question</h2>
+  <p>
+    Stage 1 showed a model can learn to recognize three formal notations by an
+    arbitrary name. Stage 2 asks the harder question: does that familiarity help
+    the model actually <em>write</em> the notation from a plain-language story, and
+    how far does a single translation skill carry &mdash; to a notation it was
+    never trained to produce, and to a story style it never saw?
+  </p>
+
+  <h2>The setup in one picture</h2>
+  <ul>
+    <li>Every training example is a (story, notation) pair. The model reads the
+      story and must produce the matching formal statement; loss is on the answer
+      only.</li>
+    <li><strong>Staged</strong> runs start from the stage-1 model (already familiar
+      with the notations). The <strong>direct</strong> run starts from the plain
+      base. Everything else is identical, so any difference is the familiarity.</li>
+    <li>One story theme (<code>tea</code>) and one whole notation (<code>RG-4</code>,
+      a bracketed prefix form <code>(&#8902; left right)</code>) are held out of all
+      training, to test carry-over.</li>
+  </ul>
+
+  <h2>The runs</h2>
+  <table>
+    <thead><tr><th>Run</th><th>Starts from</th><th>Trains on</th><th>Tests</th></tr></thead>
+    <tbody>
+      <tr><td>F0</td><td>stage-1 model</td><td>&mdash; (baseline)</td><td>familiarity alone</td></tr>
+      <tr><td>T1</td><td>staged</td><td>RG-1, all themes but tea</td><td>staged arm; carry-over</td></tr>
+      <tr><td>T2</td><td>continues T1</td><td>+ RG-2</td><td>two notations vs one</td></tr>
+      <tr><td>T3</td><td>staged</td><td>RG-1, one theme only</td><td>one theme vs many</td></tr>
+      <tr><td>D0</td><td>plain base</td><td>RG-1, all themes but tea</td><td>direct arm</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Setup</h2>
+  <dl class="specs">
+    <dt>Base model</dt><dd>Llama-3.1-8B-Instruct</dd>
+    <dt>Fine-tuning</dt><dd>LoRA, rank 16, all layers</dd>
+    <dt>Learning rate</dt><dd>2e-4, cosine schedule, 3% warmup</dd>
+    <dt>Training length</dt><dd>3 epochs, effective batch size 8, 2,772 pairs</dd>
+    <dt>Objective</dt><dd>loss on the answer only (the story prompt is masked)</dd>
+    <dt>Evaluation</dt><dd>greedy decoding on 777 held-out problems (190 are the tea theme)</dd>
+    <dt>Scoring</dt><dd>mechanical checker: correct / wrong / unparseable</dd>
+  </dl>
+
+  <!-- Fill from runs/stage2/eval-*.json after the pod runs. Each cell = summary.overall.correct_pct
+       (tea cells = summary.by_theme.tea.correct_pct). -->
+
+  <h2>Result &mdash; familiarity alone (exp-1)</h2>
+  <table>
+    <thead><tr><th>Translate into</th><th class="n">Base</th><th class="n">F0 (familiar)</th></tr></thead>
+    <tbody>
+      <tr><td>RG-1</td><td class="n pending">&mdash;</td><td class="n pending">&mdash;</td></tr>
+      <tr><td>RG-2</td><td class="n pending">&mdash;</td><td class="n pending">&mdash;</td></tr>
+      <tr><td>RG-3</td><td class="n pending">&mdash;</td><td class="n pending">&mdash;</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Pending pod runs. Expected low: recognizing a notation is not the same as producing it.</p>
+
+  <h2>Result &mdash; staged vs direct, and carry-over</h2>
+  <table>
+    <thead><tr><th>Test (correct %)</th><th class="n">Base</th><th class="n">FT</th></tr></thead>
+    <tbody>
+      <tr><td>RG-1, trained target (T1 staged)</td><td class="n pending">&mdash;</td><td class="n pending">&mdash;</td></tr>
+      <tr><td>RG-1, trained target (D0 direct)</td><td class="n pending">&mdash;</td><td class="n pending">&mdash;</td></tr>
+      <tr><td>RG-4, unseen notation (T1)</td><td class="n pending">&mdash;</td><td class="n pending">&mdash;</td></tr>
+      <tr><td>RG-4, unseen notation (T2, two grammars)</td><td class="n pending">&mdash;</td><td class="n pending">&mdash;</td></tr>
+      <tr><td>tea, unseen theme (T1, many themes)</td><td class="n pending">&mdash;</td><td class="n pending">&mdash;</td></tr>
+      <tr><td>tea, unseen theme (T3, one theme)</td><td class="n pending">&mdash;</td><td class="n pending">&mdash;</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Pending pod runs. N=777 per cell (190 for tea); tiers are 180&ndash;200 items, so &plusmn;3&ndash;4 points is noise.</p>
+
+  <h2>What we are looking for</h2>
+  <p class="headline">
+    Whether faithful translation is a general skill or a per-notation one: if T1
+    carries to the unseen RG-4 and the unseen tea theme, the skill generalizes; if
+    it collapses there, the model learned a specific notation, not translation.
+    Staged (T1) vs direct (D0) says whether recognizing a notation first buys any
+    of that.
+  </p>
+
+</body>
+</html>
