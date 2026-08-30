@@ -9,3 +9,9 @@ bitsandbytes
 huggingface_hub[hf_transfer]
 vllm
 datasets
+# Pin the compiled numeric stack so a stale system dist-packages build (built
+# for numpy<2) doesn't shadow these and break the transformers import chain.
+numpy>=2.0
+scipy>=1.13
+scikit-learn>=1.4
+pandas>=2.2

@@ -103,6 +103,12 @@ Every eval writes `runs/stage2/eval-<run>-<label>.json` with overall +
 per-tier + per-theme verdicts (correct / wrong / unparseable). Training loss
 curves come free in each run's `record.json`.
 
+The eval loads each adapter on the base it was **trained** against: it reads
+`base_model_name_or_path` from the adapter's `adapter_config.json`, so the
+staged adapters (T1/T2/T3) automatically evaluate on the F0-merged base rather
+than plain Llama (evaluating them on plain Llama would silently drop F0).
+Override with `--model-id <path-or-hub-id>` if the merged dir has moved.
+
 ## What each result answers
 
 - **exp-1 (F0)** — does familiarity alone confer any translation ability?

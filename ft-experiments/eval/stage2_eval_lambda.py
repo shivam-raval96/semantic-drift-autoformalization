@@ -167,9 +167,26 @@ def derive_run_name(adapter: str) -> str:
     return parts[-2] if parts and parts[-1] in ("final", "") else parts[-1]
 
 
+def resolve_base_model(model_id_arg: str, adapter: str) -> str:
+    """The base the adapter's LoRA deltas were trained against. Staged
+    adapters (T1/T2/T3) were trained on the F0-merged base, so evaluating
+    them on plain Llama would silently drop F0. Prefer an explicit
+    --model-id; otherwise read the adapter's own recorded base."""
+    if model_id_arg:
+        return model_id_arg
+    if adapter:
+        cfg = Path(adapter) / "adapter_config.json"
+        if cfg.is_file():
+            base = json.loads(cfg.read_text()).get("base_model_name_or_path")
+            if base:
+                return base
+    return DEFAULT_MODEL
+
+
 def main(argv=None) -> int:
     cli = argparse.ArgumentParser(description="Lambda-native stage-2 translation eval.")
-    cli.add_argument("--model-id", default=DEFAULT_MODEL)
+    cli.add_argument("--model-id", default="",
+                     help="base to load; default = the adapter's recorded base, else plain Llama")
     cli.add_argument("--adapter", default="", help="local adapter folder; empty = base control")
     cli.add_argument("--adapter-rank", type=int, default=16)
     cli.add_argument("--grammars", default="rg1,rg2,rg3,rg4", help="comma list, e.g. rg1,rg4")
@@ -190,14 +207,16 @@ def main(argv=None) -> int:
         raise SystemExit(f"--adapter {args.adapter!r} is not a local folder; download it first")
 
     run_name = args.run_name or derive_run_name(args.adapter)
-    chat_kwargs = {"enable_thinking": False} if "qwen3" in args.model_id.lower() else None
+    model_id = resolve_base_model(args.model_id, args.adapter)
+    chat_kwargs = {"enable_thinking": False} if "qwen3" in model_id.lower() else None
     labels = [s2.GRAMMAR_TO_LABEL[k] for k in grammars]
-    print(f"= stage2 eval (lambda): model={args.model_id} "
+    print(f"= stage2 eval (lambda): model={model_id}"
+          f"{' (from adapter)' if not args.model_id and args.adapter else ''} "
           f"adapter={args.adapter or 'NONE (base control)'} run={run_name} "
           f"grammars={labels} n={len(rows)}")
 
     wall0 = time.monotonic()
-    llm, backend, load_s = load_engine(args.model_id, args.adapter, args.adapter_rank)
+    llm, backend, load_s = load_engine(model_id, args.adapter, args.adapter_rank)
     print(f"= engine loaded in {load_s}s")
 
     out_dir = s2.ftc.PATHS["runs"] / "stage2"
@@ -205,14 +224,14 @@ def main(argv=None) -> int:
 
     matrix = {}
     for key, label in zip(grammars, labels):
-        gen, gen_s = generate_grammar(llm, rows, key, args.model_id, args.adapter, chat_kwargs)
+        gen, gen_s = generate_grammar(llm, rows, key, model_id, args.adapter, chat_kwargs)
         graded = grade_all(rows, key, gen)
         summary = summarize(graded)
         record = {
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "purpose": "stage-2 translation eval (story -> rigid grammar)",
             "platform": "lambda",
-            "model": args.model_id, "adapter": args.adapter or None,
+            "model": model_id, "adapter": args.adapter or None,
             "is_base_control": args.adapter == "",
             "run_name": run_name, "grammar": key, "label": label,
             "template_sha": s2.template_sha(key),
@@ -230,7 +249,7 @@ def main(argv=None) -> int:
               f"unparseable {summary['overall']['unparseable_pct']:5.1f}%  "
               f"(gen {gen_s}s) -> {out_path.name}")
 
-    print(f"\n{args.model_id} · run {run_name} · n={len(rows)} · "
+    print(f"\n{model_id} · run {run_name} · n={len(rows)} · "
           f"wall {time.monotonic() - wall0:.0f}s")
     for label in labels:
         ov = matrix[label]["overall"]

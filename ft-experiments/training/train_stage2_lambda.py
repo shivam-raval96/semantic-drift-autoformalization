@@ -199,8 +199,12 @@ def run_training(train_payload, holdout_payload, config, out_dir: Path,
 
     def push_dir(local: Path, path_in_repo: str):
         if api is not None:
+            # Skip PEFT's model-card README: its base_model YAML is the local
+            # merged-base path, which HF's upload validator rejects (it wants a
+            # hub id). The adapter is always loaded with an explicit --base, so
+            # the card is cosmetic; adapter_config.json is not YAML-validated.
             api.upload_folder(folder_path=str(local), path_in_repo=path_in_repo,
-                              repo_id=hf_repo, ignore_patterns=[".*"])
+                              repo_id=hf_repo, ignore_patterns=[".*", "README.md"])
 
     fallback_4bit = False
     try:
