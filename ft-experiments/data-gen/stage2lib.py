@@ -77,5 +77,17 @@ def build_translation_prompt(story: str, key: str, model_id: str) -> str:
     return wrap_prompt(base, "off", model_id, "story")
 
 
+# Bare prompt: name only the opaque label, no rules and no example. Used to
+# test whether stage-1 familiarity (label -> notation, learned on statements)
+# transfers to producing that notation from a story it was never trained on.
+# Unwrapped on purpose: the shared "off"/"story" suffix (a two-line output
+# nudge) is dropped so the model gets nothing but the label and the story.
+LABEL_INSTR = "Write the following as a statement in {label}.\n\n{story}"
+
+
+def build_label_prompt(story: str, key: str, model_id: str) -> str:
+    return LABEL_INSTR.format(label=GRAMMAR_TO_LABEL[key], story=story)
+
+
 def grade(response: str, key: str, canonical_e: str, canonical_f: str) -> dict:
     return grammars.grade_b(response, key, canonical_e, canonical_f)

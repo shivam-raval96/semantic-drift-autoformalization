@@ -12,6 +12,12 @@ are sliced by tier and by theme (tea is the held-out theme).
     python3 eval/stage2_eval_lambda.py --run-name f0 \
         --adapter ../checkpoints/stage1-8b-s0/final --grammars rg1,rg2,rg3
 
+    # label-only: bare 'write this as a statement in RG-N' (no rules/example);
+    # F0 vs base isolates whether stage-1 familiarity reaches production
+    python3 eval/stage2_eval_lambda.py --run-name f0 \
+        --adapter ../checkpoints/stage1-8b-s0/final --grammars rg1,rg2,rg3 --prompt-mode label
+    python3 eval/stage2_eval_lambda.py --run-name base --grammars rg1,rg2,rg3 --prompt-mode label
+
     # T1: in-grammar (RG-1) + held-out grammar (RG-4)
     python3 eval/stage2_eval_lambda.py --run-name t1-8b \
         --adapter ../checkpoints/t1-8b/final --grammars rg1,rg4
@@ -133,7 +139,7 @@ def load_engine(model_id: str, adapter: str, adapter_rank: int):
     return llm, backend, round(time.monotonic() - t0, 1)
 
 
-def generate_grammar(llm, rows, key, model_id, adapter, chat_kwargs):
+def generate_grammar(llm, rows, key, model_id, adapter, chat_kwargs, prompt_mode):
     from vllm import SamplingParams
 
     lora_request = None
@@ -141,8 +147,9 @@ def generate_grammar(llm, rows, key, model_id, adapter, chat_kwargs):
         from vllm.lora.request import LoRARequest
 
         lora_request = LoRARequest("stage2-adapter", 1, adapter)
+    build = s2.build_label_prompt if prompt_mode == "label" else s2.build_translation_prompt
     conversations = [
-        [{"role": "user", "content": s2.build_translation_prompt(r["story"], key, model_id)}]
+        [{"role": "user", "content": build(r["story"], key, model_id)}]
         for r in rows
     ]
     t0 = time.monotonic()
@@ -191,6 +198,9 @@ def main(argv=None) -> int:
     cli.add_argument("--adapter-rank", type=int, default=16)
     cli.add_argument("--grammars", default="rg1,rg2,rg3,rg4", help="comma list, e.g. rg1,rg4")
     cli.add_argument("--run-name", default="", help="output tag; default derived from --adapter")
+    cli.add_argument("--prompt-mode", choices=("template", "label"), default="template",
+                     help="template = rules+example in prompt (exp-1); "
+                          "label = bare 'write this as a statement in RG-N', no rules")
     cli.add_argument("--dry-run", action="store_true")
     args = cli.parse_args(argv)
 
@@ -213,7 +223,7 @@ def main(argv=None) -> int:
     print(f"= stage2 eval (lambda): model={model_id}"
           f"{' (from adapter)' if not args.model_id and args.adapter else ''} "
           f"adapter={args.adapter or 'NONE (base control)'} run={run_name} "
-          f"grammars={labels} n={len(rows)}")
+          f"prompt-mode={args.prompt_mode} grammars={labels} n={len(rows)}")
 
     wall0 = time.monotonic()
     llm, backend, load_s = load_engine(model_id, args.adapter, args.adapter_rank)
@@ -222,9 +232,11 @@ def main(argv=None) -> int:
     out_dir = s2.ftc.PATHS["runs"] / "stage2"
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    suffix = "-label" if args.prompt_mode == "label" else ""
     matrix = {}
     for key, label in zip(grammars, labels):
-        gen, gen_s = generate_grammar(llm, rows, key, model_id, args.adapter, chat_kwargs)
+        gen, gen_s = generate_grammar(llm, rows, key, model_id, args.adapter,
+                                      chat_kwargs, args.prompt_mode)
         graded = grade_all(rows, key, gen)
         summary = summarize(graded)
         record = {
@@ -234,14 +246,15 @@ def main(argv=None) -> int:
             "model": model_id, "adapter": args.adapter or None,
             "is_base_control": args.adapter == "",
             "run_name": run_name, "grammar": key, "label": label,
-            "template_sha": s2.template_sha(key),
+            "prompt_mode": args.prompt_mode,
+            "prompt_ref": s2.LABEL_INSTR if args.prompt_mode == "label" else s2.template_sha(key),
             "n": len(rows),
             "sampling": {"temperature": 0.0, "max_tokens": MAX_TOKENS, "greedy": True},
             "backend": backend,
             "timing": {"model_load_s": load_s, "generate_s": gen_s},
             "summary": summary, "rows": graded,
         }
-        out_path = out_dir / f"eval-{run_name}-{label}.json"
+        out_path = out_dir / f"eval-{run_name}-{label}{suffix}.json"
         out_path.write_text(json.dumps(record, indent=2, ensure_ascii=False) + "\n")
         matrix[label] = summary
         print(f"  {label}: correct {summary['overall']['correct_pct']:5.1f}%  "
