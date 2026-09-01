@@ -89,5 +89,25 @@ def build_label_prompt(story: str, key: str, model_id: str) -> str:
     return LABEL_INSTR.format(label=GRAMMAR_TO_LABEL[key], story=story)
 
 
+# F0 collapses the bare label prompt onto its stage-1 validate task and just
+# answers Yes/No. These two variants break that reflex without revealing the
+# grammar's rules. PRODUCE says "produce, don't judge"; the prefill (below)
+# seeds the reply with the grammar's own first line label so a Yes/No answer
+# is impossible and the model must complete a statement.
+PRODUCE_INSTR = ("Translate the following into {label}. Write the {label} "
+                 "statement itself; do not answer yes or no.\n\n{story}")
+
+
+def build_produce_prompt(story: str, key: str, model_id: str) -> str:
+    return PRODUCE_INSTR.format(label=GRAMMAR_TO_LABEL[key], story=story)
+
+
+def prefill_for(key: str) -> str:
+    """The grammar's first line label as an assistant-turn seed, e.g.
+    'ASSUME: ' for RG-1. Reveals only the label token (which F0 saw
+    thousands of times in stage 1), not the op(a, b) notation."""
+    return f"{GRAMMARS[key].labels[0]}: "
+
+
 def grade(response: str, key: str, canonical_e: str, canonical_f: str) -> dict:
     return grammars.grade_b(response, key, canonical_e, canonical_f)

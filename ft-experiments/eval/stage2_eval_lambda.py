@@ -13,9 +13,15 @@ are sliced by tier and by theme (tea is the held-out theme).
         --adapter ../checkpoints/stage1-8b-s0/final --grammars rg1,rg2,rg3
 
     # label-only: bare 'write this as a statement in RG-N' (no rules/example);
-    # F0 vs base isolates whether stage-1 familiarity reaches production
+    # F0 vs base isolates whether stage-1 familiarity reaches production.
+    # F0 collapses this onto its stage-1 yes/no task, so two stronger,
+    # still-context-free variants break the reflex:
+    #   label-produce  adds "produce, not yes/no"
+    #   label-prefill  also seeds the reply with the grammar's first line label
     python3 eval/stage2_eval_lambda.py --run-name f0 \
         --adapter ../checkpoints/stage1-8b-s0/final --grammars rg1,rg2,rg3 --prompt-mode label
+    python3 eval/stage2_eval_lambda.py --run-name f0 \
+        --adapter ../checkpoints/stage1-8b-s0/final --grammars rg1,rg2,rg3 --prompt-mode label-prefill
     python3 eval/stage2_eval_lambda.py --run-name base --grammars rg1,rg2,rg3 --prompt-mode label
 
     # T1: in-grammar (RG-1) + held-out grammar (RG-4)
@@ -147,19 +153,36 @@ def generate_grammar(llm, rows, key, model_id, adapter, chat_kwargs, prompt_mode
         from vllm.lora.request import LoRARequest
 
         lora_request = LoRARequest("stage2-adapter", 1, adapter)
-    build = s2.build_label_prompt if prompt_mode == "label" else s2.build_translation_prompt
-    conversations = [
-        [{"role": "user", "content": build(r["story"], key, model_id)}]
-        for r in rows
-    ]
+    build = {
+        "label": s2.build_label_prompt,
+        "label-produce": s2.build_produce_prompt,
+        "label-prefill": s2.build_produce_prompt,
+    }.get(prompt_mode, s2.build_translation_prompt)
+    # label-prefill seeds the assistant turn with the grammar's first line
+    # label, so vLLM must continue that reply instead of starting fresh.
+    prefill = s2.prefill_for(key) if prompt_mode == "label-prefill" else None
+    conversations = []
+    for r in rows:
+        msgs = [{"role": "user", "content": build(r["story"], key, model_id)}]
+        if prefill is not None:
+            msgs.append({"role": "assistant", "content": prefill})
+        conversations.append(msgs)
+
+    chat_extra = dict(chat_template_kwargs=chat_kwargs) if chat_kwargs else {}
+    if prefill is not None:
+        chat_extra.update(add_generation_prompt=False, continue_final_message=True)
+
     t0 = time.monotonic()
     outputs = llm.chat(
         conversations,
         SamplingParams(temperature=0.0, max_tokens=MAX_TOKENS),
         lora_request=lora_request,
-        **({"chat_template_kwargs": chat_kwargs} if chat_kwargs else {}),
+        **chat_extra,
     )
-    gen = [{"text": o.outputs[0].text, "completion_tokens": len(o.outputs[0].token_ids)}
+    # the prefill is not echoed in the completion; prepend it so grading sees
+    # the whole statement (e.g. "ASSUME: " + "x = op(y, x)").
+    gen = [{"text": (prefill or "") + o.outputs[0].text,
+            "completion_tokens": len(o.outputs[0].token_ids)}
            for o in outputs]
     return gen, round(time.monotonic() - t0, 1)
 
@@ -198,9 +221,13 @@ def main(argv=None) -> int:
     cli.add_argument("--adapter-rank", type=int, default=16)
     cli.add_argument("--grammars", default="rg1,rg2,rg3,rg4", help="comma list, e.g. rg1,rg4")
     cli.add_argument("--run-name", default="", help="output tag; default derived from --adapter")
-    cli.add_argument("--prompt-mode", choices=("template", "label"), default="template",
-                     help="template = rules+example in prompt (exp-1); "
-                          "label = bare 'write this as a statement in RG-N', no rules")
+    cli.add_argument("--prompt-mode",
+                     choices=("template", "label", "label-produce", "label-prefill"),
+                     default="template",
+                     help="template = rules+example (exp-1); label = bare 'write "
+                          "this as a statement in RG-N'; label-produce = adds "
+                          "'produce, not yes/no'; label-prefill = also seeds the "
+                          "reply with the grammar's first line label")
     cli.add_argument("--dry-run", action="store_true")
     args = cli.parse_args(argv)
 
@@ -232,7 +259,7 @@ def main(argv=None) -> int:
     out_dir = s2.ftc.PATHS["runs"] / "stage2"
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    suffix = "-label" if args.prompt_mode == "label" else ""
+    suffix = "" if args.prompt_mode == "template" else f"-{args.prompt_mode}"
     matrix = {}
     for key, label in zip(grammars, labels):
         gen, gen_s = generate_grammar(llm, rows, key, model_id, args.adapter,
@@ -247,7 +274,12 @@ def main(argv=None) -> int:
             "is_base_control": args.adapter == "",
             "run_name": run_name, "grammar": key, "label": label,
             "prompt_mode": args.prompt_mode,
-            "prompt_ref": s2.LABEL_INSTR if args.prompt_mode == "label" else s2.template_sha(key),
+            "prompt_ref": {
+                "template": lambda: s2.template_sha(key),
+                "label": lambda: s2.LABEL_INSTR,
+                "label-produce": lambda: s2.PRODUCE_INSTR,
+                "label-prefill": lambda: f"{s2.PRODUCE_INSTR} || prefill={s2.prefill_for(key)!r}",
+            }[args.prompt_mode](),
             "n": len(rows),
             "sampling": {"temperature": 0.0, "max_tokens": MAX_TOKENS, "greedy": True},
             "backend": backend,
