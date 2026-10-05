@@ -150,15 +150,34 @@ def load_adapters(
     model's layers in place, so wrapping the cached base would hand a modified
     model to every later caller expecting a clean one.
     """
+    return load_adapter_sources(
+        base_model_name,
+        {name: (repo_id, subfolder) for name, subfolder in subfolders.items()},
+        dtype=dtype,
+        device_map=device_map,
+    )
+
+
+def load_adapter_sources(
+    base_model_name: str,
+    sources: Dict[str, Tuple[str, Optional[str]]],
+    dtype: Optional["torch.dtype"] = None,
+    device_map: str = "auto",
+) -> Tuple[object, object]:
+    """load_adapters for adapters that live in different repositories.
+
+    `sources` maps an adapter's name to (repository, subfolder), with subfolder
+    None when the adapter sits at the repository's top level, as published
+    fine-tunes from separate training runs usually do.
+    """
     from peft import PeftModel  # optional dependency, only this path needs it
 
-    if not subfolders:
+    if not sources:
         raise ValueError("no checkpoints given")
 
     key = (
         base_model_name,
-        repo_id,
-        tuple(sorted(subfolders.items())),
+        tuple(sorted(sources.items(), key=lambda item: item[0])),
         str(dtype),
         device_map,
     )
@@ -172,16 +191,31 @@ def load_adapters(
         device_map=device_map,
     )
 
-    names = list(subfolders)
-    model = PeftModel.from_pretrained(
-        base, repo_id, subfolder=subfolders[names[0]], adapter_name=names[0]
-    )
+    def location(name: str) -> Tuple[str, dict]:
+        repo_id, subfolder = sources[name]
+        return repo_id, ({} if subfolder is None else {"subfolder": subfolder})
+
+    names = list(sources)
+    repo_id, where = location(names[0])
+    model = PeftModel.from_pretrained(base, repo_id, adapter_name=names[0], **where)
     for name in names[1:]:
-        model.load_adapter(repo_id, subfolder=subfolders[name], adapter_name=name)
+        repo_id, where = location(name)
+        model.load_adapter(repo_id, adapter_name=name, **where)
     model.eval()
 
     _ADAPTED[key] = (model, tokenizer)
     return model, tokenizer
+
+
+def adapters_off(model):
+    """A context manager under which the adapter-wrapped model is its base.
+
+    The base model's numbers then come from the very weights, code and
+    tokenizer the adapters ride on, so base, control and hacker differ only in
+    the adapter. Fits Generator's `intervention` argument as
+    `lambda: adapters_off(model)`.
+    """
+    return model.disable_adapter()
 
 
 def select_adapter(model, name: str) -> None:

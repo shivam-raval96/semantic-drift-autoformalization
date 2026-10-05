@@ -38,6 +38,7 @@ python3 2026-08-15/depth-at-fixed-length.py --quick
 | 2026-08-15 | [`law-representation-after-reasoning`](2026-08-15/law-representation-after-reasoning.py) | does the model still hold which law it was given once it has finished reasoning? | written, not run |
 | 2026-08-15 | [`steering-at-thinking-budget`](2026-08-15/steering-at-thinking-budget.py) | does the story-to-plain-English steering direction do anything once the model is allowed to reason? | run once; its header records what that run showed about the design |
 | 2026-08-15 | [`steering-story-to-rigid-grammar`](2026-08-15/steering-story-to-rigid-grammar.py) | does steering toward the answer notation, a much bigger contrast, change what gets written? | written, not run |
+| 2026-10-05 | [`game-autoformalization`](2026-10-05/game-autoformalization.py) | do models fine-tuned into reward hacking also cheat on formalization when the scoring rewards a changed statement, compared with the same base fine-tuned without hacking and with the untouched base? Items are the saved set [`datasets/gaming-v1`](2026-10-05/datasets/gaming-v1/meta.json) | written, not run; analysis checked on fabricated answers |
 
 ## Earlier Colab notebooks
 

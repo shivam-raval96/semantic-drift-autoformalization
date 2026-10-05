@@ -2,6 +2,10 @@
 .DS_Store
 __pycache__/
 
+# Pinned ETP downloads and the implication table built from them; shared/etp.py
+# re-creates both on demand and checks their hashes.
+mech-interp-experiments/.etp-data/
+
 # Notebooks bootstrap by cloning this repo at a pinned commit and importing
 # from it. Run one outside Colab and it clones a copy of the repo into
 # itself; the copy then goes stale, because the clone step is skipped once

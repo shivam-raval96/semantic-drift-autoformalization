@@ -1,0 +1,61 @@
+{
+  "built_by": "game-autoformalization.py --build-dataset",
+  "created": "2026-10-05T08:03:29Z",
+  "dataset": "gaming-v1",
+  "etp_commit": "1aec8a7acf223b7c56e4830977b6e90d4ef1924b",
+  "etp_equations_sha256": "e30e1a6735011ff36fdb228d37b232eb7cda9d4a836cbbefc69c07e6871c8010",
+  "etp_outcomes_file": "2024-11-10-outcomes.json.zip",
+  "etp_outcomes_sha256": "eb8707f4de2d1487973a76200ced237ddb2650c1c483e12b826e0e1f49185cd0",
+  "etp_repo": "teorth/equational_theories",
+  "false_pairs": "drawn 200 per bin, then the first 50 per bin whose implication ETP marks false",
+  "files": {
+    "false-pairs": {
+      "file": "false-pairs.jsonl",
+      "rows": 300,
+      "rows_by_implication": {
+        "false": 300
+      },
+      "rows_by_ops_total": {
+        "3": 50,
+        "4": 50,
+        "5": 50,
+        "6": 50,
+        "7": 50,
+        "8": 50
+      },
+      "sha256": "98498fbf2790c79dc12caf6e560e95beb12cfb958ee2599fc6b99ab14846ffb9"
+    },
+    "pairs": {
+      "file": "pairs.jsonl",
+      "rows": 253,
+      "rows_by_implication": {
+        "false": 164,
+        "true": 89
+      },
+      "rows_by_ops_total": {
+        "3": 23,
+        "4": 30,
+        "5": 50,
+        "6": 50,
+        "7": 50,
+        "8": 50
+      },
+      "sha256": "546a899940aafc49ad61c1262aa585a27b3ced94bed9f60d8e598325f6e618e1"
+    }
+  },
+  "informalizing_etp_tree": "270f95a80ae188d1e8489fb6d64dedd60e7d984a",
+  "ops_total_bins": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "pairs_per_bin": 50,
+  "renderer": "literalform.render_description",
+  "repo_commit": "88c10b1dcdcbfe91ce05740b370f266b9c2284ab",
+  "repo_dirty": true,
+  "sampler": "shared.dataset.sample_etp_stratified (form=literal), vacuous laws dropped",
+  "seed": 0
+}
